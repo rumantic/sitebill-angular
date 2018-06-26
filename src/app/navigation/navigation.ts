@@ -49,5 +49,40 @@ export const navigation: FuseNavigation[] = [
                 ]
             }
         ]
+    },
+    {
+        id      : 'documentation',
+        title   : 'Documentation',
+        icon    : 'import_contacts',
+        type    : 'group',
+        children: [
+            {
+                id      : '3rd-party-components',
+                title   : '3rd Party Components',
+                type    : 'collapsable',
+                icon    : 'import_contacts',
+                children: [
+                    {
+                        id      : 'datatables',
+                        title   : 'Datatables',
+                        type    : 'collapsable',
+                        children: [
+                            {
+                                id   : 'ngxdatatable',
+                                title: 'ngx-datatable',
+                                type : 'item',
+                                url  : '/documentation/components-third-party/datatables/ngx-datatable'
+                            }
+                        ]
+                    },
+                    {
+                        id   : 'google-maps',
+                        title: 'Google Maps',
+                        type : 'item',
+                        url  : '/documentation/components-third-party/google-maps'
+                    }
+                ]
+            },
+        ]
     }
 ];

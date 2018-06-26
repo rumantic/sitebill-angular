@@ -47,6 +47,10 @@ const appRoutes: Routes = [
         path        : 'pages',
         loadChildren: './main/pages/pages.module#PagesModule'
     },
+    {
+        path        : 'documentation',
+        loadChildren: './main/documentation/documentation.module#DocumentationModule'
+    },
 ];
 
 @NgModule({
