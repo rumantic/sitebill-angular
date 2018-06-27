@@ -3,19 +3,31 @@ import { FuseNavigation } from '@fuse/types';
 export const navigation: FuseNavigation[] = [
     {
         id       : 'applications',
-        title    : 'Applications',
+        title    : 'Объекты',
         translate: 'NAV.APPLICATIONS',
         type     : 'group',
         children : [
             {
-                id       : 'sample',
-                title    : 'Sample',
-                translate: 'NAV.SAMPLE.TITLE',
+                id       : 'myobjects',
+                title    : 'Мои объекты',
                 type     : 'item',
                 icon     : 'email',
-                url      : '/sample',
+                url      : '/documentation/components-third-party/datatables/ngx-datatable',
                 badge    : {
                     title    : '25',
+                    translate: 'NAV.SAMPLE.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+            },
+            {
+                id       : 'allobjects',
+                title    : 'Все объекты',
+                type     : 'item',
+                icon     : 'email',
+                url      : '/documentation/components-third-party/datatables/ngx-datatable/all',
+                badge    : {
+                    title    : '250',
                     translate: 'NAV.SAMPLE.BADGE',
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
@@ -31,7 +43,7 @@ export const navigation: FuseNavigation[] = [
         children: [
             {
                 id      : 'authentication',
-                title   : 'Authentication',
+                title   : 'Авторизация',
                 type    : 'collapsable',
                 icon    : 'lock',
                 badge   : {
@@ -42,47 +54,12 @@ export const navigation: FuseNavigation[] = [
                 children: [
                     {
                         id   : 'login',
-                        title: 'Login',
+                        title: 'Вход',
                         type : 'item',
                         url  : '/pages/auth/login'
                     }
                 ]
             }
-        ]
-    },
-    {
-        id      : 'documentation',
-        title   : 'Documentation',
-        icon    : 'import_contacts',
-        type    : 'group',
-        children: [
-            {
-                id      : '3rd-party-components',
-                title   : '3rd Party Components',
-                type    : 'collapsable',
-                icon    : 'import_contacts',
-                children: [
-                    {
-                        id      : 'datatables',
-                        title   : 'Datatables',
-                        type    : 'collapsable',
-                        children: [
-                            {
-                                id   : 'ngxdatatable',
-                                title: 'ngx-datatable',
-                                type : 'item',
-                                url  : '/documentation/components-third-party/datatables/ngx-datatable'
-                            }
-                        ]
-                    },
-                    {
-                        id   : 'google-maps',
-                        title: 'Google Maps',
-                        type : 'item',
-                        url  : '/documentation/components-third-party/google-maps'
-                    }
-                ]
-            },
         ]
     }
 ];
