@@ -66,6 +66,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 this.loadingIndicator = false;
             });
     }
+    
     onSelect({selected}) {
         console.log('Select Event', selected, this.selected);
         console.log(selected.length);
