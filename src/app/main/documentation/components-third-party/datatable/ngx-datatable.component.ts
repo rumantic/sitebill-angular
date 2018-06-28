@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, isDevMode} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     selected = [];
     loadingIndicator: boolean;
     reorderable: boolean;
+    api_url: string;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -39,6 +40,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        if(isDevMode()) {
+            this.api_url = 'http://genplan1';
+        } else {
+            this.api_url = '';
+        }
         
     }
 
@@ -51,7 +57,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     ngOnInit(): void {
 
-        this._httpClient.get(`http://genplan1/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`)
+        this._httpClient.get(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contacts: any) => {
                 console.log(contacts.rows);
@@ -67,7 +73,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //?action=model&do=select&session_key=${this.currentUser.session_key}
         console.log(body);
         
-        this._httpClient.post('http://genplan1/apps/api/rest.php?action1=11', body)
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php?action1=11`, body)
             .subscribe((contacts: any) => {
                 console.log(contacts);
             });
