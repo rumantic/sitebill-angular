@@ -32,6 +32,13 @@ export const navigation: FuseNavigation[] = [
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
                 }
+            },
+            {
+                id       : 'login',
+                title    : 'Вход',
+                type     : 'item',
+                icon     : 'email',
+                url      : '/login'
             }
         ]
     },

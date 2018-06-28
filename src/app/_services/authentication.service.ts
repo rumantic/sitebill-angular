@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
@@ -6,8 +6,15 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class AuthenticationService {
     fuseConfig: any;
+    api_url: string;
     
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { 
+        if(isDevMode()) {
+            this.api_url = 'http://genplan1';
+        } else {
+            this.api_url = '';
+        }
+    }
 
     login(username: string, password: string) {
         
@@ -15,7 +22,7 @@ export class AuthenticationService {
         
         //const body = {login: username, password: password};
         //return this.http.post<any>('/apps/api/rest.php', {login: username, password: password})
-        return this.http.get<any>('http://genplan1/apps/api/rest.php?action=oauth&do=login&login=' + username + '&password=' + password)
+        return this.http.get<any>(`${this.api_url}/apps/api/rest.php?action=oauth&do=login&login=` + username + '&password=' + password)
             .map(user => {
                 // login successful if there's a jwt token in the response
                 if (user && user.session_key && user.admin_panel_login) {

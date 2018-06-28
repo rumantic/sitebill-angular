@@ -56,6 +56,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * On init
      */
     ngOnInit(): void {
+        console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
 
         this._httpClient.get(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`)
             .pipe(takeUntil(this._unsubscribeAll))
