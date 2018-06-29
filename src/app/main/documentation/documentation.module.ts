@@ -8,7 +8,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 const routes: Routes = [
     {
-        path        : 'components-third-party',
+        path        : 'my',
         loadChildren: './components-third-party/components-third-party.module#ComponentsThirdPartyModule'
     },
 ];

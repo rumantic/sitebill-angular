@@ -36,6 +36,7 @@ import {LoginComponent} from './login/index';
 
 
 const appRoutes: Routes = [
+    { path: '', redirectTo: '/data/my', pathMatch: 'full' },
     {
         path      : 'sample',
         redirectTo: 'sample', 
@@ -48,7 +49,7 @@ const appRoutes: Routes = [
         loadChildren: './main/pages/pages.module#PagesModule'
     },
     {
-        path        : 'documentation',
+        path        : 'data',
         loadChildren: './main/documentation/documentation.module#DocumentationModule'
     },
 ];

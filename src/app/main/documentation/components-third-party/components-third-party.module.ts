@@ -10,7 +10,7 @@ import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/document
 
 const routes = [
     {
-        path     : 'datatables/ngx-datatable',
+        path     : '',
         component: DocsComponentsThirdPartyNgxDatatableComponent
     }
 ];

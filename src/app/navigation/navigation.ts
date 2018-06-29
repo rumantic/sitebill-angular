@@ -12,7 +12,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Мои объекты',
                 type     : 'item',
                 icon     : 'email',
-                url      : '/documentation/components-third-party/datatables/ngx-datatable',
+                url      : '/data/my',
                 badge    : {
                     title    : '25',
                     translate: 'NAV.SAMPLE.BADGE',
