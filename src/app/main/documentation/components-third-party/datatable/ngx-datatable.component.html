@@ -1,58 +1,155 @@
-<div id="ngx-datatable" class="page-layout simple fullwidth docs">
+<div id="ngx-datatable" class="page-layout simple right-sidebar" fxLayout="row">
 
-    <!-- CONTENT -->
-    <div class="content p-24">
+    <!-- SIDEBAR -->
+    <fuse-sidebar class="sidebar" name="project-dashboard-right-sidebar-1" position="right" lockedOpen="gt-md">
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content">
+
+            <!-- WIDGET GROUP -->
+            <div class="widget-group" fxLayout="column" fxFlex="100" [@animateStagger]="{value:'50'}">
 
 
-        <ngx-datatable
-            class="material"
-            [rows]="rows"
-            [loadingIndicator]="loadingIndicator"
-            [columnMode]="'force'"
-            [headerHeight]="48"
-            [footerHeight]="56"
-            [rowHeight]="'auto'"
-            [scrollbarH]="true"
-            [reorderable]="reorderable"
-            [limit]="10"
-            [selected]="selected"
-            [selectionType]="'multiClick'"
-            (activate)="onActivate($event)"
-            (select)='onSelect($event)'>
+                 <!-- WEATHER WIDGET -->
+                 <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="p-0">
 
-            <ngx-datatable-column [width]="48"
-                                  [canAutoResize]="false"
-                                  [sortable]="false">
-                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
-                             let-selectFn="selectFn">
-                    <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
-                </ng-template>
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
 
-                <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
-                             let-onCheckboxChangeFn="onCheckboxChangeFn">
-                    <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
-                </ng-template>
-            </ngx-datatable-column>
+                        <div class="pl-16 pr-8 py-16" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class='selected-column'>
+                                <h4>Selections</h4>
+                                <ul>
+                                    <li *ngFor='let sel of selected'>
+                <!-- Widget 2 -->
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="33" >
 
-            <ngx-datatable-column name="Name" prop="id.value"></ngx-datatable-column>
+                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
 
-            <ngx-datatable-column name="Last Name" prop="city_id.value_string"></ngx-datatable-column>
+                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
 
-            <ngx-datatable-column name="Company" prop="street_id.value_string"></ngx-datatable-column>
-            <ngx-datatable-column name="Photo" prop="image.image_array"></ngx-datatable-column>
-        </ngx-datatable>
-        
-        <div class='selected-column'>
-        <h4>Selections</h4>
-        <ul>
-          <li *ngFor='let sel of selected'>
-            {{sel.id.value}}
-          </li>
-          <li *ngIf="!selected.length">No Selections</li>
-        </ul>
-      </div>        
+                            <div class="pr-16">
+                                    {{sel.id.value}}
+                            </div>
+                        </div>
+                         
+                        <div class="footer" fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-button color="accent"  (click)="delete_selection(sel.id.value)">
+                                Удалить
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / Widget 2 -->
+                                        
+                                        
+                                </li>
+                                <li *ngIf="!selected.length">No Selections</li>
+                            </ul>
+                        </div>        
+
+                    </div>
+
+
+
+
+                    <mat-divider></mat-divider>
+
+                </div>
+                <!-- / Front -->
+
+            </fuse-widget>
+            <!-- / WEATHER WIDGET -->
+
+        </div>
+        <!-- / WIDGET GROUP -->
 
     </div>
+    <!-- / SIDEBAR CONTENT -->
+
+</fuse-sidebar>
+<!-- / SIDEBAR -->
+
+<!-- CENTER -->
+<div class="center" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight>
+
+
+
+            <mat-tab label="Team Members">
+
+                <!-- WIDGET GROUP -->
+                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                     [@animateStagger]="{value:'50'}">
+
+                     <!-- WIDGET 11 -->
+                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                        fxFlex="100">
+
+                        <!-- Front -->
+                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                            <ngx-datatable
+                                class="material"
+                                [rows]="rows"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="'force'"
+                                [headerHeight]="48"
+                                [footerHeight]="56"
+                                [rowHeight]="'auto'"
+                                [scrollbarH]="true"
+                                [reorderable]="reorderable"
+                                [limit]="10"
+                                [selected]="selected"
+                                [selectionType]="'multiClick'"
+                                (activate)="onActivate($event)"
+                                (select)='onSelect($event)'>
+
+                                <ngx-datatable-column [width]="48"
+                                    [canAutoResize]="false"
+                                    [sortable]="false">
+                                    <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                                                 let-selectFn="selectFn">
+                                        <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+                                    </ng-template>
+
+                                    <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
+                                                 let-onCheckboxChangeFn="onCheckboxChangeFn">
+                                        <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column name="Name" prop="id.value"></ngx-datatable-column>
+
+                                <ngx-datatable-column name="Last Name" prop="city_id.value_string"></ngx-datatable-column>
+
+                                <ngx-datatable-column name="Company" prop="street_id.value_string"></ngx-datatable-column>
+                                <ngx-datatable-column name="Photo" prop="image.image_array"></ngx-datatable-column>
+                            </ngx-datatable>
+
+                        </div>
+                        <!-- / Front -->
+
+                    </fuse-widget>
+                    <!-- / WIDGET 11 -->
+
+                </div>
+                <!-- / WIDGET GROUP -->
+
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
 
 </div>
+<!-- / CENTER -->
+
+</div>
+
 
