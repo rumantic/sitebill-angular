@@ -132,6 +132,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //console.log('selected > ');
                 //console.log(result);
                 if (result) {
+                    this.selected = [];
                     this.init_selected_rows(this.rows, result.selected);
                 } else {
                     //this.selected = [];
