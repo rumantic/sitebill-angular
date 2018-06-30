@@ -1,14 +1,16 @@
-import {Component, OnDestroy, OnInit, isDevMode} from '@angular/core';
+import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '@fuse/animations';
+import {MatDialog, MatDialogConfig} from "@angular/material";
 
 //import {Model} from '/model';
 //import {MessageService} from '/message.service';
 //import {User} from '/_models/user';
 import {currentUser} from '../../../../_models/currentuser';
-
+import {CourseDialogComponent} from "app/course-dialog/course-dialog.component";
 
 @Component({
     selector: 'docs-components-third-party-ngx-datatable',
@@ -33,7 +35,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * @param {HttpClient} _httpClient
      */
     constructor(
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        private dialog: MatDialog
     ) {
         // Set the defaults
         this.loadingIndicator = true;
@@ -145,6 +148,51 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
 
     }
+    
+    view_details(item_id: string) {
+        console.log('view details', item_id);
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+
+        this.dialog.open(CourseDialogComponent, dialogConfig);        
+        /*
+        
+        this.dialogRef = this._matDialog.open(ContactsContactFormDialogComponent, {
+            panelClass: 'contact-form-dialog',
+            data      : {
+                contact: contact,
+                action : 'edit'
+            }
+        });
+        
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if ( !response )
+                {
+                    return;
+                }
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch ( actionType )
+                {
+                    case 'save':
+
+                        this._contactsService.updateContact(formData.getRawValue());
+
+                        break;
+                    case 'delete':
+
+                        this.deleteContact(contact);
+
+                        break;
+                }
+            });
+            */
+    }
+    
 
 
     onActivate(event) {
