@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, ActivatedRoute } from '@angular/router';
+
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +10,8 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
+import {AlertService, AuthenticationService} from '../../../_services/index';
+
 
 @Component({
     selector   : 'toolbar',
@@ -41,8 +44,10 @@ export class ToolbarComponent implements OnInit, OnDestroy
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
+        private route: ActivatedRoute,
         private _router: Router,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private authenticationService: AuthenticationService
     )
     {
         // Set the defaults
@@ -146,6 +151,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+    
+    logout() {
+        this.authenticationService.logout();
+        console.log('logout');
+        this._router.navigate(['login']);
+        
+    }
+    
 
     /**
      * Toggle sidebar open

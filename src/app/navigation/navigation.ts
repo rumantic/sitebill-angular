@@ -41,32 +41,5 @@ export const navigation: FuseNavigation[] = [
                 url      : '/login'
             }
         ]
-    },
-    {
-        id      : 'pages',
-        title   : 'Pages',
-        type    : 'group',
-        icon    : 'pages',
-        children: [
-            {
-                id      : 'authentication',
-                title   : 'Авторизация',
-                type    : 'collapsable',
-                icon    : 'lock',
-                badge   : {
-                    title: '10',
-                    bg   : '#525e8a',
-                    fg   : '#FFFFFF'
-                },
-                children: [
-                    {
-                        id   : 'login',
-                        title: 'Вход',
-                        type : 'item',
-                        url  : '/pages/auth/login'
-                    }
-                ]
-            }
-        ]
     }
 ];

@@ -38,20 +38,19 @@ import {LoginComponent} from './login/index';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/data/my', pathMatch: 'full' },
-    {
-        path      : 'sample',
-        redirectTo: 'sample', 
-        canActivate: [AuthGuard]
-    },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LoginComponent },
     {
         path        : 'pages',
-        loadChildren: './main/pages/pages.module#PagesModule'
+        loadChildren: './main/pages/pages.module#PagesModule',
+        canActivate: [AuthGuard]  
     },
     {
         path        : 'data',
-        loadChildren: './main/documentation/documentation.module#DocumentationModule'
+        loadChildren: './main/documentation/documentation.module#DocumentationModule',
+        canActivate: [AuthGuard]  
+
     },
 ];
 

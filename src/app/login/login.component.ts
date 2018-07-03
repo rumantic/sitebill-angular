@@ -1,10 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 import {AlertService, AuthenticationService} from '../_services/index';
 
 @Component({
-    templateUrl: 'login.component.html'
+    selector   : 'login',
+    templateUrl: 'login.component.html',
+    styleUrls  : ['./login.component.scss'],
+    animations : fuseAnimations
 })
 
 export class LoginComponent implements OnInit {
@@ -12,11 +17,23 @@ export class LoginComponent implements OnInit {
     loading = false;
     returnUrl: string;
 
+    loginForm: FormGroup;
+    loginFormErrors: any;
+
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+        private _formBuilder: FormBuilder,
+        private alertService: AlertService) {
+            // Set the defaults
+            this.loginFormErrors = {
+                username   : {},
+                password: {}
+            };
+            
+        }
 
     ngOnInit() {
         // reset login status
@@ -24,6 +41,13 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        
+        this.loginForm = this._formBuilder.group({
+            username   : ['', [Validators.required]],
+            password: ['', Validators.required]
+        });
+
+        
     }
 
     login() {
