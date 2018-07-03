@@ -3,15 +3,22 @@
 
 
 <mat-dialog-content>
+    
 <div *ngIf="rows; else loggedOut">
 <table  border="1">
     <tr *ngFor="let x of rows">
-        <td>{{x}}</td>
+        <td>{{records[x].title}}</td>
+        <td>
+            {{records[x].value}}
+                <div *ngIf="records[x].type == 'uploads'">
+                    <div *ngFor="let image of records[x].value">
+                        <img src="http://genplan1/img/data/{{image.preview}}"/>
+                    </div>
+                </div>            
+        </td>
     </tr>
 </table>    
-    <pre>
-    {{rows | json}}
-    </pre>
+
     
 </div>    
     

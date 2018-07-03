@@ -37,8 +37,8 @@ export class CourseDialogComponent implements OnInit {
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         private modelService: ModelService,
         private _httpClient: HttpClient,
-        
-        @Inject(MAT_DIALOG_DATA) {}:Course ) {
+        @Inject(MAT_DIALOG_DATA) private _data: any
+        ) {
         this.loadingIndicator = true;
         
         // Set the private defaults
@@ -50,21 +50,6 @@ export class CourseDialogComponent implements OnInit {
             this.api_url = '';
         }
         
-        this.records = [
-       {
-            "Name" : "Alfreds Futterkiste",
-            "Country" : "Germany"
-        },{
-            "Name" : "Berglunds snabbköp",
-            "Country" : "Sweden"
-        },{
-            "Name" : "Centro comercial Moctezuma",
-            "Country" : "Mexico"
-        },{
-            "Name" : "Ernst Handel",
-            "Country" : "Austria"
-        }
-        ];
 
         this.description = '123';
 
@@ -75,16 +60,18 @@ export class CourseDialogComponent implements OnInit {
     }
 
     getModel(): void {
-        const id = 506;
+        //console.log(this._data);
+        
+        const id = this._data.item_id;
+        
         //const PLACEMENT = this.route.snapshot.paramMap.get('PLACEMENT');
         //const PLACEMENT_OPTIONS = this.route.snapshot.paramMap.get('PLACEMENT_OPTIONS');
         //console.log('subscribe PLACEMENT = ' + PLACEMENT + 'PLACEMENT_OPTIONS = ' + PLACEMENT_OPTIONS);
         
-        console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
+        //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
 
         const load_data_request = {action: 'model', do: 'load_data', id: id, session_key: this.currentUser.session_key};
         
-        console.log(this.records);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_data_request)
             .pipe(takeUntil(this._unsubscribeAll))
@@ -92,6 +79,7 @@ export class CourseDialogComponent implements OnInit {
                 console.log('load_data > ');
                 if (result) {
                     //this.rows = result.data;
+                    this.records = result.data;
                     this.rows = Object.keys(result.data);
                     console.log(Object.keys(this.rows));
                 }

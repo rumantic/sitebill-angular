@@ -155,6 +155,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.data = {item_id : item_id};
 
         this.dialog.open(CourseDialogComponent, dialogConfig);        
         /*
