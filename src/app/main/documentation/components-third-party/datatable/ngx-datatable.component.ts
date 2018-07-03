@@ -24,6 +24,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     loadingIndicator: boolean;
     reorderable: boolean;
     api_url: string;
+    records: any[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -50,7 +51,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         } else {
             this.api_url = '';
         }
-
     }
 
     // -----------------------------------------------------------------------------------------------------

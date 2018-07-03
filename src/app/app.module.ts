@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { CommonModule } from "@angular/common";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -67,6 +68,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
+        CommonModule,
 
         TranslateModule.forRoot(),
 

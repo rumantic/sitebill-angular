@@ -74,6 +74,33 @@ export class ModelService {
         );
         */
     }
+    
+    /** GET hero by id. Will 404 if id not found */
+    loadData(id: number): Observable<Model> {
+        let currentUser: currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        const url = `${this.modelsUrl}&do=load_data&session_key=${currentUser.session_key}&id=${id}`;
+        //const url = `${this.modelsUrl}&do=get_model&id=${id}`;
+        
+        return this.http.get<Model>(url).pipe(
+            tap(_ => this.log(`fetched data_id=${id}`)),
+            catchError(this.handleError<Model>(`getModel id=${id}`))
+        );
+        
+        /*
+        
+        return this.http.get<Model>(url).map(data=>{
+            let modelList = data;
+            console.log(modelList);
+            return modelList;
+            
+        });        
+        return this.http.get<Model>(url).pipe(
+            tap(_ => this.log(`fetched model id=${id}`)),
+            catchError(this.handleError<Model>(`getModel id=${id}`))
+        );
+        */
+    }
+    
 
     /* GET models whose name contains search term */
     searchModeles(term: string): Observable<Model[]> {

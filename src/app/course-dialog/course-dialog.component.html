@@ -1,10 +1,26 @@
-
+<div id="course-dialog">
 <h2 mat-dialog-title>Объект</h2>
 
 
 <mat-dialog-content>
+<div *ngIf="rows; else loggedOut">
+<table  border="1">
+    <tr *ngFor="let x of rows">
+        <td>{{x}}</td>
+    </tr>
+</table>    
+    <pre>
+    {{rows | json}}
+    </pre>
+    
+</div>    
+    
+<ng-template #loggedOut>
+  Please friend, login.
+</ng-template>    
+<pre>
 
-hello!
+</pre>
 
 </mat-dialog-content>
 
@@ -23,3 +39,4 @@ hello!
 </mat-dialog-actions>
 
 
+</div>
