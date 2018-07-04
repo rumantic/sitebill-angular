@@ -29,5 +29,5 @@ export const fuseConfig: FuseConfig = {
             background: 'mat-fuse-dark-900-bg'
         }
     },
-    customScrollbars: true
+    customScrollbars: false
 };
