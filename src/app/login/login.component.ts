@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
 
         // Set the defaults
         this.loginFormErrors = {
+            domain: {},
             username: {},
             password: {}
         };
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
         this.loginForm = this._formBuilder.group({
+            domain: ['', [Validators.required]],
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
@@ -71,7 +73,8 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         //console.log(this.loginForm.value);
         //return;
-        this.authenticationService.login(this.loginForm.value.username, this.loginForm.value.password)
+        
+        this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
             data => {
                 if (data.error) {
