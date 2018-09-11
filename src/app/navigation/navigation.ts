@@ -34,6 +34,19 @@ export const navigation: FuseNavigation[] = [
                 }
             },
             {
+                id       : 'clientobjects',
+                title    : 'Подборки клиента',
+                type     : 'item',
+                icon     : 'email',
+                url      : '/apps/mail-ngrx/inbox/',
+                badge    : {
+                    title    : '250',
+                    translate: 'NAV.SAMPLE.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+            },
+            {
                 id       : 'login',
                 title    : 'Вход',
                 type     : 'item',

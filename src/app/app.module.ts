@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -33,6 +34,9 @@ import {ModelDetailComponent} from './model-detail/model-detail.component';
 import {ModelService} from './model.service';
 import {MessageService} from './message.service';
 import {LoginComponent} from './login/index';
+import { FakeDbService } from 'app/fake-db/fake-db.service';
+import { AppStoreModule } from 'app/store/store.module';
+
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
 
@@ -52,6 +56,10 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]  
 
     },
+    {
+        path        : 'apps',
+        loadChildren: './main/apps/apps.module#AppsModule'
+    }
 ];
 
 @NgModule({
@@ -70,6 +78,10 @@ const appRoutes: Routes = [
         CommonModule,
 
         TranslateModule.forRoot(),
+        InMemoryWebApiModule.forRoot(FakeDbService, {
+            delay             : 0,
+            passThruUnknownUrl: true
+        }),
 
         // Material moment date module
         MatMomentDateModule,
@@ -91,7 +103,8 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule
+        SampleModule,
+        AppStoreModule
     ],
     exports: [ RouterModule ],
     providers: [
