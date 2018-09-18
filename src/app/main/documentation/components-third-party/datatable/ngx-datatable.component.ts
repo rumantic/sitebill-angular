@@ -93,17 +93,20 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
     load_grid_data(selected) {
         console.log('load_grid_data');
-        console.log(selected);
+        let grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
+        const body = {action: 'model', do: 'get_data', session_key: this.currentUser.session_key, grid_item: grid_item};
+        //console.log(selected);
 
-        this._httpClient.get(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`)
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(contacts.rows);
+                console.log(result.rows);
                 this.rows = result.rows;
                 this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });
     }
+
 
     onSelect({selected}) {
         //console.log('Select Event', selected, this.selected);

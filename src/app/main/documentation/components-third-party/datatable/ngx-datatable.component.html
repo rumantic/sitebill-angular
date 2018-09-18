@@ -91,7 +91,7 @@
 
         <!-- CONTENT -->
         <div class="content">
-
+            <button mat-button (click)="load_grid_data([])">refresh</button>
             <mat-tab-group dynamicHeight>
 
 
@@ -138,11 +138,14 @@
                                         </ng-template>
                                     </ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Name" prop="id.value"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Id" prop="id.value"></ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Last Name" prop="city_id.value_string"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Город" prop="city_id.value_string"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Улица" prop="street_id.value_string"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Метро" prop="metro_id.value_string"></ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Company" prop="street_id.value_string"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Номер дома" prop="number.value"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Цена" prop="price.value"></ngx-datatable-column>
                                     <ngx-datatable-column name="Photo" prop="image.image_array"></ngx-datatable-column>
                                 </ngx-datatable>
 
