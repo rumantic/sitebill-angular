@@ -8,6 +8,10 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
@@ -104,6 +108,9 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         SampleModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgSelectModule, 
         AppStoreModule
     ],
     exports: [ RouterModule ],

@@ -1,10 +1,12 @@
-import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation, TemplateRef, ViewChild} from '@angular/core';
+
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '@fuse/animations';
 import {MatDialog, MatDialogConfig} from "@angular/material";
+
 
 //import {Model} from '/model';
 //import {MessageService} from '/message.service';
@@ -25,6 +27,21 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     reorderable: boolean;
     api_url: string;
     records: any[];
+    selectedCity: any;
+    cities = [
+        {id: 1, name: 'Vilnius'},
+        {id: 2, name: 'Kaunas'},
+        {id: 3, name: 'Pabradė'}
+    ];
+    columns = [];
+    rows1 = [];
+    @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
+    @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+    @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
+    private filter: number;
+    
+    
+    
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -62,6 +79,15 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     ngOnInit(): void {
         console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
+        console.log('hdrTpl ' + this.hdrTpl);
+        console.log('editTmpl ' + this.editTmpl);
+        console.log('filterTpl ' + this.filterTmpl);
+        //this.hdrTpl = 'some test';
+        this.columns = [{
+            cellTemplate: this.editTmpl,
+            headerTemplate: this.hdrTpl,
+            name: 'Gender11'
+        }];        
 
         const load_selected_request = {action: 'model', do: 'load_selected', session_key: this.currentUser.session_key};
 

@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCheckboxModule, MatIconModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
@@ -47,6 +49,8 @@ const routes = [
         FuseSharedModule,
         FuseSidebarModule,
         FuseWidgetModule,
+        FormsModule,
+        NgSelectModule,
 
         GoogleMapsModule
     ],

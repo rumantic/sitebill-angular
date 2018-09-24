@@ -1,3 +1,17 @@
+<ng-template #hdrTpl let-column="column" >
+        <strong id="ngModel">{{selectedCity}}</strong>: {{column.name}} !!
+            <ng-select [(ngModel)]="selectedCity" [items]="cities" bindLabel="name" bindValue="id">
+            </ng-select>
+</ng-template>
+                                
+<ng-template #editTmpl let-row="row" let-value="value">
+        <img
+          width="150"
+          src="https://media.giphy.com/media/I8nepxWwlEuqI/giphy.gif"
+        />
+      </ng-template>                                
+
+
 <div id="ngx-datatable" class="page-layout simple right-sidebar" fxLayout="row">
     
 
@@ -92,6 +106,8 @@
         <!-- CONTENT -->
         <div class="content">
             <button mat-button (click)="load_grid_data([])">refresh</button>
+            
+            
             <mat-tab-group dynamicHeight>
 
 
@@ -108,6 +124,16 @@
 
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                                
+<ngx-datatable
+        class="material"
+        [rows]="rows1"
+        [columns]="columns"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'">
+      </ngx-datatable>                                
                                 <ngx-datatable
                                     class="material"
                                     [rows]="rows"
@@ -140,7 +166,8 @@
 
                                     <ngx-datatable-column name="Id" prop="id.value"></ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Город" prop="city_id.value_string"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Город" prop="city_id.value_string">                                        
+                                    </ngx-datatable-column>
                                     <ngx-datatable-column name="Улица" prop="street_id.value_string"></ngx-datatable-column>
                                     <ngx-datatable-column name="Метро" prop="metro_id.value_string"></ngx-datatable-column>
 
@@ -148,7 +175,7 @@
                                     <ngx-datatable-column name="Цена" prop="price.value"></ngx-datatable-column>
                                     <ngx-datatable-column name="Photo" prop="image.image_array"></ngx-datatable-column>
                                 </ngx-datatable>
-
+                                
                             </div>
                             <!-- / Front -->
 

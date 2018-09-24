@@ -21,6 +21,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
 
         MatIconModule,
+        
 
         FuseSharedModule
     ]
