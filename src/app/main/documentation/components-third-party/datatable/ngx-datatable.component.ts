@@ -188,7 +188,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
         this.dialog.open(CourseDialogComponent, dialogConfig);        
         /*
-        
         this.dialogRef = this._matDialog.open(ContactsContactFormDialogComponent, {
             panelClass: 'contact-form-dialog',
             data      : {
