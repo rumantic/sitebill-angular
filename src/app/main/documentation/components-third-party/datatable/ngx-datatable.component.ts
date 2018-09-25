@@ -78,16 +78,29 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * On init
      */
     ngOnInit(): void {
-        console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
-        console.log('hdrTpl ' + this.hdrTpl);
-        console.log('editTmpl ' + this.editTmpl);
-        console.log('filterTpl ' + this.filterTmpl);
+        //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
+        //console.log('hdrTpl ' + this.hdrTpl);
+        //console.log('editTmpl ' + this.editTmpl);
+        //console.log('filterTpl ' + this.filterTmpl);
         //this.hdrTpl = 'some test';
-        this.columns = [{
-            cellTemplate: this.editTmpl,
+        this.columns = [
+        {
             headerTemplate: this.hdrTpl,
-            name: 'Gender11'
-        }];        
+            name: 'street_id.title',
+            prop: 'street_id.value_string'
+        },
+        {
+            headerTemplate: this.hdrTpl,
+            name: 'city_id.title',
+            prop: 'city_id.value_string'
+        },
+        {
+            headerTemplate: this.hdrTpl,
+            cellTemplate: this.editTmpl,
+            name: 'image',
+            prop: 'image.value'
+        },
+        ];        
 
         const load_selected_request = {action: 'model', do: 'load_selected', session_key: this.currentUser.session_key};
 
