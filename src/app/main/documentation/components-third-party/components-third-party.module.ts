@@ -14,6 +14,7 @@ import { GoogleMapsModule } from 'app/main/documentation/components-third-party/
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
+import { FilterComponent } from 'app/main/documentation/components-third-party/datatable/filter.component';
 
 const routes = [
     {
@@ -25,6 +26,7 @@ const routes = [
 @NgModule({
     declarations: [
         DocsComponentsThirdPartyNgxDatatableComponent,
+        FilterComponent,
         CourseDialogComponent
     ],
     imports     : [

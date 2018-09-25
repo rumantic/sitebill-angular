@@ -1,23 +1,21 @@
 <ng-template #hdrTpl let-column="column" >
-        {{column.name}}
-            <ng-select [(ngModel)]="selectedCity" [items]="cities" bindLabel="name" bindValue="id">
-            </ng-select>
+    <filter-comp [columnName]=column.name>
+    </filter-comp>        
 </ng-template>
-                                
+
 <ng-template #editTmpl let-row="row" let-value="value">
     <div *ngIf="value.length > 0">
-            <img 
-                width="50"
-                src="http://genplan1/img/data/{{value[0].preview}}"
+        <img 
+            width="50"
+            src="http://genplan1/img/data/{{value[0].preview}}"
             />
-        
     </div>
-        
-      </ng-template>                                
+
+</ng-template>                                
 
 
 <div id="ngx-datatable" class="page-layout simple right-sidebar" fxLayout="row">
-    
+
 
     <!-- SIDEBAR -->
     <fuse-sidebar class="sidebar" name="project-dashboard-right-sidebar-1" position="right" lockedOpen="gt-md">
@@ -38,7 +36,7 @@
                         <div class="pl-16 pr-8 py-16" fxLayout="row" fxLayoutAlign="space-between center">
                             <div class='selected-column'>
                                 <h4>Selections</h4>
-                                
+
                                 <ul>
                                     <li *ngFor='let sel of selected'>
                                         <!-- Widget 2 -->
@@ -62,19 +60,19 @@
                                                     <button mat-button color="accent"  (click)="delete_selection(sel.id.value)">
                                                         Удалить
                                                     </button>
-                                                    
+
                                                     <button mat-button color="accent"  (click)="view_details(sel.id.value)">
                                                         Подробнее
                                                     </button>
-                                                    
+
                                                 </div>
 
                                             </div>
 
                                         </div>
                                         <!-- / Widget 2 -->
-                                        
-                                        
+
+
 
 
                                     </li>
@@ -110,8 +108,8 @@
         <!-- CONTENT -->
         <div class="content">
             <button mat-button (click)="load_grid_data([])">refresh</button>
-            
-            
+
+
             <mat-tab-group dynamicHeight>
 
 
@@ -128,7 +126,7 @@
 
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                
+
                                 <ngx-datatable
                                     class="material"
                                     [rows]="rows"
@@ -147,7 +145,7 @@
                                     (select)='onSelect($event)'>
 
                                 </ngx-datatable>
-                                
+
                             </div>
                             <!-- / Front -->
 

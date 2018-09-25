@@ -23,3 +23,14 @@ $yellow-theme: mat-light-theme($yellow-theme-primary, $yellow-theme-accent, $yel
     // Generate the fuse color classes with the new colors...
     @include generateFuseColorClasses($yellow-theme-primary, $yellow-theme-accent, $yellow-theme-warn);
 }
+.filter-header {
+    height: 200px;
+    z-index: 9999;
+}
+.filter-select {
+    width: 200px;
+}
+.ng-select.custom ::ng-deep .ng-select-container  {            
+    min-height: 0px;
+    border-radius: 0;
+}

@@ -27,17 +27,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     reorderable: boolean;
     api_url: string;
     records: any[];
-    selectedCity: any;
-    cities = [
-        {id: 1, name: 'Vilnius'},
-        {id: 2, name: 'Kaunas'},
-        {id: 3, name: 'Pabradė'}
-    ];
     columns = [];
     rows1 = [];
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
+    
     private filter: number;
     
     
@@ -79,11 +74,22 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     ngOnInit(): void {
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
-        //console.log('hdrTpl ' + this.hdrTpl);
+        console.log('hdrTpl ');
+        console.log(this.hdrTpl);
         //console.log('editTmpl ' + this.editTmpl);
         //console.log('filterTpl ' + this.filterTmpl);
         //this.hdrTpl = 'some test';
         this.columns = [
+        {
+            headerTemplate: this.hdrTpl,
+            name: 'id.title',
+            prop: 'id.value'
+        },
+        {
+            headerTemplate: this.hdrTpl,
+            name: 'city_id.title',
+            prop: 'city_id.value_string'
+        },
         {
             headerTemplate: this.hdrTpl,
             name: 'street_id.title',
@@ -91,8 +97,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         },
         {
             headerTemplate: this.hdrTpl,
-            name: 'city_id.title',
-            prop: 'city_id.value_string'
+            name: 'price',
+            prop: 'price.value'
         },
         {
             headerTemplate: this.hdrTpl,
