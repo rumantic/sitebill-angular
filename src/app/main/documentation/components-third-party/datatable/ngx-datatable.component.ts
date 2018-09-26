@@ -19,6 +19,7 @@ import {CourseDialogComponent} from "app/course-dialog/course-dialog.component";
     selector: 'docs-components-third-party-ngx-datatable',
     templateUrl: './ngx-datatable.component.html',
     styleUrls: ['./ngx-datatable.component.scss'],
+    providers: [FilterService],
     animations: fuseAnimations
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
@@ -34,7 +35,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
 
-        private filter: number;
+    private filter: number;
+    
 
 
 
@@ -42,6 +44,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     // Private
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
+    mission = '<no mission announced parent>';
 
     /**
      * Constructor
@@ -50,7 +53,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     constructor(
         private _httpClient: HttpClient,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private filterService: FilterService
     ) {
         // Set the defaults
         this.loadingIndicator = true;
@@ -64,6 +68,18 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         } else {
             this.api_url = '';
         }
+        filterService.missionAnnounced$.subscribe(
+            mission => {
+                this.mission = mission;
+                //this.announced = true;
+                //this.confirmed = false;
+            });
+            
+    }
+    
+    test_trigger () {
+        //this.filterService.announceMission('test trigger');       
+        console.log(this.mission); 
     }
 
     // -----------------------------------------------------------------------------------------------------

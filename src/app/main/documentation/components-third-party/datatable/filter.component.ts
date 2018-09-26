@@ -1,9 +1,9 @@
-import { Component,Input, isDevMode } from '@angular/core';
+import {Component, Input, isDevMode} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {currentUser} from '../../../../_models/currentuser';
-import { FilterService } from 'app/main/documentation/components-third-party/datatable/filter.service';
+import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
 @Component({
     selector: 'filter-comp',
@@ -15,27 +15,30 @@ import { FilterService } from 'app/main/documentation/components-third-party/dat
   </mat-select>    
   
     <ng-select [(ngModel)]="selectedCity" [items]="cities" multiple="true" bindLabel="name" bindValue="id"></ng-select>`,
-    providers: [FilterService],
     styles: [`h2, p, div {color:red;}`]
 })
-export class FilterComponent { 
-    name= "Дмитрий";
+export class FilterComponent {
+    name = "Дмитрий";
     selectedCity: any;
     options: any;
     @Input() columnName: string;
     api_url: string;
-    
+
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
-    
-    
+    subscription: Subscription;
+    mission = '<no mission announced>';
+
+
+
     /**
      * Constructor
      *
      * @param {HttpClient} _httpClient
      */
     constructor(
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        private filterService: FilterService
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -45,10 +48,16 @@ export class FilterComponent {
         } else {
             this.api_url = '';
         }
+        this.subscription = filterService.missionAnnounced$.subscribe(
+            mission => {
+                this.mission = mission;
+                //this.announced = true;
+                //this.confirmed = false;
+            });
     }
-    
+
     ngOnInit(): void {
-        switch (this.columnName ) {
+        switch (this.columnName) {
             case "city_id.title": {
                 //this.options = ['Москва', 'Красноярск'];
                 this.load_dictionary('city_id');
@@ -59,19 +68,21 @@ export class FilterComponent {
                 //this.options = ['Мира', 'Ленина'];
                 break;
             }
-            
+
             default: {
                 this.options = ['Angular', 'PHP'];
                 break;
             }
         }
     }
-    
-    selectItem (value) {
-        console.log(value);
+
+    selectItem(value) {
+        //console.log(value);
+        this.filterService.announceMission(value);
+        console.log(this.mission);
     }
-    
-    load_dictionary ( columnName ) {
+
+    load_dictionary(columnName) {
         const request = {action: 'model', do: 'load_dictionary', columnName: columnName, session_key: this.currentUser.session_key};
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, request)
@@ -85,5 +96,5 @@ export class FilterComponent {
                 }
             });
     }
-    
+
 }
