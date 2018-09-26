@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation, TemplateRef, ViewChild} from '@angular/core';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '@fuse/animations';
 import {MatDialog, MatDialogConfig} from "@angular/material";
+import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
 
 //import {Model} from '/model';
@@ -32,11 +33,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
-    
-    private filter: number;
-    
-    
-    
+
+        private filter: number;
+
+
+
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -74,39 +75,39 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     ngOnInit(): void {
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
-        console.log('hdrTpl ');
-        console.log(this.hdrTpl);
+        //console.log('hdrTpl ');
+        //console.log(this.hdrTpl);
         //console.log('editTmpl ' + this.editTmpl);
         //console.log('filterTpl ' + this.filterTmpl);
         //this.hdrTpl = 'some test';
         this.columns = [
-        {
-            headerTemplate: this.hdrTpl,
-            name: 'id.title',
-            prop: 'id.value'
-        },
-        {
-            headerTemplate: this.hdrTpl,
-            name: 'city_id.title',
-            prop: 'city_id.value_string'
-        },
-        {
-            headerTemplate: this.hdrTpl,
-            name: 'street_id.title',
-            prop: 'street_id.value_string'
-        },
-        {
-            headerTemplate: this.hdrTpl,
-            name: 'price',
-            prop: 'price.value'
-        },
-        {
-            headerTemplate: this.hdrTpl,
-            cellTemplate: this.editTmpl,
-            name: 'image',
-            prop: 'image.value'
-        },
-        ];        
+            {
+                headerTemplate: this.hdrTpl,
+                name: 'id.title',
+                prop: 'id.value'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                name: 'city_id.title',
+                prop: 'city_id.value_string'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                name: 'street_id.title',
+                prop: 'street_id.value_string'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                name: 'price',
+                prop: 'price.value'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                cellTemplate: this.editTmpl,
+                name: 'image',
+                prop: 'image.value'
+            },
+        ];
 
         const load_selected_request = {action: 'model', do: 'load_selected', session_key: this.currentUser.session_key};
 
@@ -115,9 +116,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .subscribe((result: any) => {
                 //console.log('selected > ');
                 //console.log(result.selected);
-                if (result) {
+                if (result.selected) {
                     //this.selected = result.selected;
                     this.load_grid_data(result.selected);
+                } else {
+                    this.load_grid_data([]);
                 }
 
                 this.loadingIndicator = false;
@@ -127,6 +130,9 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     init_selected_rows(rows, selected) {
+        if (selected.length == 0) {
+            return;
+        }
         for (let entry of selected) {
             rows.forEach((row, index) => {
                 if (row.id.value == entry.id.value) {
@@ -145,6 +151,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+                console.log(result);
                 console.log(result.rows);
                 this.rows = result.rows;
                 this.init_selected_rows(this.rows, selected);
@@ -196,16 +203,16 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
 
     }
-    
+
     view_details(item_id: string) {
         console.log('view details', item_id);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {item_id : item_id};
+        dialogConfig.data = {item_id: item_id};
 
-        this.dialog.open(CourseDialogComponent, dialogConfig);        
+        this.dialog.open(CourseDialogComponent, dialogConfig);
         /*
         this.dialogRef = this._matDialog.open(ContactsContactFormDialogComponent, {
             panelClass: 'contact-form-dialog',
@@ -240,7 +247,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
             */
     }
-    
+
 
 
     onActivate(event) {
