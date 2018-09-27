@@ -36,7 +36,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
 
     private filter: number;
-    
+
 
 
 
@@ -74,12 +74,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //this.announced = true;
                 //this.confirmed = false;
             });
-            
+
     }
-    
-    test_trigger () {
+
+    test_trigger() {
         //this.filterService.announceMission('test trigger');       
-        console.log(this.mission); 
+        console.log(this.mission);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -90,41 +90,75 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * On init
      */
     ngOnInit(): void {
-        //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
-        //console.log('hdrTpl ');
-        //console.log(this.hdrTpl);
-        //console.log('editTmpl ' + this.editTmpl);
-        //console.log('filterTpl ' + this.filterTmpl);
-        //this.hdrTpl = 'some test';
-        this.columns = [
-            {
-                headerTemplate: this.hdrTpl,
-                name: 'id.title',
-                prop: 'id.value'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                name: 'city_id.title',
-                prop: 'city_id.value_string'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                name: 'street_id.title',
-                prop: 'street_id.value_string'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                name: 'price',
-                prop: 'price.value'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                cellTemplate: this.editTmpl,
-                name: 'image',
-                prop: 'image.value'
-            },
-        ];
+        this.setup_apps('data');
+    }
 
+    setup_apps(app_name) {
+        if (app_name == 'client') {
+            this.columns = [
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'client_id.title',
+                    prop: 'client_id.value'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'date.title',
+                    prop: 'date.value'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'type_id.title',
+                    prop: 'type_id.value_string'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'fio',
+                    prop: 'fio.value'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'phone',
+                    prop: 'phone.value'
+                },
+            ];
+        } else {
+            //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
+            //console.log('hdrTpl ');
+            //console.log(this.hdrTpl);
+            //console.log('editTmpl ' + this.editTmpl);
+            //console.log('filterTpl ' + this.filterTmpl);
+            //this.hdrTpl = 'some test';
+            this.columns = [
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'id.title',
+                    prop: 'id.value'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'city_id.title',
+                    prop: 'city_id.value_string'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'street_id.title',
+                    prop: 'street_id.value_string'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    name: 'price',
+                    prop: 'price.value'
+                },
+                {
+                    headerTemplate: this.hdrTpl,
+                    cellTemplate: this.editTmpl,
+                    name: 'image',
+                    prop: 'image.value'
+                },
+            ];
+        }
+        
         const load_selected_request = {action: 'model', do: 'load_selected', session_key: this.currentUser.session_key};
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
@@ -134,15 +168,14 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //console.log(result.selected);
                 if (result.selected) {
                     //this.selected = result.selected;
-                    this.load_grid_data(result.selected);
+                    this.load_grid_data(app_name, result.selected);
                 } else {
-                    this.load_grid_data([]);
+                    this.load_grid_data(app_name, []);
                 }
 
                 this.loadingIndicator = false;
             });
-
-
+        
     }
 
     init_selected_rows(rows, selected) {
@@ -158,10 +191,10 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         }
     }
 
-    load_grid_data(selected) {
+    load_grid_data(app_name, selected) {
         console.log('load_grid_data');
         let grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
-        const body = {action: 'model', do: 'get_data', session_key: this.currentUser.session_key, grid_item: grid_item};
+        const body = {action: 'model', do: 'get_data', model_name:app_name, session_key: this.currentUser.session_key, grid_item: grid_item};
         //console.log(selected);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
