@@ -35,6 +35,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
+    @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
 
     private filter: number;
@@ -101,10 +102,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             this.columns = [
                 {
                     name: 'ID',
+                    cellTemplate: this.clientIdTmpl,
                     prop: 'client_id.value'
                 },
                 {
                     headerTemplate: this.hdrTpl,
+                    cellTemplate: this.clientControlTmpl,
                     name: 'Ответственный',
                     prop: 'user_id.value_string'
                 },
@@ -124,11 +127,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 {
                     name: 'Телефон',
                     prop: 'phone.value'
-                },
-                {
-                    cellTemplate: this.clientControlTmpl,
-                    name: '',
-                    prop: 'client_id.value'
                 },
             ];
         } else {
@@ -183,6 +181,22 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 }
 
                 this.loadingIndicator = false;
+            });
+        
+    }
+    
+    toggleUserGet ( row ) {
+        console.log('user_id');
+        console.log(row.client_id.value);
+        
+        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                console.log(result);
+                this.load_grid_data(this.app_name, []);
             });
         
     }
@@ -267,8 +281,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
     }
 
-    view_details(item_id: string) {
-        console.log('view details', item_id);
+    view_details(item_id: any) {
+        console.log('view details');
         console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 
