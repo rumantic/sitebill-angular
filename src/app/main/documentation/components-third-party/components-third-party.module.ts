@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCheckboxModule, MatIconModule, MatGridListModule,
-         MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule } from '@angular/material';
+         MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
+         MatProgressSpinnerModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -44,6 +45,7 @@ const routes = [
         MatTabsModule,
         MatDialogModule,
         MatDatepickerModule,
+        MatProgressSpinnerModule,
         
 
         NgxDatatableModule,

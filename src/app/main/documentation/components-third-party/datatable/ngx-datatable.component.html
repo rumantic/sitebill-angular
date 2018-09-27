@@ -10,9 +10,20 @@
             src="http://genplan1/img/data/{{value[0].preview}}"
             />
     </div>
-
 </ng-template>                                
 
+<ng-template #clientControlTmpl let-row="row" let-value="value">
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+
+        <button mat-icon-button (click)="toggleImportant($event)" aria-label="Toggle important">
+                <mat-icon class="green-fg">attach_money</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="view_details(value)" aria-label="Toggle star">
+                <mat-icon class="amber-fg">pageview</mat-icon>
+            </button>
+        </div>
+</ng-template>                                
 
 <div id="ngx-datatable" class="page-layout simple right-sidebar" fxLayout="row">
 
@@ -37,9 +48,8 @@
                             <div class='selected-column'>
                                 <h4>Selections</h4>
 
-                                <ul>
+                                <!--ul>
                                     <li *ngFor='let sel of selected'>
-                                        <!-- Widget 2 -->
                                         <div class="widget" fxFlex="100" fxFlex.gt-sm="100" >
 
                                             <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
@@ -70,14 +80,13 @@
                                             </div>
 
                                         </div>
-                                        <!-- / Widget 2 -->
 
 
 
 
                                     </li>
                                     <li *ngIf="!selected.length">No Selections</li>
-                                </ul>
+                                </ul-->
                             </div>        
 
                         </div>
@@ -107,7 +116,7 @@
 
         <!-- CONTENT -->
         <div class="content">
-            <button mat-button (click)="load_grid_data([])">refresh</button>
+            <button mat-button (click)="load_grid_data('client',[])">refresh</button>
             <button mat-button (click)="test_trigger()">test trigger</button>
 
 
@@ -140,12 +149,31 @@
                                     [scrollbarH]="true"
                                     [reorderable]="reorderable"
                                     [limit]="10"
+                                    (activate)="onActivate($event)"
+                                    >
+
+                                </ngx-datatable>
+                                
+                                <!--ngx-datatable
+                                для селекта строчек
+                                    class="material"
+                                    [rows]="rows"
+                                    [columns]="columns"
+                                    [loadingIndicator]="loadingIndicator"
+                                    [columnMode]="'force'"
+                                    [headerHeight]="48"
+                                    [footerHeight]="56"
+                                    [rowHeight]="'auto'"
+                                    [scrollbarH]="true"
+                                    [reorderable]="reorderable"
+                                    [limit]="10"
                                     [selected]="selected"
                                     [selectionType]="'multiClick'"
                                     (activate)="onActivate($event)"
                                     (select)='onSelect($event)'>
 
-                                </ngx-datatable>
+                                </ngx-datatable-->
+                                
 
                             </div>
                             <!-- / Front -->

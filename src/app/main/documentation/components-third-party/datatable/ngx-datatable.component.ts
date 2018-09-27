@@ -31,12 +31,13 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     records: any[];
     columns = [];
     rows1 = [];
+    app_name: string;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+    @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
 
     private filter: number;
-
 
 
 
@@ -81,6 +82,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //this.filterService.announceMission('test trigger');       
         console.log(this.mission);
     }
+    
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -90,36 +92,43 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * On init
      */
     ngOnInit(): void {
-        this.setup_apps('data');
+        this.setup_apps('client');
     }
 
     setup_apps(app_name) {
+        this.app_name = app_name;
         if (app_name == 'client') {
             this.columns = [
                 {
-                    headerTemplate: this.hdrTpl,
-                    name: 'client_id.title',
+                    name: 'ID',
                     prop: 'client_id.value'
                 },
                 {
                     headerTemplate: this.hdrTpl,
-                    name: 'date.title',
-                    prop: 'date.value'
+                    name: 'Ответственный',
+                    prop: 'user_id.value_string'
+                },
+                {
+                    name: 'Дата',
+                    prop: 'date.value_string'
                 },
                 {
                     headerTemplate: this.hdrTpl,
-                    name: 'type_id.title',
+                    name: 'Статус',
                     prop: 'type_id.value_string'
                 },
                 {
-                    headerTemplate: this.hdrTpl,
-                    name: 'fio',
+                    name: 'ФИО клиента',
                     prop: 'fio.value'
                 },
                 {
-                    headerTemplate: this.hdrTpl,
-                    name: 'phone',
+                    name: 'Телефон',
                     prop: 'phone.value'
+                },
+                {
+                    cellTemplate: this.clientControlTmpl,
+                    name: '',
+                    prop: 'client_id.value'
                 },
             ];
         } else {
@@ -193,14 +202,19 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
     load_grid_data(app_name, selected) {
         console.log('load_grid_data');
-        let grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
+        let grid_item;
+        if ( app_name == 'client' ) {
+            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'fio', 'phone'];
+        } else {
+            grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
+        }
         const body = {action: 'model', do: 'get_data', model_name:app_name, session_key: this.currentUser.session_key, grid_item: grid_item};
-        //console.log(selected);
+        //console.log(body);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 console.log(result.rows);
                 this.rows = result.rows;
                 this.init_selected_rows(this.rows, selected);
@@ -255,11 +269,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
     view_details(item_id: string) {
         console.log('view details', item_id);
+        console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {item_id: item_id};
+        dialogConfig.data = {app_name: this.app_name, primary_key: 'client_id', key_value: item_id};
 
         this.dialog.open(CourseDialogComponent, dialogConfig);
         /*

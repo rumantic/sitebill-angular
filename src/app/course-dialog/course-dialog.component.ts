@@ -25,6 +25,8 @@ export class CourseDialogComponent implements OnInit {
     rows: any[];
     records: any[];
     api_url: string;
+    render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
+    render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
     
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -62,7 +64,9 @@ export class CourseDialogComponent implements OnInit {
     getModel(): void {
         //console.log(this._data);
         
-        const id = this._data.item_id;
+        const primary_key = this._data.primary_key;
+        const key_value = this._data.key_value;
+        const model_name = this._data.app_name;
         
         //const PLACEMENT = this.route.snapshot.paramMap.get('PLACEMENT');
         //const PLACEMENT_OPTIONS = this.route.snapshot.paramMap.get('PLACEMENT_OPTIONS');
@@ -70,16 +74,18 @@ export class CourseDialogComponent implements OnInit {
         
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
 
-        const load_data_request = {action: 'model', do: 'load_data', id: id, session_key: this.currentUser.session_key};
+        const load_data_request = {action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
+        console.log(load_data_request);
         
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_data_request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log('load_data > ');
                 if (result) {
                     //this.rows = result.data;
                     this.records = result.data;
+                    console.log('load_data > ');
+                    console.log(result.data);
                     this.rows = Object.keys(result.data);
                     console.log(Object.keys(this.rows));
                 }

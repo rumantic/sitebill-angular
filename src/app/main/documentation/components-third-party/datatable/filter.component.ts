@@ -13,8 +13,7 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
      {{ option }}
     </mat-option>
   </mat-select>    
-  
-    <ng-select [(ngModel)]="selectedCity" [items]="cities" multiple="true" bindLabel="name" bindValue="id"></ng-select>`,
+    <!--ng-select [(ngModel)]="selectedCity" [items]="cities" multiple="true" bindLabel="name" bindValue="id"></ng-select-->`,
     styles: [`h2, p, div {color:red;}`]
 })
 export class FilterComponent {
