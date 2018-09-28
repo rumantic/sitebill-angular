@@ -22,10 +22,12 @@ export class AuthenticationService {
         
         //const body = {login: username, password: password};
         //return this.http.post<any>('/apps/api/rest.php', {login: username, password: password})
+        //const url = `${this.api_url}/apps/apiproxy/restproxy.php`;
+        const url = `${this.api_url}/apps/api/rest.php`;
         
         const login_request = {action: 'oauth', do: 'login', proxysalt: '123', domain: domain, login: username, password: password};
         
-        return this.http.post<any>(`${this.api_url}/apps/apiproxy/restproxy.php`, login_request)
+        return this.http.post<any>(url, login_request)
             .map(user => {
                 console.log(user);
                 // login successful if there's a jwt token in the response

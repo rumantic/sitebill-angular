@@ -13,18 +13,18 @@ export const fuseConfig: FuseConfig = {
         style         : 'vertical-layout-1',
         width         : 'fullwidth',
         navbar        : {
-            hidden    : false,
+            hidden    : true,
             position  : 'left',
             folded    : false,
             background: 'mat-fuse-dark-700-bg'
         },
         toolbar       : {
-            hidden    : false,
+            hidden    : true,
             position  : 'below-static',
             background: 'mat-white-500-bg'
         },
         footer        : {
-            hidden    : false,
+            hidden    : true,
             position  : 'below-static',
             background: 'mat-fuse-dark-900-bg'
         }

@@ -24,6 +24,7 @@ import {CourseDialogComponent} from "app/course-dialog/course-dialog.component";
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
     rows: any[];
+    rows_my: any[];
     selected = [];
     loadingIndicator: boolean;
     reorderable: boolean;
@@ -32,6 +33,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     columns = [];
     rows1 = [];
     app_name: string;
+    total_all: number;
+    total_my: number;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
@@ -106,7 +109,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                     prop: 'client_id.value'
                 },
                 {
-                    headerTemplate: this.hdrTpl,
                     cellTemplate: this.clientControlTmpl,
                     name: 'Ответственный',
                     prop: 'user_id.value_string'
@@ -116,7 +118,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                     prop: 'date.value_string'
                 },
                 {
-                    headerTemplate: this.hdrTpl,
                     name: 'Статус',
                     prop: 'type_id.value_string'
                 },
@@ -173,12 +174,16 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .subscribe((result: any) => {
                 //console.log('selected > ');
                 //console.log(result.selected);
+                /*
                 if (result.selected) {
                     //this.selected = result.selected;
-                    this.load_grid_data(app_name, result.selected);
+                    this.load_grid_data(app_name, result.selected, []);
                 } else {
-                    this.load_grid_data(app_name, []);
+                    this.load_grid_data(app_name, [], []);
                 }
+                */
+                this.refreash();
+                
 
                 this.loadingIndicator = false;
             });
@@ -186,8 +191,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
     
     toggleUserGet ( row ) {
-        console.log('user_id');
-        console.log(row.client_id.value);
+        //console.log('user_id');
+        //console.log(row.client_id.value);
         
         const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
         //console.log(body);
@@ -196,7 +201,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 console.log(result);
-                this.load_grid_data(this.app_name, []);
+                this.refreash();
             });
         
     }
@@ -213,16 +218,23 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
         }
     }
+    
+    refreash () {
+        this.load_grid_data(this.app_name, [], []);
+        const params = {owner: true};
+        this.load_grid_data(this.app_name, [], params);
+    }
 
-    load_grid_data(app_name, selected) {
+    load_grid_data(app_name, selected, params:any) {
         console.log('load_grid_data');
+        console.log(params);
         let grid_item;
         if ( app_name == 'client' ) {
             grid_item = ['client_id', 'user_id', 'date', 'type_id', 'fio', 'phone'];
         } else {
             grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
         }
-        const body = {action: 'model', do: 'get_data', model_name:app_name, session_key: this.currentUser.session_key, grid_item: grid_item};
+        const body = {action: 'model', do: 'get_data', model_name:app_name, owner: params.owner, session_key: this.currentUser.session_key, grid_item: grid_item};
         //console.log(body);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
@@ -230,7 +242,13 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .subscribe((result: any) => {
                 //console.log(result);
                 console.log(result.rows);
-                this.rows = result.rows;
+                if ( params.owner ) {
+                    this.rows_my = result.rows;
+                    this.total_my = result.rows.length;
+                } else {
+                    this.rows = result.rows;
+                    this.total_all = result.rows.length;
+                }
                 this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });

@@ -1,0 +1,82 @@
+        <!-- SIDEBAR -->
+        <fuse-sidebar class="sidebar" name="project-dashboard-right-sidebar-1" position="right" lockedOpen="gt-md">
+
+            <!-- SIDEBAR CONTENT -->
+            <div class="content">
+
+                <!-- WIDGET GROUP -->
+                <div class="widget-group" fxLayout="column" fxFlex="100" [@animateStagger]="{value:'50'}">
+
+
+                     <!-- WEATHER WIDGET -->
+                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="p-0">
+
+                        <!-- Front -->
+                        <div class="fuse-widget-front">
+
+                            <div class="pl-16 pr-8 py-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class='selected-column'>
+                                    <h4>Selections</h4>
+
+                                    <!--ul>
+                                        <li *ngFor='let sel of selected'>
+                                            <div class="widget" fxFlex="100" fxFlex.gt-sm="100" >
+    
+                                                <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+    
+                                                     <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+    
+                                                        <div class="pr-16">
+                                                            {{sel.id.value}}
+                                                        </div>
+                                                        <div class="pr-16">
+                                                            <div *ngFor='let img of sel.image.value'>
+                                                                <img src="http://genplan1/img/data/{{img.preview}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="footer" fxLayout="row" fxLayoutAlign="center center">
+                                                        <button mat-button color="accent"  (click)="delete_selection(sel.id.value)">
+                                                            Удалить
+                                                        </button>
+    
+                                                        <button mat-button color="accent"  (click)="view_details(sel.id.value)">
+                                                            Подробнее
+                                                        </button>
+    
+                                                    </div>
+    
+                                                </div>
+    
+                                            </div>
+    
+    
+    
+    
+                                        </li>
+                                        <li *ngIf="!selected.length">No Selections</li>
+                                    </ul-->
+                                </div>        
+
+                            </div>
+
+
+
+
+                            <mat-divider></mat-divider>
+
+                        </div>
+                        <!-- / Front -->
+
+                    </fuse-widget>
+                    <!-- / WEATHER WIDGET -->
+
+                </div>
+                <!-- / WIDGET GROUP -->
+
+            </div>
+            <!-- / SIDEBAR CONTENT -->
+
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
