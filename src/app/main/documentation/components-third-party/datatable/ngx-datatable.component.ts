@@ -68,6 +68,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        console.log(this.currentUser);
         if (isDevMode()) {
             this.api_url = 'http://genplan1';
         } else {
