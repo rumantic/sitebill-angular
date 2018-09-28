@@ -51,7 +51,7 @@
                  <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
                     fxFlex="100">
                     <!-- Front -->
-                    <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                    <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows">
                         
                         <ngx-datatable
                             class="material"
@@ -83,7 +83,7 @@
                  <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
                     fxFlex="100">
                     <!-- Front -->
-                    <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                    <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
                         
                         <ngx-datatable
                             class="material"

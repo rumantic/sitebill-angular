@@ -75,7 +75,7 @@ export class CourseDialogComponent implements OnInit {
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
 
         const load_data_request = {action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
-        console.log(load_data_request);
+        //console.log(load_data_request);
         
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_data_request)
@@ -84,10 +84,10 @@ export class CourseDialogComponent implements OnInit {
                 if (result) {
                     //this.rows = result.data;
                     this.records = result.data;
-                    console.log('load_data > ');
-                    console.log(result.data);
+                    //console.log('load_data > ');
+                    //console.log(result.data);
                     this.rows = Object.keys(result.data);
-                    console.log(Object.keys(this.rows));
+                    //console.log(Object.keys(this.rows));
                 }
 
             });

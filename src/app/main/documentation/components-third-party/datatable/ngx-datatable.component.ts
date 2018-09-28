@@ -23,8 +23,8 @@ import {CourseDialogComponent} from "app/course-dialog/course-dialog.component";
     animations: fuseAnimations
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
-    rows: any[];
-    rows_my: any[];
+    rows = [];
+    rows_my = [];
     selected = [];
     loadingIndicator: boolean;
     reorderable: boolean;
@@ -84,7 +84,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
     test_trigger() {
         //this.filterService.announceMission('test trigger');       
-        console.log(this.mission);
+        //console.log(this.mission);
     }
     
 
@@ -97,6 +97,9 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      */
     ngOnInit(): void {
         this.setup_apps('client');
+        this.rows = [];
+        this.rows_my = [];
+        this.refreash();
     }
 
     setup_apps(app_name) {
@@ -200,7 +203,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 this.refreash();
             });
         
@@ -226,8 +229,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     load_grid_data(app_name, selected, params:any) {
-        console.log('load_grid_data');
-        console.log(params);
+        //console.log('load_grid_data');
+        //console.log(params);
         let grid_item;
         if ( app_name == 'client' ) {
             grid_item = ['client_id', 'user_id', 'date', 'type_id', 'fio', 'phone'];
@@ -241,7 +244,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
-                console.log(result.rows);
+                //console.log(result.rows);
                 if ( params.owner ) {
                     this.rows_my = result.rows;
                     this.total_my = result.rows.length;
@@ -300,8 +303,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     view_details(item_id: any) {
-        console.log('view details');
-        console.log(item_id);
+        //console.log('view details');
+        //console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;

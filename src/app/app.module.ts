@@ -60,10 +60,6 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]  
 
     },
-    {
-        path        : 'apps',
-        loadChildren: './main/apps/apps.module#AppsModule'
-    }
 ];
 
 @NgModule({
