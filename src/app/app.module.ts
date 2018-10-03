@@ -45,7 +45,7 @@ import { AppStoreModule } from 'app/store/store.module';
 
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: '/data/my', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },
@@ -55,7 +55,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]  
     },
     {
-        path        : 'data',
+        path        : 'client',
         loadChildren: './main/documentation/documentation.module#DocumentationModule',
         canActivate: [AuthGuard]  
 

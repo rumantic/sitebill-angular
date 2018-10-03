@@ -3,23 +3,26 @@ import { FuseNavigation } from '@fuse/types';
 export const navigation: FuseNavigation[] = [
     {
         id       : 'applications',
-        title    : 'Объекты',
+        title    : 'CRM',
         translate: 'NAV.APPLICATIONS',
         type     : 'group',
         children : [
             {
                 id       : 'myobjects',
-                title    : 'Мои объекты',
+                title    : 'Заявки',
                 type     : 'item',
                 icon     : 'email',
-                url      : '/data/my',
+                url      : '/client/my',
+                /*
                 badge    : {
                     title    : '25',
                     translate: 'NAV.SAMPLE.BADGE',
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
                 }
+                */
             },
+            /*
             {
                 id       : 'allobjects',
                 title    : 'Все объекты',
@@ -46,11 +49,12 @@ export const navigation: FuseNavigation[] = [
                     fg       : '#FFFFFF'
                 }
             },
+            */
             {
                 id       : 'login',
-                title    : 'Вход',
+                title    : 'Выход',
                 type     : 'item',
-                icon     : 'email',
+                icon     : 'logout',
                 url      : '/login'
             }
         ]
