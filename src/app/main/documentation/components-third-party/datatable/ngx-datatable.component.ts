@@ -230,7 +230,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     load_grid_data(app_name, selected, params:any) {
-        //console.log('load_grid_data');
+        console.log('load_grid_data');
         //console.log(params);
         let grid_item;
         if ( app_name == 'client' ) {
@@ -244,7 +244,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(result);
+                console.log(result);
                 //console.log(result.rows);
                 if ( params.owner ) {
                     this.rows_my = result.rows;
@@ -260,6 +260,29 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
 
 
     onSelect({selected}) {
+        console.log('Select Event', selected);
+        //console.log(selected.length);
+        /*
+        const body = {action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected};
+
+        //?action=model&do=select&session_key=${this.currentUser.session_key}
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .subscribe((contacts: any) => {
+                //console.log(contacts);
+            });
+
+        this.selected.splice(0, this.selected.length);
+        this.selected.push(...selected);
+
+        //console.log(this.selected);
+        //console.log(this.selected.length);
+        */
+
+    }
+    
+    onSelectOld({selected}) {
         //console.log('Select Event', selected, this.selected);
         //console.log(selected.length);
         const body = {action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected};
@@ -279,6 +302,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //console.log(this.selected.length);
 
     }
+    
 
     delete_selection(item_id: string) {
         console.log('Delete selection', item_id);

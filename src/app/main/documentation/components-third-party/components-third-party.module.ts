@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCheckboxModule, MatIconModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-         MatProgressSpinnerModule } from '@angular/material';
+         MatProgressSpinnerModule, MatTooltipModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FuseSharedModule } from '@fuse/shared.module';
+import { ProfileService } from 'app/main/documentation/components-third-party/datatable/profile.service';
+
 import { FuseSidebarModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
@@ -16,18 +18,20 @@ import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import { FilterComponent } from 'app/main/documentation/components-third-party/datatable/filter.component';
+import { ProfileTimelineComponent } from 'app/main/documentation/components-third-party/datatable/timeline/timeline.component';
 
 const routes = [
     {
         path     : '',
         component: DocsComponentsThirdPartyNgxDatatableComponent
-    }
+    },
 ];
 
 @NgModule({
     declarations: [
         DocsComponentsThirdPartyNgxDatatableComponent,
         FilterComponent,
+        ProfileTimelineComponent,
         CourseDialogComponent
     ],
     imports     : [
@@ -46,6 +50,7 @@ const routes = [
         MatDialogModule,
         MatDatepickerModule,
         MatProgressSpinnerModule,
+        MatTooltipModule,
         
 
         NgxDatatableModule,
@@ -57,6 +62,9 @@ const routes = [
         NgSelectModule,
 
         GoogleMapsModule
+    ],
+    providers   : [
+        ProfileService
     ],
     entryComponents: [CourseDialogComponent]
 
