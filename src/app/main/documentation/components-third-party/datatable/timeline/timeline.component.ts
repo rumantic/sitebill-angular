@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, isDevMode, OnInit } from '@angular/core';
 
 import { fuseAnimations } from '@fuse/animations';
 
-import { ProfileService } from '../profile.service';
+import { CommentService } from '../comment.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {currentUser} from 'app/_models/currentuser';
 
 @Component({
     selector   : 'profile-timeline',
@@ -14,8 +15,61 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ProfileTimelineComponent implements OnInit, OnDestroy
 {
+    timeline: any;
     
-    timeline = {
+    // Private
+    private _unsubscribeAll: Subject<any>;
+    private currentUser: currentUser;
+    api_url: string;
+
+    /**
+     * Constructor
+     *
+     * @param {ProfileService} _profileService
+     */
+    constructor(
+        private _commentService: CommentService
+    )
+    {
+        // Set the private defaults
+        this._unsubscribeAll = new Subject();
+        
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        if (isDevMode()) {
+            this.api_url = 'http://genplan1';
+        } else {
+            this.api_url = '';
+        }
+        
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * On init
+     */
+    ngOnInit(): void
+    {
+        this._commentService.timelineOnChanged
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(timeline => {
+            this.timeline = timeline;
+        });
+    }
+
+    /**
+     * On destroy
+     */
+    ngOnDestroy(): void
+    {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+    
+    timeline1 = {
         activities: [
             {
                 'user'   : {
@@ -373,35 +427,4 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         ]
     };
     
-
-    // Private
-    private _unsubscribeAll: Subject<any>;
-
-    /**
-     * Constructor
-     *
-     * @param {ProfileService} _profileService
-     */
-    constructor(
-    )
-    {
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
-    }
-
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void
-    {
-    }
 }

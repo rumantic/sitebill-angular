@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-import { ProfileService } from 'app/main/documentation/components-third-party/datatable/profile.service';
+import { CommentService } from 'app/main/documentation/components-third-party/datatable/comment.service';
 
 import { FuseSidebarModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
@@ -64,7 +64,7 @@ const routes = [
         GoogleMapsModule
     ],
     providers   : [
-        ProfileService
+        CommentService
     ],
     entryComponents: [CourseDialogComponent]
 

@@ -22,22 +22,18 @@
         
         <mat-divider></mat-divider>
         
-        <div class="timeline-item" *ngFor="let post of timeline.posts">
+        <div class="timeline-item" *ngFor="let post of timeline.rows">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
-                    <img class="avatar" [src]="post.user.avatar">
+                    <img class="avatar" [src]="post.user_id.avatar">
 
-                    <!--div fxLayout="column">
+                    <div fxLayout="column">
                         <div class="title">
-                            <span class="username">{{post.user.name}}</span>
-                            <span *ngIf="post.type === 'post'">posted on your timeline</span>
-                            <span *ngIf="post.type === 'something'">shared something with you</span>
-                            <span *ngIf="post.type === 'video'">shared a video with you</span>
-                            <span *ngIf="post.type === 'article'">shared an article with you</span>
+                            <span class="username">{{post.user_id.fio}}</span>
                         </div>
-                        <div class="time">{{post.time}}</div>
-                    </div-->
+                        <div class="time">{{post.comment_date.value}}</div>
+                    </div>
                 </div>
 
                 <!--button mat-icon-button aria-label="More">
@@ -46,15 +42,10 @@
             </header>
 
             <div class="content">
-                <div *ngIf="post.message" class="message">
-                    {{post.message}}
+                <div *ngIf="post.comment_text" class="message">
+                    {{post.comment_text.value}}
                 </div>
 
-                <div *ngIf="post.article" fxLayout="column" class="article">
-                    <div class="title">{{post.article.title}}</div>
-                    <div class="subtitle">{{post.article.subtitle}}</div>
-                    <div class="excerpt">{{post.article.excerpt}}</div>
-                </div>
 
                 <!--div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-button class="like-button">
