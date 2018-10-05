@@ -1,6 +1,7 @@
 <div id="timeline" class="p-24" fxLayout="row wrap">
 
     <div class="timeline-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="55" fxFlex.gt-md="65">
+        
 
         <div class="profile-box add-post">
 
@@ -18,16 +19,16 @@
             </div>
 
         </div>
-
+        
         <mat-divider></mat-divider>
-
+        
         <div class="timeline-item" *ngFor="let post of timeline.posts">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
                     <img class="avatar" [src]="post.user.avatar">
 
-                    <div fxLayout="column">
+                    <!--div fxLayout="column">
                         <div class="title">
                             <span class="username">{{post.user.name}}</span>
                             <span *ngIf="post.type === 'post'">posted on your timeline</span>
@@ -36,12 +37,12 @@
                             <span *ngIf="post.type === 'article'">shared an article with you</span>
                         </div>
                         <div class="time">{{post.time}}</div>
-                    </div>
+                    </div-->
                 </div>
 
-                <button mat-icon-button aria-label="More">
+                <!--button mat-icon-button aria-label="More">
                     <mat-icon>more_vert</mat-icon>
-                </button>
+                </button-->
             </header>
 
             <div class="content">
@@ -49,21 +50,13 @@
                     {{post.message}}
                 </div>
 
-                <div *ngIf="post.media" class="media">
-                    <img *ngIf="post.media.type === 'image'" [src]="post.media.preview">
-                    <div *ngIf="post.media.type === 'video'" [innerHtml]="post.media.embed"></div>
-                </div>
-
                 <div *ngIf="post.article" fxLayout="column" class="article">
-                    <div class="media">
-                        <img [src]="post.article.media.preview">
-                    </div>
                     <div class="title">{{post.article.title}}</div>
                     <div class="subtitle">{{post.article.subtitle}}</div>
                     <div class="excerpt">{{post.article.excerpt}}</div>
                 </div>
 
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <!--div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-button class="like-button">
                         <span fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="s-16">favorite</mat-icon>
@@ -76,10 +69,10 @@
                             <span>Share</span>&nbsp;<span>({{post.share}})</span>
                         </span>
                     </button>
-                </div>
+                </div-->
             </div>
 
-            <footer class="" fxLayout="column" fxLayoutAlign="start start">
+            <!--footer class="" fxLayout="column" fxLayoutAlign="start start">
                 <div *ngIf="post.comments" class="comment-count" fxLayout="row" fxLayoutAlign="start center">
                     {{post.comments.length}} comments
                     <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
@@ -113,8 +106,11 @@
                         </button>
                     </form>
                 </div>
-            </footer>
+            </footer-->
         </div>
+        
+
+
     </div>
 </div>
 
