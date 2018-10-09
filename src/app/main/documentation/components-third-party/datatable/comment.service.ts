@@ -10,6 +10,7 @@ export class CommentService implements Resolve<any>
     timeline: any;
     about: any;
     photosVideos: any;
+    object_id: any;
 
     private currentUser: currentUser;
     api_url: string;
@@ -39,7 +40,7 @@ export class CommentService implements Resolve<any>
         this.aboutOnChanged = new BehaviorSubject({});
         this.photosVideosOnChanged = new BehaviorSubject({});
         
-        this.getTimeline();
+        //this.getTimeline();
         
     }
 
@@ -52,11 +53,13 @@ export class CommentService implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
     {
+        console.log('object_id r ' + this.object_id);
+        
         return new Promise((resolve, reject) => {
             Promise.all([
                 this.getTimeline(),
-                this.getAbout(),
-                this.getPhotosVideos()
+                console.log('object_id r ' + this.object_id),
+                //this.getPhotosVideos()
             ]).then(
                 () => {
                     resolve();
@@ -72,6 +75,8 @@ export class CommentService implements Resolve<any>
     getTimeline(): Promise<any[]>
     {
         const app_name = 'client';
+        console.log('timeline');
+        console.log('object_id get ' + this.object_id);
         
         const body = {action: 'comment', do: 'get', model_name:app_name, session_key: this.currentUser.session_key};
         

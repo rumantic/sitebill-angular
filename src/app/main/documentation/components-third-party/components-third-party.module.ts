@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCheckboxModule, MatIconModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-         MatProgressSpinnerModule, MatTooltipModule } from '@angular/material';
+         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatFormFieldModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -20,10 +20,23 @@ import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/document
 import { FilterComponent } from 'app/main/documentation/components-third-party/datatable/filter.component';
 import { ProfileTimelineComponent } from 'app/main/documentation/components-third-party/datatable/timeline/timeline.component';
 
+import { ChatService } from 'app/main/apps/chat/chat.service';
+import { ChatComponent } from 'app/main/apps/chat/chat.component';
+import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
+import { ChatViewComponent } from 'app/main/apps/chat/chat-view/chat-view.component';
+import { ChatChatsSidenavComponent } from 'app/main/apps/chat/sidenavs/left/chats/chats.component';
+import { ChatUserSidenavComponent } from 'app/main/apps/chat/sidenavs/left/user/user.component';
+import { ChatLeftSidenavComponent } from 'app/main/apps/chat/sidenavs/left/left.component';
+import { ChatRightSidenavComponent } from 'app/main/apps/chat/sidenavs/right/right.component';
+import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
+
 const routes = [
     {
         path     : '',
-        component: DocsComponentsThirdPartyNgxDatatableComponent
+        component: DocsComponentsThirdPartyNgxDatatableComponent,
+        resolve  : {
+            chat: ChatService
+        }
     },
 ];
 
@@ -32,7 +45,15 @@ const routes = [
         DocsComponentsThirdPartyNgxDatatableComponent,
         FilterComponent,
         ProfileTimelineComponent,
-        CourseDialogComponent
+        CourseDialogComponent,
+        ChatComponent,
+        ChatViewComponent,
+        ChatStartComponent,
+        ChatChatsSidenavComponent,
+        ChatUserSidenavComponent,
+        ChatLeftSidenavComponent,
+        ChatRightSidenavComponent,
+        ChatContactSidenavComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -51,7 +72,11 @@ const routes = [
         MatDatepickerModule,
         MatProgressSpinnerModule,
         MatTooltipModule,
-        
+        MatSidenavModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
+        MatFormFieldModule,
 
         NgxDatatableModule,
 
@@ -64,7 +89,8 @@ const routes = [
         GoogleMapsModule
     ],
     providers   : [
-        CommentService
+        CommentService,
+        ChatService
     ],
     entryComponents: [CourseDialogComponent]
 

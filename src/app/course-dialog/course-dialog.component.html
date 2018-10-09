@@ -1,8 +1,9 @@
 <div id="course-dialog">
+    
     <!--h2 mat-dialog-title>Объект</h2-->
     <mat-dialog-content>
 
-        <div fxFlex="60">
+        <div fxFlex="50">
         <div *ngIf="rows; else loggedOut">
             <table>
                 <tr *ngFor="let x of rows">
@@ -39,8 +40,9 @@
 
         </pre>
         </div>
-        <div fxFlex="40">
+        <div fxFlex="50">
                 <profile-timeline></profile-timeline>
+            
         </div>
         
 

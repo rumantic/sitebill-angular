@@ -1,8 +1,10 @@
-import { Component, OnDestroy, isDevMode, OnInit } from '@angular/core';
+import { Component, OnDestroy, isDevMode, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { fuseAnimations } from '@fuse/animations';
 
 import { CommentService } from '../comment.service';
+import { ChatService } from 'app/main/apps/chat/chat.service';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
@@ -11,11 +13,13 @@ import {currentUser} from 'app/_models/currentuser';
     selector   : 'profile-timeline',
     templateUrl: './timeline.component.html',
     styleUrls  : ['./timeline.component.scss'],
-    animations : fuseAnimations
+    animations : fuseAnimations,
+    encapsulation: ViewEncapsulation.None
 })
 export class ProfileTimelineComponent implements OnInit, OnDestroy
 {
     timeline: any;
+    selectedChat: any;
     
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -28,7 +32,8 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
      * @param {ProfileService} _profileService
      */
     constructor(
-        private _commentService: CommentService
+        private _commentService: CommentService,
+        private _chatService: ChatService
     )
     {
         // Set the private defaults
@@ -52,12 +57,34 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        console.log('init timeline');
+        this._commentService.object_id = Math.random();
         this._commentService.timelineOnChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(timeline => {
             this.timeline = timeline;
         });
+        
+        this._chatService.onChatSelected
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(chatData => {
+                console.log('chatData' + chatData);
+                this.selectedChat = chatData;
+            });
+        
     }
+    
+    /**
+     * Get chat
+     *
+     * @param contact
+     */
+    getChat(): void
+    {
+        this._chatService.getChat('5725a680b3249760ea21de52');
+
+    }
+    
 
     /**
      * On destroy

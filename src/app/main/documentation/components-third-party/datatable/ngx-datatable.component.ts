@@ -333,6 +333,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
+        dialogConfig.width = '100%';
+        dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
         dialogConfig.data = {app_name: this.app_name, primary_key: 'client_id', key_value: item_id};
 
