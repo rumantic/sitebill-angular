@@ -19,8 +19,8 @@
                 <img *ngIf="message.who ===user.id" class="avatar" src="{{user.avatar}}">
 
                 <div class="bubble">
-                    <div class="message">{{message.message}}</div>
-                    <div class="time secondary-text">{{message.time | date:'medium'}}</div>
+                    <div class="message">{{message.comment_text.value}}</div>
+                    <div class="time secondary-text">{{message.comment_date.value | date:'medium'}}</div>
                 </div>
 
             </div>

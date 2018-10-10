@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {currentUser} from 'app/_models/currentuser';
 
 import { FuseUtils } from '@fuse/utils';
 
@@ -17,6 +18,10 @@ export class ChatService implements Resolve<any>
     onUserUpdated: Subject<any>;
     onLeftSidenavViewChanged: Subject<any>;
     onRightSidenavViewChanged: Subject<any>;
+    
+    private currentUser: currentUser;
+    api_url: string;
+    
 
     /**
      * Constructor
@@ -27,6 +32,14 @@ export class ChatService implements Resolve<any>
         private _httpClient: HttpClient
     )
     {
+        
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        if (isDevMode()) {
+            this.api_url = 'http://genplan1';
+        } else {
+            this.api_url = '';
+        }
+        
         // Set the defaults
         this.onChatSelected = new BehaviorSubject(null);
         this.onContactSelected = new BehaviorSubject(null);
@@ -90,9 +103,14 @@ export class ChatService implements Resolve<any>
             });
             return;
         }
+        
+        const body = {action: 'comment', do: 'get', model_name:'client', session_key: this.currentUser.session_key};
+        const chat_id = '5725a680b3249760ea21de52';
+        
 
         return new Promise((resolve, reject) => {
-            this._httpClient.get('api/chat-chats/' + chatItem.id)
+            //this._httpClient.get('api/chat-chats/' + chatItem.id)
+            this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
                 .subscribe((response: any) => {
                     const chat = response;
 
@@ -101,10 +119,12 @@ export class ChatService implements Resolve<any>
                     });
 
                     const chatData = {
-                        chatId : chat.id,
-                        dialog : chat.dialog,
+                        chatId : chat_id,
+                        dialog : chat.rows,
                         contact: chatContact
                     };
+                    console.log(chatData);
+                    
 
                     this.onChatSelected.next({...chatData});
 
