@@ -149,7 +149,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
         // Message
         const message = {
             who    : this.user.id,
-            message: this.replyForm.form.value.message,
+            comment_text:  {value: this.replyForm.form.value.message},
             time   : new Date().toISOString()
         };
 
