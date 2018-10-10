@@ -221,9 +221,11 @@ export class ChatService implements Resolve<any>
                 id    : chatId,
                 dialog: dialog
             };
+            console.log(newData);
 
             this._httpClient.post('api/chat-chats/' + chatId, newData)
                 .subscribe(updatedChat => {
+                    console.log(updatedChat);
                     resolve(updatedChat);
                 }, reject);
         });
