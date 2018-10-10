@@ -35,10 +35,12 @@
     </div>
 </ng-template>                                
 
+
 <div id="ngx-datatable" class="page-layout simple fullwidth">
 
     <!-- CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
+        
             <mat-tab-group dynamicHeight>
 
                 <mat-tab label="Все ({{total_all}})">
@@ -114,6 +116,7 @@
     </div>
     <!-- / CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
+        
         <button mat-button (click)="refreash()" matTooltip="Обновить таблицу">Обновить</button>
     </div>
 

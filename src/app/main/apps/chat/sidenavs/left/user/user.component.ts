@@ -40,8 +40,6 @@ export class ChatUserSidenavComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        console.log('ChatUserSidenavComponent init');
-        
         this.user = this._chatService.user;
 
         this.userForm = new FormGroup({
@@ -83,7 +81,6 @@ export class ChatUserSidenavComponent implements OnInit, OnDestroy
      */
     changeLeftSidenavView(view): void
     {
-        console.log('changeLeftSidenavView');
         this._chatService.onLeftSidenavViewChanged.next(view);
     }
 

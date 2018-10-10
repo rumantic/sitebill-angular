@@ -1,66 +1,11 @@
 <!-- CHAT -->
 <div class="chat" fxFlex fxLayout="column">
 
-    <!-- CHAT TOOLBAR -->
-    <mat-toolbar class="chat-toolbar">
-
-        <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-
-            <div fxLayout="row" fxLayoutAlign="start center">
-
-                <!-- RESPONSIVE CHATS BUTTON-->
-                <button mat-icon-button fxHide.gt-md class="responsive-chats-button mr-16"
-                        fuseMatSidenavToggler="chat-left-sidenav"
-                        aria-label="chats button">
-                    <mat-icon>chat</mat-icon>
-                </button>
-                <!-- / RESPONSIVE CHATS BUTTON-->
-
-                <!-- CHAT CONTACT-->
-                <div class="chat-contact" fxLayout="row" fxLayoutAlign="start center"
-                     fuseMatSidenavToggler="chat-right-sidenav" (click)="selectContact()">
-
-                    <div class="avatar-wrapper">
-
-                        <img [src]="contact.avatar"
-                             class="avatar"
-                             alt="{{contact.name}}"/>
-
-                        <mat-icon class="s-16 status"
-                                  [ngClass]="contact.status">
-                        </mat-icon>
-                    </div>
-
-                    <div class="chat-contact-name">
-                        {{contact.name}}
-                    </div>
-
-                </div>
-                <!-- / CHAT CONTACT-->
-            </div>
-
-            <div>
-                <button mat-icon-button [matMenuTriggerFor]="contactMenu" aria-label="more">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-
-                <mat-menu #contactMenu="matMenu">
-                    <button mat-menu-item fuseMatSidenavToggler="chat-right-sidenav" (click)="selectContact()">
-                        Contact Info
-                    </button>
-                </mat-menu>
-            </div>
-
-        </div>
-    </mat-toolbar>
-    <!-- / CHAT TOOLBAR -->
-
     <!-- CHAT CONTENT -->
     <div id="chat-content" fxFlex fusePerfectScrollbar>
 
         <!-- CHAT MESSAGES -->
         <div class="chat-messages">
-            message
 
             <!-- MESSAGE -->
             <div fxLayout="row" *ngFor="let message of dialog" class="message-row"

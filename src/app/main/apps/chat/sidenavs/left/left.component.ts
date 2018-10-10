@@ -44,11 +44,9 @@ export class ChatLeftSidenavComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        console.log('ChatLeftSidenavComponent init');
         this._chatService.onLeftSidenavViewChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(view => {
-                console.log(view);
                 this.view = view;
             });
     }

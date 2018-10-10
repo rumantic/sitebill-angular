@@ -3,7 +3,7 @@
     <!--h2 mat-dialog-title>Объект</h2-->
     <mat-dialog-content>
 
-        <div fxFlex="10" fxLayout="column">
+        <div fxFlex="60">
         <div *ngIf="rows; else loggedOut">
             <table>
                 <tr *ngFor="let x of rows">
@@ -40,7 +40,7 @@
 
         </pre>
         </div>
-        <div fxFlex="90" fxLayout="column">
+        <div fxFlex="40">
                 <profile-timeline></profile-timeline>
             
         </div>

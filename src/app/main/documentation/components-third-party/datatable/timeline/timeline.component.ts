@@ -58,6 +58,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         console.log('init timeline');
+        
+        this._chatService.getChat('5725a680b3249760ea21de52');
+        
         this._commentService.object_id = Math.random();
         this._commentService.timelineOnChanged
             .pipe(takeUntil(this._unsubscribeAll))

@@ -7,8 +7,13 @@
 
     </div>
 
+    <span class="app-title my-24" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">Chat App</span>
 
-    <button mat-raised-button fuseMatSidenavToggler="chat-left-sidenav">
+    <span fxHide fxShow.gt-md class="app-message" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        Select contact to start the chat!..
+    </span>
+
+    <button mat-raised-button fxHide.gt-md fuseMatSidenavToggler="chat-left-sidenav">
         Select contact to start the chat!..
     </button>
 
