@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import {Model} from '../model';
 import {ModelService} from '../model.service';
 import {currentUser} from '../_models/currentuser';
+import { ChatService } from 'app/main/apps/chat/chat.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class CourseDialogComponent implements OnInit {
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         private modelService: ModelService,
         private _httpClient: HttpClient,
+        private _chatService: ChatService,
         @Inject(MAT_DIALOG_DATA) private _data: any
         ) {
         this.loadingIndicator = true;
@@ -58,6 +60,11 @@ export class CourseDialogComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._chatService.onChatSelected
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(chatData => {
+            });
+        
         this.getModel();
     }
 
@@ -67,6 +74,10 @@ export class CourseDialogComponent implements OnInit {
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
         const model_name = this._data.app_name;
+        
+        //'5725a680b3249760ea21de52'
+        this._chatService.getChat(model_name, primary_key, key_value);
+        
         
         //const PLACEMENT = this.route.snapshot.paramMap.get('PLACEMENT');
         //const PLACEMENT_OPTIONS = this.route.snapshot.paramMap.get('PLACEMENT_OPTIONS');
@@ -104,6 +115,8 @@ export class CourseDialogComponent implements OnInit {
     }
 
     close() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
         this.dialogRef.close();
     }
 

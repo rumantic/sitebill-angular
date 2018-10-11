@@ -148,16 +148,16 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
     {
         // Message
         const message = {
-            who    : this.user.id,
+            user_id    : {value: this._chatService.user_info.user_id},
             comment_text:  {value: this.replyForm.form.value.message},
             time   : new Date().toISOString()
         };
 
         // Add the message to the chat
-        this.dialog.push(message);
+        //this.dialog.push(message);
 
         // Update the server
-        this._chatService.updateDialog(this.selectedChat.chatId, this.dialog).then(response => {
+        this._chatService.updateDialog(this.selectedChat.chatId, this.replyForm.form.value.message).then(response => {
             this.readyToReply();
         });
     }

@@ -12,6 +12,7 @@ export class ChatService implements Resolve<any>
     contacts: any[];
     chats: any[];
     user: any;
+    user_info: any;
     onChatSelected: BehaviorSubject<any>;
     onContactSelected: BehaviorSubject<any>;
     onChatsUpdated: Subject<any>;
@@ -20,6 +21,9 @@ export class ChatService implements Resolve<any>
     onRightSidenavViewChanged: Subject<any>;
     
     private currentUser: currentUser;
+    private model_name: string;
+    private primary_key: string;
+    private key_value: string;
     api_url: string;
     
 
@@ -87,8 +91,14 @@ export class ChatService implements Resolve<any>
      * @param contactId
      * @returns {Promise<any>}
      */
-    getChat(contactId): Promise<any>
+    getChat(model_name, primary_key, key_value): Promise<any>
     {
+        const contactId = model_name+key_value;
+        this.model_name = model_name;
+        this.primary_key = primary_key;
+        this.key_value = key_value;
+        this.user_info = this.currentUser;
+        
         const chatItem = this.user.chatList.find((item) => {
             return item.contactId === contactId;
         });
@@ -99,13 +109,13 @@ export class ChatService implements Resolve<any>
         if ( !chatItem )
         {
             this.createNewChat(contactId).then((newChats) => {
-                this.getChat(contactId);
+                this.getChat(model_name, primary_key, key_value);
             });
             return;
         }
         
-        const body = {action: 'comment', do: 'get', model_name:'client', session_key: this.currentUser.session_key};
-        const chat_id = '5725a680b3249760ea21de52';
+        const body = {action: 'comment', do: 'get', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
+        //const chat_id = '5725a680b3249760ea21de52';
         
 
         return new Promise((resolve, reject) => {
@@ -119,7 +129,7 @@ export class ChatService implements Resolve<any>
                     });
 
                     const chatData = {
-                        chatId : chat_id,
+                        chatId : contactId,
                         dialog : chat.rows,
                         contact: chatContact
                     };
@@ -159,7 +169,7 @@ export class ChatService implements Resolve<any>
                 contactId      : contactId,
                 id             : chatId,
                 lastMessageTime: '2017-02-18T10:30:18.931Z',
-                name           : contact.name,
+                name           : contactId,
                 unread         : null
             };
 
@@ -233,17 +243,22 @@ export class ChatService implements Resolve<any>
      * @param dialog
      * @returns {Promise<any>}
      */
-    updateDialog(chatId, dialog): Promise<any>
+    updateDialog(chatId, comment_text): Promise<any>
     {
         return new Promise((resolve, reject) => {
-
+            /*
             const newData = {
                 id    : chatId,
                 dialog: dialog
             };
             console.log(newData);
+            */
+            //const comment_text = 'test';
+            
+            const body = {action: 'comment', do: 'add', model_name: this.model_name, primary_key: this.primary_key, key_value: this.key_value, comment_text: comment_text, session_key: this.currentUser.session_key};
+            
 
-            this._httpClient.post('api/chat-chats/' + chatId, newData)
+            this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
                 .subscribe(updatedChat => {
                     console.log(updatedChat);
                     resolve(updatedChat);
