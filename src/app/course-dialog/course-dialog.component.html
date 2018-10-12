@@ -1,7 +1,15 @@
-<div id="course-dialog">
+<div id="course-dialog" class="dialog-content-wrapper">
+    <mat-toolbar>
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"></span>
+            <button mat-icon-button (click)="close()" aria-label="Закрыть">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
     
     <!--h2 mat-dialog-title>Объект</h2-->
-    <mat-dialog-content>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
 
         <div fxFlex="60">
         <div *ngIf="rows; else loggedOut">
@@ -46,21 +54,6 @@
         </div>
         
 
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-
-        <button class="mat-raised-button"
-                (click)="close()">
-            Закрыть
-        </button>
-
-        <!--button class="mat-raised-button mat-primary"
-                (click)="save()">
-            Save
-        </button-->
-
-    </mat-dialog-actions>
-
+    </div>
 
 </div>

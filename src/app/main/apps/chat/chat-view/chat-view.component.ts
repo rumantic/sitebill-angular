@@ -57,6 +57,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
     ngOnInit(): void
     {
         this.user = this._chatService.user;
+        
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {

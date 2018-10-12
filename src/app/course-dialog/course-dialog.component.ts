@@ -69,7 +69,7 @@ export class CourseDialogComponent implements OnInit {
     }
 
     getModel(): void {
-        //console.log(this._data);
+        //console.log('get');
         
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
@@ -118,6 +118,7 @@ export class CourseDialogComponent implements OnInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this.dialogRef.close();
+        this._chatService.closeChat();
     }
 
 }

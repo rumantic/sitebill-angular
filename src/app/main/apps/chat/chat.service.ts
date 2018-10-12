@@ -1,10 +1,10 @@
-import { Injectable, isDevMode } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {Injectable, isDevMode} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {currentUser} from 'app/_models/currentuser';
 
-import { FuseUtils } from '@fuse/utils';
+import {FuseUtils} from '@fuse/utils';
 
 @Injectable()
 export class ChatService implements Resolve<any>
@@ -13,19 +13,20 @@ export class ChatService implements Resolve<any>
     chats: any[];
     user: any;
     user_info: any;
+    open_close: boolean;
     onChatSelected: BehaviorSubject<any>;
     onContactSelected: BehaviorSubject<any>;
     onChatsUpdated: Subject<any>;
     onUserUpdated: Subject<any>;
     onLeftSidenavViewChanged: Subject<any>;
     onRightSidenavViewChanged: Subject<any>;
-    
+
     private currentUser: currentUser;
     private model_name: string;
     private primary_key: string;
     private key_value: string;
     api_url: string;
-    
+
 
     /**
      * Constructor
@@ -34,16 +35,16 @@ export class ChatService implements Resolve<any>
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
-        
+    ) {
+
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
             this.api_url = 'http://genplan1';
         } else {
             this.api_url = '';
         }
-        
+        this.open_close = false;
+
         // Set the defaults
         this.onChatSelected = new BehaviorSubject(null);
         this.onContactSelected = new BehaviorSubject(null);
@@ -63,10 +64,9 @@ export class ChatService implements Resolve<any>
      * @param {RouterStateSnapshot} state
      * @returns {Observable<any> | Promise<any> | any}
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
-    {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         console.log('ChatService resolve');
-        
+
         return new Promise((resolve, reject) => {
             Promise.all([
                 this.getContacts(),
@@ -91,14 +91,15 @@ export class ChatService implements Resolve<any>
      * @param contactId
      * @returns {Promise<any>}
      */
-    getChat(model_name, primary_key, key_value): Promise<any>
-    {
-        const contactId = model_name+key_value;
+    getChat(model_name, primary_key, key_value): Promise<any> {
+        const contactId = model_name + key_value;
         this.model_name = model_name;
         this.primary_key = primary_key;
         this.key_value = key_value;
         this.user_info = this.currentUser;
-        
+
+        console.log('open close ' + this.open_close);
+
         const chatItem = this.user.chatList.find((item) => {
             return item.contactId === contactId;
         });
@@ -106,17 +107,16 @@ export class ChatService implements Resolve<any>
         /**
          * Create new chat, if it's not created yet.
          */
-        if ( !chatItem )
-        {
+        if (!chatItem) {
             this.createNewChat(contactId).then((newChats) => {
                 this.getChat(model_name, primary_key, key_value);
             });
             return;
         }
-        
+
         const body = {action: 'comment', do: 'get', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
         //const chat_id = '5725a680b3249760ea21de52';
-        
+
 
         return new Promise((resolve, reject) => {
             //this._httpClient.get('api/chat-chats/' + chatItem.id)
@@ -129,13 +129,14 @@ export class ChatService implements Resolve<any>
                     });
 
                     const chatData = {
-                        chatId : contactId,
-                        dialog : chat.rows,
-                        current_user_id : this.currentUser.user_id,
+                        chatId: contactId,
+                        dialog: chat.rows,
+                        current_user_id: this.currentUser.user_id,
                         contact: chatContact
                     };
-                    console.log(chatData);
-                    
+                    //console.log(chatData);
+                    this.open_close = true;
+
 
                     this.onChatSelected.next({...chatData});
 
@@ -145,14 +146,25 @@ export class ChatService implements Resolve<any>
 
     }
 
+    closeChat() {
+        const chatData = {
+            chatId: null,
+            dialog: [],
+            current_user_id: this.currentUser.user_id,
+            contact: null
+        };
+
+
+        this.onChatSelected.next({...chatData});
+    }
+
     /**
      * Create new chat
      *
      * @param contactId
      * @returns {Promise<any>}
      */
-    createNewChat(contactId): Promise<any>
-    {
+    createNewChat(contactId): Promise<any> {
         return new Promise((resolve, reject) => {
 
             const contact = this.contacts.find((item) => {
@@ -162,16 +174,16 @@ export class ChatService implements Resolve<any>
             const chatId = FuseUtils.generateGUID();
 
             const chat = {
-                id    : chatId,
+                id: chatId,
                 dialog: []
             };
 
             const chatListItem = {
-                contactId      : contactId,
-                id             : chatId,
+                contactId: contactId,
+                id: chatId,
                 lastMessageTime: '2017-02-18T10:30:18.931Z',
-                name           : contactId,
-                unread         : null
+                name: contactId,
+                unread: null
             };
 
             /**
@@ -208,8 +220,7 @@ export class ChatService implements Resolve<any>
      *
      * @param contact
      */
-    selectContact(contact): void
-    {
+    selectContact(contact): void {
         this.onContactSelected.next(contact);
     }
 
@@ -218,8 +229,7 @@ export class ChatService implements Resolve<any>
      *
      * @param status
      */
-    setUserStatus(status): void
-    {
+    setUserStatus(status): void {
         this.user.status = status;
     }
 
@@ -228,12 +238,11 @@ export class ChatService implements Resolve<any>
      *
      * @param userData
      */
-    updateUserData(userData): void
-    {
+    updateUserData(userData): void {
         this._httpClient.post('api/chat-user/' + this.user.id, userData)
             .subscribe((response: any) => {
-                    this.user = userData;
-                }
+                this.user = userData;
+            }
             );
     }
 
@@ -244,8 +253,7 @@ export class ChatService implements Resolve<any>
      * @param dialog
      * @returns {Promise<any>}
      */
-    updateDialog(chatId, comment_text): Promise<any>
-    {
+    updateDialog(chatId, comment_text): Promise<any> {
         return new Promise((resolve, reject) => {
             /*
             const newData = {
@@ -255,9 +263,9 @@ export class ChatService implements Resolve<any>
             console.log(newData);
             */
             //const comment_text = 'test';
-            
+
             const body = {action: 'comment', do: 'add', model_name: this.model_name, primary_key: this.primary_key, key_value: this.key_value, comment_text: comment_text, session_key: this.currentUser.session_key};
-            
+
 
             this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
                 .subscribe(updatedChat => {
@@ -272,8 +280,7 @@ export class ChatService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getContacts(): Promise<any>
-    {
+    getContacts(): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get('api/chat-contacts')
                 .subscribe((response: any) => {
@@ -287,8 +294,7 @@ export class ChatService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getChats(): Promise<any>
-    {
+    getChats(): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get('api/chat-chats')
                 .subscribe((response: any) => {
@@ -302,8 +308,7 @@ export class ChatService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getUser(): Promise<any>
-    {
+    getUser(): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get('api/chat-user')
                 .subscribe((response: any) => {
