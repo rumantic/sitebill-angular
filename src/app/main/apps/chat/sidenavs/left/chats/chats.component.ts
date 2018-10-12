@@ -95,7 +95,7 @@ export class ChatChatsSidenavComponent implements OnInit, OnDestroy
      */
     getChat(contact): void
     {
-        this._chatService.getChat(contact);
+        //this._chatService.getChat(contact);
 
         if ( !this._observableMedia.isActive('gt-md') )
         {
