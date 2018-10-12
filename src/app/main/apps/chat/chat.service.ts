@@ -131,6 +131,7 @@ export class ChatService implements Resolve<any>
                     const chatData = {
                         chatId : contactId,
                         dialog : chat.rows,
+                        current_user_id : this.currentUser.user_id,
                         contact: chatContact
                     };
                     console.log(chatData);
@@ -260,7 +261,7 @@ export class ChatService implements Resolve<any>
 
             this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
                 .subscribe(updatedChat => {
-                    console.log(updatedChat);
+                    //console.log(updatedChat);
                     resolve(updatedChat);
                 }, reject);
         });

@@ -8,27 +8,15 @@
         <div class="chat-messages">
 
             <!-- MESSAGE -->
-            <!--div fxLayout="row" *ngFor="let message of dialog" class="message-row"
-                 [ngClass]="{'user' :message.who === user.id}">
+            <div fxLayout="row" *ngFor="let message of dialog" class="message-row"
+                 [ngClass]="{'user' :message.user_id.value === current_user_id}">
 
-                <img *ngIf="message.who === contact.id"
-                     src="{{contact.avatar}}"
+                <img *ngIf="message.user_id.value != current_user_id"
+                     src="{{message.user_id.avatar}}"
                      class="avatar"
-                     alt="{{contact.name}}"/>
+                     alt="{{message.user_id.fio}}"/>
 
-                <img *ngIf="message.who ===user.id" class="avatar" src="{{user.avatar}}">
-
-                <div class="bubble">
-                    <div class="message">{{message.comment_text.value}}</div>
-                    <div class="time secondary-text">{{message.comment_date.value | date:'medium'}}</div>
-                </div>
-
-            </div-->
-            <!-- / MESSAGE -->
-            
-            <!-- MESSAGE -->
-            <div fxLayout="row" *ngFor="let message of dialog" class="message-row">
-
+                <img *ngIf="message.user_id.value ===current_user_id" class="avatar" src="{{message.user_id.avatar}}">
 
                 <div class="bubble">
                     <div class="message">{{message.comment_text.value}}</div>
@@ -36,6 +24,18 @@
                 </div>
 
             </div>
+            <!-- / MESSAGE -->
+            
+            <!-- MESSAGE -->
+            <!--div fxLayout="row" *ngFor="let message of dialog" class="message-row">
+
+
+                <div class="bubble">
+                    <div class="message">{{message.comment_text.value}}</div>
+                    <div class="time secondary-text">{{message.comment_date.value | date:'medium'}}</div>
+                </div>
+
+            </div-->
             <!-- / MESSAGE -->
             
 

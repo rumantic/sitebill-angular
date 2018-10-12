@@ -20,6 +20,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
     contact: any;
     replyInput: any;
     selectedChat: any;
+    current_user_id: any;
 
     @ViewChild(FusePerfectScrollbarDirective)
     directiveScroll: FusePerfectScrollbarDirective;
@@ -64,6 +65,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
                     this.selectedChat = chatData;
                     this.contact = chatData.contact;
                     this.dialog = chatData.dialog;
+                    this.current_user_id = chatData.current_user_id;
                     this.readyToReply();
                 }
             });
@@ -146,18 +148,14 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     reply(): void
     {
-        // Message
-        const message = {
-            user_id    : {value: this._chatService.user_info.user_id},
-            comment_text:  {value: this.replyForm.form.value.message},
-            time   : new Date().toISOString()
-        };
-
-        // Add the message to the chat
-        //this.dialog.push(message);
-
         // Update the server
         this._chatService.updateDialog(this.selectedChat.chatId, this.replyForm.form.value.message).then(response => {
+            console.log(response);
+            if ( response.status == 'ok' ) {
+                this.dialog.push(response.comment_data);
+            }
+            //this.dialog.push(message);
+            
             this.readyToReply();
         });
     }
