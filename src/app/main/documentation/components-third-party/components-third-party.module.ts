@@ -15,6 +15,7 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
 import { GoogleMapsModule } from 'app/main/documentation/components-third-party/google-maps/google-maps.module';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
+import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import { FilterComponent } from 'app/main/documentation/components-third-party/datatable/filter.component';
@@ -46,6 +47,7 @@ const routes = [
         FilterComponent,
         ProfileTimelineComponent,
         CourseDialogComponent,
+        DeclineClientComponent,
         ChatComponent,
         ChatViewComponent,
         ChatStartComponent,
@@ -92,7 +94,7 @@ const routes = [
         CommentService,
         ChatService
     ],
-    entryComponents: [CourseDialogComponent]
+    entryComponents: [CourseDialogComponent, DeclineClientComponent]
 
 })
 export class ComponentsThirdPartyModule

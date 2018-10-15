@@ -19,7 +19,7 @@
             <mat-icon class="green-fg">attach_money</mat-icon>
         </button>
 
-        <button *ngIf="value != ''" mat-icon-button matTooltip="Отказаться от заявки"  (click)="toggleUserGet(row)" aria-label="Toggle important">
+        <button *ngIf="value != ''" mat-icon-button matTooltip="Отказаться от заявки"  (click)="declineClient(row)" aria-label="Toggle important">
             <mat-icon class="red-fg">close</mat-icon> {{value}}
         </button>
 
@@ -100,6 +100,7 @@
                                     [scrollbarH]="true"
                                     [reorderable]="reorderable"
                                     [limit]="10"
+                                    [selectionType]="'single'"
                                     (activate)="onActivate($event)"
                                     >
                                 </ngx-datatable>
@@ -112,12 +113,8 @@
                 </mat-tab>
 
             </mat-tab-group>
+        <button mat-button (click)="refreash()" color="accent" matTooltip="Обновить таблицу">Обновить</button>
 
-    </div>
-    <!-- / CONTENT -->
-    <div class="content" layout="row" fusePerfectScrollbar>
-        
-        <button mat-button (click)="refreash()" matTooltip="Обновить таблицу">Обновить</button>
     </div>
 
 

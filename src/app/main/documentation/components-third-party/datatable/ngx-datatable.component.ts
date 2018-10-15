@@ -14,6 +14,7 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
 //import {User} from '/_models/user';
 import {currentUser} from '../../../../_models/currentuser';
 import {CourseDialogComponent} from "app/course-dialog/course-dialog.component";
+import {DeclineClientComponent} from "app/dialogs/decline-client/decline-client.component";
 
 @Component({
     selector: 'docs-components-third-party-ngx-datatable',
@@ -87,7 +88,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //this.filterService.announceMission('test trigger');       
         //console.log(this.mission);
     }
-    
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -170,7 +171,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 },
             ];
         }
-        
+
         const load_selected_request = {action: 'model', do: 'load_selected', session_key: this.currentUser.session_key};
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
@@ -187,17 +188,17 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 }
                 */
                 this.refreash();
-                
+
 
                 this.loadingIndicator = false;
             });
-        
+
     }
-    
-    toggleUserGet ( row ) {
+
+    toggleUserGet(row) {
         //console.log('user_id');
         //console.log(row.client_id.value);
-        
+
         const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
         //console.log(body);
 
@@ -207,8 +208,42 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //console.log(result);
                 this.refreash();
             });
-        
+
     }
+
+    declineClient(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        //dialogConfig.width = '100%';
+        //dialogConfig.height = '100%';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {app_name: this.app_name, primary_key: 'client_id', key_value: row.client_id.value};
+
+        let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
+        dialogRef.afterClosed()
+            .subscribe(() => {
+                this.refreash();
+            })
+        return;
+
+        /*
+        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refreash();
+            });
+        */
+
+    }
+
 
     init_selected_rows(rows, selected) {
         if (selected.length == 0) {
@@ -222,23 +257,23 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
         }
     }
-    
-    refreash () {
+
+    refreash() {
         this.load_grid_data(this.app_name, [], []);
         const params = {owner: true};
         this.load_grid_data(this.app_name, [], params);
     }
 
-    load_grid_data(app_name, selected, params:any) {
+    load_grid_data(app_name, selected, params: any) {
         console.log('load_grid_data');
         //console.log(params);
         let grid_item;
-        if ( app_name == 'client' ) {
+        if (app_name == 'client') {
             grid_item = ['client_id', 'user_id', 'date', 'type_id', 'fio', 'phone'];
         } else {
             grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
         }
-        const body = {action: 'model', do: 'get_data', model_name:app_name, owner: params.owner, session_key: this.currentUser.session_key, grid_item: grid_item};
+        const body = {action: 'model', do: 'get_data', model_name: app_name, owner: params.owner, session_key: this.currentUser.session_key, grid_item: grid_item};
         //console.log(body);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
@@ -246,7 +281,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .subscribe((result: any) => {
                 console.log(result);
                 //console.log(result.rows);
-                if ( params.owner ) {
+                if (params.owner) {
                     this.rows_my = result.rows;
                     this.total_my = result.rows.length;
                 } else {
@@ -281,7 +316,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         */
 
     }
-    
+
     onSelectOld({selected}) {
         //console.log('Select Event', selected, this.selected);
         //console.log(selected.length);
@@ -302,7 +337,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //console.log(this.selected.length);
 
     }
-    
+
 
     delete_selection(item_id: string) {
         console.log('Delete selection', item_id);
