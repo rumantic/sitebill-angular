@@ -25,9 +25,11 @@ import {DeclineClientComponent} from "app/dialogs/decline-client/decline-client.
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
     rows = [];
+    item_model = [];
     rows_my = [];
     selected = [];
     loadingIndicator: boolean;
+    loadGridComplete: boolean;
     reorderable: boolean;
     api_url: string;
     records: any[];
@@ -36,11 +38,18 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     app_name: string;
     total_all: number;
     total_my: number;
+    editing = {};
+    options_test = {};
+    test_indicator: string;
+    objectKeys = Object.keys;
+
+
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
+    @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
 
     private filter: number;
 
@@ -81,6 +90,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //this.announced = true;
                 //this.confirmed = false;
             });
+            
+        this.options_test = {'test1':'var1', 'test2':'var2', 'test3':'var3'};
+        console.log(this.options_test);
+        this.test_indicator = 'some test indicator';
+        this.loadGridComplete = false;
+            
 
     }
 
@@ -123,8 +138,13 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                     prop: 'date.value_string'
                 },
                 {
-                    name: 'Статус',
+                    name: 'Тип',
                     prop: 'type_id.value_string'
+                },
+                {
+                    name: 'Статус',
+                    cellTemplate: this.clientStatusIdTmpl,
+                    prop: 'status_id.value_string'
                 },
                 {
                     name: 'ФИО клиента',
@@ -265,11 +285,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     load_grid_data(app_name, selected, params: any) {
-        console.log('load_grid_data');
+        //console.log('load_grid_data');
         //console.log(params);
         let grid_item;
         if (app_name == 'client') {
-            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'fio', 'phone'];
+            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
         } else {
             grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
         }
@@ -279,8 +299,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
-                //console.log(result.rows);
+                //console.log(result);
+                this.item_model = result.rows[0];
+                this.loadGridComplete = true;
+                
+                console.log(this.item_model);
+                
                 if (params.owner) {
                     this.rows_my = result.rows;
                     this.total_my = result.rows.length;
@@ -291,6 +315,29 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });
+    }
+
+    updateValue(event, cell, rowIndex, row) {
+        /*
+        console.log(event)
+        console.log(cell)
+        console.log(rowIndex)
+        console.log(row)
+        console.log(this.rows[rowIndex]);
+        */
+        this.editing[rowIndex + '-' + cell] = false;
+        this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
+        this.rows_my[rowIndex]['status_id']['value_string'] = this.item_model.status_id.select_data[event.target.value];
+        this.rows_my = [...this.rows_my];
+        //console.log('UPDATED!', this.rows[rowIndex][cell]);
+        const ql_items = {status_id: event.target.value};
+        const body = {action: 'model', do: 'graphql_update', model_name: this.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key};
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .subscribe((response: any) => {
+                console.log(response);
+            });
+        
+        
     }
 
 

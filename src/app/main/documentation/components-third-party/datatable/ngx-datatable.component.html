@@ -35,84 +35,110 @@
     </div>
 </ng-template>                                
 
+<ng-template #clientStatusIdTmpl let-row="row" let-rowIndex="rowIndex" let-value="value">
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+<span *ngIf="row.user_id.value == 0">
+        <span>
+              {{value}}
+            </span>
+</span>
+        
+<span *ngIf="row.user_id.value != 0">
+        <span 
+              title="Двойной щелчок для редактирования"
+              (dblclick)="editing[rowIndex + '-status_id'] = true"
+              *ngIf="!editing[rowIndex + '-status_id']">
+              {{value}}
+            </span>
+</span>
+        
+
+            <select placeholder="Укажите статус заявки"
+              *ngIf="editing[rowIndex + '-status_id']"
+              (blur)="editing[rowIndex + '-status_id'] = false"
+                (change)="updateValue($event, 'status_id', rowIndex, row)"
+              [value]="value">
+    <option *ngFor="let key of objectKeys(item_model.status_id.select_data)" value="{{key}}">{{item_model.status_id.select_data[key]}}</option>
+</select>
+</div>
+</ng-template>                                
 
 <div id="ngx-datatable" class="page-layout simple fullwidth">
-
     <!-- CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
-        
-            <mat-tab-group dynamicHeight>
 
-                <mat-tab label="Все ({{total_all}})">
+        <mat-tab-group dynamicHeight>
 
-                    <!-- WIDGET GROUP -->
-                    <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                         [@animateStagger]="{value:'50'}">
-                         <!-- WIDGET 11 -->
-                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                            fxFlex="100">
-                            <!-- Front -->
-                            <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows">
+            <mat-tab label="Все ({{total_all}})">
 
-                                <ngx-datatable
-                                    class="material"
-                                    [rows]="rows"
-                                    [columns]="columns"
-                                    [loadingIndicator]="loadingIndicator"
-                                    [columnMode]="'force'"
-                                    [headerHeight]="48"
-                                    [footerHeight]="56"
-                                    [rowHeight]="'auto'"
-                                    [scrollbarH]="true"
-                                    [reorderable]="reorderable"
-                                    [limit]="10"
-                                    (activate)="onActivate($event)"
-                                    [selectionType]="'single'"
-                                    (select)='onSelect($event)'
-                                    >
-                                </ngx-datatable>
-                            </div>
-                            <!-- / Front -->
-                        </fuse-widget>
-                        <!-- / WIDGET 11 -->
-                    </div>
-                    <!-- / WIDGET GROUP -->
-                </mat-tab>
-                <mat-tab label="Мои ({{total_my}})">
-                    <!-- WIDGET GROUP -->
-                    <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                         [@animateStagger]="{value:'50'}">
-                         <!-- WIDGET 11 -->
-                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                            fxFlex="100">
-                            <!-- Front -->
-                            <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
+                <!-- WIDGET GROUP -->
+                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                     [@animateStagger]="{value:'50'}">
+                     <!-- WIDGET 11 -->
+                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                        fxFlex="100">
+                        <!-- Front -->
+                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows">
 
-                                <ngx-datatable
-                                    class="material"
-                                    [rows]="rows_my"
-                                    [columns]="columns"
-                                    [loadingIndicator]="loadingIndicator"
-                                    [columnMode]="'force'"
-                                    [headerHeight]="48"
-                                    [footerHeight]="56"
-                                    [rowHeight]="'auto'"
-                                    [scrollbarH]="true"
-                                    [reorderable]="reorderable"
-                                    [limit]="10"
-                                    [selectionType]="'single'"
-                                    (activate)="onActivate($event)"
-                                    >
-                                </ngx-datatable>
-                            </div>
-                            <!-- / Front -->
-                        </fuse-widget>
-                        <!-- / WIDGET 11 -->
-                    </div>
-                    <!-- / WIDGET GROUP -->
-                </mat-tab>
+                            <ngx-datatable
+                                class="material"
+                                [rows]="rows"
+                                [columns]="columns"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="'force'"
+                                [headerHeight]="48"
+                                [footerHeight]="56"
+                                [rowHeight]="'auto'"
+                                [scrollbarH]="true"
+                                [reorderable]="reorderable"
+                                [limit]="10"
+                                (activate)="onActivate($event)"
+                                [selectionType]="'single'"
+                                (select)='onSelect($event)'
+                                >
+                            </ngx-datatable>
+                        </div>
+                        <!-- / Front -->
+                    </fuse-widget>
+                    <!-- / WIDGET 11 -->
+                </div>
+                <!-- / WIDGET GROUP -->
+            </mat-tab>
+            <mat-tab label="Мои ({{total_my}})">
+                <!-- WIDGET GROUP -->
+                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                     [@animateStagger]="{value:'50'}">
+                     <!-- WIDGET 11 -->
+                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                        fxFlex="100">
+                        <!-- Front -->
+                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
 
-            </mat-tab-group>
+                            <ngx-datatable
+                                class="material"
+                                [rows]="rows_my"
+                                [columns]="columns"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="'force'"
+                                [headerHeight]="48"
+                                [footerHeight]="56"
+                                [rowHeight]="'auto'"
+                                [scrollbarH]="true"
+                                [reorderable]="reorderable"
+                                [limit]="10"
+                                [selectionType]="'single'"
+                                (activate)="onActivate($event)"
+                                >
+                            </ngx-datatable>
+                        </div>
+                        <!-- / Front -->
+                    </fuse-widget>
+                    <!-- / WIDGET 11 -->
+                </div>
+                <!-- / WIDGET GROUP -->
+            </mat-tab>
+
+        </mat-tab-group>
         <button mat-button (click)="refreash()" color="accent" matTooltip="Обновить таблицу">Обновить</button>
 
     </div>
