@@ -172,42 +172,4 @@ export class ControlElementsComponent implements OnInit {
             }
         }
     }
-    
-    decline () {
-        console.log('decline');
-        console.log(this.declineForm.controls.comment.value);
-        const chat_id = this._data.app_name + this._data.key_value;
-        console.log(chat_id);
-        this.controlPressed = true;
-        this.controlProcessing = true;
-        
-        /*
-        // Update the server
-        this._chatService.updateDialog(chat_id, 'Причина отказа: ' + this.declineForm.controls.comment.value).then(response => {
-            console.log(response);
-            if ( response.status == 'ok' ) {
-                this.toggleUserGet(this._data.key_value);
-                //this.dialog.push(response.comment_data);
-            }
-            //this.dialog.push(message);
-            
-            //this.readyToReply();
-        });
-        */
-    }
-    
-    toggleUserGet ( client_id ) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-        
-        const body = {action: 'model', do: 'set_user_id_for_client', client_id: client_id, session_key: this.currentUser.session_key};
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-            });
-        
-    }
-    
 }
