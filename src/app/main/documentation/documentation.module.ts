@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MatIconModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -20,8 +19,6 @@ const routes: Routes = [
     imports     : [
         RouterModule.forChild(routes),
 
-        MatIconModule,
-        
 
         FuseSharedModule
     ]

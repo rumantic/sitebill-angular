@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatCheckboxModule, MatIconModule, MatGridListModule,
-         MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -12,6 +9,10 @@ import { CommentService } from 'app/main/documentation/components-third-party/da
 
 import { FuseSidebarModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
+
+import { MatButtonModule, MatCheckboxModule, MatGridListModule,
+         MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
+         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule } from '@angular/material';
 
 import { GoogleMapsModule } from 'app/main/documentation/components-third-party/google-maps/google-maps.module';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
@@ -60,9 +61,12 @@ const routes = [
     imports     : [
         RouterModule.forChild(routes),
 
+        NgxDatatableModule,
+        
+        // Material
+        MatIconModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatIconModule,
         MatGridListModule,
         MatDividerModule,
         MatFormFieldModule,
@@ -79,8 +83,7 @@ const routes = [
         MatRadioModule,
         MatCardModule,
         MatInputModule,
-
-        NgxDatatableModule,
+        
 
         FuseSharedModule,
         FuseSidebarModule,

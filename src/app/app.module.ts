@@ -5,7 +5,11 @@ import { CommonModule } from "@angular/common";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import {MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+//import {MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatGridListModule,
+         MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
+         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule } from '@angular/material';
+
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -40,6 +44,7 @@ import {MessageService} from './message.service';
 import {LoginComponent} from './login/index';
 import { FakeDbService } from 'app/fake-db/fake-db.service';
 import { AppStoreModule } from 'app/store/store.module';
+import { ControlElementsComponent } from 'app/main/control-elements/control-elements.component';
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
@@ -55,6 +60,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]  
     },
     {
+        path        : 'control/:model_name/:id/:control_name',
+        component: ControlElementsComponent,
+        canActivate: [AuthGuard]  
+    },
+    {
         path        : 'client',
         loadChildren: './main/documentation/documentation.module#DocumentationModule',
         canActivate: [AuthGuard]  
@@ -67,6 +77,7 @@ const appRoutes: Routes = [
         AppComponent,
         DashboardComponent,
         ModelDetailComponent,
+        ControlElementsComponent,
         LoginComponent,
         AlertComponent,
     ],
@@ -87,12 +98,27 @@ const appRoutes: Routes = [
         MatMomentDateModule,
 
         // Material
-        MatButtonModule,
         MatIconModule,
         MatButtonModule,
         MatCheckboxModule,
+        MatGridListModule,
+        MatDividerModule,
         MatFormFieldModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatTableModule,
+        MatTabsModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
         MatInputModule,
+
+        
 
 
         // Fuse modules
