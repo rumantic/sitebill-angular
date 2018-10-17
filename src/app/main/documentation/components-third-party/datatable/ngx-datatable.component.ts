@@ -25,7 +25,7 @@ import {DeclineClientComponent} from "app/dialogs/decline-client/decline-client.
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
     rows = [];
-    item_model = [];
+    item_model: any[];
     rows_my = [];
     selected = [];
     loadingIndicator: boolean;
@@ -327,7 +327,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         */
         this.editing[rowIndex + '-' + cell] = false;
         this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
-        this.rows_my[rowIndex]['status_id']['value_string'] = this.item_model.status_id.select_data[event.target.value];
+        
+        const status_id = this.item_model['status_id'];
+        const select_data = status_id['select_data'];
+        
+        this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
         this.rows_my = [...this.rows_my];
         //console.log('UPDATED!', this.rows[rowIndex][cell]);
         const ql_items = {status_id: event.target.value};
