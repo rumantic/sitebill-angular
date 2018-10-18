@@ -45,6 +45,9 @@ import {LoginComponent} from './login/index';
 import { FakeDbService } from 'app/fake-db/fake-db.service';
 import { AppStoreModule } from 'app/store/store.module';
 import { ControlElementsComponent } from 'app/main/control-elements/control-elements.component';
+import { SliderComponent } from 'app/main/slider/slider.component';
+import {SlideshowModule} from 'ng-simple-slideshow';
+
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
@@ -65,6 +68,10 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]  
     },
     {
+        path        : 'slider',
+        component: SliderComponent
+    },
+    {
         path        : 'client',
         loadChildren: './main/documentation/documentation.module#DocumentationModule',
         canActivate: [AuthGuard]  
@@ -78,6 +85,7 @@ const appRoutes: Routes = [
         DashboardComponent,
         ModelDetailComponent,
         ControlElementsComponent,
+        SliderComponent,
         LoginComponent,
         AlertComponent,
     ],
@@ -118,7 +126,7 @@ const appRoutes: Routes = [
         MatCardModule,
         MatInputModule,
 
-        
+        SlideshowModule,
 
 
         // Fuse modules
