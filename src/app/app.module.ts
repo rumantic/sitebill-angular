@@ -47,13 +47,15 @@ import { AppStoreModule } from 'app/store/store.module';
 import { ControlElementsComponent } from 'app/main/control-elements/control-elements.component';
 import { SliderComponent } from 'app/main/slider/slider.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
+import { NguCarouselModule } from '@ngu/carousel';
+import { CarouselComponent } from 'app/main/carousel/carousel.component';
 
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
 
 const appRoutes: Routes = [
-    { path: '', component: SliderComponent },
+    { path: '', component: CarouselComponent },
     //{ path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
@@ -87,6 +89,7 @@ const appRoutes: Routes = [
         ModelDetailComponent,
         ControlElementsComponent,
         SliderComponent,
+        CarouselComponent,
         LoginComponent,
         AlertComponent,
     ],
@@ -128,6 +131,7 @@ const appRoutes: Routes = [
         MatInputModule,
 
         SlideshowModule,
+        NguCarouselModule,
 
 
         // Fuse modules
