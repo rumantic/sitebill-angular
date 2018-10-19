@@ -53,7 +53,8 @@ import {SlideshowModule} from 'ng-simple-slideshow';
 
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', component: SliderComponent },
+    //{ path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },

@@ -28,8 +28,8 @@ export class SliderComponent implements OnInit {
     api_url: string;
 
     imageUrls: (string | IImage)[] = [];
-    height: string = '400px';
-    minHeight: string;
+    height: string = '100%';
+    minHeight: string = '200px';
     arrowSize: string = '30px';
     showArrows: boolean = true;
     disableSwiping: boolean = false;
@@ -40,12 +40,12 @@ export class SliderComponent implements OnInit {
     backgroundSize: string = 'cover';
     backgroundPosition: string = 'center center';
     backgroundRepeat: string = 'no-repeat';
-    showDots: boolean = true;
+    showDots: boolean = false;
     dotColor: string = '#FFF';
     showCaptions: boolean = true;
     captionColor: string = '#FFF';
     captionBackground: string = 'rgba(0, 0, 0, .35)';
-    lazyLoad: boolean = false;
+    lazyLoad: boolean = true;
     hideOnNoSlides: boolean = false;
     width: string = '100%';
 
@@ -91,11 +91,11 @@ export class SliderComponent implements OnInit {
 
 
     ngOnInit() {
-        this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'])
-        this.load_grid_data('complex', {active: 1}, ['complex_id', 'image'])
+        this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
+        this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
     }
-    
+
     load_grid_data(app_name, params: any, grid_item) {
         //console.log('load_grid_data');
         //console.log(params);
@@ -105,16 +105,103 @@ export class SliderComponent implements OnInit {
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {
                 //console.log(result);
-                this.init_data_slides(result.rows);
+                this.init_data_slides(app_name, result.rows);
             });
     }
-    
-    init_data_slides ( rows ) {
+
+    init_data_slides(app_name, rows) {
+        var image_items;
+        var key_item;
+        var value_items;
+        var value_zero;
+        var normal;
+        var caption;
+        var href;
+        var caption_array = [];
+        var old_style = false;
+
         for (let key in rows) {
-            let img_url = `${this.api_url}/img/data/`+rows[key]['image']['value'][0]['normal'];
-            let slide_item = {url: img_url, caption: 'The first slide', href: 'https://www.sitebill.ru'};
-            console.log(slide_item);
-            this.imageUrls.push(slide_item);
-        }        
+            //console.log('key');
+            //console.log(key);
+            //console.log('rows');
+            //console.log(rows);
+            //console.log('rows[key][\'image\'][\'value\']');
+            //console.log(rows[key]['image']['value']);
+
+            console.log('rows[key]');
+            console.log(rows[key]);
+            key_item = rows[key];
+
+            //console.log('key_item');
+            //console.log(key_item);
+
+
+            image_items = key_item['image'];
+            //console.log('image_items');
+            //console.log(image_items);
+
+            if (typeof image_items[0] === 'undefined') {
+                value_items = image_items['value'];
+
+                //console.log('value_items 111');
+                //console.log(value_items);
+                //console.log(value_items.lehgth);
+                value_zero = value_items[0];
+            } else {
+                old_style = true;
+                value_zero = image_items[0];
+            }
+
+            //console.log('value_zero');
+            //console.log(value_zero);
+
+            normal = value_zero['normal'];
+
+            //console.log('normal');
+            //console.log(normal);
+
+            //console.log(value_items);
+
+            if (typeof normal === 'undefined') {
+                console.log('undefined');
+            } else {
+                let img_url = `${this.api_url}/img/data/` + normal;
+                if (app_name == 'complex') {
+                    if (!old_style) {
+                        caption = rows[key]['name']['value'];
+                        href = '/complex/' + rows[key]['url']['value'] + '/';
+                    } else {
+                        caption = rows[key]['name'];
+                        href = '/complex/' + rows[key]['url'] + '/';
+                    }
+                } else {
+                    caption_array = [];
+                    if (rows[key]['country_id']['value_string'] !== null && rows[key]['country_id']['value_string'] != '') {
+                        caption_array.push(rows[key]['country_id']['value_string']);
+                    }
+
+                    if (rows[key]['city_id']['value_string'] !== null && rows[key]['city_id']['value_string'] != '') {
+                        caption_array.push(rows[key]['city_id']['value_string']);
+                    }
+
+                    if (rows[key]['street_id']['value_string'] !== null && rows[key]['street_id']['value_string'] != '') {
+                        caption_array.push(rows[key]['street_id']['value_string']);
+                    }
+                    if ( old_style ) {
+                        caption_array.push(rows[key]['price'] + ' ' + rows[key]['currency_id']['value_string']);
+                        href = '/realty' + rows[key]['id'];
+                    } else {
+                        caption_array.push(rows[key]['price']['value'] + ' ' + rows[key]['currency_id']['value_string']);
+                        href = '/realty' + rows[key]['id']['value'];
+                    }
+
+
+                    caption = caption_array.join(", ");
+                }
+                let slide_item = {url: img_url, caption: caption, href: href};
+                console.log(slide_item);
+                this.imageUrls.push(slide_item);
+            }
+        }
     }
 }
