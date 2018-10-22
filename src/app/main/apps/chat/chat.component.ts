@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         
-        console.log('ChatComponent');
+        //console.log('ChatComponent');
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {

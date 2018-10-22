@@ -32,7 +32,6 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
      * @param {ProfileService} _profileService
      */
     constructor(
-        private _commentService: CommentService,
         private _chatService: ChatService
     )
     {
@@ -61,17 +60,12 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         
         //this._chatService.getChat('5725a680b3249760ea21de52');
         
-        this._commentService.object_id = Math.random();
-        this._commentService.timelineOnChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(timeline => {
-            this.timeline = timeline;
-        });
         
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
-                console.log('chatData' + chatData);
+                console.log('chatData');
+                console.log(chatData);
                 this.selectedChat = chatData;
             });
         

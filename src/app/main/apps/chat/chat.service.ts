@@ -65,7 +65,7 @@ export class ChatService implements Resolve<any>
      * @returns {Observable<any> | Promise<any> | any}
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-        console.log('ChatService resolve');
+        //console.log('ChatService resolve');
 
         return new Promise((resolve, reject) => {
             Promise.all([
@@ -98,7 +98,7 @@ export class ChatService implements Resolve<any>
         this.key_value = key_value;
         this.user_info = this.currentUser;
 
-        console.log('open close ' + this.open_close);
+        //console.log('open close ' + this.open_close);
 
         const chatItem = this.user.chatList.find((item) => {
             return item.contactId === contactId;
