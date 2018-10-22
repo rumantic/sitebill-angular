@@ -12,6 +12,20 @@
 
     <form [formGroup]="form">
 
+        <!-- COLOR THEME -->
+        <div class="group">
+
+            <h2>Color themes</h2>
+
+            <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="colorTheme">
+                <mat-radio-button class="mb-12" value="theme-default">Default Light</mat-radio-button>
+                <mat-radio-button class="mb-12" value="theme-yellow-light">Yellow Light</mat-radio-button>
+                <mat-radio-button class="mb-12" value="theme-blue-gray-dark">Blue-Gray Dark</mat-radio-button>
+                <mat-radio-button class="mb-12" value="theme-pink-dark">Pink Dark</mat-radio-button>
+            </mat-radio-group>
+
+        </div>
+
         <!-- LAYOUT STYLES -->
         <div class="group" formGroupName="layout">
 
@@ -73,6 +87,20 @@
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
+                        <h3 class="mt-8">Variant:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                            <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
+                            <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
+                        </mat-radio-group>
+
+                        <h3 class="mt-16 mb-8">Primary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="primaryBackground"></fuse-material-color-picker>
+
+                        <h3 class="mt-16 mb-8">Secondary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="secondaryBackground"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- TOOLBAR -->
@@ -91,6 +119,14 @@
                             <mat-radio-button class="mb-12" value="below-fixed">Below Fixed</mat-radio-button>
                         </mat-radio-group>
 
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- FOOTER -->
@@ -107,6 +143,31 @@
                             <mat-radio-button class="mb-12" value="above">Above</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-static">Below Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-fixed">Below Fixed</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
+                    </div>
+
+                    <!-- SIDE PANEL -->
+                    <div class="group" formGroupName="sidepanel">
+
+                        <h2>Side Panel</h2>
+
+                        <mat-slide-toggle formControlName="hidden">
+                            Hide
+                        </mat-slide-toggle>
+
+                        <h3 class="mt-24">Position:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                            <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
+                            <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                     </div>
@@ -146,6 +207,20 @@
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
+                        <h3 class="mt-8">Variant:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                            <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
+                            <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
+                        </mat-radio-group>
+
+                        <h3 class="mt-16 mb-8">Primary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="primaryBackground"></fuse-material-color-picker>
+
+                        <h3 class="mt-16 mb-8">Secondary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="secondaryBackground"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- TOOLBAR -->
@@ -164,6 +239,14 @@
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
                         </mat-radio-group>
 
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- FOOTER -->
@@ -180,6 +263,31 @@
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
+                    </div>
+
+                    <!-- SIDE PANEL -->
+                    <div class="group" formGroupName="sidepanel">
+
+                        <h2>Side Panel</h2>
+
+                        <mat-slide-toggle formControlName="hidden">
+                            Hide
+                        </mat-slide-toggle>
+
+                        <h3 class="mt-24">Position:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                            <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
+                            <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                     </div>
@@ -219,6 +327,20 @@
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
+                        <h3 class="mt-8">Variant:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                            <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
+                            <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
+                        </mat-radio-group>
+
+                        <h3 class="mt-16 mb-8">Primary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="primaryBackground"></fuse-material-color-picker>
+
+                        <h3 class="mt-16 mb-8">Secondary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="secondaryBackground"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- TOOLBAR -->
@@ -236,6 +358,14 @@
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                         </mat-radio-group>
 
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
                     </div>
 
                     <!-- FOOTER -->
@@ -251,6 +381,31 @@
                         <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
+                    </div>
+
+                    <!-- SIDE PANEL -->
+                    <div class="group" formGroupName="sidepanel">
+
+                        <h2>Side Panel</h2>
+
+                        <mat-slide-toggle formControlName="hidden">
+                            Hide
+                        </mat-slide-toggle>
+
+                        <h3 class="mt-24">Position:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                            <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
+                            <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                     </div>
@@ -285,6 +440,22 @@
                             <mat-radio-button class="mb-16" value="top">Top</mat-radio-button>
                         </mat-radio-group>
 
+                        <h3 class="mt-8">Variant (Vertical):</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                            <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
+                            <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
+                        </mat-radio-group>
+
+                        <h3 class="mt-16 mb-8">Primary background:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="primaryBackground">
+                        </fuse-material-color-picker>
+
+                        <h3 class="mt-16 mb-8">Secondary background (Vertical):</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="secondaryBackground">
+                        </fuse-material-color-picker>
+
                     </div>
 
                     <!-- TOOLBAR -->
@@ -301,6 +472,14 @@
                             <mat-radio-button class="mb-12" value="above">Above</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
                         </mat-radio-group>
+
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
 
                     </div>
 
@@ -319,6 +498,31 @@
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                         </mat-radio-group>
 
+                        <mat-checkbox class="mt-24" formControlName="customBackgroundColor">
+                            Use custom background color
+                        </mat-checkbox>
+
+                        <h3 class="mt-24 mb-8">Background color:</h3>
+                        <fuse-material-color-picker class="mb-16"
+                                                    formControlName="background"></fuse-material-color-picker>
+
+                    </div>
+
+                    <!-- SIDE PANEL -->
+                    <div class="group" formGroupName="sidepanel">
+
+                        <h2>Side Panel</h2>
+
+                        <mat-slide-toggle formControlName="hidden">
+                            Hide
+                        </mat-slide-toggle>
+
+                        <h3 class="mt-24">Position:</h3>
+                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                            <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
+                            <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
+                        </mat-radio-group>
+
                     </div>
 
                 </ng-container>
@@ -335,35 +539,6 @@
             <mat-slide-toggle class="mb-12" formControlName="customScrollbars">
                 Enable custom scrollbars
             </mat-slide-toggle>
-
-        </div>
-
-        <!-- COLORS -->
-        <div class="group">
-
-            <h2>Colors</h2>
-
-            <div class="colors">
-
-                <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                    <h4 class="mr-8">Toolbar Color</h4>
-                    <fuse-material-color-picker
-                        [(selectedClass)]="fuseConfig.layout.toolbar.background"></fuse-material-color-picker>
-                </div>
-
-                <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                    <h4 class="mr-8">Navbar Color</h4>
-                    <fuse-material-color-picker
-                        [(selectedClass)]="fuseConfig.layout.navbar.background"></fuse-material-color-picker>
-                </div>
-
-                <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                    <h4 class="mr-8">Footer Color</h4>
-                    <fuse-material-color-picker
-                        [(selectedClass)]="fuseConfig.layout.footer.background"></fuse-material-color-picker>
-                </div>
-
-            </div>
 
         </div>
 

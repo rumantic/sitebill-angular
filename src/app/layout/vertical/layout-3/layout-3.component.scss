@@ -1,4 +1,4 @@
-@import "../../../../@fuse/scss/fuse";
+@import "src/@fuse/scss/fuse";
 
 vertical-layout-3 {
     display: flex;
@@ -14,13 +14,7 @@ vertical-layout-3 {
         width: 100%;
         height: 100%;
         z-index: 1;
-
-        // Boxed
-        &.boxed {
-            max-width: 1200px;
-            margin: 0 auto;
-            @include mat-elevation(8);
-        }
+        min-width: 0;
 
         // Container 1 (Scrollable)
         > .container {
@@ -31,7 +25,7 @@ vertical-layout-3 {
             width: 100%;
             overflow-x: hidden;
             overflow-y: auto;
-            transform: translateZ(0);
+            -webkit-overflow-scrolling: touch;
 
             // Container 2
             > .container {

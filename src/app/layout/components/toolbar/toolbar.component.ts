@@ -1,8 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router, ActivatedRoute } from '@angular/router';
-
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
@@ -10,13 +8,12 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
-import {AlertService, AuthenticationService} from '../../../_services/index';
-
 
 @Component({
-    selector   : 'toolbar',
-    templateUrl: './toolbar.component.html',
-    styleUrls  : ['./toolbar.component.scss']
+    selector     : 'toolbar',
+    templateUrl  : './toolbar.component.html',
+    styleUrls    : ['./toolbar.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ToolbarComponent implements OnInit, OnDestroy
@@ -27,7 +24,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
     languages: any;
     navigation: any;
     selectedLanguage: any;
-    showLoadingBar: boolean;
     userStatusOptions: any[];
 
     // Private
@@ -38,16 +34,12 @@ export class ToolbarComponent implements OnInit, OnDestroy
      *
      * @param {FuseConfigService} _fuseConfigService
      * @param {FuseSidebarService} _fuseSidebarService
-     * @param {Router} _router
      * @param {TranslateService} _translateService
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private route: ActivatedRoute,
-        private _router: Router,
-        private _translateService: TranslateService,
-        private authenticationService: AuthenticationService
+        private _translateService: TranslateService
     )
     {
         // Set the defaults
@@ -107,24 +99,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Subscribe to the router events to show/hide the loading bar
-        this._router.events
-            .pipe(
-                filter((event) => event instanceof NavigationStart),
-                takeUntil(this._unsubscribeAll)
-            )
-            .subscribe((event) => {
-                this.showLoadingBar = true;
-            });
-
-        this._router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd)
-            )
-            .subscribe((event) => {
-                this.showLoadingBar = false;
-            });
-
         // Subscribe to the config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -151,14 +125,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-    
-    logout() {
-        this.authenticationService.logout();
-        console.log('logout');
-        this._router.navigate(['login']);
-        
-    }
-    
 
     /**
      * Toggle sidebar open
@@ -184,14 +150,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
     /**
      * Set the language
      *
-     * @param langId
+     * @param lang
      */
-    setLanguage(langId): void
+    setLanguage(lang): void
     {
-        // Set the selected language for toolbar
-        this.selectedLanguage = _.find(this.languages, {'id': langId});
+        // Set the selected language for the toolbar
+        this.selectedLanguage = lang;
 
         // Use the selected language for translations
-        this._translateService.use(langId);
+        this._translateService.use(lang.id);
     }
 }

@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-:host {
+toolbar {
     position: relative;
     display: flex;
     flex: 0 0 auto;
@@ -11,17 +11,9 @@
     }
 
     .mat-toolbar {
-        background: inherit;
-        color: inherit;
         position: relative;
-
-        .loading-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-        }
+        background: inherit !important;
+        color: inherit !important;
     }
 
     .logo {
@@ -36,11 +28,12 @@
     .user-button,
     fuse-search-bar,
     .language-button,
+    .chat-panel-toggle-button,
     .quick-panel-toggle-button {
         min-width: 64px;
         height: 64px;
 
-        @include media-breakpoint-down('xs') {
+        @include media-breakpoint('xs') {
             height: 56px;
         }
     }
@@ -53,9 +46,8 @@
     .toolbar-separator {
         height: 64px;
         width: 1px;
-        background: rgba(0, 0, 0, .12);
 
-        @include media-breakpoint-down('xs') {
+        @include media-breakpoint('xs') {
             height: 56px;
         }
     }

@@ -1,11 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
     selector     : 'navbar',
@@ -13,125 +6,48 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
     styleUrls    : ['./navbar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class NavbarComponent implements OnInit, OnDestroy
+export class NavbarComponent
 {
-    // Layout
-    @Input()
-    layout;
-
-    fusePerfectScrollbarUpdateTimeout: any;
-    navigation: any;
-
     // Private
-    private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
-    private _unsubscribeAll: Subject<any>;
+    _variant: string;
 
     /**
      * Constructor
      *
-     * @param {FuseNavigationService} _fuseNavigationService
-     * @param {FuseSidebarService} _fuseSidebarService
-     * @param {Router} _router
+     * @param {ElementRef} _elementRef
+     * @param {Renderer2} _renderer
      */
     constructor(
-        private _fuseNavigationService: FuseNavigationService,
-        private _fuseSidebarService: FuseSidebarService,
-        private _router: Router
+        private _elementRef: ElementRef,
+        private _renderer: Renderer2
     )
     {
-        // Set the defaults
-        this.layout = 'vertical';
-
         // Set the private defaults
-        this._unsubscribeAll = new Subject();
+        this._variant = 'vertical-style-1';
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
 
-    // Directive
-    @ViewChild(FusePerfectScrollbarDirective)
-    set directive(theDirective: FusePerfectScrollbarDirective)
+    /**
+     * Variant
+     */
+    get variant(): string
     {
-        if ( !theDirective )
-        {
-            return;
-        }
-
-        this._fusePerfectScrollbar = theDirective;
-
-        this._fuseNavigationService.onItemCollapseToggled
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(() => {
-                this.fusePerfectScrollbarUpdateTimeout = setTimeout(() => {
-                    this._fusePerfectScrollbar.update();
-                }, 310);
-            });
+        return this._variant;
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
+    @Input()
+    set variant(value: string)
     {
-        this._router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                takeUntil(this._unsubscribeAll)
-            )
-            .subscribe(() => {
-                    if ( this._fuseSidebarService.getSidebar('navbar') )
-                    {
-                        this._fuseSidebarService.getSidebar('navbar').close();
-                    }
-                }
-            );
+        // Remove the old class name
+        this._renderer.removeClass(this._elementRef.nativeElement, this.variant);
 
-        // Get current navigation
-        this._fuseNavigationService.onNavigationChanged
-            .pipe(filter(value => value !== null))
-            .subscribe(() => {
-                this.navigation = this._fuseNavigationService.getCurrentNavigation();
-            });
-    }
+        // Store the variant value
+        this._variant = value;
 
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void
-    {
-        if ( this.fusePerfectScrollbarUpdateTimeout )
-        {
-            clearTimeout(this.fusePerfectScrollbarUpdateTimeout);
-        }
-
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle sidebar opened status
-     */
-    toggleSidebarOpened(): void
-    {
-        this._fuseSidebarService.getSidebar('navbar').toggleOpen();
-    }
-
-    /**
-     * Toggle sidebar folded status
-     */
-    toggleSidebarFolded(): void
-    {
-        this._fuseSidebarService.getSidebar('navbar').toggleFold();
+        // Add the new class name
+        this._renderer.addClass(this._elementRef.nativeElement, value);
     }
 }

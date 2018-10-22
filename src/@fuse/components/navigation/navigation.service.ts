@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import * as _ from 'lodash';
 
-@Injectable()
+import { FuseNavigationItem } from '@fuse/types';
+
+@Injectable({
+    providedIn: 'root'
+})
 export class FuseNavigationService
 {
-    flatNavigation: any[] = [];
-
     onItemCollapsed: Subject<any>;
     onItemCollapseToggled: Subject<any>;
 
@@ -13,6 +16,9 @@ export class FuseNavigationService
     private _onNavigationChanged: BehaviorSubject<any>;
     private _onNavigationRegistered: BehaviorSubject<any>;
     private _onNavigationUnregistered: BehaviorSubject<any>;
+    private _onNavigationItemAdded: BehaviorSubject<any>;
+    private _onNavigationItemUpdated: BehaviorSubject<any>;
+    private _onNavigationItemRemoved: BehaviorSubject<any>;
 
     private _currentNavigationKey: string;
     private _registry: { [key: string]: any } = {};
@@ -31,6 +37,9 @@ export class FuseNavigationService
         this._onNavigationChanged = new BehaviorSubject(null);
         this._onNavigationRegistered = new BehaviorSubject(null);
         this._onNavigationUnregistered = new BehaviorSubject(null);
+        this._onNavigationItemAdded = new BehaviorSubject(null);
+        this._onNavigationItemUpdated = new BehaviorSubject(null);
+        this._onNavigationItemRemoved = new BehaviorSubject(null);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -65,6 +74,36 @@ export class FuseNavigationService
     get onNavigationUnregistered(): Observable<any>
     {
         return this._onNavigationUnregistered.asObservable();
+    }
+
+    /**
+     * Get onNavigationItemAdded
+     *
+     * @returns {Observable<any>}
+     */
+    get onNavigationItemAdded(): Observable<any>
+    {
+        return this._onNavigationItemAdded.asObservable();
+    }
+
+    /**
+     * Get onNavigationItemUpdated
+     *
+     * @returns {Observable<any>}
+     */
+    get onNavigationItemUpdated(): Observable<any>
+    {
+        return this._onNavigationItemUpdated.asObservable();
+    }
+
+    /**
+     * Get onNavigationItemRemoved
+     *
+     * @returns {Observable<any>}
+     */
+    get onNavigationItemRemoved(): Observable<any>
+    {
+        return this._onNavigationItemRemoved.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -138,39 +177,30 @@ export class FuseNavigationService
      * Get flattened navigation array
      *
      * @param navigation
+     * @param flatNavigation
      * @returns {any[]}
      */
-    getFlatNavigation(navigation): any
+    getFlatNavigation(navigation, flatNavigation: FuseNavigationItem[] = []): any
     {
-        for ( const navItem of navigation )
+        for ( const item of navigation )
         {
-            if ( navItem.type === 'item' )
+            if ( item.type === 'item' )
             {
-                this.flatNavigation.push({
-                    id        : navItem.id || null,
-                    title     : navItem.title || null,
-                    translate : navItem.translate || null,
-                    type      : navItem.type,
-                    icon      : navItem.icon || null,
-                    url       : navItem.url || null,
-                    function  : navItem.function || null,
-                    exactMatch: navItem.exactMatch || false,
-                    badge     : navItem.badge || null
-                });
+                flatNavigation.push(item);
 
                 continue;
             }
 
-            if ( navItem.type === 'collapse' || navItem.type === 'group' )
+            if ( item.type === 'collapsable' || item.type === 'group' )
             {
-                if ( navItem.children )
+                if ( item.children )
                 {
-                    this.getFlatNavigation(navItem.children);
+                    this.getFlatNavigation(item.children, flatNavigation);
                 }
             }
         }
 
-        return this.flatNavigation;
+        return flatNavigation;
     }
 
     /**
@@ -326,6 +356,33 @@ export class FuseNavigationService
             // Add the item
             parent.children.push(item);
         }
+
+        // Trigger the observable
+        this._onNavigationItemAdded.next(true);
+    }
+
+    /**
+     * Update navigation item with the given id
+     *
+     * @param id
+     * @param properties
+     */
+    updateNavigationItem(id, properties): void
+    {
+        // Get the navigation item
+        const navigationItem = this.getNavigationItem(id);
+
+        // If there is no navigation with the give id, return
+        if ( !navigationItem )
+        {
+            return;
+        }
+
+        // Merge the navigation properties
+        _.merge(navigationItem, properties);
+
+        // Trigger the observable
+        this._onNavigationItemUpdated.next(true);
     }
 
     /**
@@ -353,5 +410,8 @@ export class FuseNavigationService
 
         // Remove the item
         parent.splice(parent.indexOf(item), 1);
+
+        // Trigger the observable
+        this._onNavigationItemRemoved.next(true);
     }
 }

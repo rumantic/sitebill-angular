@@ -20,10 +20,10 @@ import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 
 // used to create fake backend
-import {fakeBackendProvider} from './_helpers/index';
+//import {fakeBackendProvider} from './_helpers/index';
 
 import { fuseConfig } from 'app/fuse-config';
 
@@ -34,7 +34,7 @@ import { SampleModule } from 'app/main/sample/sample.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
-import {JwtInterceptor} from './_helpers/index';
+//import {JwtInterceptor} from './_helpers/index';
 import {AlertService, AuthenticationService, UserService} from './_services/index';
 
 import {DashboardComponent} from './dashboard/dashboard.component';
@@ -55,8 +55,8 @@ import { CarouselComponent } from 'app/main/carousel/carousel.component';
 
 
 const appRoutes: Routes = [
-    { path: '', component: CarouselComponent },
-    //{ path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
+    //{ path: '', component: CarouselComponent },
+    { path: '', redirectTo: '/client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },
@@ -139,6 +139,7 @@ const appRoutes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
+	FuseProgressBarModule,
 
         // App modules
         LayoutModule,
@@ -155,14 +156,8 @@ const appRoutes: Routes = [
         AuthGuard,
         AlertService,
         AuthenticationService,
-        UserService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: JwtInterceptor,
-            multi: true
-        },
         // provider used to create fake backend
-        fakeBackendProvider
+        //fakeBackendProvider
     ],
     bootstrap   : [
         AppComponent
