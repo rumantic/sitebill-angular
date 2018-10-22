@@ -14,7 +14,7 @@ export const fuseConfig: FuseConfig = {
     customScrollbars: true,
     layout          : {
         style    : 'vertical-layout-1',
-        width    : 'fullwidth',
+        width    : 'boxed',
         navbar   : {
             primaryBackground  : 'fuse-navy-700',
             secondaryBackground: 'fuse-navy-900',

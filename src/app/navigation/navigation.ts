@@ -12,7 +12,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Заявки',
                 type     : 'item',
                 icon     : 'email',
-                url      : '/client/my',
+                url      : 'client/my',
                 /*
                 badge    : {
                     title    : '25',
