@@ -1,0 +1,26 @@
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-slider-horizontal {
+  width: 300px;
+}
+
+.mat-slider-vertical {
+  height: 300px;
+}
+::ng-deep .mat-accent .mat-slider-thumb-label {
+    width: 70px !important; 
+    height: 70px !important; 
+    top: -85px !important;
+    right: -33px !important;
+} 
+
+::ng-deep .mat-slider-horizontal .mat-slider-thumb-label {
+    
+}

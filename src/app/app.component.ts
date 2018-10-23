@@ -1,4 +1,8 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Input, ElementRef} from '@angular/core';
+import {Router} from "@angular/router";
+
+import {PlatformLocation } from '@angular/common';
+
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+    @Input() hero: any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -42,15 +47,30 @@ export class AppComponent implements OnInit, OnDestroy
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
+        platformLocation: PlatformLocation,
+        private elRef: ElementRef,
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
+        private router: Router,
         private _platform: Platform
     )
     {
+        console.log('hero');
+        console.log(this.elRef.nativeElement.getAttribute('run'));
+        console.log(this.elRef.nativeElement.getAttribute('realty_id'));
+        if (this.elRef.nativeElement.getAttribute('run') == 'calculator') {
+            this.router.navigate(['/calculator/' + this.elRef.nativeElement.getAttribute('realty_id')]);
+        }
+        
+        //console.log((platformLocation as any).location);
+        //console.log((platformLocation as any).location.href);
+        //console.log((platformLocation as any).location.origin);        
+        //console.log(this.hero);
+        //console.log(APP_BASE_HREF);
         // Get default navigation
         this.navigation = navigation;
 
@@ -108,6 +128,7 @@ export class AppComponent implements OnInit, OnDestroy
         // Add is-mobile class to the body if the platform is mobile
         if ( this._platform.ANDROID || this._platform.IOS )
         {
+            //this.document.getElementById('fuse-app').classList.add('is-mobile');
             this.document.body.classList.add('is-mobile');
         }
 
@@ -134,10 +155,12 @@ export class AppComponent implements OnInit, OnDestroy
                 // Boxed
                 if ( this.fuseConfig.layout.width === 'boxed' )
                 {
+                    //this.document.getElementById('fuse-app').classList.add('boxed');
                     this.document.body.classList.add('boxed');
                 }
                 else
                 {
+                    //this.document.getElementById('fuse-app').classList.remove('boxed');
                     this.document.body.classList.remove('boxed');
                 }
 
@@ -151,7 +174,7 @@ export class AppComponent implements OnInit, OnDestroy
                         this.document.body.classList.remove(className);
                     }
                 }
-
+                //this.document.getElementById('fuse-app').classList.add(this.fuseConfig.colorTheme);
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
     }

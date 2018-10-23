@@ -1,0 +1,72 @@
+<div id="mortgage-calculator" class="page-layout simple">
+    <mat-card>
+        <mat-card-content>
+            <section class="example-section">
+                <mat-form-field class="example-margin">
+                    <input matInput type="number" placeholder="Стоимость квартиры" [(ngModel)]="realty_price">
+                    <!--span matPrefix>руб&nbsp;</span-->
+                    <span matSuffix>&nbsp;руб</span>
+                    <mat-slider
+                        class="example-margin"
+                        [disabled]="disabled"
+                        [invert]="invert"
+                        [max]="max_realty_price"
+                        [min]="min_realty_price"
+                        [step]="step_realty_price"
+                        [thumbLabel]="thumbLabel"
+                        [displayWith]="formatLabel"                        
+                        [tickInterval]="tickInterval"
+                        [(ngModel)]="realty_price"
+                        [vertical]="vertical">
+                    </mat-slider>
+
+                </mat-form-field>
+                <mat-form-field class="example-margin">
+                    <input matInput type="number" placeholder="Первоначальный взнос" [(ngModel)]="down_payment">
+                    <mat-slider
+                        class="example-margin"
+                        [disabled]="disabled"
+                        [invert]="invert"
+                        [max]="max_down_payment"
+                        [min]="min_down_payment"
+                        [step]="step_down_payment"
+                        [thumbLabel]="thumbLabel"
+                        [tickInterval]="tickInterval"
+                        [displayWith]="formatLabel"                        
+                        [(ngModel)]="down_payment"
+                        [vertical]="vertical">
+                    </mat-slider>
+
+                </mat-form-field>
+                <mat-form-field class="example-margin">
+                    <input matInput type="number" placeholder="Сумма кредита" [(ngModel)]="max">
+                </mat-form-field>
+                <mat-form-field class="example-margin">
+                    <input matInput type="number" placeholder="Ставка %" [(ngModel)]="step">
+                </mat-form-field>
+            </section>
+
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="result">
+        <mat-card-content>
+            <h2 class="example-h2">Result</h2>
+
+            <mat-slider
+                class="example-margin"
+                [disabled]="disabled"
+                [invert]="invert"
+                [max]="max"
+                [min]="min"
+                [step]="step"
+                [thumbLabel]="thumbLabel"
+                [tickInterval]="tickInterval"
+                [(ngModel)]="value"
+                [vertical]="vertical">
+            </mat-slider>
+        </mat-card-content>
+    </mat-card>    
+
+</div>
+

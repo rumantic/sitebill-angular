@@ -8,7 +8,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 //import {MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule } from '@angular/material';
+         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule } from '@angular/material';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
@@ -69,6 +69,7 @@ import { ChatRightSidenavComponent } from 'app/main/apps/chat/sidenavs/right/rig
 import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
+import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
 
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
@@ -88,6 +89,10 @@ const appRoutes: Routes = [
     {
         path        : 'slider',
         component: SliderComponent
+    },
+    {
+        path        : 'calculator/:realty_id',
+        component: MortgageCalculatorComponent
     },
     {
         path        : 'client/my',
@@ -123,7 +128,8 @@ const appRoutes: Routes = [
         ChatLeftSidenavComponent,
         ChatRightSidenavComponent,
         ChatContactSidenavComponent,
-        DocsComponentsThirdPartyNgxDatatableComponent
+        DocsComponentsThirdPartyNgxDatatableComponent,
+        MortgageCalculatorComponent
     ],
     imports     : [
         BrowserModule,
@@ -163,6 +169,7 @@ const appRoutes: Routes = [
         MatRadioModule,
         MatCardModule,
         MatInputModule,
+        MatSliderModule,
 
         SlideshowModule,
         NguCarouselModule,
