@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, Pipe, PipeTransform} from '@angular/core';
+import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, ElementRef} from '@angular/core';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
 
 import {HttpClient} from '@angular/common/http';
@@ -7,6 +7,7 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
+import {DOCUMENT} from '@angular/platform-browser';
 
 
 @Component({
@@ -41,22 +42,39 @@ export class MortgageCalculatorComponent implements OnInit {
     value = 0;
     vertical = false;
     
-    realty_price = 7000000;
+    realty_price = 5500000;
     step_realty_price = 10000;
     max_realty_price = 20000000;
     min_realty_price = 10000;
     
-    down_payment = 1000000;
+    down_payment = 1925000;
     step_down_payment = 10000;
     max_down_payment = 20000000;
     min_down_payment = 10000;
+    
+    percent = 8.5;
+    step_percent = 0.1;
+    max_percent = 100;
+    min_percent = 1;
+    
+    years = 20;
+    step_years = 1;
+    max_years = 30;
+    min_years = 1;
+    
+    month_payment = 0;
+    overpayment = 0;
+    
+    credit_sum = 0;
 
     private _tickInterval = 1;
 
 
     constructor(
         private route: ActivatedRoute,
+        @Inject(DOCUMENT) private document: any,
         private _httpClient: HttpClient,
+        private elRef: ElementRef,
         private _fuseConfigService: FuseConfigService,
         private _cdr: ChangeDetectorRef
     ) {
@@ -90,6 +108,17 @@ export class MortgageCalculatorComponent implements OnInit {
 
         this.controlPressed = false;
         this.controlProcessing = true;
+        
+        console.log('years');
+        
+        console.log(this.document.getElementById('app_root').getAttribute('realty_id'));
+        console.log(this.document.getElementById('app_root').getAttribute('years'));
+
+        console.log(this.elRef.nativeElement.parentElement);
+        console.log(this.elRef.nativeElement.getAttribute('years'));
+        
+        this.calculate(null);
+        
     }
     ngAfterViewInit() {
         this._cdr.detectChanges();
@@ -110,6 +139,23 @@ export class MortgageCalculatorComponent implements OnInit {
         }
 
         return value;
+    }
+    
+    calculate (event) {
+        console.log('calculate');
+        this.max_down_payment = this.realty_price;
+        let start_sum = this.realty_price - this.down_payment;
+        let percent_dig = this.percent/1200;
+        let periods = this.years*12;
+        console.log(percent_dig);
+        console.log(periods);
+        console.log(percent_dig/(Math.pow((1+percent_dig), periods)-1));
+        //this.month_payment = this.credit_sum * (percent_dig + percent_dig/(Math.pow((1+percent_dig), periods)-1));
+        //this.month_payment = this.credit_sum * (percent_dig/(1 - (Math.pow((1+percent_dig), (1-periods)))));
+        this.month_payment = start_sum * (percent_dig/(1 - (Math.pow(1+percent_dig, -periods))));
+        this.credit_sum =this.month_payment*periods;
+        this.overpayment =this.credit_sum - start_sum;
+        //S * p / (1 - Math.pow(1 + p, -n))
     }
     
     get tickInterval(): number | 'auto' {

@@ -1,9 +1,9 @@
-<div id="mortgage-calculator" class="page-layout simple">
+<div id="mortgage-calculator">
     <mat-card>
         <mat-card-content>
             <section class="example-section">
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Стоимость квартиры" [(ngModel)]="realty_price">
+                    <input matInput type="number" placeholder="Стоимость квартиры" [(ngModel)]="realty_price" (ngModelChange)="calculate($event)">
                     <!--span matPrefix>руб&nbsp;</span-->
                     <span matSuffix>&nbsp;руб</span>
                     <mat-slider
@@ -17,12 +17,14 @@
                         [displayWith]="formatLabel"                        
                         [tickInterval]="tickInterval"
                         [(ngModel)]="realty_price"
+                        (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
                     </mat-slider>
 
                 </mat-form-field>
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Первоначальный взнос" [(ngModel)]="down_payment">
+                    <input matInput type="number" placeholder="Первоначальный взнос" [(ngModel)]="down_payment" (ngModelChange)="calculate($event)">
+                    <span matSuffix>&nbsp;руб</span>
                     <mat-slider
                         class="example-margin"
                         [disabled]="disabled"
@@ -34,16 +36,47 @@
                         [tickInterval]="tickInterval"
                         [displayWith]="formatLabel"                        
                         [(ngModel)]="down_payment"
+                        (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
                     </mat-slider>
 
                 </mat-form-field>
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Сумма кредита" [(ngModel)]="max">
+                    <input matInput type="number" placeholder="Ставка %" [(ngModel)]="percent">
+                    <span matSuffix>&nbsp;%</span>
+                    <mat-slider
+                        class="example-margin"
+                        [disabled]="disabled"
+                        [invert]="invert"
+                        [max]="max_percent"
+                        [min]="min_percent"
+                        [step]="step_percent"
+                        [thumbLabel]="thumbLabel"
+                        [tickInterval]="tickInterval"
+                        [(ngModel)]="percent"
+                        (ngModelChange)="calculate($event)"
+                        [vertical]="vertical">
+                    </mat-slider>
                 </mat-form-field>
+                
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Ставка %" [(ngModel)]="step">
+                    <input matInput type="number" placeholder="Срок кредита" [(ngModel)]="years">
+                    <span matSuffix>&nbsp;лет</span>
+                    <mat-slider
+                        class="example-margin"
+                        [disabled]="disabled"
+                        [invert]="invert"
+                        [max]="max_years"
+                        [min]="min_years"
+                        [step]="step_years"
+                        [thumbLabel]="thumbLabel"
+                        [tickInterval]="tickInterval"
+                        [(ngModel)]="years"
+                        (ngModelChange)="calculate($event)"
+                        [vertical]="vertical">
+                    </mat-slider>
                 </mat-form-field>
+                
             </section>
 
         </mat-card-content>
@@ -51,20 +84,10 @@
 
     <mat-card class="result">
         <mat-card-content>
-            <h2 class="example-h2">Result</h2>
+            <p>Сумма кредита: {{credit_sum|number}}</p>
+            <p>Ежемесячный платеж: {{month_payment|number}}</p>
+            <p>Переплата: {{overpayment|number}}</p>
 
-            <mat-slider
-                class="example-margin"
-                [disabled]="disabled"
-                [invert]="invert"
-                [max]="max"
-                [min]="min"
-                [step]="step"
-                [thumbLabel]="thumbLabel"
-                [tickInterval]="tickInterval"
-                [(ngModel)]="value"
-                [vertical]="vertical">
-            </mat-slider>
         </mat-card-content>
     </mat-card>    
 
