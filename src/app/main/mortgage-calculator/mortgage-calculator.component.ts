@@ -1,4 +1,7 @@
 import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, ElementRef} from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+registerLocaleData(localeRu, 'ru');
 import {coerceNumberProperty} from '@angular/cdk/coercion';
 
 import {HttpClient} from '@angular/common/http';
@@ -108,14 +111,29 @@ export class MortgageCalculatorComponent implements OnInit {
 
         this.controlPressed = false;
         this.controlProcessing = true;
+        if (this.document.getElementById('app_root').getAttribute('years') > 0) {
+            this.years = this.document.getElementById('app_root').getAttribute('years');
+        }
+        if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
+            this.realty_price = this.document.getElementById('app_root').getAttribute('realty_price');
+        }
+        if (this.document.getElementById('app_root').getAttribute('percent') > 0) {
+            this.percent = this.document.getElementById('app_root').getAttribute('percent');
+        }
+        if (this.document.getElementById('app_root').getAttribute('down_payment') > 0) {
+            this.down_payment = this.document.getElementById('app_root').getAttribute('down_payment');
+        } else {
+            this.down_payment = this.realty_price*0.20;
+        }
         
-        console.log('years');
         
-        console.log(this.document.getElementById('app_root').getAttribute('realty_id'));
-        console.log(this.document.getElementById('app_root').getAttribute('years'));
+        //console.log('years');
+        
+        //console.log(this.document.getElementById('app_root').getAttribute('realty_id'));
+        //console.log(this.document.getElementById('app_root').getAttribute('years'));
 
-        console.log(this.elRef.nativeElement.parentElement);
-        console.log(this.elRef.nativeElement.getAttribute('years'));
+        //console.log(this.elRef.nativeElement.parentElement);
+        //console.log(this.elRef.nativeElement.getAttribute('years'));
         
         this.calculate(null);
         
@@ -142,14 +160,14 @@ export class MortgageCalculatorComponent implements OnInit {
     }
     
     calculate (event) {
-        console.log('calculate');
+        //console.log('calculate');
         this.max_down_payment = this.realty_price;
         let start_sum = this.realty_price - this.down_payment;
         let percent_dig = this.percent/1200;
         let periods = this.years*12;
-        console.log(percent_dig);
-        console.log(periods);
-        console.log(percent_dig/(Math.pow((1+percent_dig), periods)-1));
+        //console.log(percent_dig);
+        //console.log(periods);
+        //console.log(percent_dig/(Math.pow((1+percent_dig), periods)-1));
         //this.month_payment = this.credit_sum * (percent_dig + percent_dig/(Math.pow((1+percent_dig), periods)-1));
         //this.month_payment = this.credit_sum * (percent_dig/(1 - (Math.pow((1+percent_dig), (1-periods)))));
         this.month_payment = start_sum * (percent_dig/(1 - (Math.pow(1+percent_dig, -periods))));
@@ -163,6 +181,10 @@ export class MortgageCalculatorComponent implements OnInit {
     }
     set tickInterval(value) {
         this._tickInterval = coerceNumberProperty(value);
+    }
+    
+    order_form () {
+        console.log('order form');
     }
 
 

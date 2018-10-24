@@ -91,7 +91,7 @@ const appRoutes: Routes = [
         component: SliderComponent
     },
     {
-        path        : 'calculator/:realty_id',
+        path        : 'calculator',
         component: MortgageCalculatorComponent
     },
     {

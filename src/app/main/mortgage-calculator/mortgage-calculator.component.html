@@ -58,7 +58,7 @@
                         [vertical]="vertical">
                     </mat-slider>
                 </mat-form-field>
-                
+
                 <mat-form-field class="example-margin">
                     <input matInput type="number" placeholder="Срок кредита" [(ngModel)]="years">
                     <span matSuffix>&nbsp;лет</span>
@@ -76,7 +76,7 @@
                         [vertical]="vertical">
                     </mat-slider>
                 </mat-form-field>
-                
+
             </section>
 
         </mat-card-content>
@@ -84,9 +84,12 @@
 
     <mat-card class="result">
         <mat-card-content>
-            <p>Сумма кредита: {{credit_sum|number}}</p>
-            <p>Ежемесячный платеж: {{month_payment|number}}</p>
-            <p>Переплата: {{overpayment|number}}</p>
+            <p>Сумма кредита: {{credit_sum|number:'1.0-0':'ru'}} руб.</p>
+            <p>Ежемесячный платеж: {{month_payment|number:'1.0-0':'ru'}} руб.</p>
+            <p>Переплата: {{overpayment|number:'1.0-0':'ru'}} руб.</p>
+            <div class="footer" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-button color="accent" (click)="order_form()">Оформить заявку</button>
+            </div>
 
         </mat-card-content>
     </mat-card>    

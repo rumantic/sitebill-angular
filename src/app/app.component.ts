@@ -59,11 +59,8 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform
     )
     {
-        console.log('hero');
-        console.log(this.elRef.nativeElement.getAttribute('run'));
-        console.log(this.elRef.nativeElement.getAttribute('realty_id'));
         if (this.elRef.nativeElement.getAttribute('run') == 'calculator') {
-            this.router.navigate(['/calculator/' + this.elRef.nativeElement.getAttribute('realty_id')]);
+            this.router.navigate(['/calculator');
         }
         
         //console.log((platformLocation as any).location);
