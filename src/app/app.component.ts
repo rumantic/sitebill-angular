@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy
     )
     {
         if (this.elRef.nativeElement.getAttribute('run') == 'calculator') {
-            this.router.navigate(['/calculator');
+            this.router.navigate(['/calculator']);
         }
         
         //console.log((platformLocation as any).location);
@@ -153,7 +153,7 @@ export class AppComponent implements OnInit, OnDestroy
                 if ( this.fuseConfig.layout.width === 'boxed' )
                 {
                     //this.document.getElementById('fuse-app').classList.add('boxed');
-                    this.document.body.classList.add('boxed');
+                    //this.document.body.classList.add('boxed');
                 }
                 else
                 {
