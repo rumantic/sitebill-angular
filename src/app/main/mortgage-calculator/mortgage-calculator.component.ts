@@ -77,6 +77,9 @@ export class MortgageCalculatorComponent implements OnInit {
     
     stavka_title = "Ставка % **";
     stavka_description = "** для семей с двумя детьми и более";
+    
+    top_text = "Ежемесячный платеж:";
+    bottom_text = "по двум документам!";
 
     private _tickInterval = 1;
 
@@ -152,6 +155,15 @@ export class MortgageCalculatorComponent implements OnInit {
         } else {
             this.show_credit_sum = false;
         }
+        
+        if (this.document.getElementById('app_root').getAttribute('top_text') != null) {
+            this.top_text = this.document.getElementById('app_root').getAttribute('top_text');
+        }
+        
+        if (this.document.getElementById('app_root').getAttribute('bottom_text') != null) {
+            this.bottom_text = this.document.getElementById('app_root').getAttribute('bottom_text');
+        }
+        
         
         
         //console.log(this.document.styleSheets);
