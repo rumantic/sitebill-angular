@@ -2,7 +2,7 @@
     <mat-card class="result">
         <mat-card-content>
             <div fxlayoutalign="center center">
-            <div>{{top_text}}</div> <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб    
+                <div>{{top_text}}</div> от <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб    
             <div class="orange-fg font-size-20">{{bottom_text}}</div>
             </div>
         </mat-card-content>
@@ -47,6 +47,7 @@
                         (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
                     </mat-slider>
+                    <div><span class="font-size-10">* возможно без первоначального взноса</span></div>
 
                 </mat-form-field>
                 <mat-form-field class="example-margin">
@@ -65,6 +66,8 @@
                         (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
                     </mat-slider>
+                    <div><span class="font-size-10">{{stavka_description}}</span></div>
+                    
                 </mat-form-field>
 
                 <mat-form-field class="example-margin">
@@ -97,8 +100,6 @@
             <!--div class="footer" fxLayout="row" fxLayoutAlign="center center">
                 <button mat-button color="accent" (click)="order_form()">Оформить заявку</button>
             </div-->
-            <div><mat-hint>* возможно без первоначального взноса</mat-hint></div>
-            <div><mat-hint>{{stavka_description}}</mat-hint></div>
             
 
         </mat-card-content>
