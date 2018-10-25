@@ -93,15 +93,13 @@
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="result">
+    <mat-card class="result" *ngIf="show_credit_sum || show_overpayment">
         <mat-card-content>
             <p *ngIf="show_credit_sum">Сумма кредита: {{realty_minus_down|number:'1.0-0':'ru'}} руб.</p>
             <p *ngIf="show_overpayment">Переплата: {{overpayment|number:'1.0-0':'ru'}} руб.</p>
             <!--div class="footer" fxLayout="row" fxLayoutAlign="center center">
                 <button mat-button color="accent" (click)="order_form()">Оформить заявку</button>
             </div-->
-            
-
         </mat-card-content>
     </mat-card>    
 
