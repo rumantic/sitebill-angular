@@ -51,9 +51,12 @@ export class MortgageCalculatorComponent implements OnInit {
     min_realty_price = 10000;
 
     down_payment = 1925000;
+    down_percent = 50;
     step_down_payment = 10000;
     max_down_payment = 20000000;
-    min_down_payment = 10000;
+    min_down_payment = 0;
+    
+    realty_minus_down = 0;
 
     percent = 8.5;
     step_percent = 0.1;
@@ -67,8 +70,13 @@ export class MortgageCalculatorComponent implements OnInit {
 
     month_payment = 0;
     overpayment = 0;
+    show_overpayment = false;
+    show_credit_sum = false;
 
     credit_sum = 0;
+    
+    stavka_title = "Ставка % **";
+    stavka_description = "** для семей с двумя детьми и более";
 
     private _tickInterval = 1;
 
@@ -125,6 +133,27 @@ export class MortgageCalculatorComponent implements OnInit {
         } else {
             this.down_payment = this.realty_price * 0.20;
         }
+        
+        if (this.document.getElementById('app_root').getAttribute('down_percent') > 0) {
+            this.down_percent = this.document.getElementById('app_root').getAttribute('down_percent');
+            this.down_payment = this.realty_price*(this.document.getElementById('app_root').getAttribute('down_percent')/100);
+        } else {
+            this.down_payment = this.realty_price * 0.20;
+        }
+        
+        if (this.document.getElementById('app_root').getAttribute('show_overpayment') == 1) {
+            this.show_overpayment = true;
+        } else {
+            this.show_overpayment = false;
+        }
+        
+        if (this.document.getElementById('app_root').getAttribute('show_credit_sum') == 1) {
+            this.show_credit_sum = true;
+        } else {
+            this.show_credit_sum = false;
+        }
+        
+        
         //console.log(this.document.styleSheets);
         /*
         let body_color = this.getStyleSheet('body.theme-default a');
@@ -201,11 +230,40 @@ export class MortgageCalculatorComponent implements OnInit {
 
         return value;
     }
+    
+    formatLabelDown(value: number | null, realty_price: number | null) {
+        console.log(value);
+        console.log(realty_price);
+        console.log(this.realty_price);
+        
+        if (!value) {
+            return 0;
+        }
+        return (this.realty_price - value)/this.realty_price;
+
+        if (value >= 1000) {
+            return value / 1000000 + ' млн';
+        }
+
+        return value;
+    }
+    
+    displayFnDown (value: number | null) {
+        //console.log(value);
+        //console.log(this.realty_price);
+        return 100-Math.round((this.realty_price - value)*100/this.realty_price) + '%';
+    }
+    
 
     calculate(event) {
         //console.log('calculate');
         this.max_down_payment = this.realty_price;
+        if ( this.down_payment > this.realty_price ) {
+            this.down_payment = this.realty_price;
+        }
+        this.down_percent = 100-Math.round((this.realty_price - this.down_payment)*100/this.realty_price);
         let start_sum = this.realty_price - this.down_payment;
+        this.realty_minus_down = start_sum;
         let percent_dig = this.percent / 1200;
         let periods = this.years * 12;
         //console.log(percent_dig);
@@ -216,6 +274,11 @@ export class MortgageCalculatorComponent implements OnInit {
         this.month_payment = start_sum * (percent_dig / (1 - (Math.pow(1 + percent_dig, -periods))));
         this.credit_sum = this.month_payment * periods;
         this.overpayment = this.credit_sum - start_sum;
+        if ( this.percent <= 6 ) {
+            this.stavka_description = "** для семей с двумя детьми и более";
+        } else {
+            this.stavka_description = "";
+        }
         //S * p / (1 - Math.pow(1 + p, -n))
     }
 

@@ -1,4 +1,12 @@
 <div id="mortgage-calculator">
+    <mat-card class="result">
+        <mat-card-content>
+            <div fxlayoutalign="center center">
+            <div>Ежемесячный платеж:</div> <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб    
+            <div class="orange-fg font-size-20">по двум документам!</div>
+            </div>
+        </mat-card-content>
+    </mat-card>    
     <mat-card>
         <mat-card-content>
             <section class="example-section">
@@ -23,7 +31,7 @@
 
                 </mat-form-field>
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Первоначальный взнос" [(ngModel)]="down_payment" (ngModelChange)="calculate($event)">
+                    <input matInput type="number" placeholder="Первоначальный взнос {{down_percent}}% *" [(ngModel)]="down_payment" (ngModelChange)="calculate($event)">
                     <span matSuffix>&nbsp;руб</span>
                     <mat-slider
                         class="example-margin"
@@ -34,7 +42,7 @@
                         [step]="step_down_payment"
                         [thumbLabel]="thumbLabel"
                         [tickInterval]="tickInterval"
-                        [displayWith]="formatLabel"                        
+                        [displayWith]="displayFnDown.bind(this)"                        
                         [(ngModel)]="down_payment"
                         (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
@@ -42,7 +50,7 @@
 
                 </mat-form-field>
                 <mat-form-field class="example-margin">
-                    <input matInput type="number" placeholder="Ставка %" [(ngModel)]="percent">
+                    <input matInput type="number" placeholder="{{stavka_title}}" [(ngModel)]="percent">
                     <span matSuffix>&nbsp;%</span>
                     <mat-slider
                         class="example-margin"
@@ -84,12 +92,14 @@
 
     <mat-card class="result">
         <mat-card-content>
-            <p>Сумма кредита: {{credit_sum|number:'1.0-0':'ru'}} руб.</p>
-            <p>Ежемесячный платеж: {{month_payment|number:'1.0-0':'ru'}} руб.</p>
-            <p>Переплата: {{overpayment|number:'1.0-0':'ru'}} руб.</p>
+            <p *ngIf="show_credit_sum">Сумма кредита: {{realty_minus_down|number:'1.0-0':'ru'}} руб.</p>
+            <p *ngIf="show_overpayment">Переплата: {{overpayment|number:'1.0-0':'ru'}} руб.</p>
             <!--div class="footer" fxLayout="row" fxLayoutAlign="center center">
                 <button mat-button color="accent" (click)="order_form()">Оформить заявку</button>
             </div-->
+            <div><mat-hint>* возможно без первоначального взноса</mat-hint></div>
+            <div><mat-hint>{{stavka_description}}</mat-hint></div>
+            
 
         </mat-card-content>
     </mat-card>    
