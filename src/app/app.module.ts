@@ -91,6 +91,10 @@ const appRoutes: Routes = [
         component: SliderComponent
     },
     {
+        path        : 'carousel',
+        component: CarouselComponent
+    },
+    {
         path        : 'calculator',
         component: MortgageCalculatorComponent
     },

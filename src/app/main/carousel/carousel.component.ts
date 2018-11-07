@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
@@ -6,7 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
-import {NguCarouselConfig} from '@ngu/carousel';
+import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
+
 
 
 @Component({
@@ -50,38 +51,29 @@ export class CarouselComponent implements OnInit {
     lazyLoad: boolean = true;
     hideOnNoSlides: boolean = false;
     width: string = '100%';
+    loaded_items: boolean = true;
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
 
     imgags = [
-        'https://s3.envato.com/files/255283297/item-logo.png',
-        'https://s3.envato.com/files/255283297/item-logo.png',
-        'https://s3.envato.com/files/255283297/item-logo.png',
-        'https://s3.envato.com/files/255283297/item-logo.png'
     ];
 
-    public carouselTileItems: Array<any> = [0, 1, 2, 3, 4, 5];
-    public carouselTiles = {
-        0: [],
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: []
-    };
-    public carouselTile: NguCarouselConfig = {
-        grid: {xs: 1, sm: 1, md: 3, lg: 3, all: 0},
-        slide: 3,
-        speed: 250,
-        point: {
-            visible: true
-        },
-        load: 2,
-        velocity: 0,
+    name = 'Angular';
+    slideNo = 0;
+    withAnim = true;
+    resetAnim = true;
+
+    @ViewChild('myCarousel') myCarousel: NguCarousel<any>;
+    carouselConfig: NguCarouselConfig = {
+        grid: {xs: 1, sm: 1, md: 5, lg: 5, all: 0},
+        load: 1,
+        interval: {timing: 4000, initialDelay: 1000},
+        loop: true,
         touch: true,
-        easing: 'cubic-bezier(0, 0, 0.2, 1)'
-    };
+        velocity: 0.2
+    }
+    carouselItems = [0, 1, 2, 3, 4, 5];
 
     constructor(
         private route: ActivatedRoute,
@@ -120,22 +112,42 @@ export class CarouselComponent implements OnInit {
         this.controlPressed = false;
         this.controlProcessing = true;
     }
+
+    ngOnInit() {
+        this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
+        //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
+    }
     ngAfterViewInit() {
         this._cdr.detectChanges();
     }
 
-    ngOnInit() {
-        this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
-        this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
-        this.carouselTileItems.forEach(el => {
-            this.carouselTileLoad(el);
-        });
-
+    reset() {
+        this.myCarousel.reset(!this.resetAnim);
     }
 
-    public carouselTileLoad(j) {
-        // console.log(this.carouselTiles[j]);
+    moveTo(slide) {
+        this.myCarousel.moveTo(slide, !this.withAnim);
+    }
+    
+    after_load_items() {
+        this.loaded_items = true;
+        console.log(this.imgags);
+        //this.moveTo(0);
+        /*
+        this.carouselTileItems.forEach(el => {
+            console.log(el);
+
+            this.carouselTileLoadN(el);
+        });
+        */
+    }
+    
+    /*
+    public carouselTileLoadN(j) {
+        console.log(this.imgags);
+
         const len = this.carouselTiles[j].length;
+        console.log(len);
         if (len <= 30) {
             for (let i = len; i < len + 15; i++) {
                 this.carouselTiles[j].push(
@@ -144,6 +156,22 @@ export class CarouselComponent implements OnInit {
             }
         }
     }
+
+    public carouselTileLoad(slide_items) {
+
+        console.log('slide_items');
+        console.log(slide_items.url);
+        const len = this.carouselTiles[0].length;
+        console.log(len);
+        this.carouselTiles[0].push(
+            slide_items.url
+        );
+        console.log('tiles');
+        console.log(this.carouselTiles);
+        this.loaded_items = true;
+        console.log(this.loaded_items);
+    }
+    */
 
     load_grid_data(app_name, params: any, grid_item) {
         //console.log('load_grid_data');
@@ -177,8 +205,8 @@ export class CarouselComponent implements OnInit {
             //console.log('rows[key][\'image\'][\'value\']');
             //console.log(rows[key]['image']['value']);
 
-            console.log('rows[key]');
-            console.log(rows[key]);
+            //console.log('rows[key]');
+            //console.log(rows[key]);
             key_item = rows[key];
 
             //console.log('key_item');
@@ -248,9 +276,25 @@ export class CarouselComponent implements OnInit {
                     caption = caption_array.join(", ");
                 }
                 let slide_item = {url: img_url, caption: caption, href: href};
-                console.log(slide_item);
-                this.imageUrls.push(slide_item);
+                this.imgags.push(img_url);
+                this.carouselItems[key] = caption;
+                /*
+                this.carouselTiles[0].push(
+                    this.imgags[0]
+                );
+                
+                this.carouselTiles[0].push(
+                    img_url
+                );
+                */
+                //this.carouselTileLoad(slide_item);
+
+
+                //console.log(this.carouselTiles);
+                //this.imageUrls.push(slide_item);
             }
         }
+        this.after_load_items();
+        //this.loaded_items = true;
     }
 }
