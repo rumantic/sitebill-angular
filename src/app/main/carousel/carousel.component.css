@@ -28,10 +28,12 @@
 
 .tile h1 {
   text-align: center;
-  line-height: 200px;
   background: rgba(0, 0, 0, 0.32);
   color: white;
   margin: 0;
+}
+.tile a {
+    color: white;
 }
 
 h4 {

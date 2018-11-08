@@ -1,14 +1,14 @@
 <div id="carousel" class="page-layout simple">
-    <ngu-carousel #myCarousel [inputs]="carouselConfig" [dataSource]="carouselItems">
-        <ngu-tile *nguCarouselDef="let item; let j = index">
-            <div class="tile">{{item}} {{imgags[j]}}</div>
-        </ngu-tile>
-        <button NguCarouselNext class="rightRs">></button>
-        <button NguCarouselPrev class="leftRs"><</button>
-        <ul class="myPoint" NguCarouselPoint>
-            <li *ngFor="let j of myCarousel.pointNumbers; let j = index" [class.active]="j==myCarousel.activePoint" (click)="myCarousel.moveTo(j)"></li>
-        </ul>
-    </ngu-carousel>
+        <ngu-carousel #myCarousel [inputs]="carouselConfig" [dataSource]="carouselItems" *ngIf="loaded_items">
+            <ngu-tile *nguCarouselDef="let item; let j = index">
+                <div class="tile" [style.background]="'url(' + property[j].img_url + ')'" ><div class="caption"><h1><a href="{{property[j].href}}">{{item}}</a></h1></div></div>
+            </ngu-tile>
+            <button NguCarouselNext class="rightRs">></button>
+            <button NguCarouselPrev class="leftRs"><</button>
+            <ul class="myPoint" NguCarouselPoint>
+                <li *ngFor="let j of myCarousel.pointNumbers; let j = index" [class.active]="j==myCarousel.activePoint" (click)="myCarousel.moveTo(j)"></li>
+            </ul>
+        </ngu-carousel>
 
     <!--h1>Reset</h1>
     <div><label><input type="checkbox" [(ngModel)]="resetAnim">With Animation</label></div>

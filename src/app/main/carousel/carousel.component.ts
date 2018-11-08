@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, isDevMode, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
@@ -51,13 +51,11 @@ export class CarouselComponent implements OnInit {
     lazyLoad: boolean = true;
     hideOnNoSlides: boolean = false;
     width: string = '100%';
-    loaded_items: boolean = true;
+    loaded_items: boolean = false;
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
 
-    imgags = [
-    ];
 
     name = 'Angular';
     slideNo = 0;
@@ -74,6 +72,13 @@ export class CarouselComponent implements OnInit {
         velocity: 0.2
     }
     carouselItems = [0, 1, 2, 3, 4, 5];
+    property = [
+        {img_url: null, caption: null, href: null},
+        {img_url: null, caption: null, href: null},
+        {img_url: null, caption: null, href: null},
+        {img_url: null, caption: null, href: null},
+        {img_url: null, caption: null, href: null},
+    ];
 
     constructor(
         private route: ActivatedRoute,
@@ -81,6 +86,7 @@ export class CarouselComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _cdr: ChangeDetectorRef
     ) {
+        //console.log(this.property);
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -112,10 +118,11 @@ export class CarouselComponent implements OnInit {
         this.controlPressed = false;
         this.controlProcessing = true;
     }
+    
 
     ngOnInit() {
+        this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
         this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
-        //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
     }
     ngAfterViewInit() {
         this._cdr.detectChanges();
@@ -131,57 +138,14 @@ export class CarouselComponent implements OnInit {
     
     after_load_items() {
         this.loaded_items = true;
-        console.log(this.imgags);
-        //this.moveTo(0);
-        /*
-        this.carouselTileItems.forEach(el => {
-            console.log(el);
-
-            this.carouselTileLoadN(el);
-        });
-        */
+        //console.log(this.property);
+        this._cdr.detectChanges();
     }
     
-    /*
-    public carouselTileLoadN(j) {
-        console.log(this.imgags);
-
-        const len = this.carouselTiles[j].length;
-        console.log(len);
-        if (len <= 30) {
-            for (let i = len; i < len + 15; i++) {
-                this.carouselTiles[j].push(
-                    this.imgags[Math.floor(Math.random() * this.imgags.length)]
-                );
-            }
-        }
-    }
-
-    public carouselTileLoad(slide_items) {
-
-        console.log('slide_items');
-        console.log(slide_items.url);
-        const len = this.carouselTiles[0].length;
-        console.log(len);
-        this.carouselTiles[0].push(
-            slide_items.url
-        );
-        console.log('tiles');
-        console.log(this.carouselTiles);
-        this.loaded_items = true;
-        console.log(this.loaded_items);
-    }
-    */
-
     load_grid_data(app_name, params: any, grid_item) {
-        //console.log('load_grid_data');
-        //console.log(params);
         const body = {action: 'model', anonymous: true, do: 'get_data', model_name: app_name, params: params, session_key: this.currentUser.session_key, grid_item: grid_item};
-        //console.log(body);
-
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {
-                //console.log(result);
                 this.init_data_slides(app_name, result.rows);
             });
     }
@@ -198,46 +162,17 @@ export class CarouselComponent implements OnInit {
         var old_style = false;
 
         for (let key in rows) {
-            //console.log('key');
-            //console.log(key);
-            //console.log('rows');
-            //console.log(rows);
-            //console.log('rows[key][\'image\'][\'value\']');
-            //console.log(rows[key]['image']['value']);
-
-            //console.log('rows[key]');
-            //console.log(rows[key]);
             key_item = rows[key];
-
-            //console.log('key_item');
-            //console.log(key_item);
-
-
             image_items = key_item['image'];
-            //console.log('image_items');
-            //console.log(image_items);
-
             if (typeof image_items[0] === 'undefined') {
                 value_items = image_items['value'];
-
-                //console.log('value_items 111');
-                //console.log(value_items);
-                //console.log(value_items.lehgth);
                 value_zero = value_items[0];
             } else {
                 old_style = true;
                 value_zero = image_items[0];
             }
-
-            //console.log('value_zero');
-            //console.log(value_zero);
-
             normal = value_zero['normal'];
 
-            //console.log('normal');
-            //console.log(normal);
-
-            //console.log(value_items);
 
             if (typeof normal === 'undefined') {
                 console.log('undefined');
@@ -275,26 +210,12 @@ export class CarouselComponent implements OnInit {
 
                     caption = caption_array.join(", ");
                 }
-                let slide_item = {url: img_url, caption: caption, href: href};
-                this.imgags.push(img_url);
+                let slide_item = {img_url: img_url, caption: caption, href: href};
+                this.property[key] = slide_item;
+                //this.property[key]['href'] = href;
                 this.carouselItems[key] = caption;
-                /*
-                this.carouselTiles[0].push(
-                    this.imgags[0]
-                );
-                
-                this.carouselTiles[0].push(
-                    img_url
-                );
-                */
-                //this.carouselTileLoad(slide_item);
-
-
-                //console.log(this.carouselTiles);
-                //this.imageUrls.push(slide_item);
             }
         }
         this.after_load_items();
-        //this.loaded_items = true;
     }
 }
