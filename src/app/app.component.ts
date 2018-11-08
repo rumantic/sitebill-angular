@@ -62,6 +62,9 @@ export class AppComponent implements OnInit, OnDestroy
         if (this.elRef.nativeElement.getAttribute('run') == 'calculator') {
             this.router.navigate(['/calculator']);
         }
+        if (this.elRef.nativeElement.getAttribute('run') == 'carousel') {
+            this.router.navigate(['/carousel']);
+        }
         
         //console.log((platformLocation as any).location);
         //console.log((platformLocation as any).location.href);

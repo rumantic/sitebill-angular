@@ -8,7 +8,7 @@ import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
 import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
 
-
+import {DOCUMENT} from '@angular/platform-browser';
 
 @Component({
     selector: 'carousel',
@@ -84,6 +84,7 @@ export class CarouselComponent implements OnInit {
         private route: ActivatedRoute,
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
+        @Inject(DOCUMENT) private document: any,
         private _cdr: ChangeDetectorRef
     ) {
         //console.log(this.property);
@@ -113,6 +114,7 @@ export class CarouselComponent implements OnInit {
         this.model_name = this.route.snapshot.paramMap.get('model_name');
         this.control_name = this.route.snapshot.paramMap.get('control_name');
         this.key_value = this.route.snapshot.paramMap.get('id');
+        console.log(this.document);
 
 
         this.controlPressed = false;
