@@ -34,6 +34,7 @@
 }
 .tile a {
     color: white;
+    cursor: pointer;
 }
 
 h4 {

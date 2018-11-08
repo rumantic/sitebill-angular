@@ -9,6 +9,10 @@ import {IImage} from 'ng-simple-slideshow';
 import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
 
 import {DOCUMENT} from '@angular/platform-browser';
+//import { WINDOW } from "app/_services/window/services/window.service";
+//import { WindowRef } from 'app/_services/window/WindowRef';
+
+
 
 @Component({
     selector: 'carousel',
@@ -52,6 +56,8 @@ export class CarouselComponent implements OnInit {
     hideOnNoSlides: boolean = false;
     width: string = '100%';
     loaded_items: boolean = false;
+    data_loaded: boolean = false;
+    complex_loaded: boolean = false;
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -71,20 +77,15 @@ export class CarouselComponent implements OnInit {
         touch: true,
         velocity: 0.2
     }
-    carouselItems = [0, 1, 2, 3, 4, 5];
-    property = [
-        {img_url: null, caption: null, href: null},
-        {img_url: null, caption: null, href: null},
-        {img_url: null, caption: null, href: null},
-        {img_url: null, caption: null, href: null},
-        {img_url: null, caption: null, href: null},
-    ];
+    carouselItems = [];
+    property = [];
 
     constructor(
         private route: ActivatedRoute,
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
         @Inject(DOCUMENT) private document: any,
+        //private winRef: WindowRef,
         private _cdr: ChangeDetectorRef
     ) {
         //console.log(this.property);
@@ -114,7 +115,13 @@ export class CarouselComponent implements OnInit {
         this.model_name = this.route.snapshot.paramMap.get('model_name');
         this.control_name = this.route.snapshot.paramMap.get('control_name');
         this.key_value = this.route.snapshot.paramMap.get('id');
-        console.log(this.document);
+        //console.log(this.document);
+        //console.log(window);
+                
+        //console.log(this.winRef);
+        //console.log(window.parent);
+        //console.log(window.parent.document);
+        //console.log(window.parent.document.getElementById('parent_bru'));
 
 
         this.controlPressed = false;
@@ -129,6 +136,10 @@ export class CarouselComponent implements OnInit {
     ngAfterViewInit() {
         this._cdr.detectChanges();
     }
+    
+    goto ( href ) {
+        window.parent.location = href;
+    }
 
     reset() {
         this.myCarousel.reset(!this.resetAnim);
@@ -139,9 +150,11 @@ export class CarouselComponent implements OnInit {
     }
     
     after_load_items() {
-        this.loaded_items = true;
-        //console.log(this.property);
-        this._cdr.detectChanges();
+        if ( this.data_loaded && this.complex_loaded ) {
+            this.loaded_items = true;
+            //console.log(this.property);
+            this._cdr.detectChanges();
+        }
     }
     
     load_grid_data(app_name, params: any, grid_item) {
@@ -213,11 +226,18 @@ export class CarouselComponent implements OnInit {
                     caption = caption_array.join(", ");
                 }
                 let slide_item = {img_url: img_url, caption: caption, href: href};
-                this.property[key] = slide_item;
+                this.property.push(slide_item);
                 //this.property[key]['href'] = href;
-                this.carouselItems[key] = caption;
+                this.carouselItems.push(1);
             }
         }
+        if ( app_name == 'data' ) {
+            this.data_loaded = true;
+        }
+        if ( app_name == 'complex' ) {
+            this.complex_loaded = true;
+        }
+        
         this.after_load_items();
     }
 }

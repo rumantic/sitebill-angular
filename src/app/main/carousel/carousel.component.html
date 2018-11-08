@@ -1,7 +1,7 @@
 <div id="carousel" class="page-layout simple">
         <ngu-carousel #myCarousel [inputs]="carouselConfig" [dataSource]="carouselItems" *ngIf="loaded_items">
             <ngu-tile *nguCarouselDef="let item; let j = index">
-                <div class="tile" [style.background]="'url(' + property[j].img_url + ')'" ><div class="caption"><h1><a href="{{property[j].href}}">{{item}}</a></h1></div></div>
+                <div class="tile" [style.background]="'url(' + property[j].img_url + ')'" ><div class="caption"><h1><a (click)="goto(property[j].href)"><p [innerHTML]="property[j].caption"></p></a></h1></div></div>
             </ngu-tile>
             <button NguCarouselNext class="rightRs">></button>
             <button NguCarouselPrev class="leftRs"><</button>

@@ -49,6 +49,7 @@ import { ControlElementsComponent } from 'app/main/control-elements/control-elem
 import { SliderComponent } from 'app/main/slider/slider.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import { NguCarouselModule } from '@ngu/carousel';
+
 import { CarouselComponent } from 'app/main/carousel/carousel.component';
 
 
@@ -201,7 +202,7 @@ const appRoutes: Routes = [
         AuthGuard,
         AlertService,
         AuthenticationService,
-        ChatService
+        ChatService,
         // provider used to create fake backend
         //fakeBackendProvider
     ],
