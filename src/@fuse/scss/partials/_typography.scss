@@ -7,7 +7,7 @@
     $accent: map-get($theme, accent);
     $is-dark: map-get($theme, is-dark);
 
-    a {
+    .angular a {
         color: map-get($accent, default);
     }
 
@@ -56,37 +56,37 @@ html, body {
 }
 
 // Headings
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.angular h1, .angular h2, .angular h3, .angular h4, .angular h5, .angular h6,
+.angular .h1, .angular .h2, .angular .h3, .angular .h4, .angular .h5, .angular .h6 {
     font-weight: normal;
 }
 
-h1, .h1 {
+.angular h1, .angular .h1 {
     font-size: 24px;
 }
 
-h2, .h2 {
+.angular h2, .angular .h2 {
     font-size: 20px;
 }
 
-h3, .h3 {
+.angular h3, .angular .h3 {
     font-size: 16px;
 }
 
-h4, .h4 {
+.angular h4, .angular .h4 {
     font-size: 15px;
 }
 
-h5, .h5 {
+.angular h5, .angular .h5 {
     font-size: 13px;
 }
 
-h6, .h6 {
+.angular h6, .angular .h6 {
     font-size: 12px;
 }
 
 // Links
-a {
+.angular a {
     text-decoration: none;
 
     &:not(.mat-button):not(.mat-raised-button):not(.mat-flat-button):not(.mat-stroked-button):not(.mat-icon-button):not(.mat-fab):not(.mat-mini-fab) {
@@ -180,7 +180,7 @@ small {
 }
 
 // Table
-table {
+.angular table {
 
     thead {
 

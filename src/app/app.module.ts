@@ -71,6 +71,7 @@ import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/c
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
+import { SearchFormComponent } from 'app/main/search-form/search-form.component';
 
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
@@ -90,6 +91,10 @@ const appRoutes: Routes = [
     {
         path        : 'slider',
         component: SliderComponent
+    },
+    {
+        path        : 'search',
+        component: SearchFormComponent
     },
     {
         path        : 'carousel',
@@ -134,7 +139,8 @@ const appRoutes: Routes = [
         ChatRightSidenavComponent,
         ChatContactSidenavComponent,
         DocsComponentsThirdPartyNgxDatatableComponent,
-        MortgageCalculatorComponent
+        MortgageCalculatorComponent,
+        SearchFormComponent
     ],
     imports     : [
         BrowserModule,
