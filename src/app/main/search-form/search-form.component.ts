@@ -1,13 +1,18 @@
 import {Component, Inject, OnInit, isDevMode} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {ActivatedRoute} from '@angular/router';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
 
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {Options} from 'ng5-slider';
+import {map, startWith} from 'rxjs/operators';
+
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
 
 
 
@@ -24,9 +29,9 @@ export class SearchFormComponent implements OnInit {
     control_name: any;
     item_model: any[];
     item: any[];
-    
+
     form: FormGroup;
-    
+
 
 
     rows: any[];
@@ -54,7 +59,7 @@ export class SearchFormComponent implements OnInit {
     lazyLoad: boolean = true;
     hideOnNoSlides: boolean = false;
     width: string = '100%';
-    
+
     private _tickInterval = 1;
     autoTicks = false;
     disabled = false;
@@ -66,20 +71,33 @@ export class SearchFormComponent implements OnInit {
     thumbLabel = true;
     value = 0;
     vertical = false;
-    
+
     realty_price = 5500000;
     step_realty_price = 10000;
     max_realty_price = 20000000;
     min_realty_price = 10000;
-    
+
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
+
+    value1: number = 4;
+    highValue: number = 100;
+    options: Options = {
+        floor: 0,
+        ceil: 100
+    };
+    options1: string[] = ['One', 'Two', 'Three'];
+    filteredOptions: Observable<string[]>;
+    myControl = new FormControl();
+
+
 
     constructor(
         private route: ActivatedRoute,
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
+        private dialog: MatDialog,
         private _formBuilder: FormBuilder
     ) {
 
@@ -118,26 +136,37 @@ export class SearchFormComponent implements OnInit {
     ngOnInit() {
         // Reactive Form
         this.form = this._formBuilder.group({
-            company   : [
+            company: [
                 {
-                    value   : 'Google',
+                    value: 'Google',
                     disabled: true
                 }, Validators.required
             ],
-            firstName : ['', Validators.required],
-            lastName  : ['', Validators.required],
-            address   : ['', Validators.required],
-            address2  : ['', Validators.required],
-            city      : ['', Validators.required],
-            state     : ['', Validators.required],
+            firstName: [''],
+            lastName: [''],
+            option1: [''],
+            address: ['', Validators.required],
+            address2: ['', Validators.required],
+            city: ['', Validators.required],
+            state: ['', Validators.required],
             postalCode: ['', [Validators.required, Validators.maxLength(5)]],
-            country   : ['', Validators.required],
-            realty_price : ['', Validators.required],
+            country: ['', Validators.required],
+            realty_price: ['', Validators.required],
         });
-        
+
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value))
+        );
+
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
+    }
+    private _filter(value: string): string[] {
+        const filterValue = value.toLowerCase();
+
+        return this.options1.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
     }
     
     formatLabel(value: number | null) {
@@ -151,14 +180,14 @@ export class SearchFormComponent implements OnInit {
 
         return value;
     }
-    
+
     get tickInterval(): number | 'auto' {
         return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
     }
     set tickInterval(value) {
         this._tickInterval = coerceNumberProperty(value);
     }
-    
+
 
     load_grid_data(app_name, params: any, grid_item) {
         //console.log('load_grid_data');
@@ -176,6 +205,18 @@ export class SearchFormComponent implements OnInit {
         console.log('calculate');
     }
     
+    select_district () {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.width = '600px';
+        dialogConfig.height = '400px';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {app_name: 'test'};
+
+        this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
+    }
+
 
     init_data_slides(app_name, rows) {
         var image_items;
@@ -255,7 +296,7 @@ export class SearchFormComponent implements OnInit {
                     if (rows[key]['street_id']['value_string'] !== null && rows[key]['street_id']['value_string'] != '') {
                         caption_array.push(rows[key]['street_id']['value_string']);
                     }
-                    if ( old_style ) {
+                    if (old_style) {
                         caption_array.push(rows[key]['price'] + ' ' + rows[key]['currency_id']['value_string']);
                         href = '/realty' + rows[key]['id'];
                     } else {

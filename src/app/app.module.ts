@@ -8,7 +8,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 //import {MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule } from '@angular/material';
+         MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
+         MatAutocompleteModule } from '@angular/material';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
@@ -59,6 +60,7 @@ import { ProfileTimelineComponent } from 'app/main/documentation/components-thir
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
+import { SelectDistrictDialogComponent } from 'app/main/search-form/dialogs/select-district/select-district.component';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { ChatComponent } from 'app/main/apps/chat/chat.component';
 import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
@@ -72,6 +74,7 @@ import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/c
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
 import { SearchFormComponent } from 'app/main/search-form/search-form.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
@@ -130,6 +133,7 @@ const appRoutes: Routes = [
         ProfileTimelineComponent,
         CourseDialogComponent,
         DeclineClientComponent,
+        SelectDistrictDialogComponent,
         ChatComponent,
         ChatViewComponent,
         ChatStartComponent,
@@ -181,6 +185,7 @@ const appRoutes: Routes = [
         MatCardModule,
         MatInputModule,
         MatSliderModule,
+        MatAutocompleteModule,
 
         SlideshowModule,
         NguCarouselModule,
@@ -199,7 +204,8 @@ const appRoutes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         NgSelectModule, 
-        AppStoreModule
+        AppStoreModule,
+        Ng5SliderModule
     ],
     exports: [ RouterModule ],
     providers: [
@@ -212,7 +218,7 @@ const appRoutes: Routes = [
         // provider used to create fake backend
         //fakeBackendProvider
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent],
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent],
     bootstrap   : [
         AppComponent
     ]
