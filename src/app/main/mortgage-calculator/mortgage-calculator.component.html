@@ -1,9 +1,24 @@
-<div id="mortgage-calculator">
+<div *ngIf="license_check_false">
+    <div fxLayout="column" fxLayoutAlign="center center">
+
+        <div fxLayout="column" class="error_content" fxLayoutAlign="center center">
+
+            <h1>Нет лицензии. Wrong license</h1>
+
+            <div align="center">Для работы приложения необходимо купить лицензию.<br> To use the application you need to buy a license.</div>
+
+
+            <a class="back-link" href="https://www.sitebill.ru/mortgage-calculator/" target="_blank">Купить | Buy</a>
+        </div>
+
+    </div>    
+</div>
+<div id="mortgage-calculator" *ngIf="license_check_true">
     <mat-card class="result">
         <mat-card-content>
             <div fxlayoutalign="center center">
                 <div>{{top_text}}</div> от <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб    
-            <div class="orange-fg font-size-20">{{bottom_text}}</div>
+                <div class="orange-fg font-size-20">{{bottom_text}}</div>
             </div>
         </mat-card-content>
     </mat-card>    
@@ -67,7 +82,7 @@
                         [vertical]="vertical">
                     </mat-slider>
                     <div><span class="font-size-10">{{stavka_description}}</span></div>
-                    
+
                 </mat-form-field>
 
                 <mat-form-field class="example-margin">
@@ -94,7 +109,7 @@
     </mat-card>
 
     <mat-card class="result" *ngIf="show_credit_sum || show_overpayment">
-        <mat-card-content>
+              <mat-card-content>
             <p *ngIf="show_credit_sum">Сумма кредита: {{realty_minus_down|number:'1.0-0':'ru'}} руб.</p>
             <p *ngIf="show_overpayment">Переплата: {{overpayment|number:'1.0-0':'ru'}} руб.</p>
             <!--div class="footer" fxLayout="row" fxLayoutAlign="center center">

@@ -82,6 +82,9 @@ export class MortgageCalculatorComponent implements OnInit {
     bottom_text = "по двум документам!";
 
     private _tickInterval = 1;
+    
+    license_check_true: boolean = false;
+    license_check_false: boolean = false;
 
 
     constructor(
@@ -164,28 +167,6 @@ export class MortgageCalculatorComponent implements OnInit {
             this.bottom_text = this.document.getElementById('app_root').getAttribute('bottom_text');
         }
         
-        
-        
-        //console.log(this.document.styleSheets);
-        /*
-        let body_color = this.getStyleSheet('body.theme-default a');
-        if ( body_color ) {
-            body_color.style.color = '';
-        }
-        */
-
-        //console.log(this.getStyleSheet('body.theme-default a'));
-        //console.log(this.getCSSRule('body.theme-default a'));
-        //this.document.getElementsByTagName('body.theme-default a').style.color = '';
-
-        //console.log('years');
-
-        //console.log(this.document.getElementById('app_root').getAttribute('realty_id'));
-        //console.log(this.document.getElementById('app_root').getAttribute('years'));
-
-        //console.log(this.elRef.nativeElement.parentElement);
-        //console.log(this.elRef.nativeElement.getAttribute('years'));
-
         this.calculate(null);
 
     }
@@ -194,22 +175,11 @@ export class MortgageCalculatorComponent implements OnInit {
         for (var i = 0; i < this.document.styleSheets.length; i++) {
             var sheet = this.document.styleSheets[i];
             try {
-                //console.log(sheet.cssRules);
-
                 for (var j = 0; j < sheet.cssRules.length; j++) {
                     if ( sheet.cssRules[j].selectorText == unique_title ) {
-                        //console.log(sheet.cssRules[j]);
-                        //console.log(sheet.cssRules[j].style.color);
                         return sheet.cssRules[j];
                     }
                 }
-
-
-                //if (sheet.title == unique_title) {
-                //    return sheet;
-                //}
-
-                // код ...
 
             } catch (err) {
                 //console.log(err);
@@ -227,8 +197,7 @@ export class MortgageCalculatorComponent implements OnInit {
     }
 
     ngOnInit() {
-        //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
-        //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
+        this.check_license();
     }
 
     formatLabel(value: number | null) {
@@ -244,10 +213,6 @@ export class MortgageCalculatorComponent implements OnInit {
     }
     
     formatLabelDown(value: number | null, realty_price: number | null) {
-        console.log(value);
-        console.log(realty_price);
-        console.log(this.realty_price);
-        
         if (!value) {
             return 0;
         }
@@ -261,14 +226,11 @@ export class MortgageCalculatorComponent implements OnInit {
     }
     
     displayFnDown (value: number | null) {
-        //console.log(value);
-        //console.log(this.realty_price);
         return 100-Math.round((this.realty_price - value)*100/this.realty_price) + '%';
     }
     
 
     calculate(event) {
-        //console.log('calculate');
         this.max_down_payment = this.realty_price;
         if ( this.down_payment > this.realty_price ) {
             this.down_payment = this.realty_price;
@@ -278,11 +240,6 @@ export class MortgageCalculatorComponent implements OnInit {
         this.realty_minus_down = start_sum;
         let percent_dig = this.percent / 1200;
         let periods = this.years * 12;
-        //console.log(percent_dig);
-        //console.log(periods);
-        //console.log(percent_dig/(Math.pow((1+percent_dig), periods)-1));
-        //this.month_payment = this.credit_sum * (percent_dig + percent_dig/(Math.pow((1+percent_dig), periods)-1));
-        //this.month_payment = this.credit_sum * (percent_dig/(1 - (Math.pow((1+percent_dig), (1-periods)))));
         this.month_payment = start_sum * (percent_dig / (1 - (Math.pow(1 + percent_dig, -periods))));
         this.credit_sum = this.month_payment * periods;
         this.overpayment = this.credit_sum - start_sum;
@@ -291,7 +248,6 @@ export class MortgageCalculatorComponent implements OnInit {
         } else {
             this.stavka_description = "";
         }
-        //S * p / (1 - Math.pow(1 + p, -n))
     }
 
     get tickInterval(): number | 'auto' {
@@ -301,21 +257,19 @@ export class MortgageCalculatorComponent implements OnInit {
         this._tickInterval = coerceNumberProperty(value);
     }
 
-    order_form() {
-        console.log('order form');
-    }
-
-
-    load_grid_data(app_name, params: any, grid_item) {
-        //console.log('load_grid_data');
-        //console.log(params);
-        const body = {action: 'model', anonymous: true, do: 'get_data', model_name: app_name, params: params, session_key: this.currentUser.session_key, grid_item: grid_item};
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+    check_license() {
+        
+        const body = {proxysalt: 'jkkwJJfk34u76vjLDmckIQ2', action: 'license', anonymous: true, do: 'check'};
+        
+        this._httpClient.post(`https://api.sitebill.ru/apps/apiproxy/restproxy.php`, body)
             .subscribe((result: any) => {
-                //console.log(result);
-                //this.init_data_slides(app_name, result.rows);
+                if ( result.state == 'success' ) {
+                    this.license_check_false = false;
+                    this.license_check_true = true;
+                } else {
+                    this.license_check_false = true;
+                    this.license_check_true = false;
+                }
             });
     }
 

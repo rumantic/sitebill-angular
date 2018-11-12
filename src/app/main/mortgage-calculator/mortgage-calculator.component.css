@@ -28,3 +28,6 @@
 ::ng-deep .mat-slider-horizontal .mat-slider-thumb-label {
     
 }
+.error_content {
+    padding: 10px;
+}

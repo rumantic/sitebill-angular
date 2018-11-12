@@ -76,10 +76,13 @@ import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortga
 import { SearchFormComponent } from 'app/main/search-form/search-form.component';
 import { Ng5SliderModule } from 'ng5-slider';
 
+import { Error404Component } from 'app/main/pages/errors/404/error-404.component';
+import { Error500Component } from 'app/main/pages/errors/500/error-500.component';
+
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
-
+/*
 const appRoutes: Routes = [
     //{ path: '', component: CarouselComponent },
     { path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
@@ -118,6 +121,21 @@ const appRoutes: Routes = [
 
     },
 ];
+*/
+
+const appRoutes: Routes = [
+    //{ path: '', component: CarouselComponent },
+    { path: '', redirectTo: 'calculator', pathMatch: 'full' },
+    {
+        path        : 'calculator',
+        component: MortgageCalculatorComponent
+    },
+    {
+        path      : '**',
+        component: Error404Component
+    }
+];
+
 
 @NgModule({
     declarations: [
@@ -144,6 +162,8 @@ const appRoutes: Routes = [
         ChatContactSidenavComponent,
         DocsComponentsThirdPartyNgxDatatableComponent,
         MortgageCalculatorComponent,
+        Error404Component,
+        Error500Component,
         SearchFormComponent
     ],
     imports     : [
