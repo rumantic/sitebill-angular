@@ -82,10 +82,9 @@ import { Error500Component } from 'app/main/pages/errors/500/error-500.component
 
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
-/*
 const appRoutes: Routes = [
     //{ path: '', component: CarouselComponent },
-    { path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
+    //{ path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },
@@ -120,9 +119,12 @@ const appRoutes: Routes = [
         }
 
     },
+    {
+        path      : '**',
+        component: Error404Component
+    }
 ];
-*/
-
+/*
 const appRoutes: Routes = [
     //{ path: '', component: CarouselComponent },
     { path: '', redirectTo: 'calculator', pathMatch: 'full' },
@@ -135,6 +137,21 @@ const appRoutes: Routes = [
         component: Error404Component
     }
 ];
+
+const appRoutes: Routes = [
+    //{ path: '', component: CarouselComponent },
+    { path: '', redirectTo: 'carousel', pathMatch: 'full' },
+    {
+        path        : 'carousel',
+        component: CarouselComponent
+    },
+    {
+        path      : '**',
+        component: Error404Component
+    }
+];
+*/
+
 
 
 @NgModule({

@@ -259,10 +259,11 @@ export class MortgageCalculatorComponent implements OnInit {
 
     check_license() {
         
-        const body = {proxysalt: 'jkkwJJfk34u76vjLDmckIQ2', action: 'license', anonymous: true, do: 'check'};
+        const body = {proxysalt: 'jkkwJJfk34u76vjLDmckIQ2', action: 'license', anonymous: true, do: 'check', module: 'mortgage_calculator'};
         
         this._httpClient.post(`https://api.sitebill.ru/apps/apiproxy/restproxy.php`, body)
             .subscribe((result: any) => {
+                console.log(result);
                 if ( result.state == 'success' ) {
                     this.license_check_false = false;
                     this.license_check_true = true;
