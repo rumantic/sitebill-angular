@@ -61,6 +61,8 @@ export class CarouselComponent implements OnInit {
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
+    private max_queue_size: number = 0;
+    private current_queue_size: number = 0;
 
 
     name = 'Angular';
@@ -132,6 +134,10 @@ export class CarouselComponent implements OnInit {
     ngOnInit() {
         this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
         this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
+        this.load_grid_data('data', {active: 1, user_id: 228}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
+        this.load_grid_data('data', {topic_id: 6195}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
+        this.load_grid_data('data', {topic_id: 6222}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image']);
+        this.max_queue_size = 5;
     }
     ngAfterViewInit() {
         this._cdr.detectChanges();
@@ -150,7 +156,7 @@ export class CarouselComponent implements OnInit {
     }
     
     after_load_items() {
-        if ( this.data_loaded && this.complex_loaded ) {
+        if (this.current_queue_size == this.max_queue_size ) {
             this.loaded_items = true;
             //console.log(this.property);
             this._cdr.detectChanges();
@@ -231,12 +237,8 @@ export class CarouselComponent implements OnInit {
                 this.carouselItems.push(1);
             }
         }
-        if ( app_name == 'data' ) {
-            this.data_loaded = true;
-        }
-        if ( app_name == 'complex' ) {
-            this.complex_loaded = true;
-        }
+        this.current_queue_size++;
+        //console.log(this.current_queue_size);
         
         this.after_load_items();
     }
