@@ -1,6 +1,10 @@
-#mortgage-calculator {
+#calculator-mini {
+    cursor: pointer;
     min-width: 270px;
     width: 100%;
+}
+#calculator-mini h2 {
+    line-height: 10px;
 }
 .example-h2 {
   margin: 10px;
@@ -30,7 +34,4 @@
 }
 .error_content {
     padding: 10px;
-}
-.order_button_div {
-    padding-top: 10px;
 }

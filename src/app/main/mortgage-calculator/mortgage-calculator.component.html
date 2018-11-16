@@ -107,6 +107,10 @@
 
         </mat-card-content>
     </mat-card>
+    <div fxLayout="row" fxLayoutAlign="center center" class="order_button_div" *ngIf="ipoteka_order_url != ''">
+        <a href="{{ipoteka_order_url}}"><button mat-raised-button color="accent">Оформить ипотеку</button></a>
+    </div>
+
 
     <mat-card class="result" *ngIf="show_credit_sum || show_overpayment">
               <mat-card-content>

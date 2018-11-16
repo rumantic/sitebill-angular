@@ -11,14 +11,21 @@ import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
 import {DOCUMENT} from '@angular/platform-browser';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+
+
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
+
+
 
 
 @Component({
-    selector: 'mortgage-calculator',
-    templateUrl: './mortgage-calculator.component.html',
-    styleUrls: ['./mortgage-calculator.component.css']
+    selector: 'calculator-mini',
+    templateUrl: './calculator-mini.component.html',
+    styleUrls: ['./calculator-mini.component.css']
 })
-export class MortgageCalculatorComponent implements OnInit {
+export class CalculatorMiniComponent implements OnInit {
     controlPressed: boolean;
     controlProcessing: boolean;
     key_value: any;
@@ -79,9 +86,8 @@ export class MortgageCalculatorComponent implements OnInit {
     stavka_description = "** для семей с двумя детьми и более";
     
     top_text = "Ежемесячный платеж:";
+    top_text_mini = "В ипотеку:";
     bottom_text = "по двум документам!";
-    
-    ipoteka_order_url = "";
 
     private _tickInterval = 1;
     
@@ -94,6 +100,7 @@ export class MortgageCalculatorComponent implements OnInit {
         @Inject(DOCUMENT) private document: any,
         private _httpClient: HttpClient,
         private elRef: ElementRef,
+        private dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         private _cdr: ChangeDetectorRef
     ) {
@@ -168,10 +175,9 @@ export class MortgageCalculatorComponent implements OnInit {
         if (this.document.getElementById('app_root').getAttribute('bottom_text') != null) {
             this.bottom_text = this.document.getElementById('app_root').getAttribute('bottom_text');
         }
-        if (this.document.getElementById('app_root').getAttribute('ipoteka_order_url') != null) {
-            this.ipoteka_order_url = this.document.getElementById('app_root').getAttribute('ipoteka_order_url');
+        if (this.document.getElementById('app_root').getAttribute('top_text_mini') != null) {
+            this.top_text_mini = this.document.getElementById('app_root').getAttribute('top_text_mini');
         }
-        
         
         this.calculate(null);
 
@@ -206,36 +212,6 @@ export class MortgageCalculatorComponent implements OnInit {
         this.check_license();
     }
 
-    formatLabel(value: number | null) {
-        if (!value) {
-            return 0;
-        }
-
-        if (value >= 1000) {
-            return value / 1000000 + ' млн';
-        }
-
-        return value;
-    }
-    
-    formatLabelDown(value: number | null, realty_price: number | null) {
-        if (!value) {
-            return 0;
-        }
-        return (this.realty_price - value)/this.realty_price;
-
-        if (value >= 1000) {
-            return value / 1000000 + ' млн';
-        }
-
-        return value;
-    }
-    
-    displayFnDown (value: number | null) {
-        return 100-Math.round((this.realty_price - value)*100/this.realty_price) + '%';
-    }
-    
-
     calculate(event) {
         this.max_down_payment = this.realty_price;
         if ( this.down_payment > this.realty_price ) {
@@ -255,12 +231,21 @@ export class MortgageCalculatorComponent implements OnInit {
             this.stavka_description = "";
         }
     }
+    
+    open_big_calculator () {
+        console.log('big');
+        
+        const dialogConfig = new MatDialogConfig();
 
-    get tickInterval(): number | 'auto' {
-        return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
-    }
-    set tickInterval(value) {
-        this._tickInterval = coerceNumberProperty(value);
+        dialogConfig.disableClose = false;
+        dialogConfig.width = '320px';
+        dialogConfig.height = '740px';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {app_name: 'test'};
+
+        this.dialog.open(MortgageCalculatorComponent, dialogConfig);
+        //this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
+        
     }
 
     check_license() {

@@ -68,6 +68,9 @@ export class AppComponent implements OnInit, OnDestroy
         if (this.elRef.nativeElement.getAttribute('run') == 'search') {
             this.router.navigate(['/search']);
         }
+        if (this.elRef.nativeElement.getAttribute('run') == 'leads') {
+            this.router.navigate(['/client/my']);
+        }
         
         //console.log((platformLocation as any).location);
         //console.log((platformLocation as any).location.href);

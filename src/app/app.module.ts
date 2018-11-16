@@ -73,6 +73,7 @@ import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/c
 
 import { DocsComponentsThirdPartyNgxDatatableComponent } from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
+import { CalculatorMiniComponent } from 'app/main/calculator-mini/calculator-mini.component';
 import { SearchFormComponent } from 'app/main/search-form/search-form.component';
 import { Ng5SliderModule } from 'ng5-slider';
 
@@ -83,7 +84,7 @@ import { Error500Component } from 'app/main/pages/errors/500/error-500.component
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
 const appRoutes: Routes = [
-    //{ path: '', component: CarouselComponent },
+    {path: '', component: CalculatorMiniComponent },
     //{ path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
@@ -108,6 +109,10 @@ const appRoutes: Routes = [
     {
         path        : 'calculator',
         component: MortgageCalculatorComponent
+    },
+    {
+        path        : 'calculator-mini',
+        component: CalculatorMiniComponent
     },
     {
         path        : 'client/my',
@@ -179,6 +184,7 @@ const appRoutes: Routes = [
         ChatContactSidenavComponent,
         DocsComponentsThirdPartyNgxDatatableComponent,
         MortgageCalculatorComponent,
+        CalculatorMiniComponent,
         Error404Component,
         Error500Component,
         SearchFormComponent
@@ -255,7 +261,7 @@ const appRoutes: Routes = [
         // provider used to create fake backend
         //fakeBackendProvider
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent],
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent],
     bootstrap   : [
         AppComponent
     ]

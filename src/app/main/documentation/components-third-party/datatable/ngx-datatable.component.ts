@@ -113,7 +113,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
      * On init
      */
     ngOnInit(): void {
-        this.setup_apps('client');
+        this.setup_apps('data');
         this.rows = [];
         this.rows_my = [];
         this.refreash();

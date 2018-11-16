@@ -81,20 +81,6 @@ export class SelectDistrictDialogComponent implements OnInit {
             comment: ['', Validators.required]
         });
         
-        this._chatService.onChatSelected
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(chatData => {
-            });
-        
-        this.getModel();
-        
-        this.declineForm.valueChanges
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(() => {
-                this.onFormValuesChanged();
-            });
-        
-        
     }
     
     /**
