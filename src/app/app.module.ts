@@ -84,7 +84,7 @@ import { Error500Component } from 'app/main/pages/errors/500/error-500.component
 //import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
 const appRoutes: Routes = [
-    {path: '', component: CalculatorMiniComponent },
+    //{path: '', component: CalculatorMiniComponent },
     //{ path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
@@ -194,6 +194,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes, {useHash: true}),
+        //RouterModule.forRoot(appRoutes),
         CommonModule,
 
         TranslateModule.forRoot(),
@@ -263,7 +264,7 @@ const appRoutes: Routes = [
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent],
     bootstrap   : [
-        AppComponent
+        AppComponent, CalculatorMiniComponent, SearchFormComponent
     ]
 })
 export class AppModule

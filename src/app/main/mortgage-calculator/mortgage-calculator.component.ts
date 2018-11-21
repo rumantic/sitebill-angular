@@ -127,55 +127,69 @@ export class MortgageCalculatorComponent implements OnInit {
 
         this.controlPressed = false;
         this.controlProcessing = true;
-        if (this.document.getElementById('app_root').getAttribute('years') > 0) {
-            this.years = this.document.getElementById('app_root').getAttribute('years');
-        }
-        if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
-            this.realty_price = this.document.getElementById('app_root').getAttribute('realty_price');
-        }
-        if (this.document.getElementById('app_root').getAttribute('percent') > 0) {
-            this.percent = this.document.getElementById('app_root').getAttribute('percent');
-        }
-        if (this.document.getElementById('app_root').getAttribute('down_payment') > 0) {
-            this.down_payment = this.document.getElementById('app_root').getAttribute('down_payment');
-        } else {
-            this.down_payment = this.realty_price * 0.20;
-        }
-        
-        if (this.document.getElementById('app_root').getAttribute('down_percent') > 0) {
-            this.down_percent = this.document.getElementById('app_root').getAttribute('down_percent');
-            this.down_payment = this.realty_price*(this.document.getElementById('app_root').getAttribute('down_percent')/100);
-        } else {
-            this.down_payment = this.realty_price * 0.20;
-        }
-        
-        if (this.document.getElementById('app_root').getAttribute('show_overpayment') == 1) {
-            this.show_overpayment = true;
-        } else {
-            this.show_overpayment = false;
-        }
-        
-        if (this.document.getElementById('app_root').getAttribute('show_credit_sum') == 1) {
-            this.show_credit_sum = true;
-        } else {
-            this.show_credit_sum = false;
-        }
-        
-        if (this.document.getElementById('app_root').getAttribute('top_text') != null) {
-            this.top_text = this.document.getElementById('app_root').getAttribute('top_text');
-        }
-        
-        if (this.document.getElementById('app_root').getAttribute('bottom_text') != null) {
-            this.bottom_text = this.document.getElementById('app_root').getAttribute('bottom_text');
-        }
-        if (this.document.getElementById('app_root').getAttribute('ipoteka_order_url') != null) {
-            this.ipoteka_order_url = this.document.getElementById('app_root').getAttribute('ipoteka_order_url');
-        }
+        this.init_input_parameters();
         
         
         this.calculate(null);
 
     }
+    
+    init_input_parameters () {
+        let app_root_element;
+        if (this.document.getElementById('calculator_mini_root')) {
+            app_root_element = this.document.getElementById('calculator_mini_root');
+        } else if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+        
+        if (app_root_element.getAttribute('years') > 0) {
+            this.years = app_root_element.getAttribute('years');
+        }
+        if (app_root_element.getAttribute('realty_price') > 0) {
+            this.realty_price = app_root_element.getAttribute('realty_price');
+        }
+        if (app_root_element.getAttribute('percent') > 0) {
+            this.percent = app_root_element.getAttribute('percent');
+        }
+        if (app_root_element.getAttribute('down_payment') > 0) {
+            this.down_payment = app_root_element.getAttribute('down_payment');
+        } else {
+            this.down_payment = this.realty_price * 0.20;
+        }
+        
+        if (app_root_element.getAttribute('down_percent') > 0) {
+            this.down_percent = app_root_element.getAttribute('down_percent');
+            this.down_payment = this.realty_price*(app_root_element.getAttribute('down_percent')/100);
+        } else {
+            this.down_payment = this.realty_price * 0.20;
+        }
+        
+        if (app_root_element.getAttribute('show_overpayment') == 1) {
+            this.show_overpayment = true;
+        } else {
+            this.show_overpayment = false;
+        }
+        
+        if (app_root_element.getAttribute('show_credit_sum') == 1) {
+            this.show_credit_sum = true;
+        } else {
+            this.show_credit_sum = false;
+        }
+        
+        if (app_root_element.getAttribute('top_text') != null) {
+            this.top_text = app_root_element.getAttribute('top_text');
+        }
+        
+        if (app_root_element.getAttribute('bottom_text') != null) {
+            this.bottom_text = app_root_element.getAttribute('bottom_text');
+        }
+        
+        if (app_root_element.getAttribute('ipoteka_order_url') != null) {
+            this.ipoteka_order_url = app_root_element.getAttribute('ipoteka_order_url');
+        }
+        
+    }
+    
 
     getStyleSheet(unique_title) {
         for (var i = 0; i < this.document.styleSheets.length; i++) {
