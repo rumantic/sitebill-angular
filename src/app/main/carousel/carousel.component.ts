@@ -119,7 +119,7 @@ export class CarouselComponent implements OnInit {
         this.key_value = this.route.snapshot.paramMap.get('id');
         //console.log(this.document);
         //console.log(window);
-                
+
         //console.log(this.winRef);
         //console.log(window.parent);
         //console.log(window.parent.document);
@@ -129,7 +129,7 @@ export class CarouselComponent implements OnInit {
         this.controlPressed = false;
         this.controlProcessing = true;
     }
-    
+
 
     ngOnInit() {
         this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image']);
@@ -142,8 +142,8 @@ export class CarouselComponent implements OnInit {
     ngAfterViewInit() {
         this._cdr.detectChanges();
     }
-    
-    goto ( href ) {
+
+    goto(href) {
         window.parent.location = href;
     }
 
@@ -154,19 +154,20 @@ export class CarouselComponent implements OnInit {
     moveTo(slide) {
         this.myCarousel.moveTo(slide, !this.withAnim);
     }
-    
+
     after_load_items() {
-        if (this.current_queue_size == this.max_queue_size ) {
+        if (this.current_queue_size == this.max_queue_size) {
             this.loaded_items = true;
             //console.log(this.property);
             this._cdr.detectChanges();
         }
     }
-    
+
     load_grid_data(app_name, params: any, grid_item) {
         const body = {action: 'model', anonymous: true, do: 'get_data', model_name: app_name, params: params, session_key: this.currentUser.session_key, grid_item: grid_item};
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {
+                //console.log(result);
                 this.init_data_slides(app_name, result.rows);
             });
     }
@@ -183,63 +184,74 @@ export class CarouselComponent implements OnInit {
         var old_style = false;
 
         for (let key in rows) {
-            key_item = rows[key];
-            image_items = key_item['image'];
-            if (typeof image_items[0] === 'undefined') {
-                value_items = image_items['value'];
-                value_zero = value_items[0];
-            } else {
-                old_style = true;
-                value_zero = image_items[0];
-            }
-            normal = value_zero['normal'];
-
-
-            if (typeof normal === 'undefined') {
-                console.log('undefined');
-            } else {
-                let img_url = `${this.api_url}/img/data/` + normal;
-                if (app_name == 'complex') {
-                    if (!old_style) {
-                        caption = rows[key]['name']['value'];
-                        href = '/complex/' + rows[key]['url']['value'] + '/';
-                    } else {
-                        caption = rows[key]['name'];
-                        href = '/complex/' + rows[key]['url'] + '/';
-                    }
-                } else {
-                    caption_array = [];
-                    if (rows[key]['country_id']['value_string'] !== null && rows[key]['country_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['country_id']['value_string']);
-                    }
-
-                    if (rows[key]['city_id']['value_string'] !== null && rows[key]['city_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['city_id']['value_string']);
-                    }
-
-                    if (rows[key]['street_id']['value_string'] !== null && rows[key]['street_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['street_id']['value_string']);
-                    }
-                    if (old_style) {
-                        caption_array.push(rows[key]['price'] + ' ' + rows[key]['currency_id']['value_string']);
-                        href = '/realty' + rows[key]['id'];
-                    } else {
-                        caption_array.push(rows[key]['price']['value'] + ' ' + rows[key]['currency_id']['value_string']);
-                        href = '/realty' + rows[key]['id']['value'];
-                    }
-
-
-                    caption = caption_array.join(", ");
+            try {
+                key_item = rows[key];
+                image_items = key_item['image'];
+                //console.log(key_item);
+                //console.log(image_items);
+                if (image_items == '') {
+                    continue;
                 }
-                let slide_item = {img_url: img_url, caption: caption, href: href};
-                this.property.push(slide_item);
-                //this.property[key]['href'] = href;
-                this.carouselItems.push(1);
+                if (typeof image_items[0] === 'undefined') {
+                    value_items = image_items['value'];
+                    //console.log(rows[key]);
+                    value_zero = value_items[0];
+                } else {
+                    old_style = true;
+                    value_zero = image_items[0];
+                }
+                normal = value_zero['normal'];
+
+
+                if (typeof normal === 'undefined') {
+                    console.log('undefined');
+                } else {
+                    let img_url = `${this.api_url}/img/data/` + normal;
+                    if (app_name == 'complex') {
+                        if (!old_style) {
+                            caption = rows[key]['name']['value'];
+                            href = '/complex/' + rows[key]['url']['value'] + '/';
+                        } else {
+                            caption = rows[key]['name'];
+                            href = '/complex/' + rows[key]['url'] + '/';
+                        }
+                    } else {
+                        caption_array = [];
+                        if (rows[key]['country_id']['value_string'] !== null && rows[key]['country_id']['value_string'] != '') {
+                            caption_array.push(rows[key]['country_id']['value_string']);
+                        }
+
+                        if (rows[key]['city_id']['value_string'] !== null && rows[key]['city_id']['value_string'] != '') {
+                            caption_array.push(rows[key]['city_id']['value_string']);
+                        }
+
+                        if (rows[key]['street_id']['value_string'] !== null && rows[key]['street_id']['value_string'] != '') {
+                            caption_array.push(rows[key]['street_id']['value_string']);
+                        }
+                        if (old_style) {
+                            caption_array.push(rows[key]['price'] + ' ' + rows[key]['currency_id']['value_string']);
+                            href = '/realty' + rows[key]['id'];
+                        } else {
+                            caption_array.push(rows[key]['price']['value'] + ' ' + rows[key]['currency_id']['value_string']);
+                            href = '/realty' + rows[key]['id']['value'];
+                        }
+
+
+                        caption = caption_array.join(", ");
+                    }
+                    let slide_item = {img_url: img_url, caption: caption, href: href};
+                    this.property.push(slide_item);
+                    //this.property[key]['href'] = href;
+                    this.carouselItems.push(1);
+                }
+
+            } catch (e) {
+                console.log(e);
             }
         }
         this.current_queue_size++;
         //console.log(this.current_queue_size);
-        
+
         this.after_load_items();
     }
 }
