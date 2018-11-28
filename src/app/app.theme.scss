@@ -228,3 +228,4 @@ body.theme-pink-dark {
 
     @include fuse-color-classes($palettes);
 }
+@import "~@ng-select/ng-select/themes/material.theme.css";

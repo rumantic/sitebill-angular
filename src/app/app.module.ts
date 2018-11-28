@@ -230,10 +230,9 @@ const appRoutes: Routes = [
         MatInputModule,
         MatSliderModule,
         MatAutocompleteModule,
-
+        
         SlideshowModule,
         NguCarouselModule,
-
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -264,7 +263,7 @@ const appRoutes: Routes = [
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent],
     bootstrap   : [
-        AppComponent, CalculatorMiniComponent, SearchFormComponent
+        AppComponent
     ]
 })
 export class AppModule

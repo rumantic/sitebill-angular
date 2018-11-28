@@ -1,7 +1,7 @@
 <div id="select-district" class="dialog-content-wrapper">
     <mat-toolbar>
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">Почему хотите отказаться от заявки?</span>
+            <span class="title dialog-title">Параметры поиска по адресам</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
                     <mat-icon>close</mat-icon>
             </button>
@@ -12,16 +12,33 @@
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
         <form class="example-form" [formGroup]="declineForm">        
 
-            <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Укажите причину отказа" formControlName="comment" required></textarea>
-                <mat-error *ngIf="declineFormErrors.comment.required">
-                    Необходимо указать причину
-                </mat-error>
+<ng-select 
+    [items]="district_options"
+    [clearOnBackspace]="false"
+    [multiple]="true"
+    [searchable]="true"
+    [hideSelected]="true"
+    [closeOnSelect]="false"
+    placeholder="выбрать район"
+    >
+</ng-select>    
 
-            </mat-form-field>        
+<ng-select 
+    [items]="street_options"
+    [clearOnBackspace]="false"
+    [multiple]="true"
+    [searchable]="true"
+    [hideSelected]="true"
+    [closeOnSelect]="false"
+    placeholder="выбрать улицу"
+    >
+</ng-select>    
+            
+            
+            
 
-            <button mat-raised-button matStepperNext type="button" color="accent" (click)="decline()" *ngIf="declineForm.controls.comment.value != '' && !declinePressed">
-                Отказаться
+            <button mat-raised-button matStepperNext type="button" color="accent" (click)="decline()">
+                Готово
             </button>
             <mat-spinner [diameter]="40" *ngIf="declineProcessing"></mat-spinner>
         </form>
