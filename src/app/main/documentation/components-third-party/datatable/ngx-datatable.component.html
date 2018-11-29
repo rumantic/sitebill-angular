@@ -29,7 +29,7 @@
 <ng-template #clientIdTmpl let-row="row" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
 
-        <button mat-icon-button matTooltip="Подробнее" (click)="view_details(value)" aria-label="Toggle star">
+        <button mat-icon-button matTooltip="Подробнее" (click)="view_details(value)" aria-label="Toggle star" *ngIf="value > 0">
             {{value}} <mat-icon class="amber-fg">pageview</mat-icon>
         </button>
     </div>
@@ -83,7 +83,7 @@
                             <ngx-datatable
                                 class="material"
                                 [rows]="rows"
-                                [columns]="columns"
+                                [columns]="columns_client_all"
                                 [loadingIndicator]="loadingIndicator"
                                 [columnMode]="'force'"
                                 [headerHeight]="48"
@@ -117,7 +117,7 @@
                             <ngx-datatable
                                 class="material"
                                 [rows]="rows_my"
-                                [columns]="columns"
+                                [columns]="columns_client_my"
                                 [loadingIndicator]="loadingIndicator"
                                 [columnMode]="'force'"
                                 [headerHeight]="48"

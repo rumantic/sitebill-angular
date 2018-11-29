@@ -74,7 +74,7 @@ export class ChatService implements Resolve<any>
                 this.getUser()
             ]).then(
                 ([contacts, chats, user]) => {
-                    console.log(contacts);
+                    //console.log(contacts);
                     this.contacts = contacts;
                     this.chats = chats;
                     this.user = user;

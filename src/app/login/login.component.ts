@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 
 import {AlertService, AuthenticationService} from '../_services/index';
 
@@ -20,6 +21,9 @@ export class LoginComponent implements OnInit {
 
     loginForm: FormGroup;
     loginFormErrors: any;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
 
 
     constructor(
@@ -28,6 +32,7 @@ export class LoginComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
+        public snackBar: MatSnackBar,
         private alertService: AlertService) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -55,7 +60,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         // reset login status
-        this.authenticationService.logout();
+        this.logout();
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -71,27 +76,43 @@ export class LoginComponent implements OnInit {
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
+    }
 
+    logout() {
+        this.authenticationService.logout()
+            .subscribe(
+                data => {
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 
     login() {
         this.loading = true;
         //console.log(this.loginForm.value);
         //return;
-        
+
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
-            data => {
-                if (data.error) {
-                    this.alertService.error(data.error);
+                data => {
+                    if (data.state == 'error') {
+                        this.alertService.error(data.error);
+                        this.loading = false;
+                        this.snackBar.open(data.error, 'ok', {
+                            duration: 2000,
+                            horizontalPosition: this.horizontalPosition,
+                            verticalPosition: this.verticalPosition,
+                        });
+
+                    } else {
+                        this.router.navigate([this.returnUrl]);
+                    }
+                },
+                error => {
+                    this.alertService.error(error);
                     this.loading = false;
-                } else {
-                    this.router.navigate([this.returnUrl]);
-                }
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            });
+                });
     }
 }

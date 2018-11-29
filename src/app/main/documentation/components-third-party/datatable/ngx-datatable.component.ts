@@ -34,6 +34,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     api_url: string;
     records: any[];
     columns = [];
+    columns_client_all = [];
+    columns_client_my = [];
     rows1 = [];
     app_name: string;
     total_all: number;
@@ -78,7 +80,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        console.log(this.currentUser);
+        //console.log(this.currentUser);
         if (isDevMode()) {
             this.api_url = 'http://genplan1';
         } else {
@@ -92,7 +94,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             });
             
         this.options_test = {'test1':'var1', 'test2':'var2', 'test3':'var3'};
-        console.log(this.options_test);
+        //console.log(this.options_test);
         this.test_indicator = 'some test indicator';
         this.loadGridComplete = false;
             
@@ -122,7 +124,35 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     setup_apps(app_name) {
         this.app_name = app_name;
         if (app_name == 'client') {
-            this.columns = [
+            this.columns_client_all = [
+                {
+                    cellTemplate: this.clientControlTmpl,
+                    name: 'Ответственный',
+                    prop: 'user_id.value_string'
+                },
+                {
+                    name: 'Дата',
+                    prop: 'date.value_string'
+                },
+                {
+                    name: 'Тип',
+                    prop: 'type_id.value_string'
+                },
+                {
+                    name: 'Категория',
+                    prop: 'topic_choice.value'
+                },
+                {
+                    name: 'Статус',
+                    cellTemplate: this.clientStatusIdTmpl,
+                    prop: 'status_id.value_string'
+                },
+                {
+                    name: 'ФИО клиента',
+                    prop: 'fio.value'
+                },
+            ];
+            this.columns_client_my = [
                 {
                     name: 'ID',
                     cellTemplate: this.clientIdTmpl,
@@ -154,7 +184,12 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                     name: 'Телефон',
                     prop: 'phone.value'
                 },
+                {
+                    name: 'Категория',
+                    prop: 'topic_choice.value'
+                },
             ];
+            
         } else {
             //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
             //console.log('hdrTpl ');
@@ -289,7 +324,11 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         //console.log(params);
         let grid_item;
         if (app_name == 'client') {
-            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
+            if (params.owner) {
+                grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone', 'topic_choice'];
+            } else {
+                grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'topic_choice'];
+            }
         } else {
             grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
         }

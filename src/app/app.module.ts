@@ -10,6 +10,9 @@ import { MatButtonModule, MatCheckboxModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
          MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
          MatAutocompleteModule } from '@angular/material';
+import {
+    MatSnackBarModule
+} from '@angular/material';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
@@ -85,7 +88,7 @@ import { Error500Component } from 'app/main/pages/errors/500/error-500.component
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
-    //{ path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },
@@ -230,6 +233,8 @@ const appRoutes: Routes = [
         MatInputModule,
         MatSliderModule,
         MatAutocompleteModule,
+        MatSnackBarModule,
+        
         
         SlideshowModule,
         NguCarouselModule,
@@ -250,7 +255,7 @@ const appRoutes: Routes = [
         AppStoreModule,
         Ng5SliderModule
     ],
-    exports: [ RouterModule ],
+    exports: [ RouterModule, MatSnackBarModule],
     providers: [
         ModelService,
         MessageService,
