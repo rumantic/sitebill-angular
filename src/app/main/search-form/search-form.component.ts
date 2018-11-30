@@ -21,7 +21,6 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
     selector: 'search',
     templateUrl: './search-form.component.html',
     styleUrls: ['./search-form.component.css'],
-    providers: [FilterService],
 })
 export class SearchFormComponent implements OnInit {
     controlPressed: boolean;
@@ -133,8 +132,6 @@ export class SearchFormComponent implements OnInit {
         this.control_name = this.route.snapshot.paramMap.get('control_name');
         this.key_value = this.route.snapshot.paramMap.get('id');
 
-        this.subscription = filterService.missionAnnounced$.subscribe(
-            mission => console.log('event subsciption'));
 
 
         this.controlPressed = false;
@@ -167,7 +164,10 @@ export class SearchFormComponent implements OnInit {
             startWith(''),
             map(value => this._filter(value))
         );
-
+        this.filterService.change.subscribe(isOpen => {
+              console.log('change');
+              console.log(isOpen);
+        });
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
@@ -177,7 +177,7 @@ export class SearchFormComponent implements OnInit {
 
         return this.options1.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
     }
-    
+
     formatLabel(value: number | null) {
         if (!value) {
             return 0;
@@ -202,13 +202,13 @@ export class SearchFormComponent implements OnInit {
         const link = "['http://genplan1/?district_id=1']";
         const url = '/test';
         window.location.href = '/test';
-        //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });        
+        //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
-        
+
     }
-    
+
     refreash () {
-        
+
         console.log('refreash');
         console.log(this.mission);
         console.log(this.subscription);

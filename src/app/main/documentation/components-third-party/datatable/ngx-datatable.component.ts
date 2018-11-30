@@ -43,6 +43,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     app_name: string;
     total_all: number;
     total_my: number;
+    data_all: number;
     editing = {};
     options_test = {};
     test_indicator: string;
@@ -105,7 +106,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     }
 
     test_trigger() {
-        //this.filterService.announceMission('test trigger');       
+        //this.filterService.announceMission('test trigger');
     }
 
 
@@ -479,7 +480,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 action : 'edit'
             }
         });
-        
+
 
         this.dialogRef.afterClosed()
             .subscribe(response => {

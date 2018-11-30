@@ -48,8 +48,8 @@ export class SelectDistrictDialogComponent implements OnInit {
     street_options: any;
     subscription: Subscription;
     mission = '<no mission announced child>';
-    
-    
+
+
 
     constructor(
         private fb: FormBuilder,
@@ -71,14 +71,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.declineFormErrors = {
             comment: {}
         };
-        
-        this.subscription = filterService.missionAnnounced$.subscribe(
-            mission => {
-                this.mission = mission;
-                //this.announced = true;
-                //this.confirmed = false;
-            });
-        
+
 
         this.declinePressed = false;
         this.declineProcessing = false;
@@ -96,7 +89,6 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.load_dictionary('district_id');
         this.load_dictionary('street_id');
     }
-
     /**
      * On form values changed
      */
@@ -137,13 +129,14 @@ export class SelectDistrictDialogComponent implements OnInit {
                 }
             });
     }
-    
+
 
     save() {
         console.log(this.dialogForm.controls.district_id.value);
         console.log(this.dialogForm.controls.street_id.value);
-        this.filterService.announceMission(this.dialogForm.controls.district_id.value);
-        
+        //this.filterService.announceMission(this.dialogForm.controls.district_id.value);
+        this.filterService.toggle(this.dialogForm.controls.district_id.value);
+
         this.dialogRef.close();
     }
 
