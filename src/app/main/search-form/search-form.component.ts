@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit, isDevMode} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Subject, Observable} from 'rxjs';
+import {Subject, Observable, Subscription} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {ActivatedRoute} from '@angular/router';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
 
 import {currentUser} from 'app/_models/currentuser';
@@ -13,13 +13,15 @@ import {map, startWith} from 'rxjs/operators';
 
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
+import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
 
 
 @Component({
     selector: 'search',
     templateUrl: './search-form.component.html',
-    styleUrls: ['./search-form.component.css']
+    styleUrls: ['./search-form.component.css'],
+    providers: [FilterService],
 })
 export class SearchFormComponent implements OnInit {
     controlPressed: boolean;
@@ -90,6 +92,8 @@ export class SearchFormComponent implements OnInit {
     options1: string[] = ['One', 'Two', 'Three'];
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
+    mission = '<no mission announced parent>';
+    subscription: Subscription;
 
 
 
@@ -98,6 +102,8 @@ export class SearchFormComponent implements OnInit {
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
         private dialog: MatDialog,
+        private router: Router,
+        private filterService: FilterService,
         private _formBuilder: FormBuilder
     ) {
 
@@ -126,6 +132,9 @@ export class SearchFormComponent implements OnInit {
         this.model_name = this.route.snapshot.paramMap.get('model_name');
         this.control_name = this.route.snapshot.paramMap.get('control_name');
         this.key_value = this.route.snapshot.paramMap.get('id');
+
+        this.subscription = filterService.missionAnnounced$.subscribe(
+            mission => console.log('event subsciption'));
 
 
         this.controlPressed = false;
@@ -188,23 +197,31 @@ export class SearchFormComponent implements OnInit {
         this._tickInterval = coerceNumberProperty(value);
     }
 
-
-    load_grid_data(app_name, params: any, grid_item) {
-        //console.log('load_grid_data');
-        //console.log(params);
-        const body = {action: 'model', anonymous: true, do: 'get_data', model_name: app_name, params: params, session_key: this.currentUser.session_key, grid_item: grid_item};
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.init_data_slides(app_name, result.rows);
-            });
-    }
-    calculate(event) {
-        console.log('calculate');
+    search() {
+        console.log('search');
+        const link = "['http://genplan1/?district_id=1']";
+        const url = '/test';
+        window.location.href = '/test';
+        //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });        
+        //this.router.navigate(['/test']);
+        
     }
     
+    refreash () {
+        
+        console.log('refreash');
+        console.log(this.mission);
+        console.log(this.subscription);
+        /*
+        this.filterService.missionAnnounced$.subscribe(
+            mission => {
+                this.mission = mission;
+                //this.announced = true;
+                //this.confirmed = false;
+            });
+            */
+    }
+
     select_district () {
         const dialogConfig = new MatDialogConfig();
 
@@ -214,103 +231,11 @@ export class SearchFormComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {app_name: 'test'};
 
-        this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
-    }
-
-
-    init_data_slides(app_name, rows) {
-        var image_items;
-        var key_item;
-        var value_items;
-        var value_zero;
-        var normal;
-        var caption;
-        var href;
-        var caption_array = [];
-        var old_style = false;
-
-        for (let key in rows) {
-            //console.log('key');
-            //console.log(key);
-            //console.log('rows');
-            //console.log(rows);
-            //console.log('rows[key][\'image\'][\'value\']');
-            //console.log(rows[key]['image']['value']);
-
-            console.log('rows[key]');
-            console.log(rows[key]);
-            key_item = rows[key];
-
-            //console.log('key_item');
-            //console.log(key_item);
-
-
-            image_items = key_item['image'];
-            //console.log('image_items');
-            //console.log(image_items);
-
-            if (typeof image_items[0] === 'undefined') {
-                value_items = image_items['value'];
-
-                //console.log('value_items 111');
-                //console.log(value_items);
-                //console.log(value_items.lehgth);
-                value_zero = value_items[0];
-            } else {
-                old_style = true;
-                value_zero = image_items[0];
-            }
-
-            //console.log('value_zero');
-            //console.log(value_zero);
-
-            normal = value_zero['normal'];
-
-            //console.log('normal');
-            //console.log(normal);
-
-            //console.log(value_items);
-
-            if (typeof normal === 'undefined') {
-                console.log('undefined');
-            } else {
-                let img_url = `${this.api_url}/img/data/` + normal;
-                if (app_name == 'complex') {
-                    if (!old_style) {
-                        caption = rows[key]['name']['value'];
-                        href = '/complex/' + rows[key]['url']['value'] + '/';
-                    } else {
-                        caption = rows[key]['name'];
-                        href = '/complex/' + rows[key]['url'] + '/';
-                    }
-                } else {
-                    caption_array = [];
-                    if (rows[key]['country_id']['value_string'] !== null && rows[key]['country_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['country_id']['value_string']);
-                    }
-
-                    if (rows[key]['city_id']['value_string'] !== null && rows[key]['city_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['city_id']['value_string']);
-                    }
-
-                    if (rows[key]['street_id']['value_string'] !== null && rows[key]['street_id']['value_string'] != '') {
-                        caption_array.push(rows[key]['street_id']['value_string']);
-                    }
-                    if (old_style) {
-                        caption_array.push(rows[key]['price'] + ' ' + rows[key]['currency_id']['value_string']);
-                        href = '/realty' + rows[key]['id'];
-                    } else {
-                        caption_array.push(rows[key]['price']['value'] + ' ' + rows[key]['currency_id']['value_string']);
-                        href = '/realty' + rows[key]['id']['value'];
-                    }
-
-
-                    caption = caption_array.join(", ");
-                }
-                let slide_item = {url: img_url, caption: caption, href: href};
-                console.log(slide_item);
-                this.imageUrls.push(slide_item);
-            }
-        }
+        let dialogRef =this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
+        dialogRef.afterClosed()
+            .subscribe(() => {
+                this.refreash();
+            })
+        return;
     }
 }

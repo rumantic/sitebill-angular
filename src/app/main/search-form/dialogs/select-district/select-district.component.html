@@ -10,9 +10,11 @@
 
     <!--h2 mat-dialog-title>Объект</h2-->
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-        <form class="example-form" [formGroup]="declineForm">        
+        <form class="example-form" [formGroup]="dialogForm">        
 
-<ng-select 
+<ng-select formControlName="district_id"
+           bindValue="id"
+           bindLabel="value"
     [items]="district_options"
     [clearOnBackspace]="false"
     [multiple]="true"
@@ -23,7 +25,9 @@
     >
 </ng-select>    
 
-<ng-select 
+<ng-select formControlName="street_id" 
+           bindValue="id"
+           bindLabel="value"
     [items]="street_options"
     [clearOnBackspace]="false"
     [multiple]="true"
@@ -37,7 +41,7 @@
             
             
 
-            <button mat-raised-button matStepperNext type="button" color="accent" (click)="decline()">
+            <button mat-raised-button matStepperNext type="button" color="accent" (click)="save()">
                 Готово
             </button>
             <mat-spinner [diameter]="40" *ngIf="declineProcessing"></mat-spinner>

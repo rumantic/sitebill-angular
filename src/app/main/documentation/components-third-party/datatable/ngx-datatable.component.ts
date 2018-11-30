@@ -27,6 +27,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     rows = [];
     item_model: any[];
     rows_my = [];
+    rows_data = [];
     selected = [];
     loadingIndicator: boolean;
     loadGridComplete: boolean;
@@ -34,7 +35,9 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     api_url: string;
     records: any[];
     columns = [];
+    data_columns = [];
     columns_client_all = [];
+    columns_data_all = [];
     columns_client_my = [];
     rows1 = [];
     app_name: string;
@@ -92,18 +95,17 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //this.announced = true;
                 //this.confirmed = false;
             });
-            
-        this.options_test = {'test1':'var1', 'test2':'var2', 'test3':'var3'};
+
+        this.options_test = {'test1': 'var1', 'test2': 'var2', 'test3': 'var3'};
         //console.log(this.options_test);
         this.test_indicator = 'some test indicator';
         this.loadGridComplete = false;
-            
+
 
     }
 
     test_trigger() {
         //this.filterService.announceMission('test trigger');       
-        //console.log(this.mission);
     }
 
 
@@ -189,7 +191,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                     prop: 'topic_choice.value'
                 },
             ];
-            
+
         } else {
             //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
             //console.log('hdrTpl ');
@@ -197,7 +199,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             //console.log('editTmpl ' + this.editTmpl);
             //console.log('filterTpl ' + this.filterTmpl);
             //this.hdrTpl = 'some test';
-            this.columns = [
+            this.data_columns = [
                 {
                     headerTemplate: this.hdrTpl,
                     name: 'id.title',
@@ -341,16 +343,21 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
                 //console.log(result);
                 this.item_model = result.rows[0];
                 this.loadGridComplete = true;
-                
+
                 console.log(this.item_model);
-                
-                if (params.owner) {
-                    this.rows_my = result.rows;
-                    this.total_my = result.rows.length;
+                if (app_name == 'client') {
+                    if (params.owner) {
+                        this.rows_my = result.rows;
+                        this.total_my = result.rows.length;
+                    } else {
+                        this.rows = result.rows;
+                        this.total_all = result.rows.length;
+                    }
                 } else {
-                    this.rows = result.rows;
-                    this.total_all = result.rows.length;
+                    this.rows_data = result.rows;
+                    this.data_all = result.rows.length;
                 }
+
                 this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });
@@ -366,10 +373,10 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         */
         this.editing[rowIndex + '-' + cell] = false;
         this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
-        
+
         const status_id = this.item_model['status_id'];
         const select_data = status_id['select_data'];
-        
+
         this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
         this.rows_my = [...this.rows_my];
         //console.log('UPDATED!', this.rows[rowIndex][cell]);
@@ -379,8 +386,8 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
             .subscribe((response: any) => {
                 console.log(response);
             });
-        
-        
+
+
     }
 
 

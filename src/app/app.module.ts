@@ -57,6 +57,7 @@ import { NguCarouselModule } from '@ngu/carousel';
 import { CarouselComponent } from 'app/main/carousel/carousel.component';
 
 
+import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 import { FilterComponent } from 'app/main/documentation/components-third-party/datatable/filter.component';
 import { ProfileTimelineComponent } from 'app/main/documentation/components-third-party/datatable/timeline/timeline.component';
 
@@ -263,6 +264,7 @@ const appRoutes: Routes = [
         AlertService,
         AuthenticationService,
         ChatService,
+        FilterService,
         // provider used to create fake backend
         //fakeBackendProvider
     ],
