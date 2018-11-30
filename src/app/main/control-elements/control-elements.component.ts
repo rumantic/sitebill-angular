@@ -134,6 +134,7 @@ export class ControlElementsComponent implements OnInit {
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((response: any) => {
                 //console.log(response);
+                //console.log(this.currentUser.user_id);
                 if ( response.data ) {
                     
                     //Проверим что объект принадлежит пользователю
