@@ -1,19 +1,19 @@
-import {Component, Inject, OnInit, isDevMode} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {Subject, Observable, Subscription} from 'rxjs';
-import {FuseConfigService} from '@fuse/services/config.service';
-import {coerceNumberProperty} from '@angular/cdk/coercion';
+import { Component, Inject, OnInit, isDevMode } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Subject, Observable, Subscription } from 'rxjs';
+import { FuseConfigService } from '@fuse/services/config.service';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 
-import {currentUser} from 'app/_models/currentuser';
-import {IImage} from 'ng-simple-slideshow';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-import {Options} from 'ng5-slider';
-import {map, startWith} from 'rxjs/operators';
+import { currentUser } from 'app/_models/currentuser';
+import { IImage } from 'ng-simple-slideshow';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Options } from 'ng5-slider';
+import { map, startWith } from 'rxjs/operators';
 
-import {MatDialog, MatDialogConfig} from "@angular/material";
-import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
-import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { SelectDistrictDialogComponent } from "app/main/search-form/dialogs/select-district/select-district.component";
+import { FilterService } from 'app/main/documentation/components-third-party/datatable/filter.service';
 
 
 
@@ -81,6 +81,7 @@ export class SearchFormComponent implements OnInit {
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
+    private filterControls: any;
 
     value1: number = 4;
     highValue: number = 100;
@@ -165,8 +166,9 @@ export class SearchFormComponent implements OnInit {
             map(value => this._filter(value))
         );
         this.filterService.change.subscribe(controls => {
-              console.log('change');
-              console.log(controls);
+            console.log('change');
+            this.filterControls = controls;
+            console.log(controls);
         });
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
@@ -199,15 +201,28 @@ export class SearchFormComponent implements OnInit {
 
     search() {
         console.log('search');
-        const link = "['http://genplan1/?district_id=1']";
-        const url = '/test';
-        window.location.href = '/test';
+        const link = "['http://genplan1/?district_id[]=1&district_id[]=2']";
+        let query_part;
+        query_part = this.render_query_part('district_id', this.filterControls.district_id.value);
+        query_part += this.render_query_part('street_id', this.filterControls.street_id.value);
+
+        console.log('query_part = '+query_part);
+        const url = '/?' + query_part;
+        console.log(url);
+        //window.location.href = '/test';
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
 
     }
+    render_query_part(key_name: string, controls_value: any) {
+        let query_part = '';
+        for (let item of controls_value) {
+          query_part += key_name + '[]=' + item + '&';
+        }
+        return query_part;
+    }
 
-    refreash () {
+    refreash() {
 
         console.log('refreash');
         console.log(this.mission);
@@ -222,16 +237,16 @@ export class SearchFormComponent implements OnInit {
             */
     }
 
-    select_district () {
+    select_district() {
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
         dialogConfig.width = '600px';
         dialogConfig.height = '400px';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {app_name: 'test'};
+        dialogConfig.data = { app_name: 'test' };
 
-        let dialogRef =this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
+        let dialogRef = this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
         dialogRef.afterClosed()
             .subscribe(() => {
                 this.refreash();
