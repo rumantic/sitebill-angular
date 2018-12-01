@@ -92,8 +92,6 @@ export class SearchFormComponent implements OnInit {
     options1: string[] = ['One', 'Two', 'Three'];
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
-    mission = '<no mission announced parent>';
-    subscription: Subscription;
 
 
 
@@ -166,7 +164,6 @@ export class SearchFormComponent implements OnInit {
             map(value => this._filter(value))
         );
         this.filterService.change.subscribe(controls => {
-            console.log('change');
             this.filterControls = controls;
             console.log(controls);
         });
@@ -224,9 +221,6 @@ export class SearchFormComponent implements OnInit {
 
     refreash() {
 
-        console.log('refreash');
-        console.log(this.mission);
-        console.log(this.subscription);
         /*
         this.filterService.missionAnnounced$.subscribe(
             mission => {
