@@ -46,8 +46,6 @@ export class SelectDistrictDialogComponent implements OnInit {
     simpleItems = [true, 'Two', 3];
     district_options: any;
     street_options: any;
-    subscription: Subscription;
-    mission = '<no mission announced child>';
 
 
 
@@ -135,7 +133,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         console.log(this.dialogForm.controls.district_id.value);
         console.log(this.dialogForm.controls.street_id.value);
         //this.filterService.announceMission(this.dialogForm.controls.district_id.value);
-        this.filterService.toggle(this.dialogForm.controls.district_id.value);
+        this.filterService.save(this.dialogForm.controls);
 
         this.dialogRef.close();
     }

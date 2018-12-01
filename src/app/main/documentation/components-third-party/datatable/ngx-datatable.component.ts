@@ -20,7 +20,6 @@ import {DeclineClientComponent} from "app/dialogs/decline-client/decline-client.
     selector: 'docs-components-third-party-ngx-datatable',
     templateUrl: './ngx-datatable.component.html',
     styleUrls: ['./ngx-datatable.component.scss'],
-    providers: [FilterService],
     animations: fuseAnimations
 })
 export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, OnDestroy {
@@ -65,7 +64,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     // Private
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
-    mission = '<no mission announced parent>';
 
     /**
      * Constructor
@@ -90,12 +88,6 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         } else {
             this.api_url = '';
         }
-        filterService.missionAnnounced$.subscribe(
-            mission => {
-                this.mission = mission;
-                //this.announced = true;
-                //this.confirmed = false;
-            });
 
         this.options_test = {'test1': 'var1', 'test2': 'var2', 'test3': 'var3'};
         //console.log(this.options_test);

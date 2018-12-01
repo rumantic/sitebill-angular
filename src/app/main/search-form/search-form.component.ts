@@ -164,9 +164,9 @@ export class SearchFormComponent implements OnInit {
             startWith(''),
             map(value => this._filter(value))
         );
-        this.filterService.change.subscribe(isOpen => {
+        this.filterService.change.subscribe(controls => {
               console.log('change');
-              console.log(isOpen);
+              console.log(controls);
         });
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])

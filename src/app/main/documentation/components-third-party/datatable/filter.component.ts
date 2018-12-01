@@ -12,7 +12,7 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
     <mat-option *ngFor="let option of options" [value]="option">
      {{ option }}
     </mat-option>
-  </mat-select>    
+  </mat-select>
     <!--ng-select [(ngModel)]="selectedCity" [items]="cities" multiple="true" bindLabel="name" bindValue="id"></ng-select-->`,
     styles: [`h2, p, div {color:red;}`]
 })
@@ -26,7 +26,6 @@ export class FilterComponent {
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
     subscription: Subscription;
-    mission = '<no mission announced>';
 
 
 
@@ -47,12 +46,6 @@ export class FilterComponent {
         } else {
             this.api_url = '';
         }
-        this.subscription = filterService.missionAnnounced$.subscribe(
-            mission => {
-                this.mission = mission;
-                //this.announced = true;
-                //this.confirmed = false;
-            });
     }
 
     ngOnInit(): void {
@@ -77,8 +70,6 @@ export class FilterComponent {
 
     selectItem(value) {
         //console.log(value);
-        this.filterService.announceMission(value);
-        console.log(this.mission);
     }
 
     load_dictionary(columnName) {
