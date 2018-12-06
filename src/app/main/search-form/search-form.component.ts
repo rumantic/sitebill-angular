@@ -90,6 +90,10 @@ export class SearchFormComponent implements OnInit {
         ceil: 100
     };
     options1: string[] = ['One', 'Two', 'Three'];
+    
+    //price_options: any[] = [{id: 0, value: 'Все'},{id: 1, value: 'до 1 500 000'}, 'до 2 000 000', 'до 3 000 000', 'до 5 000 000', 'diap'];
+    price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}, {id: 2, value: 'до 2 000 000', actual: 2000000}, {id: 3, value: 'до 3 000 000', actual: 3000000}, {id: 4, value: 'до 5 000 000', actual: 5000000}, {id: 5, value: 'range'},];
+    price_min: any;
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
 
@@ -139,6 +143,7 @@ export class SearchFormComponent implements OnInit {
 
 
     ngOnInit() {
+        console.log(this.price_options);
         // Reactive Form
         this.form = this._formBuilder.group({
             company: [
@@ -150,6 +155,9 @@ export class SearchFormComponent implements OnInit {
             firstName: [''],
             lastName: [''],
             option1: [''],
+            price_selector: [''],
+            price_min: ['5 000 000'],
+            price_max: ['10 000 000'],
             address: ['', Validators.required],
             address2: ['', Validators.required],
             city: ['', Validators.required],
@@ -199,9 +207,20 @@ export class SearchFormComponent implements OnInit {
     search() {
         console.log('search');
         const link = "['http://genplan1/?district_id[]=1&district_id[]=2']";
-        let query_part;
-        query_part = this.render_query_part('district_id', this.filterControls.district_id.value);
-        query_part += this.render_query_part('street_id', this.filterControls.street_id.value);
+        let query_part = '';
+        try {
+            query_part = this.render_query_part('district_id', this.filterControls.district_id.value);
+            query_part += this.render_query_part('street_id', this.filterControls.street_id.value);
+        } catch {
+            
+        }
+        console.log(this.form);
+        if ( this.price_options[this.form.controls.price_selector.value].value == 'range' ) {
+            query_part += '&price_min='+this.form.controls.price_min.value;
+            query_part += '&price='+this.form.controls.price_max.value;
+        } else {
+            query_part += '&price='+this.price_options[this.form.controls.price_selector.value].actual;
+        }
 
         console.log('query_part = '+query_part);
         const url = '/?' + query_part;

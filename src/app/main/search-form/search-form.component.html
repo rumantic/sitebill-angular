@@ -27,28 +27,42 @@
                         <mat-error>First Name is required!</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="40" class="pl-4">
-                        <mat-label>Цена</mat-label>
-                        <input matInput formControlName="lastName">
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                        <mat-error>Last Name is required!</mat-error>
-                    </mat-form-field>
+                    <ng-select formControlName="price_selector"
+                               bindValue="id"
+                               bindLabel="value"
+                               [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                               [items]="price_options"
+                               [clearOnBackspace]="false"
+                               [searchable]="false"
+                               [hideSelected]="true"
+                               [closeOnSelect]="false"
+                               placeholder="Цена"
+                               >
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <span *ngIf="price_options[index].value != 'range'">
+                                {{price_options[index].value}}
+                            </span>
+                            <div *ngIf="price_options[index].value == 'range'"  >
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+
+                                    <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
+                                </mat-form-field>
+                            </div>
+
+
+                        </ng-template>    
+                    </ng-select>    
 
                 </div>
-                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                    <mat-form-field appearance="outline" fxFlex="10" class="pl-4">
-                        <mat-label>Площадь от</mat-label>
-                        <input matInput formControlName="lastName">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex="10" class="pl-4">
-                        <mat-label>Площадь до</mat-label>
-                        <input matInput formControlName="lastName">
-                    </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="smaller">
 
                     <mat-form-field appearance="outline" fxFlex="20" class="pl-4">
                         <input type="text" placeholder="Срок сдачи" aria-label="Number" matInput formControlName="option1" [matAutocomplete]="auto">
                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option1">
+                                          <mat-option *ngFor="let option of filteredOptions | async" [value]="option1">
                                 {{option}}
                         </mat-option>
                     </mat-autocomplete>
@@ -69,15 +83,15 @@
                     </div>
                 </div>
             </div>
-                
+
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <div appearance="outline" fxFlex="20" class="pl-4">
-            <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
-                Искать
-            </button>
+                    <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
+                        Искать
+                    </button>
                 </div>
             </div>
-                
+
 
         </form>
     </div>
