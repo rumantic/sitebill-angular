@@ -9,7 +9,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
          MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
-         MatAutocompleteModule } from '@angular/material';
+         MatAutocompleteModule, MatButtonToggleModule } from '@angular/material';
 import {
     MatSnackBarModule
 } from '@angular/material';
@@ -235,7 +235,7 @@ const appRoutes: Routes = [
         MatSliderModule,
         MatAutocompleteModule,
         MatSnackBarModule,
-        
+        MatButtonToggleModule,
         
         SlideshowModule,
         NguCarouselModule,

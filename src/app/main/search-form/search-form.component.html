@@ -13,13 +13,13 @@
                     </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                    <mat-form-field appearance="outline" fxFlex="20" class="pl-4">
                         <mat-label>Комнат</mat-label>
-                        <input matInput formControlName="lastName">
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                        <mat-error>Last Name is required!</mat-error>
-                    </mat-form-field>
-
+                    <mat-button-toggle-group name="fontStyle" aria-label="Font Style"  multiple="true">
+                        <mat-button-toggle value="bold">1</mat-button-toggle>
+                        <mat-button-toggle value="italic">2</mat-button-toggle>
+                        <mat-button-toggle value="underline">3</mat-button-toggle>
+                        <mat-button-toggle value="underline">4+</mat-button-toggle>
+                    </mat-button-toggle-group>
                     <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
                         <mat-label>Адрес</mat-label>
                         <input matInput formControlName="firstName" required>
