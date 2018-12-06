@@ -93,6 +93,7 @@ export class SearchFormComponent implements OnInit {
     
     //price_options: any[] = [{id: 0, value: 'Все'},{id: 1, value: 'до 1 500 000'}, 'до 2 000 000', 'до 3 000 000', 'до 5 000 000', 'diap'];
     price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}, {id: 2, value: 'до 2 000 000', actual: 2000000}, {id: 3, value: 'до 3 000 000', actual: 3000000}, {id: 4, value: 'до 5 000 000', actual: 5000000}, {id: 5, value: 'range'},];
+    square_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}];
     price_min: any;
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
@@ -158,6 +159,8 @@ export class SearchFormComponent implements OnInit {
             price_selector: [''],
             price_min: ['5 000 000'],
             price_max: ['10 000 000'],
+            square_selector: [''],
+            
             address: ['', Validators.required],
             address2: ['', Validators.required],
             city: ['', Validators.required],

@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-label>Комнат</mat-label>
+                    <mat-label>Комнат</mat-label>
                     <mat-button-toggle-group name="fontStyle" aria-label="Font Style"  multiple="true">
                         <mat-button-toggle value="bold">1</mat-button-toggle>
                         <mat-button-toggle value="italic">2</mat-button-toggle>
@@ -59,6 +59,26 @@
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="smaller">
 
+                    <ng-select formControlName="square_selector"
+                               bindValue="id"
+                               bindLabel="value"
+                               [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                               [items]="square_options"
+                               [clearOnBackspace]="false"
+                               [searchable]="false"
+                               [hideSelected]="true"
+                               [closeOnSelect]="false"
+                               placeholder="Площадь"
+                               >
+
+                        <ng-template ng-header-tmp>
+                                    <div class="custom-slider">
+                                        <ng5-slider [(value)]="value1" [(highValue)]="highValue" [options]="options"></ng5-slider>
+                                    </div>
+                        </ng-template>                       
+                    </ng-select>    
+
+
                     <mat-form-field appearance="outline" fxFlex="20" class="pl-4">
                         <input type="text" placeholder="Срок сдачи" aria-label="Number" matInput formControlName="option1" [matAutocomplete]="auto">
                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
@@ -75,13 +95,6 @@
                     <mat-error>Last Name is required!</mat-error>
                 </mat-form-field>
 
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                <div appearance="outline" fxFlex="20" class="pl-4">
-                    <div class="custom-slider">
-                        <ng5-slider [(value)]="value1" [(highValue)]="highValue" [options]="options"></ng5-slider>
-                    </div>
-                </div>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
