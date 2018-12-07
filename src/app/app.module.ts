@@ -270,7 +270,7 @@ const appRoutes: Routes = [
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent],
     bootstrap   : [
-        AppComponent
+        AppComponent, SearchFormComponent
     ]
 })
 export class AppModule

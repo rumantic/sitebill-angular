@@ -241,7 +241,7 @@ export class SearchFormComponent implements OnInit {
 
         url = query_parts.join("&");
         console.log(url);
-        //window.location.href = '/test';
+        window.location.href = '/?'+url;
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
     }
