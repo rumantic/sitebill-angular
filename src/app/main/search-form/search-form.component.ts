@@ -87,6 +87,10 @@ export class SearchFormComponent implements OnInit {
     highValue: number = 100;
     options: Options = {
         floor: 0,
+        ceil: 300
+    };
+    options_floor: Options = {
+        floor: 0,
         ceil: 25
     };
     options1: string[] = ['One', 'Two', 'Three'];
@@ -97,8 +101,14 @@ export class SearchFormComponent implements OnInit {
 
     square_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}];
     square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
+    floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}, {id: 2, value: 'Не первый', actual: 0}, {id: 2, value: 'Не последний', actual: 0}];
+    
     square_min: number = 0;
-    square_max: number = 25;
+    square_max: number = 300;
+    
+    floor_min: number = 0;
+    floor_max: number = 25;
+    
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
 
@@ -165,6 +175,7 @@ export class SearchFormComponent implements OnInit {
             price_min: ['5 000 000'],
             price_max: ['10 000 000'],
             square_selector: [''],
+            floor_selector: [''],
 
             address: ['', Validators.required],
             address2: ['', Validators.required],

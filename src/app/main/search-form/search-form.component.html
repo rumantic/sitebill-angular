@@ -72,11 +72,43 @@
                                >
 
                         <ng-template ng-header-tmp>
-                                    <div class="custom-slider">
-                                        <ng5-slider [(value)]="square_min" [(highValue)]="square_max" [options]="options"></ng5-slider>
-                                    </div>
+                            <div class="custom-slider">
+                                <ng5-slider [(value)]="square_min" [(highValue)]="square_max" [options]="options"></ng5-slider>
+                            </div>
                         </ng-template>                       
                     </ng-select>    
+
+                    <ng-select formControlName="floor_selector"
+                               bindValue="id"
+                               bindLabel="value"
+                               [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                               [items]="floor_options"
+                               [clearOnBackspace]="false"
+                               [searchable]="false"
+                               [multiple]="true"
+                               [hideSelected]="true"
+                               [closeOnSelect]="false"
+                               placeholder="Этаж"
+                               >
+
+                        <ng-template ng-header-tmp>
+                        </ng-template>   
+
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <span *ngIf="floor_options[index].value == 'range'">
+                                <div class="custom-slider">
+                                    <ng5-slider [(value)]="floor_min" [(highValue)]="floor_max" [options]="options_floor"></ng5-slider>
+                                </div>
+                            </span>
+                            <div *ngIf="floor_options[index].value != 'range'"  >
+                                {{floor_options[index].value}}
+                            </div>
+
+
+                        </ng-template>    
+
+                    </ng-select>    
+
 
 
                     <mat-form-field appearance="outline" fxFlex="20" class="pl-4">
