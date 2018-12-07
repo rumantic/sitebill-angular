@@ -1,19 +1,19 @@
-import { Component, Inject, OnInit, isDevMode } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Subject, Observable, Subscription } from 'rxjs';
-import { FuseConfigService } from '@fuse/services/config.service';
-import { coerceNumberProperty } from '@angular/cdk/coercion';
+import {Component, Inject, OnInit, isDevMode} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {Subject, Observable, Subscription} from 'rxjs';
+import {FuseConfigService} from '@fuse/services/config.service';
+import {coerceNumberProperty} from '@angular/cdk/coercion';
 
-import { currentUser } from 'app/_models/currentuser';
-import { IImage } from 'ng-simple-slideshow';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Options } from 'ng5-slider';
-import { map, startWith } from 'rxjs/operators';
+import {currentUser} from 'app/_models/currentuser';
+import {IImage} from 'ng-simple-slideshow';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {Options} from 'ng5-slider';
+import {map, startWith} from 'rxjs/operators';
 
-import { MatDialog, MatDialogConfig } from "@angular/material";
-import { SelectDistrictDialogComponent } from "app/main/search-form/dialogs/select-district/select-district.component";
-import { FilterService } from 'app/main/documentation/components-third-party/datatable/filter.service';
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
+import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
 
 
@@ -87,14 +87,18 @@ export class SearchFormComponent implements OnInit {
     highValue: number = 100;
     options: Options = {
         floor: 0,
-        ceil: 100
+        ceil: 25
     };
     options1: string[] = ['One', 'Two', 'Three'];
-    
+
     //price_options: any[] = [{id: 0, value: 'Все'},{id: 1, value: 'до 1 500 000'}, 'до 2 000 000', 'до 3 000 000', 'до 5 000 000', 'diap'];
     price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}, {id: 2, value: 'до 2 000 000', actual: 2000000}, {id: 3, value: 'до 3 000 000', actual: 3000000}, {id: 4, value: 'до 5 000 000', actual: 5000000}, {id: 5, value: 'range'},];
-    square_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}];
     price_min: any;
+
+    square_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}];
+    square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
+    square_min: number = 0;
+    square_max: number = 25;
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
 
@@ -156,11 +160,12 @@ export class SearchFormComponent implements OnInit {
             firstName: [''],
             lastName: [''],
             option1: [''],
+            room_count: [''],
             price_selector: [''],
             price_min: ['5 000 000'],
             price_max: ['10 000 000'],
             square_selector: [''],
-            
+
             address: ['', Validators.required],
             address2: ['', Validators.required],
             city: ['', Validators.required],
@@ -209,36 +214,92 @@ export class SearchFormComponent implements OnInit {
 
     search() {
         console.log('search');
-        const link = "['http://genplan1/?district_id[]=1&district_id[]=2']";
-        let query_part = '';
-        try {
-            query_part = this.render_query_part('district_id', this.filterControls.district_id.value);
-            query_part += this.render_query_part('street_id', this.filterControls.street_id.value);
-        } catch {
-            
-        }
-        console.log(this.form);
-        if ( this.price_options[this.form.controls.price_selector.value].value == 'range' ) {
-            query_part += '&price_min='+this.form.controls.price_min.value;
-            query_part += '&price='+this.form.controls.price_max.value;
-        } else {
-            query_part += '&price='+this.price_options[this.form.controls.price_selector.value].actual;
-        }
+        let query_parts = [];
+        let url = '';
+        this.refreash_square_options();
+        
+        query_parts = query_parts.concat(this.render_address_parts());
+        query_parts = query_parts.concat(this.render_price_parts());
+        query_parts = query_parts.concat(this.render_square_parts());
+        query_parts = query_parts.concat(this.render_room_count_parts());
+        
+        console.log(this.form.controls.room_count.value);
 
-        console.log('query_part = '+query_part);
-        const url = '/?' + query_part;
+        console.log('query_part');
+        console.log(query_parts);
+
+        url = query_parts.join("&");
         console.log(url);
         //window.location.href = '/test';
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
-
     }
-    render_query_part(key_name: string, controls_value: any) {
-        let query_part = '';
-        for (let item of controls_value) {
-          query_part += key_name + '[]=' + item + '&';
+    
+    refreash_square_options () {
+        let square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
+        square_options_new[0].value = 'от '+this.square_min+' до '+this.square_max;
+        this.square_options = square_options_new;
+        this.form.controls.square_selector.patchValue(0);
+    }
+    
+    render_room_count_parts () {
+        let query_parts = [];
+        try {
+            for (let item of this.form.controls.room_count.value) {
+                query_parts.push('room_count[]=' + item);
+            }
+        } catch {
+
         }
-        return query_part;
+        return query_parts;
+    }
+
+    render_square_parts() {
+        let query_parts = [];
+        try {
+            query_parts.push('square_min=' + this.square_min);
+            query_parts.push('square_max=' + this.square_max);
+        } catch {
+
+        }
+        return query_parts;
+    }
+
+    render_price_parts() {
+        let query_parts = [];
+        try {
+            if (this.price_options[this.form.controls.price_selector.value].value == 'range') {
+                query_parts.push('price_min=' + this.form.controls.price_min.value);
+                query_parts.push('price=' + this.form.controls.price_max.value);
+            } else {
+                query_parts.push('price=' + this.price_options[this.form.controls.price_selector.value].actual);
+            }
+        } catch {
+
+        }
+        return query_parts;
+    }
+
+    render_address_parts() {
+        let query_parts = [];
+        try {
+            query_parts = query_parts.concat(this.render_address_query_part('district_id', this.filterControls.district_id.value));
+            query_parts = query_parts.concat(this.render_address_query_part('street_id', this.filterControls.street_id.value));
+        } catch {
+
+        }
+        return query_parts;
+    }
+
+    render_address_query_part(key_name: string, controls_value: any) {
+        try {
+            let query_part = [];
+            for (let item of controls_value) {
+                query_part.push(key_name + '[]=' + item);
+            }
+            return query_part;
+        } catch {
+        }
     }
 
     refreash() {
@@ -260,7 +321,7 @@ export class SearchFormComponent implements OnInit {
         dialogConfig.width = '600px';
         dialogConfig.height = '400px';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: 'test' };
+        dialogConfig.data = {app_name: 'test'};
 
         let dialogRef = this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
         dialogRef.afterClosed()
