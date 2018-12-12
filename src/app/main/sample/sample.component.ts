@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {currentUser} from 'app/_models/currentuser';
 import {DOCUMENT} from '@angular/platform-browser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -17,6 +18,7 @@ import { locale as russian } from './i18n/ru';
 export class SampleComponent
 {
     private currentUser: currentUser;
+    private api_url: string;
     
     /**
      * Constructor
@@ -27,15 +29,16 @@ export class SampleComponent
         private elRef: ElementRef,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            //this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
-            //this.api_url = '';
+            this.api_url = '';
         }
         this._fuseConfigService.config = {
             layout: {

@@ -31,6 +31,8 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 //import {fakeBackendProvider} from './_helpers/index';
 
 import { fuseConfig } from 'app/fuse-config';
+import { AppConfigModule } from './app.config.module';
+
 
 
 import { AppComponent } from 'app/app.component';
@@ -256,7 +258,8 @@ const appRoutes: Routes = [
         ReactiveFormsModule,
         NgSelectModule, 
         AppStoreModule,
-        Ng5SliderModule
+        Ng5SliderModule,
+        AppConfigModule
     ],
     exports: [ RouterModule, MatSnackBarModule],
     providers: [

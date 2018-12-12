@@ -4,6 +4,7 @@
 
 export const environment = {
     production: false,
+    apiEndpoint: 'http://genplan1',
     hmr       : false
 };
 
