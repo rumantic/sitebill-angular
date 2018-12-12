@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, isDevMode, ElementRef, Inject} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {FuseConfigService} from '@fuse/services/config.service';
+import {currentUser} from 'app/_models/currentuser';
+import {DOCUMENT} from '@angular/platform-browser';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
-import { locale as turkish } from './i18n/tr';
+import { locale as russian } from './i18n/ru';
 
 @Component({
     selector   : 'sample',
@@ -12,15 +16,52 @@ import { locale as turkish } from './i18n/tr';
 })
 export class SampleComponent
 {
+    private currentUser: currentUser;
+    
     /**
      * Constructor
      *
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
      */
     constructor(
+        private _httpClient: HttpClient,
+        private elRef: ElementRef,
+        @Inject(DOCUMENT) private document: any,
+        private _fuseConfigService: FuseConfigService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
-        this._fuseTranslationLoaderService.loadTranslations(english, turkish);
+        this._fuseTranslationLoaderService.loadTranslations(english, russian);
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        if (isDevMode()) {
+            //this.api_url = 'http://genplan1';
+        } else {
+            //this.api_url = '';
+        }
+        this._fuseConfigService.config = {
+            layout: {
+                navbar: {
+                    hidden: false
+                },
+                toolbar: {
+                    hidden: true
+                },
+                footer: {
+                    hidden: true
+                }
+            }
+        };
     }
+    ngOnInit() {
+    }
+    
+    init_input_parameters () {
+        let app_root_element;
+        if (this.document.getElementById('calculator_mini_root')) {
+            app_root_element = this.document.getElementById('calculator_mini_root');
+        } else if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+    }
+    
+    
 }

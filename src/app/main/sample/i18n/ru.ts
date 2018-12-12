@@ -1,8 +1,8 @@
 export const locale = {
-    lang: 'tr',
+    lang: 'ru',
     data: {
         'SAMPLE': {
-            'HELLO': 'Merhaba Dünya!'
+            'HELLO': 'Привет, Мир!'
         }
     }
 };

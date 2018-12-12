@@ -35,7 +35,6 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
@@ -117,6 +116,10 @@ const appRoutes: Routes = [
     {
         path        : 'calculator-mini',
         component: CalculatorMiniComponent
+    },
+    {
+        path      : 'sample',
+        loadChildren: 'app/main/sample/sample.module#SampleModule'
     },
     {
         path        : 'client/my',
@@ -249,7 +252,6 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule,
         FormsModule,
         ReactiveFormsModule,
         NgSelectModule, 

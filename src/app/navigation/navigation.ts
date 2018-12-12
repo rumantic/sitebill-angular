@@ -24,6 +24,16 @@ export const navigation: FuseNavigation[] = [
             },
             /*
             {
+                id       : 'sample',
+                title    : 'Sample',
+                type     : 'item',
+                icon     : 'logout',
+                url      : 'sample'
+            },
+            */
+            
+            /*
+            {
                 id       : 'allobjects',
                 title    : 'Все объекты',
                 type     : 'item',
