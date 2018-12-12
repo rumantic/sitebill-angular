@@ -124,6 +124,10 @@ const appRoutes: Routes = [
         loadChildren: 'app/main/sample/sample.module#SampleModule'
     },
     {
+        path      : 'facebook',
+        loadChildren: 'app/main/facebook/facebook.module#FacebookModule'
+    },
+    {
         path        : 'client/my',
         component: DocsComponentsThirdPartyNgxDatatableComponent,
         //component: './main/documentation/documentation.module#DocumentationModule',
