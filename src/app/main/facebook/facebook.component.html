@@ -1,41 +1,41 @@
 
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-    crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous">
 
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
-<div class="jumbotron bg-transparent text-center">
-  <div *ngIf="!user" class="card text-center">
-    <h6 class="card-header">
-      Social Login Demo
-    </h6>
-    <div class="card-block">
-      <h4 class="card-title">Not signed in</h4>
-      <p class="card-text">Sign in with</p>
-    </div>
-    <div class="card-block">
-      <button class="btn btn-social-icon btn-facebook mx-1" (click)="signInWithFB()"><span class="fa fa-facebook"></span></button>
-    </div>
-  </div>
-  <div *ngIf="user" class="card text-center">
-    <h6 class="card-header">
-      Social Login Demo
-    </h6>
-    <div class="card-block"></div>
-    <img class="card-img-top img-responsive photo" src="{{ user.photoUrl }}">
-    <div class="card-block">
-      <h4 class="card-title">{{ user.name }}</h4>
-      <p class="card-text">{{ user.email }}</p>
-    </div>
-    <div class="card-block">
-      <button class="btn btn-danger" (click)="signOut()">Sign out</button>
-    </div>
+    <div class="jumbotron bg-transparent text-center">
+        <div *ngIf="!user" class="card text-center">
+            <h6 class="card-header">
+                {{'FACEBOOK.TITLE_NEED_AUTH' | translate}}
+            </h6>
+            <div class="card-block">
+                <h4 class="card-title">{{'FACEBOOK.NOT_SIGNED' | translate}}</h4>
+                <p class="card-text">{{'FACEBOOK.SIGN_IN_WITH' | translate}}</p>
+            </div>
+            <div class="card-block">
+                <button class="btn btn-social-icon btn-facebook mx-1" (click)="signInWithFB()"><span class="fa fa-facebook"></span></button>
+            </div>
+        </div>
+        <div *ngIf="user" class="card text-center">
+            <h6 class="card-header">
+                {{'FACEBOOK.TITLE_AUTH' | translate}}
+            </h6>
+            <div class="card-block"></div>
+            <img class="card-img-top img-responsive photo" src="{{ user.photoUrl }}">
+            <div class="card-block">
+                <h4 class="card-title">{{ user.name }}</h4>
+                <p class="card-text">{{ user.email }}</p>
+            </div>
+            <div class="card-block">
+                <button class="btn btn-danger" (click)="signOut()">{{'FACEBOOK.LOGOUT' | translate}}</button>
+            </div>
 
-    <div class="card-block">
-      <button class="btn btn-success" (click)="debug()">Отладка</button>
-    </div>
+            <!--div class="card-block">
+              <button class="btn btn-success" (click)="debug()">Отладка</button>
+            </div-->
 
-  </div>
-</div>
+        </div>
+    </div>
 
 </div>
