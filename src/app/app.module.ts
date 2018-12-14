@@ -162,9 +162,7 @@ const appRoutes: Routes = [
 ];
 */
 let run_modules =  [];
-if ( document.getElementById('app_root') ) {
-    run_modules.push(AppComponent);
-}
+run_modules.push(AppComponent);
 
 if ( document.getElementById('calculator_mini_root') ) {
     run_modules.push(CalculatorMiniComponent);
