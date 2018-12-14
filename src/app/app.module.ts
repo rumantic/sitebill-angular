@@ -5,7 +5,6 @@ import { CommonModule } from "@angular/common";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-//import {MatButtonModule, MatIconModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule,
          MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
          MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
@@ -27,9 +26,6 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
-// used to create fake backend
-//import {fakeBackendProvider} from './_helpers/index';
-
 import { fuseConfig } from 'app/fuse-config';
 import { AppConfigModule } from './app.config.module';
 
@@ -40,7 +36,6 @@ import { LayoutModule } from 'app/layout/layout.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
-//import {JwtInterceptor} from './_helpers/index';
 import {AlertService, AuthenticationService, UserService} from './_services/index';
 
 import {DashboardComponent} from './dashboard/dashboard.component';
@@ -84,9 +79,6 @@ import { Ng5SliderModule } from 'ng5-slider';
 
 import { Error404Component } from 'app/main/pages/errors/404/error-404.component';
 import { Error500Component } from 'app/main/pages/errors/500/error-500.component';
-
-
-//import {LoginModule} from './app/main/pages/authentication/login/login.module';
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
@@ -169,6 +161,17 @@ const appRoutes: Routes = [
     }
 ];
 */
+let run_modules =  [];
+if ( document.getElementById('app_root') ) {
+    run_modules.push(AppComponent);
+}
+
+if ( document.getElementById('calculator_mini_root') ) {
+    run_modules.push(CalculatorMiniComponent);
+}
+if ( document.getElementById('angular_search') ) {
+    run_modules.push(SearchFormComponent);
+}
 
 
 
@@ -278,9 +281,7 @@ const appRoutes: Routes = [
         //fakeBackendProvider
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent],
-    bootstrap   : [
-        AppComponent, SearchFormComponent
-    ]
+    bootstrap   : run_modules
 })
 export class AppModule
 {
