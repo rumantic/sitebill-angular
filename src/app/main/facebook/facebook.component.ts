@@ -149,7 +149,7 @@ export class FacebookComponent {
     }
     signOut(): void {
         this.authService.signOut();
-        this.update_access_token ('');
+        this.update_access_token ('false');
     }
     debug () {
 	console.log(this.user);
