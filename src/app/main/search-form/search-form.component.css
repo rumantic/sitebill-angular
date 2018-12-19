@@ -74,3 +74,11 @@
 ::ng-deep .mat-slider-horizontal .mat-slider-thumb-label {
 
 }
+::ng-deep .input-range .mat-form-field-infix {
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-top-width: 5px;
+}
+::ng-deep .input-range input {
+    font-size: 10px;
+}
