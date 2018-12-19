@@ -138,6 +138,8 @@ export class MortgageCalculatorComponent implements OnInit {
         let app_root_element;
         if (this.document.getElementById('calculator_mini_root')) {
             app_root_element = this.document.getElementById('calculator_mini_root');
+        } else if (this.document.getElementById('calculator_root').getAttribute('realty_price') > 0) {
+            app_root_element = this.document.getElementById('calculator_root');
         } else if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
             app_root_element = this.document.getElementById('app_root');
         }

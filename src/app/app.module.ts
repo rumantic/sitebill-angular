@@ -279,6 +279,9 @@ export class AppModule {
         if (document.getElementById('calculator_mini_root')) {
             app.bootstrap(CalculatorMiniComponent);
         }
+        if (document.getElementById('calculator_root')) {
+            app.bootstrap(MortgageCalculatorComponent);
+        }
         if (document.getElementById('angular_search')) {
             app.bootstrap(SearchFormComponent);
         }
