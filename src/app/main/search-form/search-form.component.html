@@ -80,7 +80,7 @@
                                [searchable]="false"
                                [hideSelected]="true"
                                [closeOnSelect]="false"
-                               placeholder="Площадь"
+                               placeholder="Общая площадь, м2"
                                >
                             <ng-template ng-label-tmp let-item="item" let-index="index">
                                 <span *ngIf="item.value == 'range'">
@@ -107,9 +107,6 @@
                                [closeOnSelect]="false"
                                placeholder="Этаж"
                                >
-
-                        <ng-template ng-header-tmp>
-                        </ng-template>   
 
                         <ng-template ng-option-tmp let-item="item" let-index="index">
                             <span *ngIf="floor_options[index].value == 'range'">
