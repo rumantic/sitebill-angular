@@ -99,7 +99,7 @@ export class SearchFormComponent implements OnInit {
     price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}, {id: 2, value: 'до 2 000 000', actual: 2000000}, {id: 3, value: 'до 3 000 000', actual: 3000000}, {id: 4, value: 'до 5 000 000', actual: 5000000}, {id: 5, value: 'range'},];
     price_min: any;
 
-    square_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}];
+    square_options: any[] = [{id: 0, value: 'range', actual: 0}];
     square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}, {id: 2, value: 'Не первый', actual: 0}, {id: 2, value: 'Не последний', actual: 0}];
     
@@ -227,7 +227,6 @@ export class SearchFormComponent implements OnInit {
         console.log('search');
         let query_parts = [];
         let url = '';
-        this.refreash_square_options();
         
         query_parts = query_parts.concat(this.render_address_parts());
         query_parts = query_parts.concat(this.render_price_parts());
@@ -241,17 +240,11 @@ export class SearchFormComponent implements OnInit {
 
         url = query_parts.join("&");
         console.log(url);
-        window.location.href = '/?'+url;
+        //window.location.href = '/?'+url;
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
     }
     
-    refreash_square_options () {
-        let square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
-        square_options_new[0].value = 'от '+this.square_min+' до '+this.square_max;
-        this.square_options = square_options_new;
-        this.form.controls.square_selector.patchValue(0);
-    }
     
     render_room_count_parts () {
         let query_parts = [];
