@@ -78,7 +78,7 @@
                                [items]="square_options"
                                [clearOnBackspace]="false"
                                [searchable]="false"
-                               [hideSelected]="true"
+                               [hideSelected]="false"
                                [closeOnSelect]="false"
                                placeholder="Общая площадь, м2"
                                >
@@ -98,15 +98,31 @@
                     <ng-select formControlName="floor_selector"
                                bindValue="id"
                                bindLabel="value"
-                               [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                               [ngStyle]="{ 'width': '150px'}"
                                [items]="floor_options"
                                [clearOnBackspace]="false"
                                [searchable]="false"
-                               [multiple]="true"
-                               [hideSelected]="true"
+                               [multiple]="false"
+                               [hideSelected]="false"
                                [closeOnSelect]="false"
                                placeholder="Этаж"
                                >
+                        
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{floor_min}} до {{floor_max}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                                <span *ngIf="form.controls.not_first_floor.value">
+                                    , не первый
+                                </span>
+                                <span *ngIf="form.controls.not_last_floor.value">
+                                    , не последний
+                                </span>
+                                
+                            </ng-template>                        
 
                         <ng-template ng-option-tmp let-item="item" let-index="index">
                             <span *ngIf="floor_options[index].value == 'range'">
@@ -117,9 +133,16 @@
                             <div *ngIf="floor_options[index].value != 'range'"  >
                                 {{floor_options[index].value}}
                             </div>
+                            <div *ngIf="floor_options[index].value == 'not_f_not_l'"  >
+                                {{floor_options[index].value}}
+                            </div>
 
 
                         </ng-template>    
+                        <ng-template ng-footer-tmp>
+                            <mat-checkbox formControlName="not_first_floor">не первый</mat-checkbox>
+                            <mat-checkbox formControlName="not_last_floor">не последний</mat-checkbox>
+                        </ng-template>
 
                     </ng-select>    
 

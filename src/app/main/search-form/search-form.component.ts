@@ -99,9 +99,9 @@ export class SearchFormComponent implements OnInit {
     price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'до 1 500 000', actual: 1500000}, {id: 2, value: 'до 2 000 000', actual: 2000000}, {id: 3, value: 'до 3 000 000', actual: 3000000}, {id: 4, value: 'до 5 000 000', actual: 5000000}, {id: 5, value: 'range'},];
     price_min: any;
 
-    square_options: any[] = [{id: 0, value: 'range', actual: 0}];
-    square_options_new: any[] = [{id: 0, value: 'Все 11', actual: 0}, {id: 1, value: '___', actual: 1500000}];
-    floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}, {id: 2, value: 'Не первый', actual: 0}, {id: 2, value: 'Не последний', actual: 0}];
+    square_options: any[] = [{id: 1, value: 'range', actual: 1}];
+    floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
+    
     
     square_min: number = 0;
     square_max: number = 300;
@@ -176,6 +176,9 @@ export class SearchFormComponent implements OnInit {
             price_max: ['10000000'],
             square_selector: [],
             floor_selector: [],
+            not_first_floor: [false];
+            not_last_floor: [false];
+            
 
             address: ['', Validators.required],
             address2: ['', Validators.required],
@@ -261,8 +264,10 @@ export class SearchFormComponent implements OnInit {
     render_square_parts() {
         let query_parts = [];
         try {
-            query_parts.push('square_min=' + this.square_min);
-            query_parts.push('square_max=' + this.square_max);
+            if ( this.form.controls.square_selector.value == 1 ) {
+                query_parts.push('square_min=' + this.square_min);
+                query_parts.push('square_max=' + this.square_max);
+            }
         } catch {
 
         }
