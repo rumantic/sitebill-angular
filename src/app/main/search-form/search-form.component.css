@@ -41,6 +41,9 @@
 
 ::ng-deep  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
 }
+::ng-deep .room_count {
+    margin-bottom: 24px;
+}
 
 .example-h2 {
     margin: 10px;

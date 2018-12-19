@@ -176,8 +176,8 @@ export class SearchFormComponent implements OnInit {
             price_max: ['10000000'],
             square_selector: [],
             floor_selector: [],
-            not_first_floor: [false];
-            not_last_floor: [false];
+            not_first_floor: [false],
+            not_last_floor: [false],
             
 
             address: ['', Validators.required],
@@ -243,7 +243,10 @@ export class SearchFormComponent implements OnInit {
 
         url = query_parts.join("&");
         console.log(url);
-        //window.location.href = '/?'+url;
+        if (!isDevMode()) {
+            window.location.href = '/?'+url;
+        }
+
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
     }

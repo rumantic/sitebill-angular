@@ -12,22 +12,27 @@
                         <a (click)="select_district()">Район</a>
                     </div>
                 </div>
+                
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    
+                    <div class="room_count" fxFlex="20">
                     <mat-label>Комнат</mat-label>
-                    <mat-button-toggle-group formControlName="room_count" aria-label="Font Style"  multiple="true">
+                    <mat-button-toggle-group  formControlName="room_count" aria-label="Font Style"  multiple="true">
                         <mat-button-toggle value="1">1</mat-button-toggle>
                         <mat-button-toggle value="2">2</mat-button-toggle>
                         <mat-button-toggle value="3">3</mat-button-toggle>
                         <mat-button-toggle value="4">4+</mat-button-toggle>
                     </mat-button-toggle-group>
-                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                    </div>
+
+                    
+                    <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                         <mat-label>Адрес</mat-label>
-                        <input matInput formControlName="firstName" required>
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                        <mat-error>First Name is required!</mat-error>
+                        <input matInput formControlName="firstName">
+                        <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
                     </mat-form-field>
 
-                    <div class="input-range">
+                    <div class="input-range" fxFlex="30">
                         <ng-select formControlName="price_selector"
                                    bindValue="id"
                                    bindLabel="value"
@@ -95,7 +100,7 @@
                         </ng-template>                       
                     </ng-select>    
 
-                    <ng-select formControlName="floor_selector"
+                    <ng-select  formControlName="floor_selector"
                                bindValue="id"
                                bindLabel="value"
                                [ngStyle]="{ 'width': '150px'}"
