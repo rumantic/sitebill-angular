@@ -26,36 +26,46 @@
                         <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                         <mat-error>First Name is required!</mat-error>
                     </mat-form-field>
-                    
+
                     <div class="input-range">
-                    <ng-select formControlName="price_selector"
-                               bindValue="id"
-                               bindLabel="value"
-                               [ngStyle]="{ 'width': '190px', 'text-align': 'center'}"
-                               [items]="price_options"
-                               [clearOnBackspace]="false"
-                               [searchable]="false"
-                               [hideSelected]="true"
-                               [closeOnSelect]="false"
-                               placeholder="Цена"
-                               >
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <span *ngIf="price_options[index].value != 'range'">
-                                {{price_options[index].value}}
-                            </span>
-                            <div *ngIf="price_options[index].value == 'range'"  >
-                                <mat-form-field appearance="outline" fxFlex="50" class=" pl-4">
+                        <ng-select formControlName="price_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [ngStyle]="{ 'width': '190px', 'text-align': 'center'}"
+                                   [items]="price_options"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="false"
+                                   [multiple]="false"
+                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   placeholder="Цена"
+                                   >
+                            
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{form.controls.price_min.value}} до {{form.controls.price_max.value}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                            </ng-template>                        
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <div *ngIf="price_options[index].value == 'range'"  >
+                                    <mat-form-field appearance="outline" fxFlex="50" class=" pl-4">
 
-                                    <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
-                                    <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
-                                </mat-form-field>
-                            </div>
+                                        <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
+                                    </mat-form-field>
+                                </div>
+                                <span *ngIf="price_options[index].value != 'range'">
+                                    {{price_options[index].value}}
+                                </span>
 
 
-                        </ng-template>    
-                    </ng-select>    
+                            </ng-template>    
+                        </ng-select>    
                     </div>
 
                 </div>
