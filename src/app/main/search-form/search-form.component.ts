@@ -234,6 +234,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_address_parts());
         query_parts = query_parts.concat(this.render_price_parts());
         query_parts = query_parts.concat(this.render_square_parts());
+        query_parts = query_parts.concat(this.render_floor_parts());
         query_parts = query_parts.concat(this.render_room_count_parts());
         
         console.log(this.form.controls.room_count.value);
@@ -258,6 +259,26 @@ export class SearchFormComponent implements OnInit {
             for (let item of this.form.controls.room_count.value) {
                 query_parts.push('room_count[]=' + item);
             }
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
+    render_floor_parts() {
+        let query_parts = [];
+        try {
+            if ( this.form.controls.floor_selector.value == 1 ) {
+                query_parts.push('floor_min=' + this.floor_min);
+                query_parts.push('floor_max=' + this.floor_max);
+            }
+            if ( this.form.controls.not_first_floor.value ) {
+                query_parts.push('not_first_floor=' + 1);
+            }
+            if ( this.form.controls.not_last_floor.value ) {
+                query_parts.push('not_last_floor=' + 1);
+            }
+            
         } catch {
 
         }
