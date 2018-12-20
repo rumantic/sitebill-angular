@@ -15,12 +15,32 @@ import {MatDialog, MatDialogConfig} from "@angular/material";
 import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
 import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
-
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as _moment from 'moment';
+import { Moment } from 'moment';
+const moment = _moment;
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
     selector: 'search',
     templateUrl: './search-form.component.html',
     styleUrls: ['./search-form.component.css'],
+    providers: [
+        {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+        {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+        {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    ],
 })
 export class SearchFormComponent implements OnInit {
     controlPressed: boolean;
@@ -101,14 +121,18 @@ export class SearchFormComponent implements OnInit {
 
     square_options: any[] = [{id: 1, value: 'range', actual: 1}];
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
-    
-    
+    dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
+    min_dead_line: any;
+    min_dead_line_date: any;
+    max_dead_line_date: any;
+    dead_line_open: bool;
+
     square_min: number = 0;
     square_max: number = 300;
-    
+
     floor_min: number = 0;
     floor_max: number = 25;
-    
+
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
 
@@ -149,6 +173,10 @@ export class SearchFormComponent implements OnInit {
         this.model_name = this.route.snapshot.paramMap.get('model_name');
         this.control_name = this.route.snapshot.paramMap.get('control_name');
         this.key_value = this.route.snapshot.paramMap.get('id');
+        this.min_limit_dead_line = new Date();
+        this.min_dead_line_date = new FormControl(moment());
+        this.max_dead_line_date = new FormControl(moment());
+        this.dead_line_open = null;
 
 
 
@@ -176,9 +204,12 @@ export class SearchFormComponent implements OnInit {
             price_max: ['10000000'],
             square_selector: [],
             floor_selector: [],
+            dead_line_min: ['1'],
+            dead_line_max: ['1'],
             not_first_floor: [false],
             not_last_floor: [false],
-            
+            dead_line_selector: [],
+
 
             address: ['', Validators.required],
             address2: ['', Validators.required],
@@ -230,13 +261,13 @@ export class SearchFormComponent implements OnInit {
         console.log('search');
         let query_parts = [];
         let url = '';
-        
+
         query_parts = query_parts.concat(this.render_address_parts());
         query_parts = query_parts.concat(this.render_price_parts());
         query_parts = query_parts.concat(this.render_square_parts());
         query_parts = query_parts.concat(this.render_floor_parts());
         query_parts = query_parts.concat(this.render_room_count_parts());
-        
+
         console.log(this.form.controls.room_count.value);
 
         console.log('query_part');
@@ -245,15 +276,15 @@ export class SearchFormComponent implements OnInit {
         url = query_parts.join("&");
         console.log(url);
         if (!isDevMode()) {
-            window.location.href = '/?'+url;
+            window.location.href = '/?' + url;
         }
 
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
     }
-    
-    
-    render_room_count_parts () {
+
+
+    render_room_count_parts() {
         let query_parts = [];
         try {
             for (let item of this.form.controls.room_count.value) {
@@ -264,21 +295,21 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_floor_parts() {
         let query_parts = [];
         try {
-            if ( this.form.controls.floor_selector.value == 1 ) {
+            if (this.form.controls.floor_selector.value == 1) {
                 query_parts.push('floor_min=' + this.floor_min);
                 query_parts.push('floor_max=' + this.floor_max);
             }
-            if ( this.form.controls.not_first_floor.value ) {
+            if (this.form.controls.not_first_floor.value) {
                 query_parts.push('not_first_floor=' + 1);
             }
-            if ( this.form.controls.not_last_floor.value ) {
+            if (this.form.controls.not_last_floor.value) {
                 query_parts.push('not_last_floor=' + 1);
             }
-            
+
         } catch {
 
         }
@@ -288,7 +319,7 @@ export class SearchFormComponent implements OnInit {
     render_square_parts() {
         let query_parts = [];
         try {
-            if ( this.form.controls.square_selector.value == 1 ) {
+            if (this.form.controls.square_selector.value == 1) {
                 query_parts.push('square_min=' + this.square_min);
                 query_parts.push('square_max=' + this.square_max);
             }
@@ -335,18 +366,43 @@ export class SearchFormComponent implements OnInit {
         }
     }
 
-    refreash() {
-
-        /*
-        this.filterService.missionAnnounced$.subscribe(
-            mission => {
-                this.mission = mission;
-                //this.announced = true;
-                //this.confirmed = false;
-            });
-            */
+    chosenYearHandler(normalizedYear: Moment, max: bool) {
+        let ctrlValue;
+        if ( max ) {
+            ctrlValue = this.max_dead_line_date.value;
+            ctrlValue.year(normalizedYear.year());
+            this.max_dead_line_date.setValue(ctrlValue);
+        } else {
+            ctrlValue = this.min_dead_line_date.value;
+            ctrlValue.year(normalizedYear.year());
+            this.min_dead_line_date.setValue(ctrlValue);
+        }
     }
 
+    chosenMonthHandler(normlizedMonth: Moment, datepicker: MatDatepicker<Moment>, max: bool) {
+        let ctrlValue;
+        if ( max ) {
+            ctrlValue = this.max_dead_line_date.value;
+            ctrlValue.month(normlizedMonth.month());
+            this.max_dead_line_date.setValue(ctrlValue);
+        } else {
+            ctrlValue = this.min_dead_line_date.value;
+            ctrlValue.month(normlizedMonth.month());
+            this.min_dead_line_date.setValue(ctrlValue);
+        }
+        datepicker.close();
+        
+    }
+    
+    open_dead_line () {
+        this.dead_line_open = true;
+        this.form.controls.dead_line_selector.patchValue();
+    }
+    change_dead_line () {
+        this.dead_line_open = null;
+        this.form.controls.dead_line_selector.patchValue(1);
+    }
+    
     select_district() {
         const dialogConfig = new MatDialogConfig();
 
