@@ -154,7 +154,7 @@
                     <ng-select  formControlName="dead_line_selector"
                                 bindValue="id"
                                 bindLabel="value"
-                                [ngStyle]="{ 'width': '450px'}"
+                                [ngStyle]="{ 'width': '270px'}"
                                 [items]="dead_line_options"
                                 [clearOnBackspace]="false"
                                 [searchable]="false"
@@ -169,7 +169,7 @@
 
                         <ng-template ng-label-tmp let-item="item" let-index="index">
                             <span *ngIf="item.value == 'range'">
-                                от {{min_dead_line_date.value}} до {{max_dead_line_date.value}}
+                                от {{min_dead_line_date.value|date:'M/y'}} до {{max_dead_line_date.value|date:'M/y'}}
                             </span>
                             <span *ngIf="item.value != 'range'">
                                 {{item.value}}
@@ -180,7 +180,7 @@
                             <span *ngIf="floor_options[index].value == 'range'">
 
                                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                                    <div appearance="outline" fxFlex="30" class="pl-4">
+                                    <div appearance="outline" fxFlex="15">
                                         от <input matInput [formControl]="min_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp" placeholder="от">
                                                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                         <mat-datepicker #dp
@@ -190,9 +190,9 @@
                                             panelClass="example-month-picker">
                                     </mat-datepicker>
                                 </div>
-                                <div appearance="outline" fxFlex="20" class="pl-4">
+                                <div appearance="outline" fxFlex="15">
                                 </div>
-                                <div appearance="outline" fxFlex="30" class="pl-4">
+                                <div appearance="outline" fxFlex="15">
                                     до <input matInput [formControl]="max_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp_max" placeholder="до">
                                               <mat-datepicker-toggle matSuffix [for]="dp_max"></mat-datepicker-toggle>
                                     <mat-datepicker #dp_max

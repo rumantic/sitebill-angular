@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {Options} from 'ng5-slider';
 import {map, startWith} from 'rxjs/operators';
 
-import {MatDialog, MatDialogConfig} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatDatepicker} from "@angular/material";
 import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
 import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
 
@@ -125,7 +125,8 @@ export class SearchFormComponent implements OnInit {
     min_dead_line: any;
     min_dead_line_date: any;
     max_dead_line_date: any;
-    dead_line_open: bool;
+    min_limit_dead_line: any;
+    dead_line_open: boolean;
 
     square_min: number = 0;
     square_max: number = 300;
@@ -366,7 +367,7 @@ export class SearchFormComponent implements OnInit {
         }
     }
 
-    chosenYearHandler(normalizedYear: Moment, max: bool) {
+    chosenYearHandler(normalizedYear: Moment, max: boolean) {
         let ctrlValue;
         if ( max ) {
             ctrlValue = this.max_dead_line_date.value;
@@ -379,7 +380,7 @@ export class SearchFormComponent implements OnInit {
         }
     }
 
-    chosenMonthHandler(normlizedMonth: Moment, datepicker: MatDatepicker<Moment>, max: bool) {
+    chosenMonthHandler(normlizedMonth: Moment, datepicker: MatDatepicker<Moment>, max: boolean) {
         let ctrlValue;
         if ( max ) {
             ctrlValue = this.max_dead_line_date.value;
@@ -396,7 +397,7 @@ export class SearchFormComponent implements OnInit {
     
     open_dead_line () {
         this.dead_line_open = true;
-        this.form.controls.dead_line_selector.patchValue();
+        this.form.controls.dead_line_selector.patchValue(null);
     }
     change_dead_line () {
         this.dead_line_open = null;
@@ -415,7 +416,6 @@ export class SearchFormComponent implements OnInit {
         let dialogRef = this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
         dialogRef.afterClosed()
             .subscribe(() => {
-                this.refreash();
             })
         return;
     }
