@@ -2,21 +2,34 @@
     <div class="content p-24" fxLayout="column">
 
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
-            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+            <form class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                   fxFlex="1 0 auto" name="form" [formGroup]="form">
 
-                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                    <div appearance="outline" fxFlex="20" class="pl-4">
+                <div fxLayout="row" fxLayoutAlign="space-around start" fxFlex="1 0 auto">
+                    <div  fxFlex="10">
                     </div>
-                    <div appearance="outline" fxFlex="20" class="pl-4">
-                        <a (click)="select_district()">Район</a>
+                    <div  fxFlex="20">
+                        <mat-checkbox formControlName="not_first_floor">Вторичка</mat-checkbox>
+                    </div>
+                    <div  fxFlex="40">
+                        <a (click)="select_district()">Район </a>
+                        <a (click)="select_district()">Жилой комплекс </a>
+                        <a (click)="select_district()">Улица </a>
+                        <a (click)="select_district()">Адрес </a>
+                    </div>
+                    <div  fxFlex="20">
+                        <mat-checkbox formControlName="not_first_floor">Без комиссии</mat-checkbox>
+                    </div>
+                    <div  fxFlex="10">
                     </div>
                 </div>
 
-                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <div fxLayout="row" fxLayoutAlign="space-around start" fxFlex="1 0 auto">
+                    <div class="room_count" fxFlex="10">
+                        Я хочу
+                    </div>
 
                     <div class="room_count" fxFlex="20">
-                        <mat-label>Комнат</mat-label>
                         <mat-button-toggle-group  formControlName="room_count" aria-label="Font Style"  multiple="true">
                             <mat-button-toggle value="1">1</mat-button-toggle>
                             <mat-button-toggle value="2">2</mat-button-toggle>
@@ -26,13 +39,13 @@
                     </div>
 
 
-                    <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                    <mat-form-field fxFlex="40">
                         <mat-label>Адрес</mat-label>
                         <input matInput formControlName="firstName">
                         <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
                     </mat-form-field>
 
-                    <div class="input-range" fxFlex="30">
+                    <div class="input-range" fxFlex="20">
                         <ng-select formControlName="price_selector"
                                    bindValue="id"
                                    bindLabel="value"
@@ -73,153 +86,175 @@
                         </ng-select>    
                     </div>
 
+                    <div  fxFlex="10">
+                        <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
+                            Искать
+                        </button>
+
+                    </div>
+
+
                 </div>
-                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="smaller">
+                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto" class="smaller">
+                    <div  fxFlex="10">
+                    </div>
 
-                    <ng-select formControlName="square_selector"
-                               bindValue="id"
-                               bindLabel="value"
-                               [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
-                               [items]="square_options"
-                               [clearOnBackspace]="false"
-                               [searchable]="false"
-                               [hideSelected]="false"
-                               [closeOnSelect]="false"
-                               placeholder="Общая площадь, м2"
-                               >
-                        <ng-template ng-label-tmp let-item="item" let-index="index">
-                            <span *ngIf="item.value == 'range'">
-                                от {{square_min}} до {{square_max}}
-                            </span>
-                        </ng-template>                        
+                    <div  fxFlex="20">
+                        <ng-select formControlName="square_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                                   [items]="square_options"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="false"
+                                   [hideSelected]="false"
+                                   [closeOnSelect]="false"
+                                   placeholder="Общая площадь, м2"
+                                   >
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{square_min}} до {{square_max}}
+                                </span>
+                            </ng-template>                        
 
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <div class="custom-slider">
-                                <ng5-slider [(value)]="square_min" [(highValue)]="square_max" [options]="options"></ng5-slider>
-                            </div>
-                        </ng-template>                       
-                    </ng-select>    
-
-                    <ng-select  formControlName="floor_selector"
-                                bindValue="id"
-                                bindLabel="value"
-                                [ngStyle]="{ 'width': '150px'}"
-                                [items]="floor_options"
-                                [clearOnBackspace]="false"
-                                [searchable]="false"
-                                [multiple]="false"
-                                [hideSelected]="false"
-                                [closeOnSelect]="false"
-                                placeholder="Этаж"
-                                >
-
-                        <ng-template ng-label-tmp let-item="item" let-index="index">
-                            <span *ngIf="item.value == 'range'">
-                                от {{floor_min}} до {{floor_max}}
-                            </span>
-                            <span *ngIf="item.value != 'range'">
-                                {{item.value}}
-                            </span>
-                            <span *ngIf="form.controls.not_first_floor.value">
-                                , не первый
-                            </span>
-                            <span *ngIf="form.controls.not_last_floor.value">
-                                , не последний
-                            </span>
-
-                        </ng-template>                        
-
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <span *ngIf="floor_options[index].value == 'range'">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="custom-slider">
-                                    <ng5-slider [(value)]="floor_min" [(highValue)]="floor_max" [options]="options_floor"></ng5-slider>
+                                    <ng5-slider [(value)]="square_min" [(highValue)]="square_max" [options]="options"></ng5-slider>
                                 </div>
-                            </span>
-                            <div *ngIf="floor_options[index].value != 'range'"  >
-                                {{floor_options[index].value}}
-                            </div>
-                            <div *ngIf="floor_options[index].value == 'not_f_not_l'"  >
-                                {{floor_options[index].value}}
-                            </div>
+                            </ng-template>                       
+                        </ng-select>    
+
+                    </div>
+                    <div  fxFlex="20">
+                        <ng-select  formControlName="floor_selector"
+                                    bindValue="id"
+                                    bindLabel="value"
+                                    [ngStyle]="{ 'width': '150px'}"
+                                    [items]="floor_options"
+                                    [clearOnBackspace]="false"
+                                    [searchable]="false"
+                                    [multiple]="false"
+                                    [hideSelected]="false"
+                                    [closeOnSelect]="false"
+                                    placeholder="Этаж"
+                                    >
+
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{floor_min}} до {{floor_max}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                                <span *ngIf="form.controls.not_first_floor.value">
+                                    , не первый
+                                </span>
+                                <span *ngIf="form.controls.not_last_floor.value">
+                                    , не последний
+                                </span>
+
+                            </ng-template>                        
+
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <span *ngIf="floor_options[index].value == 'range'">
+                                    <div class="custom-slider">
+                                        <ng5-slider [(value)]="floor_min" [(highValue)]="floor_max" [options]="options_floor"></ng5-slider>
+                                    </div>
+                                </span>
+                                <div *ngIf="floor_options[index].value != 'range'"  >
+                                    {{floor_options[index].value}}
+                                </div>
+                                <div *ngIf="floor_options[index].value == 'not_f_not_l'"  >
+                                    {{floor_options[index].value}}
+                                </div>
 
 
-                        </ng-template>    
-                        <ng-template ng-footer-tmp>
-                            <mat-checkbox formControlName="not_first_floor">не первый</mat-checkbox>
-                            <mat-checkbox formControlName="not_last_floor">не последний</mat-checkbox>
-                        </ng-template>
+                            </ng-template>    
+                            <ng-template ng-footer-tmp>
+                                <mat-checkbox formControlName="not_first_floor">не первый</mat-checkbox>
+                                <mat-checkbox formControlName="not_last_floor">не последний</mat-checkbox>
+                            </ng-template>
 
-                    </ng-select>    
+                        </ng-select>    
+                    </div>
+                    <div  fxFlex="20">
+                        <ng-select  formControlName="dead_line_selector"
+                                    bindValue="id"
+                                    bindLabel="value"
+                                    [ngStyle]="{ 'width': '270px'}"
+                                    [items]="dead_line_options"
+                                    [clearOnBackspace]="false"
+                                    [searchable]="false"
+                                    [multiple]="false"
+                                    [hideSelected]="false"
+                                    [closeOnSelect]="false"
+                                    [isOpen]="dead_line_open"
+                                    (open)="open_dead_line()"
+                                    (change)="change_dead_line()"
+                                    placeholder="Срок сдачи"
+                                    >
 
-                    <ng-select  formControlName="dead_line_selector"
-                                bindValue="id"
-                                bindLabel="value"
-                                [ngStyle]="{ 'width': '270px'}"
-                                [items]="dead_line_options"
-                                [clearOnBackspace]="false"
-                                [searchable]="false"
-                                [multiple]="false"
-                                [hideSelected]="false"
-                                [closeOnSelect]="false"
-                                [isOpen]="dead_line_open"
-                                (open)="open_dead_line()"
-                                (change)="change_dead_line()"
-                                placeholder="Срок сдачи"
-                                >
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{min_dead_line_date.value|date:'M/y'}} до {{max_dead_line_date.value|date:'M/y'}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                            </ng-template>                        
 
-                        <ng-template ng-label-tmp let-item="item" let-index="index">
-                            <span *ngIf="item.value == 'range'">
-                                от {{min_dead_line_date.value|date:'M/y'}} до {{max_dead_line_date.value|date:'M/y'}}
-                            </span>
-                            <span *ngIf="item.value != 'range'">
-                                {{item.value}}
-                            </span>
-                        </ng-template>                        
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <span *ngIf="floor_options[index].value == 'range'">
 
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <span *ngIf="floor_options[index].value == 'range'">
-
-                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                        <div appearance="outline" fxFlex="15">
+                                            от <input matInput [formControl]="min_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp" placeholder="от">
+                                                      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                            <mat-datepicker #dp
+                                                startView="multi-year"
+                                                (yearSelected)="chosenYearHandler($event, false)"
+                                                (monthSelected)="chosenMonthHandler($event, dp, false)"
+                                                panelClass="example-month-picker">
+                                        </mat-datepicker>
+                                    </div>
                                     <div appearance="outline" fxFlex="15">
-                                        от <input matInput [formControl]="min_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp" placeholder="от">
-                                                  <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                                        <mat-datepicker #dp
+                                    </div>
+                                    <div appearance="outline" fxFlex="15">
+                                        до <input matInput [formControl]="max_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp_max" placeholder="до">
+                                                  <mat-datepicker-toggle matSuffix [for]="dp_max"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp_max
                                             startView="multi-year"
-                                            (yearSelected)="chosenYearHandler($event, false)"
-                                            (monthSelected)="chosenMonthHandler($event, dp, false)"
+                                            (yearSelected)="chosenYearHandler($event, true)"
+                                            (monthSelected)="chosenMonthHandler($event, dp_max, true)"
                                             panelClass="example-month-picker">
                                     </mat-datepicker>
-                                </div>
-                                <div appearance="outline" fxFlex="15">
-                                </div>
-                                <div appearance="outline" fxFlex="15">
-                                    до <input matInput [formControl]="max_dead_line_date" [min]="min_limit_dead_line" [matDatepicker]="dp_max" placeholder="до">
-                                              <mat-datepicker-toggle matSuffix [for]="dp_max"></mat-datepicker-toggle>
-                                    <mat-datepicker #dp_max
-                                        startView="multi-year"
-                                        (yearSelected)="chosenYearHandler($event, true)"
-                                        (monthSelected)="chosenMonthHandler($event, dp_max, true)"
-                                        panelClass="example-month-picker">
-                                </mat-datepicker>
 
+                                </div>
                             </div>
+
+
+
+
+                        </span>
+                        <div *ngIf="floor_options[index].value != 'range'"  >
+                            {{floor_options[index].value}}
                         </div>
+                    </ng-template>    
+                    <ng-template ng-footer-tmp>
+                        <button mat-raised-button matStepperNext type="button" color="accent" (click)="change_dead_line()">
+                            Применить
+                        </button>
+                    </ng-template>
+
+                </ng-select>    
+
+            </div>
+            <div  fxFlex="20">
+            </div>
+            <div  fxFlex="10">
+            </div>
 
 
-
-
-                    </span>
-                    <div *ngIf="floor_options[index].value != 'range'"  >
-                        {{floor_options[index].value}}
-                    </div>
-                </ng-template>    
-                <ng-template ng-footer-tmp>
-                    <button mat-raised-button matStepperNext type="button" color="accent" (click)="change_dead_line()">
-                        Применить
-                    </button>
-                </ng-template>
-
-            </ng-select>    
 
 
 
@@ -229,9 +264,6 @@
 
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
             <div appearance="outline" fxFlex="20" class="pl-4">
-                <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
-                    Искать
-                </button>
             </div>
         </div>
 
