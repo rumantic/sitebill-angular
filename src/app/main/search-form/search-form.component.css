@@ -2,7 +2,10 @@
     min-width: 270px;
     width: 100%;
 }
-
+::ng-deep .more_params {
+    height: 400px;
+    width: 100%;
+}
 ::ng-deep .custom-slider {
     padding-top: 10px;
 }

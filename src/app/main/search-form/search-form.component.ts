@@ -202,6 +202,8 @@ export class SearchFormComponent implements OnInit {
             option1: [''],
             room_count: [''],
             price_selector: [],
+            second_realty: [],
+            no_commision: [],
             price_min: ['5000000'],
             price_max: ['10000000'],
             square_selector: [],
@@ -277,6 +279,8 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_square_parts());
         query_parts = query_parts.concat(this.render_floor_parts());
         query_parts = query_parts.concat(this.render_room_count_parts());
+        query_parts = query_parts.concat(this.render_checkbox_parts());
+        query_parts = query_parts.concat(this.render_deadline_parts());
 
         console.log(this.form.controls.room_count.value);
 
@@ -325,6 +329,38 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
+    
+    render_deadline_parts() {
+        let query_parts = [];
+        try {
+            console.log(this.form.controls.dead_line_selector.value);
+            if (this.form.controls.dead_line_selector.value == 1) {
+                query_parts.push('min_dead_line=' + this.min_dead_line_date.value.format('Y-M-D'));
+                query_parts.push('max_dead_line=' + this.max_dead_line_date.value.format('Y-M-D'));
+            }
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
+    
+    render_checkbox_parts() {
+        let query_parts = [];
+        try {
+            if (this.form.controls.second_realty.value) {
+                query_parts.push('second_realty=' + 1);
+            }
+            if (this.form.controls.no_commision.value) {
+                query_parts.push('no_commision=' + 1);
+            }
+
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
 
     render_square_parts() {
         let query_parts = [];
@@ -370,15 +406,11 @@ export class SearchFormComponent implements OnInit {
     render_address_query_part(key_name: string, controls_value: any) {
         try {
             let query_part = [];
-            let location_part = [];
             let find_value = this.form.controls.location.value;
             for (let item of controls_value) {
                 query_part.push(key_name + '[]=' + item);
-                console.log('find');
                 find_value += ' ' + this.filterSharedData[key_name].find(x=>x.id == item).value; 
-                console.log(find_value);
                 this.form.controls.location.patchValue(find_value);
-                //location_part.push(key_name + '[]=' + item);
             }
             return query_part;
         } catch {
