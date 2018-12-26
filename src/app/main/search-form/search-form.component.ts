@@ -371,9 +371,13 @@ export class SearchFormComponent implements OnInit {
         try {
             let query_part = [];
             let location_part = [];
+            let find_value = this.form.controls.location.value;
             for (let item of controls_value) {
                 query_part.push(key_name + '[]=' + item);
-                this.form.controls.location.patchValue(this.form.controls.location.value + this.filterSharedData[key_name]);
+                console.log('find');
+                find_value += ' ' + this.filterSharedData[key_name].find(x=>x.id == item).value; 
+                console.log(find_value);
+                this.form.controls.location.patchValue(find_value);
                 //location_part.push(key_name + '[]=' + item);
             }
             return query_part;
@@ -431,6 +435,7 @@ export class SearchFormComponent implements OnInit {
         let dialogRef = this.dialog.open(SelectDistrictDialogComponent, dialogConfig);
         dialogRef.afterClosed()
             .subscribe(() => {
+                this.render_address_parts();
             })
         return;
     }
