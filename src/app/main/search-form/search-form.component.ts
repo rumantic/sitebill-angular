@@ -102,6 +102,7 @@ export class SearchFormComponent implements OnInit {
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
     private filterControls: any;
+    private filterSharedData: any;
 
     value1: number = 4;
     highValue: number = 100;
@@ -196,7 +197,7 @@ export class SearchFormComponent implements OnInit {
                     disabled: true
                 }, Validators.required
             ],
-            firstName: [''],
+            location: [''],
             lastName: [''],
             option1: [''],
             room_count: [''],
@@ -229,6 +230,14 @@ export class SearchFormComponent implements OnInit {
             this.filterControls = controls;
             console.log(controls);
         });
+        
+        this.filterService.share.subscribe( (datas) => {
+            console.log(datas);
+            this.filterSharedData = datas;
+            //console.log(key);
+            //console.log(datas);
+        });
+        
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
@@ -347,9 +356,11 @@ export class SearchFormComponent implements OnInit {
 
     render_address_parts() {
         let query_parts = [];
+        this.form.controls.location.patchValue('');
         try {
             query_parts = query_parts.concat(this.render_address_query_part('district_id', this.filterControls.district_id.value));
             query_parts = query_parts.concat(this.render_address_query_part('street_id', this.filterControls.street_id.value));
+            query_parts = query_parts.concat(this.render_address_query_part('complex_id', this.filterControls.complex_id.value));
         } catch {
 
         }
@@ -359,13 +370,17 @@ export class SearchFormComponent implements OnInit {
     render_address_query_part(key_name: string, controls_value: any) {
         try {
             let query_part = [];
+            let location_part = [];
             for (let item of controls_value) {
                 query_part.push(key_name + '[]=' + item);
+                this.form.controls.location.patchValue(this.form.controls.location.value + this.filterSharedData[key_name]);
+                //location_part.push(key_name + '[]=' + item);
             }
             return query_part;
         } catch {
         }
     }
+    
 
     chosenYearHandler(normalizedYear: Moment, max: boolean) {
         let ctrlValue;
@@ -409,7 +424,7 @@ export class SearchFormComponent implements OnInit {
 
         dialogConfig.disableClose = true;
         dialogConfig.width = '600px';
-        dialogConfig.height = '400px';
+        dialogConfig.height = '600px';
         dialogConfig.autoFocus = true;
         dialogConfig.data = {app_name: 'test'};
 

@@ -1,9 +1,9 @@
-
-
+.dialog-content-wrapper, .mat-dialog-content {
+    height: 500px;
+}
 .mat-form-field {
     display: block;
 }
-
 textarea {
     height: 100px;
     resize: vertical;

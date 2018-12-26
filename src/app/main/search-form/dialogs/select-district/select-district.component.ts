@@ -25,6 +25,7 @@ export class SelectDistrictDialogComponent implements OnInit {
     declinePressed: boolean;
     declineProcessing: boolean;
     options: any;
+    
 
     dialogForm: FormGroup;
 
@@ -46,7 +47,7 @@ export class SelectDistrictDialogComponent implements OnInit {
     simpleItems = [true, 'Two', 3];
     district_options: any;
     street_options: any;
-
+    complex_options: any;
 
 
     constructor(
@@ -83,9 +84,11 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.dialogForm = this.fb.group({
             district_id: [''],
             street_id: [''],
+            complex_id: [''],
         });
         this.load_dictionary('district_id');
         this.load_dictionary('street_id');
+        this.load_dictionary('complex_id');
     }
     /**
      * On form values changed
@@ -122,6 +125,8 @@ export class SelectDistrictDialogComponent implements OnInit {
                         this.district_options = result.data;
                     } else if (columnName == 'street_id' ) {
                         this.street_options = result.data;
+                    } else if (columnName == 'complex_id' ) {
+                        this.complex_options = result.data;
                     }
                     //this.load_grid_data(result.selected);
                 }
@@ -134,6 +139,10 @@ export class SelectDistrictDialogComponent implements OnInit {
         console.log(this.dialogForm.controls.street_id.value);
         //this.filterService.announceMission(this.dialogForm.controls.district_id.value);
         this.filterService.save(this.dialogForm.controls);
+        
+        this.filterService.share_data('district_id', this.district_options);
+        this.filterService.share_data('complex_id', this.complex_options);
+        this.filterService.share_data('street_id', this.street_options);
 
         this.dialogRef.close();
     }

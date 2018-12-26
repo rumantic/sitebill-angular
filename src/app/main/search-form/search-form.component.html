@@ -12,10 +12,12 @@
                         <mat-checkbox formControlName="not_first_floor">Вторичка</mat-checkbox>
                     </div>
                     <div  fxFlex="40">
+                        <!--
                         <a (click)="select_district()">Район </a>
                         <a (click)="select_district()">Жилой комплекс </a>
                         <a (click)="select_district()">Улица </a>
                         <a (click)="select_district()">Адрес </a>
+                        -->
                     </div>
                     <div  fxFlex="20">
                         <mat-checkbox formControlName="not_first_floor">Без комиссии</mat-checkbox>
@@ -41,7 +43,7 @@
 
                     <mat-form-field fxFlex="40">
                         <mat-label>Адрес</mat-label>
-                        <input matInput formControlName="firstName">
+                        <input matInput formControlName="location" (click)="select_district()">
                         <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
                     </mat-form-field>
 
