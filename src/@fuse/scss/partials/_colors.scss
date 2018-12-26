@@ -15,6 +15,7 @@
         // color other than the default #fafafa
         @if ($is-dark) {
             background: map-get($background, background);
+            //background: #F5F5F5;
         } @else {
             background: #F5F5F5;
         }

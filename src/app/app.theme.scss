@@ -228,4 +228,39 @@ body.theme-pink-dark {
 
     @include fuse-color-classes($palettes);
 }
+// -----------------------------------------------------------------------------------------------------
+// @ Define a pink light theme
+// -----------------------------------------------------------------------------------------------------
+
+// Define the primary, accent and warn palettes
+$red-light-theme-primary-palette: mat-palette($mat-red);
+$red-light-theme-accent-palette: mat-palette($mat-red);
+$red-light-theme-warn-palette: mat-palette($mat-red);
+
+// Create the Material theme object
+$red-light-theme: mat-light-theme($red-light-theme-primary-palette, $red-light-theme-accent-palette, $red-light-theme-warn-palette);
+
+// Add ".theme-pink-light" class to the body to activate this theme.
+// Class name must start with "theme-" !!!
+body.theme-red-light {
+
+    // Generate the Angular Material theme
+    @include angular-material-theme($red-light-theme);
+
+    // Apply the theme to the Fuse Core
+    @include fuse-core-theme($red-light-theme);
+
+    // Apply the theme to the user components
+    @include components-theme($red-light-theme);
+
+    // Generate Fuse color classes for primary, accent and warn colors
+    $palettes: (
+        primary: $red-light-theme-primary-palette,
+        accent: $red-light-theme-accent-palette,
+        warn: $red-light-theme-warn-palette
+    );
+
+    @include fuse-color-classes($palettes);
+}
+
 @import "~@ng-select/ng-select/themes/material.theme.css";

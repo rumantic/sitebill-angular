@@ -181,7 +181,9 @@ export class AppComponent implements OnInit, OnDestroy
                     }
                 }
                 //this.document.getElementById('fuse-app').classList.add(this.fuseConfig.colorTheme);
-                //this.fuseConfig.colorTheme = 'theme-pink-dark';
+                this.fuseConfig.colorTheme = 'theme-red-light';
+                //this.fuseConfig.colorTheme = 'theme-default';
+                //this.fuseConfig.colorTheme = 'theme-purple-green';
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
     }
