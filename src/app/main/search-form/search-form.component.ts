@@ -424,6 +424,7 @@ export class SearchFormComponent implements OnInit {
 
     chosenYearHandler(normalizedYear: Moment, max: boolean) {
         let ctrlValue;
+        this.form.controls.dead_line_selector.patchValue(1);
         if ( max ) {
             ctrlValue = this.max_dead_line_date.value;
             ctrlValue.year(normalizedYear.year());
@@ -456,8 +457,12 @@ export class SearchFormComponent implements OnInit {
     }
     change_dead_line () {
         this.dead_line_open = null;
+    }
+    apply_dead_line () {
+        this.dead_line_open = null;
         this.form.controls.dead_line_selector.patchValue(1);
     }
+    
     
     select_district() {
         const dialogConfig = new MatDialogConfig();

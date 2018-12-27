@@ -215,7 +215,7 @@
                                 </ng-template>                        
 
                                 <ng-template ng-option-tmp let-item="item" let-index="index">
-                                    <span *ngIf="floor_options[index].value == 'range'">
+                                    <span *ngIf="dead_line_options[index].value == 'range'">
 
                                         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                                             <div appearance="outline" fxFlex="15">
@@ -252,7 +252,7 @@
                             </div>
                         </ng-template>    
                         <ng-template ng-footer-tmp>
-                            <button mat-raised-button matStepperNext type="button" color="accent" (click)="change_dead_line()">
+                            <button mat-raised-button matStepperNext type="button" color="accent" (click)="apply_dead_line()">
                                 Применить
                             </button>
                         </ng-template>
