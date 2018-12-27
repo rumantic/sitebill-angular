@@ -1,4 +1,4 @@
-import {Component, OnInit, isDevMode} from '@angular/core';
+import {Component, OnInit, isDevMode, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Subject, Observable, Subscription} from 'rxjs';
@@ -18,6 +18,8 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
 
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {DOCUMENT} from '@angular/platform-browser';
+
 import * as _moment from 'moment';
 import { Moment } from 'moment';
 const moment = _moment;
@@ -123,7 +125,10 @@ export class SearchFormComponent implements OnInit {
 
     square_options: any[] = [{id: 1, value: 'range', actual: 1}];
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
+    material_options: any[] = [{id: 1, value: 'кирпич', actual: 0}, {id: 2, value: 'монолит', actual: 0}, {id: 3, value: 'панель', actual: 0}];
     dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
+    default_elements: string[] = ["room_count", "location", "price_selector", "square_selector", "floor_selector", "material_selector", "dead_line_selector", "second_realty", "no_commision"];
+    active_elements: any[];
     min_dead_line: any;
     min_dead_line_date: any;
     max_dead_line_date: any;
@@ -147,6 +152,7 @@ export class SearchFormComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private dialog: MatDialog,
         private router: Router,
+        @Inject(DOCUMENT) private document: any,
         private filterService: FilterService,
         private _formBuilder: FormBuilder
     ) {
@@ -185,6 +191,8 @@ export class SearchFormComponent implements OnInit {
 
         this.controlPressed = false;
         this.controlProcessing = true;
+        
+        
     }
 
 
@@ -192,15 +200,7 @@ export class SearchFormComponent implements OnInit {
         console.log(this.price_options);
         // Reactive Form
         this.form = this._formBuilder.group({
-            company: [
-                {
-                    value: 'Google',
-                    disabled: true
-                }, Validators.required
-            ],
             location: [''],
-            lastName: [''],
-            option1: [''],
             room_count: [''],
             price_selector: [],
             second_realty: [],
@@ -208,22 +208,17 @@ export class SearchFormComponent implements OnInit {
             price_min: ['5000000'],
             price_max: ['10000000'],
             square_selector: [],
+            material_selector: [],
             floor_selector: [],
             dead_line_min: ['1'],
             dead_line_max: ['1'],
             not_first_floor: [false],
             not_last_floor: [false],
-            dead_line_selector: [],
+            dead_line_selector: []
 
-
-            address: ['', Validators.required],
-            address2: ['', Validators.required],
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            postalCode: ['', [Validators.required, Validators.maxLength(5)]],
-            country: ['', Validators.required],
-            realty_price: ['', Validators.required],
         });
+        this.init_input_parameters();
+        
 
         this.filteredOptions = this.myControl.valueChanges.pipe(
             startWith(''),
@@ -245,6 +240,50 @@ export class SearchFormComponent implements OnInit {
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
     }
+    
+    init_input_parameters () {
+        let app_root_element;
+        let elements = [];
+        if (this.document.getElementById('angular_search')) {
+            app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('app_root')) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+        if (app_root_element.getAttribute('elements')) {
+            elements = app_root_element.getAttribute('elements').split(',');
+            this.default_elements = elements;
+            if ( !elements.find(x=>x == 'no_commision')) {
+                delete this.form.controls.no_commision;
+            } 
+            if ( !elements.find(x=>x == 'second_realty')) {
+                delete this.form.controls.second_realty;
+            } 
+            if ( !elements.find(x=>x == 'dead_line_selector')) {
+                delete this.form.controls.dead_line_selector;
+            } 
+            if ( !elements.find(x=>x == 'material_selector')) {
+                delete this.form.controls.material_selector;
+            } 
+            if ( !elements.find(x=>x == 'floor_selector')) {
+                delete this.form.controls.floor_selector;
+            } 
+            if ( !elements.find(x=>x == 'square_selector')) {
+                delete this.form.controls.square_selector;
+            } 
+            if ( !elements.find(x=>x == 'price_selector')) {
+                delete this.form.controls.price_selector;
+            } 
+            if ( !elements.find(x=>x == 'location')) {
+                delete this.form.controls.location;
+            } 
+            if ( !elements.find(x=>x == 'room_count')) {
+                delete this.form.controls.room_count;
+            } 
+            
+        }
+        
+    }
+    
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
 
@@ -262,9 +301,6 @@ export class SearchFormComponent implements OnInit {
 
         return value;
     }
-    transform(url) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    }    
 
     get tickInterval(): number | 'auto' {
         return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
@@ -285,6 +321,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_room_count_parts());
         query_parts = query_parts.concat(this.render_checkbox_parts());
         query_parts = query_parts.concat(this.render_deadline_parts());
+        query_parts = query_parts.concat(this.render_material_parts());
 
         console.log(this.form.controls.room_count.value);
 
@@ -420,6 +457,19 @@ export class SearchFormComponent implements OnInit {
         } catch {
         }
     }
+    
+    render_material_parts() {
+        let query_parts = [];
+        try {
+            for (let item of this.form.controls.material_selector.value) {
+                query_parts.push('walls[]='+item);
+            }
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
     
 
     chosenYearHandler(normalizedYear: Moment, max: boolean) {

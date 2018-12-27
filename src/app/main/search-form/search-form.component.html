@@ -8,10 +8,10 @@
                 <div fxLayout="row" fxLayoutAlign="space-around start" fxFlex="1 0 auto">
                     <div  fxFlex="10">
                     </div>
-                    <div  fxFlex="20">
+                    <div  fxFlex="20" *ngIf="form.controls.second_realty">
                         <mat-checkbox formControlName="second_realty">Вторичка</mat-checkbox>
                     </div>
-                    <div  fxFlex="40">
+                    <div  fxFlex="32">
                         <!--
                         <a (click)="select_district()">Район </a>
                         <a (click)="select_district()">Жилой комплекс </a>
@@ -19,7 +19,7 @@
                         <a (click)="select_district()">Адрес </a>
                         -->
                     </div>
-                    <div  fxFlex="20">
+                    <div  fxFlex="20" *ngIf="form.controls.no_commision">
                         <mat-checkbox formControlName="no_commision">Без комиссии</mat-checkbox>
                     </div>
                     <div  fxFlex="10">
@@ -27,11 +27,11 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
-                    <div class="room_count" fxFlex="10">
-                        <h1><span class="red-fg">Я</span> хочу</h1>
+                    <div class="room_count" fxFlex="8">
+                        <h2><span class="red-fg">Я</span> хочу</h2>
                     </div>
 
-                    <div class="room_count" fxFlex="20">
+                    <div class="room_count" fxFlex="19" *ngIf="form.controls.room_count">
                         <mat-button-toggle-group  formControlName="room_count" aria-label="Font Style"  multiple="true">
                             <mat-button-toggle value="1">1</mat-button-toggle>
                             <mat-button-toggle value="2">2</mat-button-toggle>
@@ -41,7 +41,7 @@
                     </div>
 
 
-                    <mat-form-field fxFlex="40">
+                    <mat-form-field fxFlex="25" *ngIf="form.controls.location">
                         <mat-label>Адрес</mat-label>
                         <input matInput formControlName="location" (click)="select_district()" style="margin-bottom: 10px; margin-right: 5px;">
                         <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
@@ -49,11 +49,11 @@
                     <div fxFlex="5">
                     </div>
 
-                    <div class="input-range" fxFlex="20">
+                    <div class="input-range" fxFlex="20" *ngIf="form.controls.price_selector">
                         <ng-select formControlName="price_selector"
                                    bindValue="id"
                                    bindLabel="value"
-                                   [ngStyle]="{ 'width': '190px', 'text-align': 'center'}"
+                                   [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
                                    [items]="price_options"
                                    [clearOnBackspace]="false"
                                    [searchable]="false"
@@ -107,10 +107,7 @@
                     </mat-expansion-panel-header>
 
                     <div fxLayout="row" fxLayoutAlign="space-around start center" >
-                        <div  fxFlex="10">
-                        </div>
-
-                        <div  fxFlex="20">
+                        <div  fxFlex="20" *ngIf="form.controls.square_selector">
                             <ng-select formControlName="square_selector"
                                        bindValue="id"
                                        bindLabel="value"
@@ -123,9 +120,9 @@
                                        placeholder="Общая площадь, м2"
                                        >
                                 <ng-template ng-label-tmp let-item="item" let-index="index">
-                                    <span *ngIf="item.value == 'range'">
+                                    <div *ngIf="item.value == 'range'">
                                         от {{square_min}} до {{square_max}}
-                                    </span>
+                                    </div>
                                 </ng-template>                        
 
                                 <ng-template ng-option-tmp let-item="item" let-index="index">
@@ -136,7 +133,7 @@
                             </ng-select>    
 
                         </div>
-                        <div  fxFlex="20">
+                        <div  fxFlex="20" *ngIf="form.controls.floor_selector">
                             <ng-select  formControlName="floor_selector"
                                         bindValue="id"
                                         bindLabel="value"
@@ -167,11 +164,11 @@
                                 </ng-template>                        
 
                                 <ng-template ng-option-tmp let-item="item" let-index="index">
-                                    <span *ngIf="floor_options[index].value == 'range'">
+                                    <div *ngIf="floor_options[index].value == 'range'">
                                         <div class="custom-slider">
                                             <ng5-slider [(value)]="floor_min" [(highValue)]="floor_max" [options]="options_floor"></ng5-slider>
                                         </div>
-                                    </span>
+                                    </div>
                                     <div *ngIf="floor_options[index].value != 'range'"  >
                                         {{floor_options[index].value}}
                                     </div>
@@ -188,11 +185,28 @@
 
                             </ng-select>    
                         </div>
-                        <div  fxFlex="20">
+                        <div  fxFlex="20" *ngIf="form.controls.material_selector">
+                            <ng-select formControlName="material_selector"
+                                       bindValue="id"
+                                       bindLabel="value"
+                                       [ngStyle]="{ 'width': '150px', 'text-align': 'center'}"
+                                       [items]="material_options"
+                                       [clearOnBackspace]="false"
+                                       [searchable]="false"
+                                       [multiple]="true"
+                                       [hideSelected]="false"
+                                       [closeOnSelect]="false"
+                                       placeholder="Материал"
+                                       >
+                            </ng-select>    
+
+                        </div>
+                        
+                        <div  fxFlex="20" *ngIf="form.controls.dead_line_selector">
                             <ng-select  formControlName="dead_line_selector"
                                         bindValue="id"
                                         bindLabel="value"
-                                        [ngStyle]="{ 'width': '270px'}"
+                                        [ngStyle]="{ 'width': '260px'}"
                                         [items]="dead_line_options"
                                         [clearOnBackspace]="false"
                                         [searchable]="false"
@@ -260,9 +274,8 @@
                     </ng-select>    
 
                 </div>
-                <div  fxFlex="20">
-                    &nbsp;
-                </div>
+                        
+                        
                 <div  fxFlex="10">
                     &nbsp;
                 </div>
