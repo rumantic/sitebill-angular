@@ -1,9 +1,10 @@
-import {Component, Inject, OnInit, isDevMode} from '@angular/core';
+import {Component, OnInit, isDevMode} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Subject, Observable, Subscription} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
+
 
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
@@ -57,7 +58,7 @@ export class SearchFormComponent implements OnInit {
 
     rows: any[];
     records: any[];
-    api_url: string;
+    api_url: any;
 
     imageUrls: (string | IImage)[] = [];
     height: string = '100%';
@@ -261,6 +262,9 @@ export class SearchFormComponent implements OnInit {
 
         return value;
     }
+    transform(url) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }    
 
     get tickInterval(): number | 'auto' {
         return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;

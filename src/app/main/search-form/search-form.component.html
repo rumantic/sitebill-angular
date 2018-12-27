@@ -26,9 +26,9 @@
                     </div>
                 </div>
 
-                <div fxLayout="row" fxLayoutAlign="space-around start" fxFlex="1 0 auto">
+                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
                     <div class="room_count" fxFlex="10">
-                        Я хочу
+                        <h1><span class="red-fg">Я</span> хочу</h1>
                     </div>
 
                     <div class="room_count" fxFlex="20">
@@ -43,9 +43,11 @@
 
                     <mat-form-field fxFlex="40">
                         <mat-label>Адрес</mat-label>
-                        <input matInput formControlName="location" (click)="select_district()">
+                        <input matInput formControlName="location" (click)="select_district()" style="margin-bottom: 10px; margin-right: 5px;">
                         <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
                     </mat-form-field>
+                    <div fxFlex="5">
+                    </div>
 
                     <div class="input-range" fxFlex="20">
                         <ng-select formControlName="price_selector"
@@ -275,7 +277,7 @@
                     
                     <div fxLayout="row wrap" fxLayoutAlign="space-around start center"  class="more_params" >
                         <div  fxFlex="100">
-                            <iframe src="/js/ajax.php?action=iframe_map" style="border: 0px;" border="0" width="100%" height="400"></iframe>
+                            <iframe src="{{api_url}/js/ajax.php?action=iframe_map" style="border: 0px;" border="0" width="100%" height="400"></iframe>
                         </div>
                     </div>
                     
