@@ -376,8 +376,8 @@ export class SearchFormComponent implements OnInit {
         try {
             console.log(this.form.controls.dead_line_selector.value);
             if (this.form.controls.dead_line_selector.value == 1) {
-                query_parts.push('min_dead_line=' + this.min_dead_line_date.value.format('Y-M-D'));
-                query_parts.push('max_dead_line=' + this.max_dead_line_date.value.format('Y-M-D'));
+                query_parts.push('min_dead_line=' + this.min_dead_line_date.value.format('Y-MM-DD'));
+                query_parts.push('max_dead_line=' + this.max_dead_line_date.value.format('Y-MM-DD'));
             }
         } catch {
 
