@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from "@angular/common";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule, Routes} from '@angular/router';
@@ -38,9 +38,8 @@ import {LayoutModule} from 'app/layout/layout.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
-import {AlertService, AuthenticationService, UserService} from './_services/index';
+import {AlertService, AuthenticationService} from './_services/index';
 
-import {DashboardComponent} from './dashboard/dashboard.component';
 import {ModelDetailComponent} from './model-detail/model-detail.component';
 import {ModelService} from './model.service';
 import {MessageService} from './message.service';
@@ -84,8 +83,7 @@ import {Error500Component} from 'app/main/pages/errors/500/error-500.component';
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
-    {path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard]},
-    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+    //{path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
     {path: 'logout', component: LoginComponent},
     {
@@ -169,7 +167,6 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        DashboardComponent,
         ModelDetailComponent,
         ControlElementsComponent,
         SliderComponent,
