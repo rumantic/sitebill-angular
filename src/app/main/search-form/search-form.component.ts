@@ -1,9 +1,11 @@
 import {Component, OnInit, isDevMode, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Subject, Observable, Subscription} from 'rxjs';
+import { distinctUntilChanged, debounceTime, switchMap, tap, catchError } from 'rxjs/operators'
+import {Subject, Observable, Subscription, of, concat } from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
+
 
 
 import {currentUser} from 'app/_models/currentuser';
@@ -19,20 +21,21 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {DOCUMENT} from '@angular/platform-browser';
+import { DataService, Person } from './word.service';
 
 import * as _moment from 'moment';
-import { Moment } from 'moment';
+import {Moment} from 'moment';
 const moment = _moment;
 export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
+    parse: {
+        dateInput: 'MM/YYYY',
+    },
+    display: {
+        dateInput: 'MM/YYYY',
+        monthYearLabel: 'MMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
 };
 
 @Component({
@@ -144,6 +147,14 @@ export class SearchFormComponent implements OnInit {
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
 
+    words_options: any;
+
+    //Для поиска по словам внутри объявлений
+    people3$: Observable<Person[]>;
+    people3Loading = false;
+    people3input$ = new Subject<string>();
+    selectedPersons: Person[] = <any>[{name: 'Karyn Wright'}, {name: 'Other'}];
+
 
 
     constructor(
@@ -154,7 +165,8 @@ export class SearchFormComponent implements OnInit {
         private router: Router,
         @Inject(DOCUMENT) private document: any,
         private filterService: FilterService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private dataService: DataService        
     ) {
 
         // Set the private defaults
@@ -191,8 +203,8 @@ export class SearchFormComponent implements OnInit {
 
         this.controlPressed = false;
         this.controlProcessing = true;
-        
-        
+
+
     }
 
 
@@ -203,6 +215,7 @@ export class SearchFormComponent implements OnInit {
             location: [''],
             room_count: [''],
             price_selector: [],
+            word: [],
             second_realty: [],
             no_commision: [],
             price_min: ['5000000'],
@@ -218,7 +231,7 @@ export class SearchFormComponent implements OnInit {
 
         });
         this.init_input_parameters();
-        
+
 
         this.filteredOptions = this.myControl.valueChanges.pipe(
             startWith(''),
@@ -228,20 +241,21 @@ export class SearchFormComponent implements OnInit {
             this.filterControls = controls;
             console.log(controls);
         });
-        
-        this.filterService.share.subscribe( (datas) => {
+
+        this.filterService.share.subscribe((datas) => {
             console.log(datas);
             this.filterSharedData = datas;
             //console.log(key);
             //console.log(datas);
         });
+        this.loadPeople3();
         
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
     }
-    
-    init_input_parameters () {
+
+    init_input_parameters() {
         let app_root_element;
         let elements = [];
         if (this.document.getElementById('angular_search')) {
@@ -252,42 +266,58 @@ export class SearchFormComponent implements OnInit {
         if (app_root_element.getAttribute('elements')) {
             elements = app_root_element.getAttribute('elements').split(',');
             this.default_elements = elements;
-            if ( !elements.find(x=>x == 'no_commision')) {
+            if (!elements.find(x => x == 'no_commision')) {
                 delete this.form.controls.no_commision;
-            } 
-            if ( !elements.find(x=>x == 'second_realty')) {
+            }
+            if (!elements.find(x => x == 'second_realty')) {
                 delete this.form.controls.second_realty;
-            } 
-            if ( !elements.find(x=>x == 'dead_line_selector')) {
+            }
+            if (!elements.find(x => x == 'dead_line_selector')) {
                 delete this.form.controls.dead_line_selector;
-            } 
-            if ( !elements.find(x=>x == 'material_selector')) {
+            }
+            if (!elements.find(x => x == 'material_selector')) {
                 delete this.form.controls.material_selector;
-            } 
-            if ( !elements.find(x=>x == 'floor_selector')) {
+            }
+            if (!elements.find(x => x == 'floor_selector')) {
                 delete this.form.controls.floor_selector;
-            } 
-            if ( !elements.find(x=>x == 'square_selector')) {
+            }
+            if (!elements.find(x => x == 'square_selector')) {
                 delete this.form.controls.square_selector;
-            } 
-            if ( !elements.find(x=>x == 'price_selector')) {
+            }
+            if (!elements.find(x => x == 'price_selector')) {
                 delete this.form.controls.price_selector;
-            } 
-            if ( !elements.find(x=>x == 'location')) {
+            }
+            if (!elements.find(x => x == 'location')) {
                 delete this.form.controls.location;
-            } 
-            if ( !elements.find(x=>x == 'room_count')) {
+            }
+            if (!elements.find(x => x == 'room_count')) {
                 delete this.form.controls.room_count;
-            } 
-            
+            }
+
         }
-        
+
     }
-    
+
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
 
         return this.options1.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    }
+
+    private loadPeople3() {
+        console.log(term);
+        this.people3$ = concat(
+            of([]), // default items
+            this.people3input$.pipe(
+                debounceTime(200),
+                distinctUntilChanged(),
+                tap(() => this.people3Loading = true),
+                switchMap(term => this.dataService.getPeople(term).pipe(
+                    catchError(() => of([])), // empty list on error
+                    tap(() => this.people3Loading = false)
+                ))
+            )
+        );
     }
 
     formatLabel(value: number | null) {
@@ -370,7 +400,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_deadline_parts() {
         let query_parts = [];
         try {
@@ -384,8 +414,8 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
-    
+
+
     render_checkbox_parts() {
         let query_parts = [];
         try {
@@ -401,7 +431,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
 
     render_square_parts() {
         let query_parts = [];
@@ -450,32 +480,32 @@ export class SearchFormComponent implements OnInit {
             let find_value = this.form.controls.location.value;
             for (let item of controls_value) {
                 query_part.push(key_name + '[]=' + item);
-                find_value += ' ' + this.filterSharedData[key_name].find(x=>x.id == item).value; 
+                find_value += ' ' + this.filterSharedData[key_name].find(x => x.id == item).value;
                 this.form.controls.location.patchValue(find_value);
             }
             return query_part;
         } catch {
         }
     }
-    
+
     render_material_parts() {
         let query_parts = [];
         try {
             for (let item of this.form.controls.material_selector.value) {
-                query_parts.push('walls[]='+item);
+                query_parts.push('walls[]=' + item);
             }
         } catch {
 
         }
         return query_parts;
     }
-    
-    
+
+
 
     chosenYearHandler(normalizedYear: Moment, max: boolean) {
         let ctrlValue;
         this.form.controls.dead_line_selector.patchValue(1);
-        if ( max ) {
+        if (max) {
             ctrlValue = this.max_dead_line_date.value;
             ctrlValue.year(normalizedYear.year());
             this.max_dead_line_date.setValue(ctrlValue);
@@ -488,7 +518,7 @@ export class SearchFormComponent implements OnInit {
 
     chosenMonthHandler(normlizedMonth: Moment, datepicker: MatDatepicker<Moment>, max: boolean) {
         let ctrlValue;
-        if ( max ) {
+        if (max) {
             ctrlValue = this.max_dead_line_date.value;
             ctrlValue.month(normlizedMonth.month());
             this.max_dead_line_date.setValue(ctrlValue);
@@ -498,22 +528,22 @@ export class SearchFormComponent implements OnInit {
             this.min_dead_line_date.setValue(ctrlValue);
         }
         datepicker.close();
-        
+
     }
-    
-    open_dead_line () {
+
+    open_dead_line() {
         this.dead_line_open = true;
         this.form.controls.dead_line_selector.patchValue(null);
     }
-    change_dead_line () {
+    change_dead_line() {
         this.dead_line_open = null;
     }
-    apply_dead_line () {
+    apply_dead_line() {
         this.dead_line_open = null;
         this.form.controls.dead_line_selector.patchValue(1);
     }
-    
-    
+
+
     select_district() {
         const dialogConfig = new MatDialogConfig();
 

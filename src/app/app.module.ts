@@ -76,6 +76,8 @@ import {DocsComponentsThirdPartyNgxDatatableComponent} from 'app/main/documentat
 import {MortgageCalculatorComponent} from 'app/main/mortgage-calculator/mortgage-calculator.component';
 import {CalculatorMiniComponent} from 'app/main/calculator-mini/calculator-mini.component';
 import {SearchFormComponent} from 'app/main/search-form/search-form.component';
+import { HighlightPipe } from 'app/pipes/highlight-pipe';
+import { EscapeHtmlPipe } from 'app/pipes/keep-html.pipe';
 import {Ng5SliderModule} from 'ng5-slider';
 
 import {Error404Component} from 'app/main/pages/errors/404/error-404.component';
@@ -118,6 +120,10 @@ const appRoutes: Routes = [
     {
         path: 'facebook',
         loadChildren: 'app/main/facebook/facebook.module#FacebookModule'
+    },
+    {
+        path: 'vk',
+        loadChildren: 'app/main/vk/vk.module#VkModule'
     },
     {
         path: 'client/my',
@@ -191,7 +197,9 @@ const appRoutes: Routes = [
         CalculatorMiniComponent,
         Error404Component,
         Error500Component,
-        SearchFormComponent
+        SearchFormComponent,
+        HighlightPipe,
+        EscapeHtmlPipe
     ],
     imports: [
         BrowserModule,

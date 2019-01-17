@@ -2,6 +2,9 @@
     min-width: 270px;
     width: 100%;
 }
+.highlight {
+    background: yellow;
+}
 ::ng-deep .more_params {
     height: 400px;
     width: 100%;
