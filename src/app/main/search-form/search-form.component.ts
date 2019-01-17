@@ -305,7 +305,6 @@ export class SearchFormComponent implements OnInit {
     }
 
     private loadPeople3() {
-        console.log(term);
         this.people3$ = concat(
             of([]), // default items
             this.people3input$.pipe(
