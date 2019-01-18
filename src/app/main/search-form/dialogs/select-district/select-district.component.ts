@@ -6,6 +6,7 @@ import {Course} from "app/model/course";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {Model} from 'app/model';
 import {currentUser} from 'app/_models/currentuser';
@@ -55,6 +56,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         private dialogRef: MatDialogRef<SelectDistrictDialogComponent>,
         private _httpClient: HttpClient,
         private filterService: FilterService,
+        @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
         this.loadingIndicator = true;
@@ -63,7 +65,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }
