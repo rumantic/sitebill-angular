@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, isDevMode, Input, ViewEncapsulation, TemplateRef, ViewChild, Inject} from '@angular/core';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {FormBuilder, FormGroup} from '@angular/forms';
@@ -7,6 +7,7 @@ import {takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '@fuse/animations';
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 //import {Model} from '/model';
@@ -73,6 +74,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
     constructor(
         private _httpClient: HttpClient,
         private dialog: MatDialog,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private filterService: FilterService
     ) {
         // Set the defaults
@@ -84,7 +86,7 @@ export class DocsComponentsThirdPartyNgxDatatableComponent implements OnInit, On
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         //console.log(this.currentUser);
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }
