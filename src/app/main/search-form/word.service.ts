@@ -52,7 +52,7 @@ export class DataService {
         //let items = getMockPeople();
         if (term) {
             const request = {action: 'model', do: 'load_ads_by_term', term: term, anonymous: true};
-            return this.http.post(`http://genplan1/apps/api/rest.php`, request).pipe(map(rsp => rsp));
+            return this.http.post<any>(`http://genplan1/apps/api/rest.php`, request).pipe(map(rsp => rsp));
             
             /*
             this.http.post(`http://genplan1/apps/api/rest.php`, request)

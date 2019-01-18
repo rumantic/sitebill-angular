@@ -5,6 +5,7 @@ import { distinctUntilChanged, debounceTime, switchMap, tap, catchError } from '
 import {Subject, Observable, Subscription, of, concat } from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 
@@ -164,6 +165,7 @@ export class SearchFormComponent implements OnInit {
         private dialog: MatDialog,
         private router: Router,
         @Inject(DOCUMENT) private document: any,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private filterService: FilterService,
         private _formBuilder: FormBuilder,
         private dataService: DataService        
@@ -173,7 +175,7 @@ export class SearchFormComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }
