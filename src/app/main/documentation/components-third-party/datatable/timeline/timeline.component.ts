@@ -1,4 +1,4 @@
-import { Component, OnDestroy, isDevMode, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, isDevMode, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 
 import { fuseAnimations } from '@fuse/animations';
 
@@ -8,6 +8,8 @@ import { ChatService } from 'app/main/apps/chat/chat.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+
 
 @Component({
     selector   : 'profile-timeline',
@@ -32,7 +34,8 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
      * @param {ProfileService} _profileService
      */
     constructor(
-        private _chatService: ChatService
+        private _chatService: ChatService,
+        @Inject(APP_CONFIG) private config: AppConfig
     )
     {
         // Set the private defaults
@@ -40,7 +43,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

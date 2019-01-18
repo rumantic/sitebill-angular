@@ -6,6 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+
 
 
 @Component({
@@ -55,6 +57,7 @@ export class SliderComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private _httpClient: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,
     ) {
 
@@ -62,7 +65,7 @@ export class SliderComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

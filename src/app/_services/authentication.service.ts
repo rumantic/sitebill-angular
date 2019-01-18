@@ -1,8 +1,10 @@
-import {Injectable, isDevMode} from '@angular/core';
+import {Injectable, isDevMode, Inject} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import {currentUser} from 'app/_models/currentuser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+
 
 
 @Injectable()
@@ -12,9 +14,12 @@ export class AuthenticationService {
     private currentUser: currentUser;
     
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig
+        ) {
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

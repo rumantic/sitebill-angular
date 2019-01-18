@@ -1,9 +1,10 @@
-import {Component, Input, isDevMode} from '@angular/core';
+import {Component, Input, isDevMode, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {currentUser} from '../../../../_models/currentuser';
 import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 @Component({
     selector: 'filter-comp',
@@ -36,13 +37,14 @@ export class FilterComponent {
      */
     constructor(
         private _httpClient: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private filterService: FilterService
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

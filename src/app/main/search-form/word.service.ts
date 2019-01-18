@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject, isDevMode} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {delay, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 export interface Person {
@@ -26,10 +27,19 @@ export interface Person {
 })
 export class DataService {
     github: any[];
+    api_url: string;
     private _unsubscribeAll: Subject<any>;
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig
+        ) {
         this._unsubscribeAll = new Subject();
+        if (isDevMode()) {
+            this.api_url = this.config.apiEndpoint;
+        } else {
+            this.api_url = '';
+        }
     }
 
     getGithubAccounts(term: string = null) {
@@ -52,7 +62,7 @@ export class DataService {
         //let items = getMockPeople();
         if (term) {
             const request = {action: 'model', do: 'load_ads_by_term', term: term, anonymous: true};
-            return this.http.post<any>(`http://genplan1/apps/api/rest.php`, request).pipe(map(rsp => rsp));
+            return this.http.post<any>(`${this.api_url}/apps/api/rest.php`, request).pipe(map(rsp => rsp));
             
             /*
             this.http.post(`http://genplan1/apps/api/rest.php`, request)

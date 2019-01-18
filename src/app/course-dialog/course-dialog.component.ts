@@ -11,6 +11,7 @@ import {Model} from '../model';
 import {ModelService} from '../model.service';
 import {currentUser} from '../_models/currentuser';
 import { ChatService } from 'app/main/apps/chat/chat.service';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class CourseDialogComponent implements OnInit {
         private modelService: ModelService,
         private _httpClient: HttpClient,
         private _chatService: ChatService,
+        @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any
         ) {
         this.loadingIndicator = true;
@@ -49,7 +51,7 @@ export class CourseDialogComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

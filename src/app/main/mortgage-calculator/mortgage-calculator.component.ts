@@ -11,6 +11,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
 import {DOCUMENT} from '@angular/platform-browser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+
 
 
 @Component({
@@ -94,6 +96,7 @@ export class MortgageCalculatorComponent implements OnInit {
         @Inject(DOCUMENT) private document: any,
         private _httpClient: HttpClient,
         private elRef: ElementRef,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,
         private _cdr: ChangeDetectorRef
     ) {
@@ -102,7 +105,7 @@ export class MortgageCalculatorComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

@@ -9,6 +9,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Model} from 'app/model';
 import {ModelService} from 'app/model.service';
 import {currentUser} from 'app/_models/currentuser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class ControlElementsComponent implements OnInit {
         private route: ActivatedRoute,
         private modelService: ModelService,
         private _httpClient: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,
         ) {
         this.loadingIndicator = true;
@@ -61,7 +63,7 @@ export class ControlElementsComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

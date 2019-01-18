@@ -16,6 +16,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
 
@@ -102,6 +103,7 @@ export class CalculatorMiniComponent implements OnInit {
         private elRef: ElementRef,
         private dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
+        @Inject(APP_CONFIG) private config: AppConfig,
         private _cdr: ChangeDetectorRef
     ) {
 
@@ -109,7 +111,7 @@ export class CalculatorMiniComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

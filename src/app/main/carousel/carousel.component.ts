@@ -7,6 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
 import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {DOCUMENT} from '@angular/platform-browser';
 //import { WINDOW } from "app/_services/window/services/window.service";
@@ -87,6 +88,7 @@ export class CarouselComponent implements OnInit {
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
         @Inject(DOCUMENT) private document: any,
+        @Inject(APP_CONFIG) private config: AppConfig,
         //private winRef: WindowRef,
         private _cdr: ChangeDetectorRef
     ) {
@@ -96,7 +98,7 @@ export class CarouselComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }

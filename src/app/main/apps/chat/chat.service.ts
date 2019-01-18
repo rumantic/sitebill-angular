@@ -1,8 +1,9 @@
-import {Injectable, isDevMode} from '@angular/core';
+import {Injectable, isDevMode, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {currentUser} from 'app/_models/currentuser';
+import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {FuseUtils} from '@fuse/utils';
 
@@ -34,12 +35,13 @@ export class ChatService implements Resolve<any>
      * @param {HttpClient} _httpClient
      */
     constructor(
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        @Inject(APP_CONFIG) private config: AppConfig
     ) {
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
-            this.api_url = 'http://genplan1';
+            this.api_url = this.config.apiEndpoint;
         } else {
             this.api_url = '';
         }
