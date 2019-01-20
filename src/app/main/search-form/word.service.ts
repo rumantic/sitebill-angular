@@ -79,6 +79,7 @@ export class DataService {
 
             //items = items.filter(x => x.name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
         }
+		return of([]).pipe();
         //return of(items).pipe(delay(500));
     }
 }
