@@ -7,6 +7,7 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
+import {takeUntil} from 'rxjs/operators';
 
 
 import {currentUser} from 'app/_models/currentuser';
@@ -129,7 +130,8 @@ export class SearchFormComponent implements OnInit {
 
     square_options: any[] = [{id: 1, value: 'range', actual: 1}];
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
-    material_options: any[] = [{id: 1, value: 'кирпич', actual: 0}, {id: 2, value: 'монолит', actual: 0}, {id: 3, value: 'панель', actual: 0}];
+    material_options: any[];
+    topic_id_options: any[];
     dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     default_elements: string[] = ["room_count", "location", "price_selector", "square_selector", "floor_selector", "material_selector", "dead_line_selector", "second_realty", "no_commision"];
     active_elements: any[];
@@ -211,7 +213,10 @@ export class SearchFormComponent implements OnInit {
 
 
     ngOnInit() {
-        console.log(this.price_options);
+        this.loadPeople3();
+        this.load_dictionary('topic_id');
+        this.load_dictionary('walls');
+        
         // Reactive Form
         this.form = this._formBuilder.group({
             location: [''],
@@ -223,6 +228,7 @@ export class SearchFormComponent implements OnInit {
             price_min: ['5000000'],
             price_max: ['10000000'],
             square_selector: [],
+            topic_id_selector: [],
             material_selector: [],
             floor_selector: [],
             dead_line_min: ['1'],
@@ -250,7 +256,6 @@ export class SearchFormComponent implements OnInit {
             //console.log(key);
             //console.log(datas);
         });
-        this.loadPeople3();
         
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
@@ -299,6 +304,25 @@ export class SearchFormComponent implements OnInit {
         }
 
     }
+    
+    load_dictionary(columnName) {
+        const request = {action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true,session_key: this.currentUser.session_key};
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log('selected > ');
+                console.log(result);
+                if (result) {
+                    if (columnName == 'topic_id' ) {
+                        this.topic_id_options = result.data;
+                    } else if (columnName == 'walls' ) {
+                        this.material_options = result.data;
+                    }
+                }
+            });
+    }
+    
 
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
@@ -353,6 +377,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_checkbox_parts());
         query_parts = query_parts.concat(this.render_deadline_parts());
         query_parts = query_parts.concat(this.render_material_parts());
+        query_parts = query_parts.concat(this.render_topic_id_parts());
 
         console.log(this.form.controls.room_count.value);
 
@@ -381,6 +406,19 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
+    
+    render_topic_id_parts() {
+        let query_parts = [];
+        try {
+            for (let item of this.form.controls.topic_id_selector.value) {
+                query_parts.push('topic_id[]=' + item);
+            }
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
 
     render_floor_parts() {
         let query_parts = [];

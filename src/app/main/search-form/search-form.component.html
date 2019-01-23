@@ -102,7 +102,7 @@
             </div>
                 
                 <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
-                    <div class="input-range" fxFlex="100" *ngIf="form.controls.price_selector">
+                    <div class="input-range" fxFlex="100">
 
                         <ng-select [items]="people3$ | async"
                             bindLabel="adv"
@@ -123,6 +123,27 @@
                 </div>
                     
                 </div>
+                
+                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
+                    <div class="input-range" fxFlex="100">
+
+                    <ng-select formControlName="topic_id_selector"
+                               bindValue="id"
+                               bindLabel="value"
+                               [items]="topic_id_options"
+                               [clearOnBackspace]="false"
+                               [searchable]="false"
+                               [multiple]="true"
+                               [hideSelected]="true"
+                               [closeOnSelect]="false"
+                               placeholder="Тип"
+                               >
+                    </ng-select>    
+                        
+                </div>
+                    
+                </div>
+                
                 
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
