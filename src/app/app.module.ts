@@ -76,6 +76,7 @@ import {DocsComponentsThirdPartyNgxDatatableComponent} from 'app/main/documentat
 import {MortgageCalculatorComponent} from 'app/main/mortgage-calculator/mortgage-calculator.component';
 import {CalculatorMiniComponent} from 'app/main/calculator-mini/calculator-mini.component';
 import {SearchFormComponent} from 'app/main/search-form/search-form.component';
+import {AnkonsulSearchFormComponent} from 'app/main/search-form/ankonsul/ankonsul.search-form.component';
 import { HighlightPipe } from 'app/pipes/highlight-pipe';
 import { EscapeHtmlPipe } from 'app/pipes/keep-html.pipe';
 import {Ng5SliderModule} from 'ng5-slider';
@@ -100,6 +101,10 @@ const appRoutes: Routes = [
     {
         path: 'search',
         component: SearchFormComponent
+    },
+    {
+        path: 'searchankonsul',
+        component: AnkonsulSearchFormComponent
     },
     {
         path: 'carousel',
@@ -198,6 +203,7 @@ const appRoutes: Routes = [
         Error404Component,
         Error500Component,
         SearchFormComponent,
+        AnkonsulSearchFormComponent,
         HighlightPipe,
         EscapeHtmlPipe
     ],
