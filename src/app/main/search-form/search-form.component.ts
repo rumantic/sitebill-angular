@@ -132,6 +132,8 @@ export class SearchFormComponent implements OnInit {
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     material_options: any[];
     topic_id_options: any[];
+    district_id_options: any[];
+    street_id_options: any[];
     dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     default_elements: string[] = ["room_count", "location", "price_selector", "square_selector", "floor_selector", "material_selector", "dead_line_selector", "second_realty", "no_commision"];
     active_elements: any[];
@@ -216,6 +218,9 @@ export class SearchFormComponent implements OnInit {
         this.loadPeople3();
         this.load_dictionary('topic_id');
         this.load_dictionary('walls');
+        this.load_dictionary('district_id');
+        this.load_dictionary('street_id');
+        
         
         // Reactive Form
         this.form = this._formBuilder.group({
@@ -229,6 +234,8 @@ export class SearchFormComponent implements OnInit {
             price_max: ['10000000'],
             square_selector: [],
             topic_id_selector: [],
+            district_id_selector: [],
+            street_id_selector: [],
             material_selector: [],
             floor_selector: [],
             dead_line_min: ['1'],
@@ -314,8 +321,12 @@ export class SearchFormComponent implements OnInit {
                 //console.log('selected > ');
                 console.log(result);
                 if (result) {
-                    if (columnName == 'topic_id' ) {
+                    if (columnName == 'district_id' ) {
+                        this.district_id_options = result.data;
+                    } else if (columnName == 'topic_id' ) {
                         this.topic_id_options = result.data;
+                    } else if (columnName == 'street_id' ) {
+                        this.street_id_options = result.data;
                     } else if (columnName == 'walls' ) {
                         this.material_options = result.data;
                     }

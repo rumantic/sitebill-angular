@@ -297,5 +297,8 @@ export class AppModule {
         if (document.getElementById('angular_search')) {
             app.bootstrap(SearchFormComponent);
         }
+        if (document.getElementById('angular_search_ankonsul')) {
+            app.bootstrap(AnkonsulSearchFormComponent);
+        }
     }
 }
