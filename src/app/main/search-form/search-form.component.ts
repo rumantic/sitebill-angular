@@ -381,6 +381,7 @@ export class SearchFormComponent implements OnInit {
         let url = '';
 
         query_parts = query_parts.concat(this.render_address_parts());
+        query_parts = query_parts.concat(this.render_address_parts_separate());
         query_parts = query_parts.concat(this.render_price_parts());
         query_parts = query_parts.concat(this.render_square_parts());
         query_parts = query_parts.concat(this.render_floor_parts());
@@ -523,6 +524,31 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
+    
+    render_address_parts_separate() {
+        let query_parts = [];
+        this.form.controls.location.patchValue('');
+        try {
+            query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
+            query_parts = query_parts.concat(this.render_address_query_part_separate('street_id', this.form.controls.street_id_selector.value));
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
+    render_address_query_part_separate(key_name: string, controls_value: any) {
+        try {
+            let query_part = [];
+            let find_value = this.form.controls.location.value;
+            for (let item of controls_value) {
+                query_part.push(key_name + '[]=' + item);
+            }
+            return query_part;
+        } catch {
+        }
+    }
+    
 
     render_address_query_part(key_name: string, controls_value: any) {
         try {
