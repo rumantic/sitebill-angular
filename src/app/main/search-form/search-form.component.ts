@@ -13,7 +13,7 @@ import {takeUntil} from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-import {Options} from 'ng5-slider';
+import {Options, ChangeContext} from 'ng5-slider';
 import {map, startWith} from 'rxjs/operators';
 
 import {MatDialog, MatDialogConfig, MatDatepicker} from "@angular/material";
@@ -118,6 +118,12 @@ export class SearchFormComponent implements OnInit {
         floor: 0,
         ceil: 300
     };
+    
+    options_price: Options = {
+        floor: 5000000,
+        ceil: 10000000
+    };
+    
     options_floor: Options = {
         floor: 0,
         ceil: 25
@@ -233,6 +239,7 @@ export class SearchFormComponent implements OnInit {
             price_min: ['5000000'],
             price_max: ['10000000'],
             square_selector: [],
+            srch_word: [],
             topic_id_selector: [],
             district_id_selector: [],
             street_id_selector: [],
@@ -318,8 +325,6 @@ export class SearchFormComponent implements OnInit {
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log('selected > ');
-                console.log(result);
                 if (result) {
                     if (columnName == 'district_id' ) {
                         this.district_id_options = result.data;
@@ -367,6 +372,14 @@ export class SearchFormComponent implements OnInit {
 
         return value;
     }
+    
+    onPriceSliderChange(changeContext: ChangeContext): void {
+        this.form.controls.price_selector.patchValue(5);
+        
+        this.form.controls.price_max.patchValue(changeContext.highValue);
+        this.form.controls.price_min.patchValue(changeContext.value);
+    }
+    
 
     get tickInterval(): number | 'auto' {
         return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
@@ -390,8 +403,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_deadline_parts());
         query_parts = query_parts.concat(this.render_material_parts());
         query_parts = query_parts.concat(this.render_topic_id_parts());
-
-        console.log(this.form.controls.room_count.value);
+        query_parts = query_parts.concat(this.render_srch_word_parts());
 
         console.log('query_part');
         console.log(query_parts);
@@ -405,7 +417,17 @@ export class SearchFormComponent implements OnInit {
         //this.router.navigate(['/externalRedirect', { externalUrl: url }], {    });
         //this.router.navigate(['/test']);
     }
+    render_srch_word_parts() {
+        let query_parts = [];
+        try {
+            if (this.form.controls.srch_word.value != null) {
+                query_parts.push('srch_word=' + this.form.controls.srch_word.value);
+            }
+        } catch {
 
+        }
+        return query_parts;
+    }
 
     render_room_count_parts() {
         let query_parts = [];
@@ -455,7 +477,6 @@ export class SearchFormComponent implements OnInit {
     render_deadline_parts() {
         let query_parts = [];
         try {
-            console.log(this.form.controls.dead_line_selector.value);
             if (this.form.controls.dead_line_selector.value == 1) {
                 query_parts.push('min_dead_line=' + this.min_dead_line_date.value.format('Y-MM-DD'));
                 query_parts.push('max_dead_line=' + this.max_dead_line_date.value.format('Y-MM-DD'));
@@ -529,8 +550,12 @@ export class SearchFormComponent implements OnInit {
         let query_parts = [];
         this.form.controls.location.patchValue('');
         try {
-            query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
-            query_parts = query_parts.concat(this.render_address_query_part_separate('street_id', this.form.controls.street_id_selector.value));
+            if ( this.form.controls.district_id_selector.value != null ) {
+                query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
+            }
+            if ( this.form.controls.street_id_selector.value != null ) {
+                query_parts = query_parts.concat(this.render_address_query_part_separate('street_id', this.form.controls.street_id_selector.value));
+            }
         } catch {
 
         }

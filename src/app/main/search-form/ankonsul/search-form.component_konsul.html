@@ -5,7 +5,7 @@
             <form class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                   fxFlex="1 0 auto" name="form" [formGroup]="form">
 
-                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
+                <div fxLayout="row" fxLayoutAlign="center" fxFlex="1 0 auto">
                     <div class="room_count" fxFlex="8">
                         <h2><span class="red-fg">Я</span> хочу</h2>
                     </div>
@@ -27,25 +27,10 @@
                     </ng-select>    
                         
                 </div>
-                    <div class="input-range" fxFlex="20">
-
-                        <ng-select [items]="people3$ | async"
-                            bindLabel="adv"
-                            [addTag]="true"
-                            addTagText = "добавить в поиск"
-                            [multiple]="true"
-                            [hideSelected]="true"
-                            [loading]="people3Loading"
-                            [typeahead]="people3input$"
-                            >
-                        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                            <div [ngOptionHighlight]="search">{{ item.adv }}</div>
-                            <mat-icon matSuffix class="mat-caption">add_location</mat-icon> <span [ngOptionHighlight]="search">{{item.topic}} {{item.city}} {{item.street}} Цена: {{item.price}}</span>
-                        </ng-template>    
-                            
-                        </ng-select>                        
-                        
-                </div>
+                    <mat-form-field appearance="outline" fxFlex="20">
+                        <mat-label>поиск по слову</mat-label>
+                        <input matInput formControlName="srch_word">
+                    </mat-form-field>
                     
                 <div class="input-range" fxFlex="20" *ngIf="form.controls.price_selector">
                     <ng-select formControlName="price_selector"
@@ -70,6 +55,7 @@
                         </ng-template>                        
                         <ng-template ng-option-tmp let-item="item" let-index="index">
                             <div *ngIf="price_options[index].value == 'range'"  >
+                                
                                 <mat-form-field appearance="outline" fxFlex="50" class=" pl-4">
 
                                     <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
@@ -77,6 +63,7 @@
                                 <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
                                     <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
                                 </mat-form-field>
+                                
                             </div>
                             <span *ngIf="price_options[index].value != 'range'">
                                 {{price_options[index].value}}
@@ -84,6 +71,12 @@
 
 
                         </ng-template>    
+                        <ng-template ng-footer-tmp>
+                                <div class="custom-slider" fxFlex="100">
+                                    <ng5-slider (userChange)="onPriceSliderChange($event)" [(value)]="form.controls.price_min.value" [(highValue)]="form.controls.price_max.value" [options]="options_price"></ng5-slider>
+                                </div>
+                            
+                        </ng-template>
                     </ng-select>    
                 </div>
 
@@ -124,7 +117,7 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <div fxLayout="row" fxLayoutAlign="space-around start center" >
+                <div fxLayout="row" fxLayoutAlign="start center" >
                     
                     <div class="room_count" fxFlex="19" *ngIf="form.controls.room_count">
                         Комнат
