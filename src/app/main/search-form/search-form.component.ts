@@ -1,11 +1,11 @@
-import {Component, OnInit, isDevMode, Inject, Directive, ViewContainerRef } from '@angular/core';
+import {Component, OnInit, isDevMode, Inject, Directive, ViewContainerRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import { distinctUntilChanged, debounceTime, switchMap, tap, catchError } from 'rxjs/operators'
-import {Subject, Observable, Subscription, of, concat } from 'rxjs';
+import {distinctUntilChanged, debounceTime, switchMap, tap, catchError} from 'rxjs/operators'
+import {Subject, Observable, Subscription, of, concat} from 'rxjs';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {coerceNumberProperty} from '@angular/cdk/coercion';
-import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 
 import {takeUntil} from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ import {FilterService} from 'app/main/documentation/components-third-party/datat
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {DOCUMENT} from '@angular/platform-browser';
-import { DataService, Person } from './word.service';
+import {DataService, Person} from './word.service';
 
 import * as _moment from 'moment';
 import {Moment} from 'moment';
@@ -118,12 +118,12 @@ export class SearchFormComponent implements OnInit {
         floor: 0,
         ceil: 300
     };
-    
+
     options_price: Options = {
         floor: 5000000,
         ceil: 10000000
     };
-    
+
     options_floor: Options = {
         floor: 0,
         ceil: 25
@@ -178,7 +178,7 @@ export class SearchFormComponent implements OnInit {
         @Inject(APP_CONFIG) private config: AppConfig,
         private filterService: FilterService,
         private _formBuilder: FormBuilder,
-        private dataService: DataService        
+        private dataService: DataService
     ) {
 
         // Set the private defaults
@@ -226,8 +226,8 @@ export class SearchFormComponent implements OnInit {
         this.load_dictionary('walls');
         this.load_dictionary('district_id');
         this.load_dictionary('street_id');
-        
-        
+
+
         // Reactive Form
         this.form = this._formBuilder.group({
             location: [''],
@@ -270,7 +270,7 @@ export class SearchFormComponent implements OnInit {
             //console.log(key);
             //console.log(datas);
         });
-        
+
         //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
         //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
@@ -281,6 +281,8 @@ export class SearchFormComponent implements OnInit {
         let elements = [];
         if (this.document.getElementById('angular_search')) {
             app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('angular_search_ankonsul')) {
+            app_root_element = this.document.getElementById('angular_search_ankonsul');
         } else if (this.document.getElementById('app_root')) {
             app_root_element = this.document.getElementById('app_root');
         }
@@ -317,28 +319,131 @@ export class SearchFormComponent implements OnInit {
 
         }
 
+        if (app_root_element.getAttribute('query_string')) {
+            var query_string = app_root_element.getAttribute('query_string');
+            var params = Object();
+            params = this.parse_query_string(query_string);
+            this.init_forms_from_params(params);
+        }
+
     }
-    
+
+    private init_forms_from_params(params: any) {
+        if (params["price_min"] != null) {
+            if ( params["price_min"] >= 5000000) {
+                this.form.controls.price_selector.patchValue(5);
+            }
+            
+            this.form.controls.price_min.patchValue(params["price_min"]);
+            if (params["price"] != null) {
+                this.form.controls.price_max.patchValue(params["price"]);
+            }
+        }
+
+        if ( params["price"] >= 3000000 && params["price"] < 5000000) {
+            this.form.controls.price_selector.patchValue(4);
+        }
+        
+        if ( params["price"] >= 2000000 && params["price"] < 3000000) {
+            this.form.controls.price_selector.patchValue(3);
+        }
+        
+        if ( params["price"] >= 1500000 && params["price"] < 2000000) {
+            this.form.controls.price_selector.patchValue(2);
+        }
+
+        if (params["srch_word"] != null) {
+            this.form.controls.srch_word.patchValue(params["srch_word"]);
+        }
+
+        if (params["district_id[]"] != null) {
+            this.form.controls.district_id_selector.patchValue(params["district_id[]"]);
+        }
+        if (params["topic_id[]"] != null) {
+            this.form.controls.topic_id_selector.patchValue(params["topic_id[]"]);
+        }
+
+        if (params["room_count[]"] != null) {
+            this.form.controls.room_count.patchValue(params["room_count[]"]);
+        }
+
+        if (params["square_min"] != null) {
+            this.form.controls.square_selector.patchValue(1);
+            this.square_min = params["square_min"];
+        }
+        if (params["square_max"] != null) {
+            this.form.controls.square_selector.patchValue(1);
+            this.square_max = params["square_max"];
+        }
+
+        if (params["floor_min"] != null) {
+            this.form.controls.floor_selector.patchValue(1);
+            this.floor_min = params["floor_min"];
+        }
+        if (params["floor_max"] != null) {
+            this.form.controls.floor_selector.patchValue(1);
+            this.floor_max = params["floor_max"];
+        }
+
+        if (params["not_first_floor"] != null) {
+            this.form.controls.not_first_floor.patchValue(params["not_first_floor"]);
+        }
+        if (params["not_last_floor"] != null) {
+            this.form.controls.not_last_floor.patchValue(params["not_last_floor"]);
+        }
+
+        if (params["walls[]"] != null) {
+            this.form.controls.material_selector.patchValue(params["walls[]"]);
+        }
+
+        if (params["street_id[]"] != null) {
+            this.form.controls.street_id_selector.patchValue(params["street_id[]"]);
+        }
+    }
+
+    private parse_query_string(query_string: string) {
+        var uri = decodeURI(query_string);
+        var chunks = uri.split('&');
+        var params = Object();
+
+        for (var i = 0; i < chunks.length; i++) {
+            var chunk = chunks[i].split('=');
+            if (chunk[0].search("\\[\\]") !== -1) {
+                if (typeof params[chunk[0]] === 'undefined') {
+                    params[chunk[0]] = [chunk[1]];
+
+                } else {
+                    params[chunk[0]].push(chunk[1]);
+                }
+
+
+            } else {
+                params[chunk[0]] = chunk[1];
+            }
+        }
+        return params;
+    }
+
     load_dictionary(columnName) {
-        const request = {action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true,session_key: this.currentUser.session_key};
+        const request = {action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true, session_key: this.currentUser.session_key};
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    if (columnName == 'district_id' ) {
+                    if (columnName == 'district_id') {
                         this.district_id_options = result.data;
-                    } else if (columnName == 'topic_id' ) {
+                    } else if (columnName == 'topic_id') {
                         this.topic_id_options = result.data;
-                    } else if (columnName == 'street_id' ) {
+                    } else if (columnName == 'street_id') {
                         this.street_id_options = result.data;
-                    } else if (columnName == 'walls' ) {
+                    } else if (columnName == 'walls') {
                         this.material_options = result.data;
                     }
                 }
             });
     }
-    
+
 
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
@@ -372,14 +477,14 @@ export class SearchFormComponent implements OnInit {
 
         return value;
     }
-    
+
     onPriceSliderChange(changeContext: ChangeContext): void {
         this.form.controls.price_selector.patchValue(5);
-        
+
         this.form.controls.price_max.patchValue(changeContext.highValue);
         this.form.controls.price_min.patchValue(changeContext.value);
     }
-    
+
 
     get tickInterval(): number | 'auto' {
         return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
@@ -405,6 +510,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_topic_id_parts());
         query_parts = query_parts.concat(this.render_srch_word_parts());
 
+        //console.log(this.form.controls.material_selector.value);
         console.log('query_part');
         console.log(query_parts);
 
@@ -440,7 +546,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_topic_id_parts() {
         let query_parts = [];
         try {
@@ -452,10 +558,11 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
 
     render_floor_parts() {
         let query_parts = [];
+        //console.log(this.form.controls.floor_selector.value);
         try {
             if (this.form.controls.floor_selector.value == 1) {
                 query_parts.push('floor_min=' + this.floor_min);
@@ -507,6 +614,7 @@ export class SearchFormComponent implements OnInit {
 
     render_square_parts() {
         let query_parts = [];
+        //console.log(this.form.controls.square_selector.value);
         try {
             if (this.form.controls.square_selector.value == 1) {
                 query_parts.push('square_min=' + this.square_min);
@@ -545,15 +653,15 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_address_parts_separate() {
         let query_parts = [];
         this.form.controls.location.patchValue('');
         try {
-            if ( this.form.controls.district_id_selector.value != null ) {
+            if (this.form.controls.district_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
             }
-            if ( this.form.controls.street_id_selector.value != null ) {
+            if (this.form.controls.street_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('street_id', this.form.controls.street_id_selector.value));
             }
         } catch {
@@ -561,7 +669,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_address_query_part_separate(key_name: string, controls_value: any) {
         try {
             let query_part = [];
@@ -573,7 +681,7 @@ export class SearchFormComponent implements OnInit {
         } catch {
         }
     }
-    
+
 
     render_address_query_part(key_name: string, controls_value: any) {
         try {
