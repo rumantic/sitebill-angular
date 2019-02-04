@@ -128,6 +128,11 @@ export class SearchFormComponent implements OnInit {
         floor: 0,
         ceil: 25
     };
+    options_floor_count: Options = {
+        floor: 0,
+        ceil: 30
+    };
+    
     options1: string[] = ['One', 'Two', 'Three'];
 
     //price_options: any[] = [{id: 0, value: 'Все'},{id: 1, value: 'до 1 500 000'}, 'до 2 000 000', 'до 3 000 000', 'до 5 000 000', 'diap'];
@@ -136,6 +141,7 @@ export class SearchFormComponent implements OnInit {
 
     square_options: any[] = [{id: 1, value: 'range', actual: 1}];
     floor_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
+    floor_count_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     material_options: any[];
     topic_id_options: any[];
     district_id_options: any[];
@@ -155,6 +161,13 @@ export class SearchFormComponent implements OnInit {
 
     floor_min: number = 0;
     floor_max: number = 25;
+    
+    floor_count_min: number = 0;
+    floor_count_max: number = 30;
+
+    floor_count_min_default: number = 0;
+    floor_count_max_default: number = 30;
+        
 
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
@@ -248,6 +261,7 @@ export class SearchFormComponent implements OnInit {
             complex_id_selector: [],
             material_selector: [],
             floor_selector: [],
+            floor_count_selector: [],
             dead_line_min: ['1'],
             dead_line_max: ['1'],
             not_first_floor: [false],
@@ -382,6 +396,16 @@ export class SearchFormComponent implements OnInit {
             this.form.controls.floor_selector.patchValue(1);
             this.floor_max = params["floor_max"];
         }
+        
+        if (params["floor_count_min"] != null) {
+            this.form.controls.floor_count_selector.patchValue(1);
+            this.floor_count_min = params["floor_count_min"];
+        }
+        if (params["floor_count_max"] != null) {
+            this.form.controls.floor_count_selector.patchValue(1);
+            this.floor_count_max = params["floor_count_max"];
+        }
+        
 
         if (params["not_first_floor"] != null) {
             this.form.controls.not_first_floor.patchValue(params["not_first_floor"]);
@@ -506,6 +530,7 @@ export class SearchFormComponent implements OnInit {
         query_parts = query_parts.concat(this.render_price_parts());
         query_parts = query_parts.concat(this.render_square_parts());
         query_parts = query_parts.concat(this.render_floor_parts());
+        query_parts = query_parts.concat(this.render_floor_count_parts());
         query_parts = query_parts.concat(this.render_room_count_parts());
         query_parts = query_parts.concat(this.render_checkbox_parts());
         query_parts = query_parts.concat(this.render_deadline_parts());
@@ -583,6 +608,21 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
+    
+    render_floor_count_parts() {
+        let query_parts = [];
+        //console.log(this.form.controls.floor_selector.value);
+        try {
+            if (this.form.controls.floor_count_selector.value == 1) {
+                query_parts.push('floor_count_min=' + this.floor_count_min);
+                query_parts.push('floor_count_max=' + this.floor_count_max);
+            }
+        } catch {
+
+        }
+        return query_parts;
+    }
+    
 
     render_deadline_parts() {
         let query_parts = [];

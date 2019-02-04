@@ -207,6 +207,43 @@
 
                         </ng-select>    
                     </div>
+                    
+                    <div  fxFlex="20" *ngIf="form.controls.floor_count_selector">
+                        <ng-select  formControlName="floor_count_selector"
+                                    bindValue="id"
+                                    bindLabel="value"
+                                    [ngStyle]="{ 'width': '150px'}"
+                                    [items]="floor_count_options"
+                                    [clearOnBackspace]="false"
+                                    [searchable]="false"
+                                    [multiple]="false"
+                                    [hideSelected]="false"
+                                    [closeOnSelect]="false"
+                                    placeholder="Этажей"
+                                    >
+
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{floor_count_min}} до {{floor_count_max}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                            </ng-template>                        
+
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <div *ngIf="floor_count_options[index].value == 'range'">
+                                    <div class="custom-slider">
+                                        <ng5-slider [(value)]="floor_count_min" [(highValue)]="floor_count_max" [options]="options_floor_count"></ng5-slider>
+                                    </div>
+                                </div>
+                                <div *ngIf="floor_options[index].value != 'range'"  >
+                                    {{floor_options[index].value}}
+                                </div>
+                            </ng-template>    
+                        </ng-select>    
+                    </div>
+                    
                     <div  fxFlex="20" *ngIf="form.controls.material_selector">
                         <ng-select formControlName="material_selector"
                                    bindValue="id"
