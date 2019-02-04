@@ -55,7 +55,6 @@
                         </ng-template>                        
                         <ng-template ng-option-tmp let-item="item" let-index="index">
                             <div *ngIf="price_options[index].value == 'range'"  >
-                                
                                 <mat-form-field appearance="outline" fxFlex="50" class=" pl-4">
 
                                     <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
@@ -63,17 +62,15 @@
                                 <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
                                     <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
                                 </mat-form-field>
-                                
                             </div>
                             <span *ngIf="price_options[index].value != 'range'">
                                 {{price_options[index].value}}
                             </span>
-
-
+                            
                         </ng-template>    
                         <ng-template ng-footer-tmp>
                                 <div class="custom-slider" fxFlex="100">
-                                    <ng5-slider (userChange)="onPriceSliderChange($event)" [(value)]="form.controls.price_min.value" [(highValue)]="form.controls.price_max.value" [options]="options_price"></ng5-slider>
+                                    <ng5-slider (userChange)="onPriceSliderChange($event)" [(value)]="form.controls.price_min.value" [(highValue)]="form.controls.price_max.value" [options]="options_price_zero_10m"></ng5-slider>
                                 </div>
                             
                         </ng-template>

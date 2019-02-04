@@ -123,6 +123,12 @@ export class SearchFormComponent implements OnInit {
         floor: 5000000,
         ceil: 10000000
     };
+    
+    options_price_zero_10m: Options = {
+        floor: 0,
+        ceil: 10000000
+    };
+    
 
     options_floor: Options = {
         floor: 0,
@@ -339,8 +345,8 @@ export class SearchFormComponent implements OnInit {
         }
 
     }
-
-    private init_forms_from_params(params: any) {
+    
+    public init_price_params (params: any) {
         if (params["price_min"] != null) {
             if ( params["price_min"] >= 5000000) {
                 this.form.controls.price_selector.patchValue(5);
@@ -363,6 +369,10 @@ export class SearchFormComponent implements OnInit {
         if ( params["price"] >= 1500000 && params["price"] < 2000000) {
             this.form.controls.price_selector.patchValue(2);
         }
+    }
+
+    private init_forms_from_params(params: any) {
+        this.init_price_params(params);
 
         if (params["srch_word"] != null) {
             this.form.controls.srch_word.patchValue(params["srch_word"]);
