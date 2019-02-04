@@ -140,6 +140,7 @@ export class SearchFormComponent implements OnInit {
     topic_id_options: any[];
     district_id_options: any[];
     street_id_options: any[];
+    complex_id_options: any[];
     dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     default_elements: string[] = ["room_count", "location", "price_selector", "square_selector", "floor_selector", "material_selector", "dead_line_selector", "second_realty", "no_commision"];
     active_elements: any[];
@@ -226,6 +227,7 @@ export class SearchFormComponent implements OnInit {
         this.load_dictionary('walls');
         this.load_dictionary('district_id');
         this.load_dictionary('street_id');
+        this.load_dictionary('complex_id');
 
 
         // Reactive Form
@@ -243,6 +245,7 @@ export class SearchFormComponent implements OnInit {
             topic_id_selector: [],
             district_id_selector: [],
             street_id_selector: [],
+            complex_id_selector: [],
             material_selector: [],
             floor_selector: [],
             dead_line_min: ['1'],
@@ -267,12 +270,7 @@ export class SearchFormComponent implements OnInit {
         this.filterService.share.subscribe((datas) => {
             console.log(datas);
             this.filterSharedData = datas;
-            //console.log(key);
-            //console.log(datas);
         });
-
-        //this.load_grid_data('data', {active: 1, user_id: 226}, ['id', 'city_id', 'country_id', 'street_id', 'number', 'price', 'currency_id', 'image'])
-        //this.load_grid_data('complex', {active: 1}, ['complex_id', 'name', 'url', 'image'])
 
     }
 
@@ -399,6 +397,9 @@ export class SearchFormComponent implements OnInit {
         if (params["street_id[]"] != null) {
             this.form.controls.street_id_selector.patchValue(params["street_id[]"]);
         }
+        if (params["complex_id[]"] != null) {
+            this.form.controls.complex_id_selector.patchValue(params["complex_id[]"]);
+        }
     }
 
     private parse_query_string(query_string: string) {
@@ -437,6 +438,8 @@ export class SearchFormComponent implements OnInit {
                         this.topic_id_options = result.data;
                     } else if (columnName == 'street_id') {
                         this.street_id_options = result.data;
+                    } else if (columnName == 'complex_id') {
+                        this.complex_id_options = result.data;
                     } else if (columnName == 'walls') {
                         this.material_options = result.data;
                     }
@@ -663,6 +666,9 @@ export class SearchFormComponent implements OnInit {
             }
             if (this.form.controls.street_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('street_id', this.form.controls.street_id_selector.value));
+            }
+            if (this.form.controls.complex_id_selector.value != null) {
+                query_parts = query_parts.concat(this.render_address_query_part_separate('complex_id', this.form.controls.complex_id_selector.value));
             }
         } catch {
 

@@ -240,6 +240,24 @@
                     </ng-select>    
                         
                 </div>
+                    
+                    <div class="input-range" fxFlex="20">
+
+                    <ng-select formControlName="complex_id_selector"
+                               bindValue="id"
+                               bindLabel="value"
+                               [items]="complex_id_options"
+                               [clearOnBackspace]="false"
+                               [searchable]="false"
+                               [multiple]="true"
+                               [hideSelected]="true"
+                               [closeOnSelect]="false"
+                               placeholder="ЖК"
+                               >
+                    </ng-select>    
+                        
+                </div>
+                    
 
 
             <div  fxFlex="10">
