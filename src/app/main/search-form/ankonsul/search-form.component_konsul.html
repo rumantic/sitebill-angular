@@ -2,7 +2,7 @@
     <div class="content p-24" fxLayout="column">
 
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
-            <form class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+            <form class="mat-card" fxLayout="column" fxLayoutAlign="start"
                   fxFlex="1 0 auto" name="form" [formGroup]="form">
 
                 <div fxLayout="row" fxLayoutAlign="center" fxFlex="1 0 auto">
@@ -27,7 +27,7 @@
                     </ng-select>    
                         
                 </div>
-                    <mat-form-field fxFlex="20" style="padding-top: 6px;">
+                    <mat-form-field fxFlex="25" style="padding-top: 6px;">
                         <mat-label>поиск по слову</mat-label>
                         <input matInput formControlName="srch_word">
                     </mat-form-field>
@@ -84,7 +84,7 @@
                                bindLabel="value"
                                [items]="district_id_options"
                                [clearOnBackspace]="false"
-                               [searchable]="false"
+                               [searchable]="true"
                                [multiple]="true"
                                [hideSelected]="true"
                                [closeOnSelect]="false"
@@ -265,7 +265,7 @@
                                bindLabel="value"
                                [items]="street_id_options"
                                [clearOnBackspace]="false"
-                               [searchable]="false"
+                               [searchable]="true"
                                [multiple]="true"
                                [hideSelected]="true"
                                [closeOnSelect]="false"
@@ -282,7 +282,7 @@
                                bindLabel="value"
                                [items]="complex_id_options"
                                [clearOnBackspace]="false"
-                               [searchable]="false"
+                               [searchable]="true"
                                [multiple]="true"
                                [hideSelected]="true"
                                [closeOnSelect]="false"
