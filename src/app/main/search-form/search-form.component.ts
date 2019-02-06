@@ -126,7 +126,8 @@ export class SearchFormComponent implements OnInit {
     
     options_price_zero_10m: Options = {
         floor: 0,
-        ceil: 10000000
+        ceil: 10000000,
+        step: 1000
     };
     
 
