@@ -7,7 +7,8 @@ import { SearchFormComponent } from 'app/main/search-form/search-form.component'
   styleUrls: ['../search-form.component.css']
 })
 export class AnkonsulSearchFormComponent extends SearchFormComponent implements OnInit {
-    price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 5, value: 'range'}];
+    price_options: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
+    default_price_min = 0;
     
     public init_price_params (params: any) {
         this.form.controls.price_min.patchValue(0);

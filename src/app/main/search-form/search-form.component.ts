@@ -101,6 +101,8 @@ export class SearchFormComponent implements OnInit {
     value = 0;
     vertical = false;
 
+    default_price_min = 5000000;
+
     realty_price = 5500000;
     step_realty_price = 10000;
     max_realty_price = 20000000;
@@ -258,7 +260,7 @@ export class SearchFormComponent implements OnInit {
             word: [],
             second_realty: [],
             no_commision: [],
-            price_min: ['5000000'],
+            price_min: [this.default_price_min],
             price_max: ['10000000'],
             square_selector: [],
             srch_word: [],

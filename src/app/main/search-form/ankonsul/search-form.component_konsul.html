@@ -55,12 +55,12 @@
                         </ng-template>                        
                         <ng-template ng-option-tmp let-item="item" let-index="index">
                             <div *ngIf="price_options[index].value == 'range'"  >
-                                <mat-form-field appearance="outline" fxFlex="50" class=" pl-4">
+                                <mat-form-field fxFlex="50" class=" pl-4">
 
-                                    <input type="text" placeholder="от" aria-label="Number" matInput formControlName="price_min">
+                                    <input type="text" aria-label="Number" matInput formControlName="price_min">
                                 </mat-form-field>
-                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
-                                    <input type="text" placeholder="до" aria-label="Number" matInput formControlName="price_max">
+                                <mat-form-field fxFlex="50" class="pl-4">
+                                    <input type="text" aria-label="Number" matInput formControlName="price_max">
                                 </mat-form-field>
                             </div>
                             <span *ngIf="price_options[index].value != 'range'">
