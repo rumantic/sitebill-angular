@@ -10,99 +10,89 @@
                         <h2><span class="red-fg">Я</span> хочу</h2>
                     </div>
 
+                    <div fxFlex="10">
+                        <ng-select formControlName="topic_id_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [items]="topic_id_options"
+                                   [clearOnBackspace]="true"
+                                   [searchable]="false"
+                                   [multiple]="true"
+                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   placeholder="Тип">
+                        </ng-select>
 
-                    <div class="input-range" fxFlex="10">
+                    </div>
 
-                    <ng-select formControlName="topic_id_selector"
-                               bindValue="id"
-                               bindLabel="value"
-                               [items]="topic_id_options"
-                               [clearOnBackspace]="false"
-                               [searchable]="true"
-                               [multiple]="true"
-                               [hideSelected]="true"
-                               [closeOnSelect]="false"
-                               placeholder="Тип"
-                               >
-                    </ng-select>    
-                        
-                </div>
                     <mat-form-field fxFlex="25" style="margin-top: 4px;">
                         <mat-label>поиск по слову</mat-label>
                         <input matInput formControlName="srch_word">
                     </mat-form-field>
-                    
-                <div class="input-range" fxFlex="20" *ngIf="form.controls.price_selector">
-                    <ng-select formControlName="price_selector"
-                               bindValue="id"
-                               bindLabel="value"
-                               [items]="price_options"
-                               [clearOnBackspace]="false"
-                               [searchable]="false"
-                               [multiple]="false"
-                               [hideSelected]="true"
-                               [closeOnSelect]="false"
-                               placeholder="Цена"
-                               >
 
-                        <ng-template ng-label-tmp let-item="item" let-index="index">
-                            <span *ngIf="item.value == 'range'">
-                                от {{form.controls.price_min.value}} до {{form.controls.price_max.value}}
-                            </span>
-                            <span *ngIf="item.value != 'range'">
-                                {{item.value}}
-                            </span>
-                        </ng-template>                        
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <div *ngIf="price_options[index].value == 'range'"  >
-                                <mat-form-field fxFlex="50" class=" pl-4">
+                    <div class="input-range" fxFlex="20" *ngIf="form.controls.price_selector">
+                        <ng-select formControlName="price_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [items]="price_options"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="false"
+                                   [multiple]="false"
+                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   placeholder="Цена">
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span *ngIf="item.value == 'range'">
+                                    от {{form.controls.price_min.value}} до {{form.controls.price_max.value}}
+                                </span>
+                                <span *ngIf="item.value != 'range'">
+                                    {{item.value}}
+                                </span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <div *ngIf="price_options[index].value == 'range'">
+                                    <mat-form-field fxFlex="50" class=" pl-4">
+                                        <input type="text" aria-label="Number" matInput formControlName="price_min">
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="50" class="pl-4">
+                                        <input type="text" aria-label="Number" matInput formControlName="price_max">
+                                    </mat-form-field>
+                                </div>
+                                <span *ngIf="price_options[index].value != 'range'">
+                                    {{price_options[index].value}}
+                                </span>
 
-                                    <input type="text" aria-label="Number" matInput formControlName="price_min">
-                                </mat-form-field>
-                                <mat-form-field fxFlex="50" class="pl-4">
-                                    <input type="text" aria-label="Number" matInput formControlName="price_max">
-                                </mat-form-field>
-                            </div>
-                            <span *ngIf="price_options[index].value != 'range'">
-                                {{price_options[index].value}}
-                            </span>
-                            
-                        </ng-template>    
-                        <ng-template ng-footer-tmp>
+                            </ng-template>
+                            <ng-template ng-footer-tmp>
                                 <div class="custom-slider" fxFlex="100">
                                     <ng5-slider (userChange)="onPriceSliderChange($event)" [(value)]="form.controls.price_min.value" [(highValue)]="form.controls.price_max.value" [options]="options_price_zero_10m"></ng5-slider>
                                 </div>
-                            
-                        </ng-template>
-                    </ng-select>    
-                </div>
 
+                            </ng-template>
+                        </ng-select>
+                    </div>
                     <div class="input-range" fxFlex="20">
+                        <ng-select formControlName="district_id_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [items]="district_id_options"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="false"
+                                   [multiple]="true"
+                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   placeholder="Район">
+                        </ng-select>
 
-                    <ng-select formControlName="district_id_selector"
-                               bindValue="id"
-                               bindLabel="value"
-                               [items]="district_id_options"
-                               [clearOnBackspace]="false"
-                               [searchable]="false"
-                               [multiple]="true"
-                               [hideSelected]="true"
-                               [closeOnSelect]="false"
-                               placeholder="Район"
-                               >
-                    </ng-select>    
-                        
+                    </div>
+
+                    <div fxFlex="10" style="margin-top: 10px;">
+                        <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
+                            Найти
+                        </button>
+                    </div>
+
                 </div>
-
-                <div  fxFlex="10" style="margin-top: 10px;">
-                    <button mat-raised-button matStepperNext type="button" color="accent" (click)="search()">
-                        Найти
-                    </button>
-
-                </div>
-
-
-            </div>
                 
                 
                 
