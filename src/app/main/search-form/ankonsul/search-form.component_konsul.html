@@ -1,11 +1,11 @@
 <div id="search">
-    <div class="content p-24" fxLayout="column">
+    <div class="content gold_bg" fxLayout="column">
 
-        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
             <form class="mat-card" fxLayout="column" fxLayoutAlign="start"
                   fxFlex="1 0 auto" name="form" [formGroup]="form">
 
-                <div fxLayout="row" fxLayoutAlign="center" fxFlex="1 0 auto">
+                <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center" fxFlex="1 0 auto">
                     <div class="room_count" fxFlex="8">
                         <h2><span class="red-fg">Я</span> хочу</h2>
                     </div>
@@ -27,7 +27,7 @@
                     </ng-select>    
                         
                 </div>
-                    <mat-form-field fxFlex="25" style="padding-top: 6px;">
+                    <mat-form-field fxFlex="25" style="margin-top: 4px;">
                         <mat-label>поиск по слову</mat-label>
                         <input matInput formControlName="srch_word">
                     </mat-form-field>
@@ -114,7 +114,7 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <div fxLayout="row" fxLayoutAlign="start center" >
+                <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
                     
                     <div class="room_count" fxFlex="19" *ngIf="form.controls.room_count">
                         Комнат
@@ -293,17 +293,6 @@
                 </div>
                     
 
-
-            <div  fxFlex="10">
-                &nbsp;
-            </div>
-
-
-
-
-
-
-
         </div>
 
         <div fxLayout="row wrap" fxLayoutAlign="space-around start center"  class="more_params" >
@@ -314,12 +303,6 @@
 
 
     </mat-expansion-panel>
-
-
-    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-        <div appearance="outline" fxFlex="20" class="pl-4">
-        </div>
-    </div>
 
 </form>
 </div>

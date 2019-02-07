@@ -5,6 +5,13 @@
 .highlight {
     background: yellow;
 }
+::ng-deep .gold_bg {
+    /*background-color: rgb(218,165,32);*/
+}
+    ::ng-deep .gold_bg .ng-select-container, ::ng-deep .gold_bg .mat-form-field-flex {
+        border-bottom: 2px solid red;
+    }
+
 ::ng-deep .more_params {
     height: 400px;
     width: 100%;
@@ -55,7 +62,6 @@
 ::ng-deep  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
 }
 ::ng-deep .room_count {
-    margin-bottom: 24px;
 }
 
 .example-h2 {
