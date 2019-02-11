@@ -30,6 +30,7 @@ import {FuseWidgetModule} from '@fuse/components/widget/widget.module';
 
 import {fuseConfig} from 'app/fuse-config';
 import {AppConfigModule} from './app.config.module';
+import { FilterService } from 'app/_services/filter.service';
 
 
 
@@ -54,25 +55,9 @@ import {NguCarouselModule} from '@ngu/carousel';
 import {CarouselComponent} from 'app/main/carousel/carousel.component';
 
 
-import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
-import {FilterComponent} from 'app/main/documentation/components-third-party/datatable/filter.component';
-import {ProfileTimelineComponent} from 'app/main/documentation/components-third-party/datatable/timeline/timeline.component';
 
-import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {CourseDialogComponent} from 'app/course-dialog/course-dialog.component';
-import {DeclineClientComponent} from 'app/dialogs//decline-client/decline-client.component';
 import {SelectDistrictDialogComponent} from 'app/main/search-form/dialogs/select-district/select-district.component';
-import {ChatService} from 'app/main/apps/chat/chat.service';
-import {ChatComponent} from 'app/main/apps/chat/chat.component';
-import {ChatStartComponent} from 'app/main/apps/chat/chat-start/chat-start.component';
-import {ChatViewComponent} from 'app/main/apps/chat/chat-view/chat-view.component';
-import {ChatChatsSidenavComponent} from 'app/main/apps/chat/sidenavs/left/chats/chats.component';
-import {ChatUserSidenavComponent} from 'app/main/apps/chat/sidenavs/left/user/user.component';
-import {ChatLeftSidenavComponent} from 'app/main/apps/chat/sidenavs/left/left.component';
-import {ChatRightSidenavComponent} from 'app/main/apps/chat/sidenavs/right/right.component';
-import {ChatContactSidenavComponent} from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
 
-import {DocsComponentsThirdPartyNgxDatatableComponent} from 'app/main/documentation/components-third-party/datatable/ngx-datatable.component';
 import {MortgageCalculatorComponent} from 'app/main/mortgage-calculator/mortgage-calculator.component';
 import {CalculatorMiniComponent} from 'app/main/calculator-mini/calculator-mini.component';
 import {SearchFormComponent} from 'app/main/search-form/search-form.component';
@@ -123,6 +108,11 @@ const appRoutes: Routes = [
         loadChildren: 'app/main/sample/sample.module#SampleModule'
     },
     {
+        path: 'grid',
+        loadChildren: 'app/main/grid/grid.module#GridModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'facebook',
         loadChildren: 'app/main/facebook/facebook.module#FacebookModule'
     },
@@ -130,6 +120,7 @@ const appRoutes: Routes = [
         path: 'vk',
         loadChildren: 'app/main/vk/vk.module#VkModule'
     },
+    /*
     {
         path: 'client/my',
         component: DocsComponentsThirdPartyNgxDatatableComponent,
@@ -140,6 +131,7 @@ const appRoutes: Routes = [
         }
 
     },
+    */
     {
         path: '**',
         component: Error404Component
@@ -184,20 +176,7 @@ const appRoutes: Routes = [
         CarouselComponent,
         LoginComponent,
         AlertComponent,
-        FilterComponent,
-        ProfileTimelineComponent,
-        CourseDialogComponent,
-        DeclineClientComponent,
         SelectDistrictDialogComponent,
-        ChatComponent,
-        ChatViewComponent,
-        ChatStartComponent,
-        ChatChatsSidenavComponent,
-        ChatUserSidenavComponent,
-        ChatLeftSidenavComponent,
-        ChatRightSidenavComponent,
-        ChatContactSidenavComponent,
-        DocsComponentsThirdPartyNgxDatatableComponent,
         MortgageCalculatorComponent,
         CalculatorMiniComponent,
         Error404Component,
@@ -223,7 +202,6 @@ const appRoutes: Routes = [
 
         // Material moment date module
         MatMomentDateModule,
-        NgxDatatableModule,
         FuseWidgetModule,
 
         // Material
@@ -278,12 +256,11 @@ const appRoutes: Routes = [
         AuthGuard,
         AlertService,
         AuthenticationService,
-        ChatService,
-        FilterService,
+        FilterService
         // provider used to create fake backend
         //fakeBackendProvider
     ],
-    entryComponents: [AppComponent, CourseDialogComponent, DeclineClientComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent, CalculatorMiniComponent, SearchFormComponent]
+    entryComponents: [AppComponent,  SelectDistrictDialogComponent, MortgageCalculatorComponent, CalculatorMiniComponent, SearchFormComponent]
 })
 export class AppModule {
     ngDoBootstrap(app) {

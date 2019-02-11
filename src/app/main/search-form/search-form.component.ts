@@ -18,7 +18,7 @@ import {map, startWith} from 'rxjs/operators';
 
 import {MatDialog, MatDialogConfig, MatDatepicker} from "@angular/material";
 import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
-import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import {FilterService} from 'app/_services/filter.service';
 
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -187,8 +187,7 @@ export class SearchFormComponent implements OnInit {
     people3$: Observable<Person[]>;
     people3Loading = false;
     people3input$ = new Subject<string>();
-    selectedPersons: Person[] = <any>[{name: 'Karyn Wright'}, {name: 'Other'}];
-
+    selectedPersons: Person[] = <any>[{ name: 'Karyn Wright' }, { name: 'Other' }];
 
 
     constructor(
@@ -461,6 +460,7 @@ export class SearchFormComponent implements OnInit {
         }
         return params;
     }
+
 
     load_dictionary(columnName) {
         const request = {action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true, session_key: this.currentUser.session_key};

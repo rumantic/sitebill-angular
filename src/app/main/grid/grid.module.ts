@@ -2,28 +2,108 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+import {
+    MatButtonModule, MatCheckboxModule, MatGridListModule,
+    MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
+    MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
+    MatAutocompleteModule, MatButtonToggleModule, MatExpansionModule
+} from '@angular/material';
+import {
+    MatSnackBarModule
+} from '@angular/material';
+
+
 import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
+import { ChatService } from 'app/main/apps/chat/chat.service';
+import { ChatComponent } from 'app/main/apps/chat/chat.component';
+import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
+import { ChatViewComponent } from 'app/main/apps/chat/chat-view/chat-view.component';
+import { ChatChatsSidenavComponent } from 'app/main/apps/chat/sidenavs/left/chats/chats.component';
+import { ChatUserSidenavComponent } from 'app/main/apps/chat/sidenavs/left/user/user.component';
+import { ChatLeftSidenavComponent } from 'app/main/apps/chat/sidenavs/left/left.component';
+import { ChatRightSidenavComponent } from 'app/main/apps/chat/sidenavs/right/right.component';
+import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
 
 import { GridComponent } from './grid.component';
+import { FilterService } from 'app/_services/filter.service';
+import { FilterComponent } from 'app/main/grid/filter.component';
+import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
+import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
+import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 
 const routes = [
     {
         path     : '**',
-        component: GridComponent
+        component: GridComponent,
+        resolve: {
+            chat: ChatService
+        }
     }
 ];
 
 @NgModule({
     declarations: [
-        GridComponent
+        GridComponent,
+        FilterComponent,
+        CourseDialogComponent,
+        ProfileTimelineComponent,
+        DeclineClientComponent,
+        ChatComponent,
+        ChatViewComponent,
+        ChatStartComponent,
+        ChatChatsSidenavComponent,
+        ChatUserSidenavComponent,
+        ChatLeftSidenavComponent,
+        ChatRightSidenavComponent,
+        ChatContactSidenavComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
 
         TranslateModule,
+        // Material moment date module
+        MatMomentDateModule,
+        NgxDatatableModule,
+        FuseWidgetModule,
 
-        FuseSharedModule
-    ]
+        // Material
+        MatIconModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatTableModule,
+        MatTabsModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
+        MatInputModule,
+        MatSliderModule,
+        MatAutocompleteModule,
+        MatSnackBarModule,
+        MatButtonToggleModule,
+        MatExpansionModule,
+
+        FuseSharedModule,
+    ],
+    providers: [
+        FilterService,
+        ChatService,
+    ],
+    entryComponents: [CourseDialogComponent, DeclineClientComponent]
+
 })
 
 export class GridModule

@@ -5,7 +5,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Course} from "app/model/course";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {FilterService} from 'app/main/documentation/components-third-party/datatable/filter.service';
+import {FilterService} from 'app/_services/filter.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {Model} from 'app/model';
