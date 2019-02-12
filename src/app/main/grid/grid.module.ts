@@ -38,11 +38,16 @@ import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-clie
 
 const routes = [
     {
-        path     : '**',
+        path     : 'data',
         component: DataComponent,
         resolve: {
             chat: ChatService
-        }
+        },
+        children: [
+            { path: "data", component: DataComponent },
+            { path: "products", component: GridComponent },
+            { path: "**", redirectTo: "data" }
+        ]
     }
 ];
 
