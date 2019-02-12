@@ -166,7 +166,6 @@ const appRoutes: Routes = [
 */
 
 
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -278,4 +277,5 @@ export class AppModule {
             app.bootstrap(AnkonsulSearchFormComponent);
         }
     }
+
 }

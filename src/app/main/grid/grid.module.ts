@@ -29,6 +29,7 @@ import { ChatRightSidenavComponent } from 'app/main/apps/chat/sidenavs/right/rig
 import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
 
 import { GridComponent } from './grid.component';
+import { DataComponent } from './data/data.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
 import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
@@ -38,7 +39,7 @@ import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-clie
 const routes = [
     {
         path     : '**',
-        component: GridComponent,
+        component: DataComponent,
         resolve: {
             chat: ChatService
         }
@@ -48,6 +49,7 @@ const routes = [
 @NgModule({
     declarations: [
         GridComponent,
+        DataComponent,
         FilterComponent,
         CourseDialogComponent,
         ProfileTimelineComponent,
