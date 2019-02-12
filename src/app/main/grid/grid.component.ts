@@ -66,8 +66,8 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     // Private
-    private _unsubscribeAll: Subject<any>;
-    private currentUser: currentUser;
+    protected _unsubscribeAll: Subject<any>;
+    protected currentUser: currentUser;
 
     
     /**
@@ -75,7 +75,7 @@ export class GridComponent implements OnInit, OnDestroy
      *
      */
     constructor(
-        private _httpClient: HttpClient,
+        protected _httpClient: HttpClient,
         private elRef: ElementRef,
         @Inject(DOCUMENT) private document: any,
         private dialog: MatDialog,
@@ -109,7 +109,7 @@ export class GridComponent implements OnInit, OnDestroy
         };
     }
     ngOnInit() {
-        this.setup_apps('client');
+        this.setup_apps();
         this.rows = [];
         this.rows_my = [];
         this.refreash();
@@ -123,111 +123,75 @@ export class GridComponent implements OnInit, OnDestroy
             app_root_element = this.document.getElementById('app_root');
         }
     }
-    setup_apps(app_name) {
-        this.app_name = app_name;
-        if (app_name == 'client') {
-            this.columns_client_all = [
-                {
-                    cellTemplate: this.clientControlTmpl,
-                    name: 'Ответственный',
-                    prop: 'user_id.value_string'
-                },
-                {
-                    name: 'Дата',
-                    prop: 'date.value_string'
-                },
-                {
-                    name: 'Тип',
-                    prop: 'type_id.value_string'
-                },
-                {
-                    name: 'Категория',
-                    prop: 'topic_choice.value'
-                },
-                {
-                    name: 'Статус',
-                    cellTemplate: this.clientStatusIdTmpl,
-                    prop: 'status_id.value_string'
-                },
-                {
-                    name: 'ФИО клиента',
-                    prop: 'fio.value'
-                },
-            ];
-            this.columns_client_my = [
-                {
-                    name: 'ID',
-                    cellTemplate: this.clientIdTmpl,
-                    prop: 'client_id.value'
-                },
-                {
-                    cellTemplate: this.clientControlTmpl,
-                    name: 'Ответственный',
-                    prop: 'user_id.value_string'
-                },
-                {
-                    name: 'Дата',
-                    prop: 'date.value_string'
-                },
-                {
-                    name: 'Тип',
-                    prop: 'type_id.value_string'
-                },
-                {
-                    name: 'Статус',
-                    cellTemplate: this.clientStatusIdTmpl,
-                    prop: 'status_id.value_string'
-                },
-                {
-                    name: 'ФИО клиента',
-                    prop: 'fio.value'
-                },
-                {
-                    name: 'Телефон',
-                    prop: 'phone.value'
-                },
-                {
-                    name: 'Категория',
-                    prop: 'topic_choice.value'
-                },
-            ];
+    setup_apps() {
+        console.log('setup client');
+        this.app_name = 'client';
+        this.columns_client_all = [
+            {
+                cellTemplate: this.clientControlTmpl,
+                name: 'Ответственный',
+                prop: 'user_id.value_string'
+            },
+            {
+                name: 'Дата',
+                prop: 'date.value_string'
+            },
+            {
+                name: 'Тип',
+                prop: 'type_id.value_string'
+            },
+            {
+                name: 'Категория',
+                prop: 'topic_choice.value'
+            },
+            {
+                name: 'Статус',
+                cellTemplate: this.clientStatusIdTmpl,
+                prop: 'status_id.value_string'
+            },
+            {
+                name: 'ФИО клиента',
+                prop: 'fio.value'
+            },
+        ];
+        this.columns_client_my = [
+            {
+                name: 'ID',
+                cellTemplate: this.clientIdTmpl,
+                prop: 'client_id.value'
+            },
+            {
+                cellTemplate: this.clientControlTmpl,
+                name: 'Ответственный',
+                prop: 'user_id.value_string'
+            },
+            {
+                name: 'Дата',
+                prop: 'date.value_string'
+            },
+            {
+                name: 'Тип',
+                prop: 'type_id.value_string'
+            },
+            {
+                name: 'Статус',
+                cellTemplate: this.clientStatusIdTmpl,
+                prop: 'status_id.value_string'
+            },
+            {
+                name: 'ФИО клиента',
+                prop: 'fio.value'
+            },
+            {
+                name: 'Телефон',
+                prop: 'phone.value'
+            },
+            {
+                name: 'Категория',
+                prop: 'topic_choice.value'
+            },
+        ];
 
-        } else {
-            //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=get_data&session_key=${this.currentUser.session_key}`);
-            //console.log('hdrTpl ');
-            //console.log(this.hdrTpl);
-            //console.log('editTmpl ' + this.editTmpl);
-            //console.log('filterTpl ' + this.filterTmpl);
-            //this.hdrTpl = 'some test';
-            this.data_columns = [
-                {
-                    headerTemplate: this.hdrTpl,
-                    name: 'id.title',
-                    prop: 'id.value'
-                },
-                {
-                    headerTemplate: this.hdrTpl,
-                    name: 'city_id.title',
-                    prop: 'city_id.value_string'
-                },
-                {
-                    headerTemplate: this.hdrTpl,
-                    name: 'street_id.title',
-                    prop: 'street_id.value_string'
-                },
-                {
-                    headerTemplate: this.hdrTpl,
-                    name: 'price',
-                    prop: 'price.value'
-                },
-                {
-                    headerTemplate: this.hdrTpl,
-                    cellTemplate: this.editTmpl,
-                    name: 'image',
-                    prop: 'image.value'
-                },
-            ];
-        }
 
         const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
 
