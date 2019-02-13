@@ -120,7 +120,6 @@ export class GridComponent implements OnInit, OnDestroy
         this.refreash();
 
         this.filterService.share.subscribe((datas) => {
-            console.log(datas);
             this.filterSharedData = datas;
             this.ngxHeaderHeight = "auto";
             this.refreash();
@@ -312,34 +311,19 @@ export class GridComponent implements OnInit, OnDestroy
         } else {
             grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
         }
-        let filter_params_json = new Array();
+        let filter_params_json = {};
 
         if (this.filterSharedData) {
-            //filter_params = [{ 'topic_id': 6166 }, { 'street_id': 2700 }];
-            //const mapped = Object.keys(this.filterSharedData).map(key => ({ key: this.filterSharedData[key] }));
-
-            //var mapped = Object.keys(this.filterSharedData).map(function (key) {
-            //    return [Number(key), this.filterSharedData[key]];
-            //});
-            console.log('set filter_params');
-
             var obj = this.filterSharedData;
-            //var mapped = Object.keys(obj).map(item => obj[item]);
-            //var mapped = Object.keys(obj).map(key => ({ key: obj[key] }));
             var mapped = Object.keys(obj);
-            //var filter_params_json = [];
             mapped.forEach(function (item, i, arr) {
-                filter_params_json.push(obj[item]);
-                console.log(i + ": " + item + " (массив:" + obj[item] + ")");
+                if (obj[item] != 0) {
+                    filter_params_json[item] = obj[item];
+                }
             });
-
-            console.log(filter_params_json);
-
-            //console.log(filter_params_json);
         }
 
-        const body = { action: 'model', do: 'get_data', model_name: app_name, owner: params.owner, params: filter_params_json, test: 'sometest', session_key: this.currentUser.session_key, grid_item: grid_item };
-        //console.log(body);
+        const body = { action: 'model', do: 'get_data', model_name: app_name, owner: params.owner, params: filter_params_json, session_key: this.currentUser.session_key, grid_item: grid_item };
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .pipe(takeUntil(this._unsubscribeAll))

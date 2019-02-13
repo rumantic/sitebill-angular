@@ -63,15 +63,11 @@ export class FilterComponent {
     }
 
     load_dictionary(columnName) {
-        console.log('load_dictionary' + columnName);
-
         const request = {action: 'model', do: 'load_dictionary', columnName: columnName, session_key: this.currentUser.session_key};
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log('filter component ' + columnName);
-                console.log(result.data);
                 if (result) {
                     this.options = result.data;
                     //this.load_grid_data(result.selected);
