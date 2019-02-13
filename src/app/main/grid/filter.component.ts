@@ -12,12 +12,10 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
     styles: [`h2, p, div {color:red;}`]
 })
 export class FilterComponent {
-    name = "Дмитрий";
     selectedCity: any;
     options: any;
     @Input() columnObject: any;
     api_url: string;
-    test_options: any[] = [{ id: 0, value: 'Все'}, { id: 1, value: 'range'}];
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -46,19 +44,9 @@ export class FilterComponent {
     }
 
     ngOnInit(): void {
-        console.log('columnTitle ' + this.columnObject.title);
-        console.log(this.columnObject);
-        console.log(this.columnObject.name);
-
-        switch (this.columnObject.ngx_name) {
-            case "city_id.title": {
-                //this.options = ['Москва', 'Красноярск'];
+        switch (this.columnObject.type) {
+            case "select_by_query": {
                 this.load_dictionary(this.columnObject.model_name);
-                break;
-            }
-            case "street_id.title": {
-                this.load_dictionary(this.columnObject.name);
-                //this.options = ['Мира', 'Ленина'];
                 break;
             }
 

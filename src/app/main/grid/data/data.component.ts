@@ -21,6 +21,16 @@ export class DataComponent extends GridComponent {
             },
             {
                 headerTemplate: this.hdrTpl,
+                type: 'select_by_query',
+                ngx_name: 'topic_id.title',
+                model_name: 'topic_id',
+                title: 'Тип',
+                prop: 'topic_id.value_string'
+            },
+
+            {
+                headerTemplate: this.hdrTpl,
+                type: 'select_by_query',
                 ngx_name: 'city_id.title',
                 model_name: 'city_id',
                 title: 'Город',
@@ -28,7 +38,18 @@ export class DataComponent extends GridComponent {
             },
             {
                 headerTemplate: this.hdrTpl,
-                name: 'street_id.title',
+                type: 'select_by_query',
+                ngx_name: 'district_id.title',
+                model_name: 'district_id',
+                title: 'Район',
+                prop: 'district_id.value_string'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                type: 'select_by_query',
+                ngx_name: 'street_id.title',
+                model_name: 'street_id',
+                title: 'Улица',
                 prop: 'street_id.value_string'
             },
             {
