@@ -322,6 +322,7 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
         }
+        //console.log(filter_params_json);
 
         const body = { action: 'model', do: 'get_data', model_name: app_name, owner: params.owner, params: filter_params_json, session_key: this.currentUser.session_key, grid_item: grid_item };
 
