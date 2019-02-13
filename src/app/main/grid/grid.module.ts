@@ -36,18 +36,23 @@ import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.compon
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
 const routes = [
     {
         path     : 'data',
         component: DataComponent,
         resolve: {
             chat: ChatService
+        }
+
+    },
+    {
+        path: 'client',
+        component: GridComponent,
+        resolve: {
+            chat: ChatService
         },
-        children: [
-            { path: "data", component: DataComponent },
-            { path: "products", component: GridComponent },
-            { path: "**", redirectTo: "data" }
-        ]
     }
 ];
 
@@ -102,6 +107,9 @@ const routes = [
         MatSnackBarModule,
         MatButtonToggleModule,
         MatExpansionModule,
+
+        NgSelectModule,
+
 
         FuseSharedModule,
     ],

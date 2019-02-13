@@ -1,5 +1,5 @@
 <ng-template #hdrTpl let-column="column">
-    <filter-comp [columnName]=column.name>
+    <filter-comp [columnObject]=column>
     </filter-comp>
 </ng-template>
 <ng-template #editTmpl let-row="row" let-value="value">
@@ -130,7 +130,7 @@
                                            [columns]="data_columns"
                                            [loadingIndicator]="loadingIndicator"
                                            [columnMode]="'force'"
-                                           [headerHeight]="48"
+                                           [headerHeight]="ngxHeaderHeight"
                                            [footerHeight]="56"
                                            [rowHeight]="'auto'"
                                            [scrollbarH]="true"

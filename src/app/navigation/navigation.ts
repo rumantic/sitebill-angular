@@ -8,11 +8,26 @@ export const navigation: FuseNavigation[] = [
         type     : 'group',
         children : [
             {
-                id       : 'myobjects',
+                id: 'data_grid',
+                title: 'Объекты',
+                type: 'item',
+                icon: 'email',
+                url: 'grid/data',
+                /*
+                badge    : {
+                    title    : '25',
+                    translate: 'NAV.SAMPLE.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+                */
+            },
+            {
+                id       : 'client_grid',
                 title    : 'Заявки',
                 type     : 'item',
                 icon     : 'email',
-                url      : 'client/my',
+                url      : 'grid/client',
                 /*
                 badge    : {
                     title    : '25',

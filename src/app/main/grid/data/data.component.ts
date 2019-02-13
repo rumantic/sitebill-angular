@@ -12,8 +12,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class DataComponent extends GridComponent {
     setup_apps() {
-        console.log('setup data');
-
         this.app_name = 'data';
         this.data_columns = [
             {
@@ -23,7 +21,9 @@ export class DataComponent extends GridComponent {
             },
             {
                 headerTemplate: this.hdrTpl,
-                name: 'city_id.title',
+                ngx_name: 'city_id.title',
+                model_name: 'city_id',
+                title: 'Город',
                 prop: 'city_id.value_string'
             },
             {
@@ -43,17 +43,5 @@ export class DataComponent extends GridComponent {
                 prop: 'image.value'
             },
         ];
-
-        const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                this.refreash();
-
-
-                this.loadingIndicator = false;
-            });
-
     }
 }

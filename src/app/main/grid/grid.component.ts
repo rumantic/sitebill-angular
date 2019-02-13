@@ -28,6 +28,7 @@ import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component
 export class GridComponent implements OnInit, OnDestroy
 {
     rows = [];
+    ngxHeaderHeight: any;
     item_model: any[];
     rows_my = [];
     rows_data = [];
@@ -61,6 +62,8 @@ export class GridComponent implements OnInit, OnDestroy
     @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
 
     private filter: number;
+    private filterControls: any;
+    private filterSharedData: any;
 
 
 
@@ -87,6 +90,7 @@ export class GridComponent implements OnInit, OnDestroy
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
+        this.ngxHeaderHeight = 48;
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
@@ -107,12 +111,24 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             }
         };
+
     }
     ngOnInit() {
         this.setup_apps();
         this.rows = [];
         this.rows_my = [];
         this.refreash();
+        this.filterService.change.subscribe(controls => {
+            this.filterControls = controls;
+            console.log(controls);
+        });
+
+        this.filterService.share.subscribe((datas) => {
+            console.log(datas);
+            this.filterSharedData = datas;
+            this.ngxHeaderHeight = "auto";
+        });
+
     }
     
     init_input_parameters () {
@@ -124,7 +140,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
     setup_apps() {
-        console.log('setup client');
+        //console.log('setup client');
         this.app_name = 'client';
         this.columns_client_all = [
             {
@@ -192,7 +208,9 @@ export class GridComponent implements OnInit, OnDestroy
             },
         ];
 
+    }
 
+    load_selected() {
         const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
@@ -213,7 +231,6 @@ export class GridComponent implements OnInit, OnDestroy
 
                 this.loadingIndicator = false;
             });
-
     }
 
     toggleUserGet(row) {
@@ -308,7 +325,7 @@ export class GridComponent implements OnInit, OnDestroy
                 this.item_model = result.rows[0];
                 this.loadGridComplete = true;
 
-                console.log(this.item_model);
+                //console.log(this.item_model);
                 if (app_name == 'client') {
                     if (params.owner) {
                         this.rows_my = result.rows;
@@ -348,7 +365,7 @@ export class GridComponent implements OnInit, OnDestroy
         const body = { action: 'model', do: 'graphql_update', model_name: this.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key };
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((response: any) => {
-                console.log(response);
+                //console.log(response);
             });
 
 
