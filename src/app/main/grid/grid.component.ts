@@ -309,7 +309,7 @@ export class GridComponent implements OnInit, OnDestroy
                 grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'topic_choice'];
             }
         } else {
-            grid_item = ['id', 'city_id', 'metro_id', 'street_id', 'number', 'price', 'image'];
+            grid_item = ['id', 'city_id', 'metro_id', 'district_id', 'street_id', 'user_id', 'topic_id','number', 'price', 'image'];
         }
         let filter_params_json = {};
 

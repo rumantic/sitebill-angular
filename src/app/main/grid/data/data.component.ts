@@ -54,6 +54,15 @@ export class DataComponent extends GridComponent {
             },
             {
                 headerTemplate: this.hdrTpl,
+                type: 'select_by_query',
+                ngx_name: 'user_id.title',
+                model_name: 'user_id',
+                title: 'Пользователь',
+                prop: 'user_id.value_string'
+            },
+
+            {
+                headerTemplate: this.hdrTpl,
                 name: 'price',
                 prop: 'price.value'
             },
