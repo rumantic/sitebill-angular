@@ -67,8 +67,6 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
-                console.log('chatData');
-                console.log(chatData);
                 this.selectedChat = chatData;
             });
         

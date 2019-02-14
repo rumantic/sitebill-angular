@@ -15,6 +15,7 @@ export class FilterComponent {
     options: any;
     @Input() columnObject: any;
     api_url: string;
+    selectedFilter: any;
     filter_enable: boolean;
 
     private _unsubscribeAll: Subject<any>;
@@ -61,7 +62,6 @@ export class FilterComponent {
 
     selectItem(value) {
         this.filterService.share_data(this.columnObject.model_name, value);
-        //console.log(value);
     }
 
     load_dictionary(columnName) {
