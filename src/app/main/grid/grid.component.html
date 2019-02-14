@@ -2,12 +2,22 @@
     <filter-comp [columnObject]=column>
     </filter-comp>
 </ng-template>
+
 <ng-template #editTmpl let-row="row" let-value="value">
     <div *ngIf="value.length > 0">
         <img width="50"
-             src="http://genplan1/img/data/{{value[0].preview}}" />
+             src="{{api_url}}/img/data/{{value[0].preview}}" />
     </div>
 </ng-template>
+
+<ng-template #controlTmpl let-row="row" let-value="value">
+    <div>
+        <button mat-icon-button>
+            <mat-icon (click)="view(value)" aria-label="Просмотр">pageview</mat-icon>
+        </button>
+    </div>
+</ng-template>
+
 <ng-template #clientControlTmpl let-row="row" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
         <button *ngIf="value == ''" mat-icon-button matTooltip="Взять заявку" (click)="toggleUserGet(row)" aria-label="Toggle important">
@@ -18,6 +28,7 @@
         </button>
     </div>
 </ng-template>
+
 <ng-template #clientIdTmpl let-row="row" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
         <button mat-icon-button matTooltip="Подробнее" (click)="view_details(value)" aria-label="Toggle star" *ngIf="value > 0">
@@ -25,6 +36,7 @@
         </button>
     </div>
 </ng-template>
+
 <ng-template #clientStatusIdTmpl let-row="row" let-rowIndex="rowIndex" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
         <span *ngIf="row.user_id.value == 0">
@@ -50,9 +62,12 @@
         </select>
     </div>
 </ng-template>
+
 <div id="ngx-datatable" class="page-layout simple fullwidth">
     <!-- CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
+        <button mat-button (click)="create()" color="accent" matTooltip="Добавить запись">Добавить запись</button>
+
         <mat-tab-group dynamicHeight>
             <mat-tab label="Все ({{total_all}})" *ngIf="columns_client_all.length > 0">
                 <!-- WIDGET GROUP -->
@@ -150,6 +165,7 @@
         </mat-tab-group>
         <button mat-button (click)="refreash()" color="accent" matTooltip="Обновить таблицу">Обновить</button>
     </div>
+
 
 </div>
 

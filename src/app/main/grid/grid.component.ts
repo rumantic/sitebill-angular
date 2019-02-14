@@ -18,6 +18,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ModelService } from 'app/_services/model.service';
+import { ViewModalComponent } from './view-modal/view-modal.component';
 
 
 @Component({
@@ -53,10 +54,12 @@ export class GridComponent implements OnInit, OnDestroy
     options_test = {};
     test_indicator: string;
     objectKeys = Object.keys;
+    primary_key: string;
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+    @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
@@ -140,6 +143,7 @@ export class GridComponent implements OnInit, OnDestroy
     setup_apps() {
         //console.log('setup client');
         this.app_name = 'client';
+        this.primary_key = 'client_id';
         this.columns_client_all = [
             {
                 cellTemplate: this.clientControlTmpl,
@@ -459,9 +463,21 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.width = '100%';
         dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.app_name, primary_key: 'client_id', key_value: item_id };
+        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
 
         this.dialog.open(CourseDialogComponent, dialogConfig);
+    }
+
+    view(item_id: any) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.width = '100%';
+        dialogConfig.height = '100%';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+
+        this.dialog.open(ViewModalComponent, dialogConfig);
     }
 
     onActivate(event) {

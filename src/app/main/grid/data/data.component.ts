@@ -13,6 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 export class DataComponent extends GridComponent {
     setup_apps() {
         this.app_name = 'data';
+        this.primary_key = 'id';
+
         this.data_columns = [
             {
                 headerTemplate: this.hdrTpl,
@@ -39,6 +41,7 @@ export class DataComponent extends GridComponent {
                 title: 'Город',
                 prop: 'city_id.value_string'
             },
+            /*
             {
                 headerTemplate: this.hdrTpl,
                 type: 'select_by_query',
@@ -47,6 +50,7 @@ export class DataComponent extends GridComponent {
                 title: 'Район',
                 prop: 'district_id.value_string'
             },
+            */
             {
                 headerTemplate: this.hdrTpl,
                 type: 'select_by_query',
@@ -80,6 +84,16 @@ export class DataComponent extends GridComponent {
                 title: 'Фото',
                 prop: 'image.value'
             },
+            {
+                headerTemplate: this.hdrTpl,
+                cellTemplate: this.controlTmpl,
+                type: 'primary_key',
+                ngx_name: 'id.title',
+                model_name: 'id',
+                title: '',
+                prop: 'id.value'
+            },
+
         ];
     }
 }
