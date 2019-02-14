@@ -8,7 +8,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import * as moment from 'moment';
 
 import {Model} from 'app/model';
-import {ModelService} from 'app/model.service';
 import {currentUser} from 'app/_models/currentuser';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -50,7 +49,6 @@ export class DeclineClientComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<DeclineClientComponent>,
-        private modelService: ModelService,
         private _httpClient: HttpClient,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,

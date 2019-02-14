@@ -8,7 +8,6 @@ import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import * as moment from 'moment';
 
 import {Model} from '../model';
-import {ModelService} from '../model.service';
 import {currentUser} from '../_models/currentuser';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -39,7 +38,6 @@ export class CourseDialogComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        private modelService: ModelService,
         private _httpClient: HttpClient,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,

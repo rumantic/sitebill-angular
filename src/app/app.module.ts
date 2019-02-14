@@ -41,8 +41,6 @@ import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
 import {AlertService, AuthenticationService} from './_services/index';
 
-import {ModelDetailComponent} from './model-detail/model-detail.component';
-import {ModelService} from './model.service';
 import {MessageService} from './message.service';
 import {LoginComponent} from './login/index';
 import {FakeDbService} from 'app/fake-db/fake-db.service';
@@ -169,7 +167,6 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        ModelDetailComponent,
         ControlElementsComponent,
         SliderComponent,
         CarouselComponent,
@@ -250,7 +247,6 @@ const appRoutes: Routes = [
     ],
     exports: [RouterModule, MatSnackBarModule],
     providers: [
-        ModelService,
         MessageService,
         AuthGuard,
         AlertService,

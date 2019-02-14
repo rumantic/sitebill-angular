@@ -12,10 +12,10 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
     styles: [`h2, p, div {color:red;}`]
 })
 export class FilterComponent {
-    selectedCity: any;
     options: any;
     @Input() columnObject: any;
     api_url: string;
+    filter_enable: boolean;
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -41,12 +41,14 @@ export class FilterComponent {
         } else {
             this.api_url = '';
         }
+        this.filter_enable = false;
     }
 
     ngOnInit(): void {
         switch (this.columnObject.type) {
             case "select_by_query": {
                 this.load_dictionary(this.columnObject.model_name);
+                this.filter_enable = true;
                 break;
             }
 

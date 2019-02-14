@@ -16,7 +16,10 @@ export class DataComponent extends GridComponent {
         this.data_columns = [
             {
                 headerTemplate: this.hdrTpl,
-                name: 'id.title',
+                type: 'primary_key',
+                ngx_name: 'id.title',
+                model_name: 'id',
+                title: 'ID',
                 prop: 'id.value'
             },
             {
@@ -60,16 +63,21 @@ export class DataComponent extends GridComponent {
                 title: 'Пользователь',
                 prop: 'user_id.value_string'
             },
-
             {
                 headerTemplate: this.hdrTpl,
-                name: 'price',
+                type: 'price',
+                ngx_name: 'price.title',
+                model_name: 'price',
+                title: 'Цена',
                 prop: 'price.value'
             },
             {
                 headerTemplate: this.hdrTpl,
                 cellTemplate: this.editTmpl,
-                name: 'image',
+                type: 'image',
+                ngx_name: 'image.title',
+                model_name: 'image',
+                title: 'Фото',
                 prop: 'image.value'
             },
         ];

@@ -7,7 +7,6 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {ActivatedRoute} from '@angular/router';
 
 import {Model} from 'app/model';
-import {ModelService} from 'app/model.service';
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
@@ -52,7 +51,6 @@ export class ControlElementsComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private route: ActivatedRoute,
-        private modelService: ModelService,
         private _httpClient: HttpClient,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,

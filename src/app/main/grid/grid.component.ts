@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -83,6 +84,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(DOCUMENT) private document: any,
         private dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
@@ -325,8 +327,7 @@ export class GridComponent implements OnInit, OnDestroy
         //console.log(filter_params_json);
 
         const body = { action: 'model', do: 'get_data', model_name: app_name, owner: params.owner, params: filter_params_json, session_key: this.currentUser.session_key, grid_item: grid_item };
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+        this.modelSerivce.load(app_name, grid_item, filter_params_json, params.owner)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
@@ -350,6 +351,7 @@ export class GridComponent implements OnInit, OnDestroy
                 this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });
+
     }
 
     updateValue(event, cell, rowIndex, row) {

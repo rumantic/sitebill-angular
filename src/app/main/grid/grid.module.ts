@@ -37,6 +37,7 @@ import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ModelService } from 'app/_services/model.service';
 
 const routes = [
     {
@@ -116,6 +117,7 @@ const routes = [
     providers: [
         FilterService,
         ChatService,
+        ModelService,
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent]
 
