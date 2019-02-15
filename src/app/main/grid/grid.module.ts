@@ -36,6 +36,7 @@ import { FilterComponent } from 'app/main/grid/filter.component';
 import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ViewModalComponent } from './view-modal/view-modal.component';
+import { FormComponent } from './form/form.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -75,6 +76,7 @@ const routes = [
         FilterComponent,
         CourseDialogComponent,
         ViewModalComponent,
+        FormComponent,
         ProfileTimelineComponent,
         DeclineClientComponent,
         ChatComponent,
@@ -131,7 +133,7 @@ const routes = [
         ChatService,
         ModelService,
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent]
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, FormComponent]
 
 })
 

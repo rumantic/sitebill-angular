@@ -19,6 +19,7 @@ import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-clien
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
+import { FormComponent } from './form/form.component';
 
 
 @Component({
@@ -466,6 +467,19 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(CourseDialogComponent, dialogConfig);
     }
+
+    create(item_id: any) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.width = '100%';
+        dialogConfig.height = '100%';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+
+        this.dialog.open(FormComponent, dialogConfig);
+    }
+
 
     view(item_id: any) {
         const dialogConfig = new MatDialogConfig();
