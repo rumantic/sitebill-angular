@@ -1,0 +1,32 @@
+<div id="course-dialog" class="dialog-content-wrapper">
+    <mat-toolbar>
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">form</span>
+            <button mat-icon-button (click)="close()" aria-label="Закрыть">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <!--h2 mat-dialog-title>Объект</h2-->
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <div fxFlex="60">
+
+            <div *ngIf="rows; else loggedOut">
+                <form class="example-container" [formGroup]="form">
+                    <mat-form-field *ngFor="let x of rows">
+                        <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                    </mat-form-field>
+                </form>
+            </div>    
+
+        <ng-template #loggedOut>
+            <mat-spinner></mat-spinner>
+        </ng-template>    
+        </div>
+        
+
+    </div>
+
+</div>
