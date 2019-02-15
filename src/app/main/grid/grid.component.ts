@@ -468,7 +468,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.dialog.open(CourseDialogComponent, dialogConfig);
     }
 
-    create(item_id: any) {
+    edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;

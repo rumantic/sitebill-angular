@@ -11,11 +11,13 @@
 </ng-template>
 
 <ng-template #controlTmpl let-row="row" let-value="value">
-    <div>
-        <button mat-icon-button>
-            <mat-icon (click)="view(value)" aria-label="Просмотр">pageview</mat-icon>
-        </button>
-    </div>
+    <button mat-icon-button>
+        <mat-icon (click)="view(value)" aria-label="Просмотр">pageview</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+        <mat-icon (click)="edit_form(value)" aria-label="Редактировать">edit</mat-icon>
+    </button>
 </ng-template>
 
 <ng-template #clientControlTmpl let-row="row" let-value="value">
@@ -66,7 +68,7 @@
 <div id="ngx-datatable" class="page-layout simple fullwidth">
     <!-- CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
-        <button mat-button (click)="create()" color="accent" matTooltip="Добавить запись">Добавить запись</button>
+        <button mat-button (click)="edit_form()" color="accent" matTooltip="Добавить запись">Добавить запись</button>
 
         <mat-tab-group dynamicHeight>
             <mat-tab label="Все ({{total_all}})" *ngIf="columns_client_all.length > 0">

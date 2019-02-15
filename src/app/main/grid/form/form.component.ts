@@ -60,18 +60,14 @@ export class FormComponent implements OnInit {
 
     init_form() {
         for (var i = 0; i < this.rows.length; i++) {
-            console.log(this.records[this.rows[i]]);
-            let form_control_item = new FormControl('');
+            //console.log(this.records[this.rows[i]]);
+            let form_control_item = new FormControl(this.records[this.rows[i]].value);
             if (this.records[this.rows[i]].required == 'on') {
                 form_control_item.setValidators(Validators.required);
             }
 
             this.form.addControl(this.rows[i], form_control_item);
         }
-
-
-        console.log(this.form);
-
     }
 
     getModel(): void {
@@ -93,8 +89,38 @@ export class FormComponent implements OnInit {
             });
     }
 
+
+
     save() {
-        this.dialogRef.close(this.form.value);
+        console.log(this.form);
+        /*
+        this.editing[rowIndex + '-' + cell] = false;
+        this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
+
+        const status_id = this.item_model['status_id'];
+        const select_data = status_id['select_data'];
+
+        this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
+        this.rows_my = [...this.rows_my];
+        */
+        //console.log('UPDATED!', this.rows[rowIndex][cell]);
+        const ql_items = {};
+
+        for (var i = 0; i < this.rows.length; i++) {
+            //ql_items.push({ '123': 'test'});
+            ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
+        }
+        console.log(ql_items);
+        //return;
+
+
+        this.modelSerivce.update(this._data.app_name, this._data.key_value, ql_items)
+            .subscribe((response: any) => {
+                console.log(response);
+            });
+
+
+        //this.dialogRef.close(this.form.value);
     }
 
     close() {
