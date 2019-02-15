@@ -11,6 +11,12 @@ import { takeUntil } from 'rxjs/operators';
     animations: fuseAnimations
 })
 export class DataComponent extends GridComponent {
+    get_grid_items(params: any) {
+        let grid_item;
+        grid_item = ['id', 'city_id', 'metro_id', 'district_id', 'street_id', 'user_id', 'topic_id', 'number', 'price', 'image'];
+        return grid_item;
+    }
+
     setup_apps() {
         this.app_name = 'data';
         this.primary_key = 'id';

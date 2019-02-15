@@ -30,6 +30,7 @@ import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/c
 
 import { GridComponent } from './grid.component';
 import { DataComponent } from './data/data.component';
+import { NewsComponent } from './news/news.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
 import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
@@ -39,12 +40,19 @@ import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-clie
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
-import { ViewModalComponent } from './view-modal/view-modal.component';
 
 const routes = [
     {
         path     : 'data',
         component: DataComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'news',
+        component: NewsComponent,
         resolve: {
             chat: ChatService
         }
@@ -63,6 +71,7 @@ const routes = [
     declarations: [
         GridComponent,
         DataComponent,
+        NewsComponent,
         FilterComponent,
         CourseDialogComponent,
         ViewModalComponent,

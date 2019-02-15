@@ -304,19 +304,20 @@ export class GridComponent implements OnInit, OnDestroy
         this.load_grid_data(this.app_name, [], params);
     }
 
+    get_grid_items(params: any) {
+        let grid_item;
+
+        if (params.owner) {
+            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone', 'topic_choice'];
+        } else {
+            grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'topic_choice'];
+        }
+        return grid_item;
+    }
+
     load_grid_data(app_name, selected, params: any) {
         //console.log('load_grid_data');
         //console.log(params);
-        let grid_item;
-        if (app_name == 'client') {
-            if (params.owner) {
-                grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone', 'topic_choice'];
-            } else {
-                grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'topic_choice'];
-            }
-        } else {
-            grid_item = ['id', 'city_id', 'metro_id', 'district_id', 'street_id', 'user_id', 'topic_id','number', 'price', 'image'];
-        }
         let filter_params_json = {};
 
         if (this.filterSharedData) {
@@ -329,7 +330,7 @@ export class GridComponent implements OnInit, OnDestroy
             });
         }
 
-        this.modelSerivce.load(app_name, grid_item, filter_params_json, params.owner)
+        this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
