@@ -12,11 +12,17 @@
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
 
         <div fxFlex="60">
-
+            
             <div *ngIf="rows; else loggedOut">
                 <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
                     <mat-form-field *ngFor="let x of rows">
-                        <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                        <span *ngIf="records[x].type == 'textarea_editor'">
+                            <ckeditor [editor]="Editor[records[x].name]" [(ngModel)]="anons_edit" [ngModelOptions]="{standalone: true}"></ckeditor>
+                            <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                            
+                        </span>
+
+                        <input *ngIf="records[x].type != 'textarea_editor'" matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
                     </mat-form-field>
 
                     <button mat-raised-button matStepperNext type="submit" color="accent">
@@ -24,11 +30,10 @@
                     </button>
 
                 </form>
-            </div>    
-
-        <ng-template #loggedOut>
-            <mat-spinner></mat-spinner>
-        </ng-template>    
+            </div>
+            <ng-template #loggedOut>
+                <mat-spinner></mat-spinner>
+            </ng-template>
         </div>
         
 

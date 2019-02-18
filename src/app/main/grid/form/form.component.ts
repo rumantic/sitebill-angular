@@ -8,6 +8,7 @@ import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 @Component({
@@ -18,6 +19,8 @@ import { ModelService } from 'app/_services/model.service';
 export class FormComponent implements OnInit {
 
     form: FormGroup;
+    public Editor = {};
+    anons_edit;
     rows: any[];
     records: any[];
     api_url: string;
@@ -66,6 +69,16 @@ export class FormComponent implements OnInit {
                 form_control_item.setValidators(Validators.required);
             }
 
+            if (this.records[this.rows[i]].type == 'textarea_editor') {
+                console.log(this.records[this.rows[i]].type);
+                console.log(this.records[this.rows[i]].name);
+
+                this.Editor[this.records[this.rows[i]].name] = ClassicEditor;
+                this.anons_edit = this.records[this.rows[i]].value;
+                console.log(this.Editor);
+            }
+
+
             this.form.addControl(this.rows[i], form_control_item);
         }
     }
@@ -92,7 +105,10 @@ export class FormComponent implements OnInit {
 
 
     save() {
-        console.log(this.form);
+        //console.log(this.form);
+        console.log(this.anons_edit);
+        this.form.controls['anons'].patchValue(this.anons_edit);
+        
         /*
         this.editing[rowIndex + '-' + cell] = false;
         this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
