@@ -1,84 +1,89 @@
 <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css">
 
 <div id="course-dialog" class="dialog-content-wrapper">
-    <mat-toolbar>
+    <mat-toolbar class="mat-accent m-0">
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">form</span>
+            <span class="title dialog-title">Форма</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    
+
     <!--h2 mat-dialog-title>Объект</h2-->
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div *ngIf="rows; else loggedOut">
+            <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
+                <span *ngFor="let x of rows">
+                    <span [ngSwitch]="records[x].type">
+                        <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
 
-        <div fxFlex="60">
-            
-            <div *ngIf="rows; else loggedOut">
-                <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
-                    <span *ngFor="let x of rows">
-                        <span [ngSwitch]="records[x].type">
-                            <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                        <mat-form-field *ngSwitchCase="'primary_key'">
+                            <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                        </mat-form-field>
 
-                            <mat-form-field *ngSwitchCase="'primary_key'">
-                                <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
-                            </mat-form-field>
+                        <mat-form-field *ngSwitchCase="'dtdatetime'">
+                            <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                            <mat-datepicker #dp
+                                            panelClass="example-month-picker">
+                            </mat-datepicker>
+                        </mat-form-field>
+                        <ng-select *ngSwitchCase="'select_by_query'" formControlName="{{records[x].name}}"
+                                   appendTo="body"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [items]="options_storage[records[x].name]"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="true"
+                                   [multiple]="false"
+                                   [hideSelected]="false"
+                                   [closeOnSelect]="true"
+                                   placeholder="{{records[x].title}}">
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span [innerHTML]="item.value">
+                                </span>
+                            </ng-template>
 
-                            <mat-form-field *ngSwitchCase="'dtdatetime'">
-                                <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
-                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                                <mat-datepicker #dp
-                                                panelClass="example-month-picker">
-                                </mat-datepicker>
-                            </mat-form-field>
-                            <ng-select *ngSwitchCase="'select_by_query'" formControlName="{{records[x].name}}"
-                                       appendTo="body"
-                                       bindValue="id"
-                                       bindLabel="value"
-                                       [items]="options_storage[records[x].name]"
-                                       [clearOnBackspace]="false"
-                                       [searchable]="true"
-                                       [multiple]="false"
-                                       [hideSelected]="false"
-                                       [closeOnSelect]="true"
-                                       placeholder="{{records[x].title}}">
-                                <ng-template ng-label-tmp let-item="item" let-index="index">
-                                    <span [innerHTML]="item.value">
-                                    </span>
-                                </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <span [innerHTML]="item.value">
+                                </span>
+                            </ng-template>
+                        </ng-select>
 
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
-                                    <span [innerHTML]="item.value">
-                                    </span>
-                                </ng-template>
-                            </ng-select>
+                        <mat-checkbox *ngSwitchCase="'checkbox'" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
-                            <mat-checkbox *ngSwitchCase="'checkbox'" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+                        <mat-form-field *ngSwitchCase="'textarea_editor'">
+                            <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
+                            <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                        </mat-form-field>
 
-                            <mat-form-field *ngSwitchCase="'textarea_editor'">
-                                <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
-                                <input formControlName="{{records[x].name}}" matInput [hidden]="true">
-                            </mat-form-field>
-
-                            <mat-form-field *ngSwitchDefault>
-                                <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
-                            </mat-form-field>
-                        </span>
+                        <mat-form-field *ngSwitchDefault>
+                            <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                        </mat-form-field>
                     </span>
+                </span>
 
-                    <button mat-raised-button matStepperNext type="submit" color="accent">
-                        Сохранить
-                    </button>
-
-                </form>
-            </div>
-            <ng-template #loggedOut>
-                <mat-spinner></mat-spinner>
-            </ng-template>
+            </form>
         </div>
-        
-
     </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button matStepperNext type="submit" color="accent">
+                Сохранить
+            </button>
+            <button mat-icon-button matTooltip="Attach a file">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+        <button mat-icon-button (click)="matDialogRef.close(['delete',composeForm])" aria-label="Delete"
+                matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+
+    <ng-template #loggedOut>
+        <mat-spinner></mat-spinner>
+    </ng-template>
 
 </div>

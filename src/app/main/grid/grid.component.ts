@@ -471,11 +471,10 @@ export class GridComponent implements OnInit, OnDestroy
     edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
-        dialogConfig.disableClose = true;
-        dialogConfig.width = '100%';
-        dialogConfig.height = '100%';
+        dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
         dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(FormComponent, dialogConfig);
     }
@@ -484,11 +483,10 @@ export class GridComponent implements OnInit, OnDestroy
     view(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
-        dialogConfig.disableClose = true;
-        dialogConfig.width = '100%';
-        dialogConfig.height = '100%';
+        dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
         dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
     }
