@@ -18,11 +18,13 @@ export class FormComponent implements OnInit {
 
     form: FormGroup;
     public text_area_editor_storage = {};
+    public options_storage = {};
     rows: any[];
     records: any[];
     api_url: string;
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
+    square_options: any[] = [{ id: 1, value: 'range', actual: 1 }];
     
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
@@ -69,10 +71,26 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
+            if (this.records[this.rows[i]].type == 'select_by_query') {
+                this.init_select_by_query_options(this.records[this.rows[i]].name);
+            }
+
 
 
             this.form.addControl(this.rows[i], form_control_item);
         }
+    }
+
+    init_select_by_query_options(columnName) {
+        this.modelSerivce.load_dictionary(columnName)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                if (result) {
+                    this.options_storage[columnName] = result.data;
+                }
+
+            });
+
     }
 
     getModel(): void {

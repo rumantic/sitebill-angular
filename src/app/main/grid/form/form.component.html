@@ -26,12 +26,33 @@
                             </mat-form-field>
 
                             <mat-form-field *ngSwitchCase="'dtdatetime'">
-                                    <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
-                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                                    <mat-datepicker #dp
-                                                    panelClass="example-month-picker">
-                                    </mat-datepicker>
+                                <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                <mat-datepicker #dp
+                                                panelClass="example-month-picker">
+                                </mat-datepicker>
                             </mat-form-field>
+                            <ng-select *ngSwitchCase="'select_by_query'" formControlName="{{records[x].name}}"
+                                       appendTo="body"
+                                       bindValue="id"
+                                       bindLabel="value"
+                                       [items]="options_storage[records[x].name]"
+                                       [clearOnBackspace]="false"
+                                       [searchable]="true"
+                                       [multiple]="false"
+                                       [hideSelected]="false"
+                                       [closeOnSelect]="true"
+                                       placeholder="{{records[x].title}}">
+                                <ng-template ng-label-tmp let-item="item" let-index="index">
+                                    <span [innerHTML]="item.value">
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                    <span [innerHTML]="item.value">
+                                    </span>
+                                </ng-template>
+                            </ng-select>
 
                             <mat-checkbox *ngSwitchCase="'checkbox'" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
@@ -47,7 +68,7 @@
                     </span>
 
                     <button mat-raised-button matStepperNext type="submit" color="accent">
-                        Искать
+                        Сохранить
                     </button>
 
                 </form>
