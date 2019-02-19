@@ -17,15 +17,34 @@
             
             <div *ngIf="rows; else loggedOut">
                 <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
-                    <mat-form-field *ngFor="let x of rows">
-                        <span *ngIf="records[x].type == 'textarea_editor'">
-                            <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
-                            <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                    <span *ngFor="let x of rows">
+                        <span [ngSwitch]="records[x].type">
+                            <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
 
+                            <mat-form-field *ngSwitchCase="'primary_key'">
+                                <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'dtdatetime'">
+                                    <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp
+                                                    panelClass="example-month-picker">
+                                    </mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-checkbox *ngSwitchCase="'checkbox'" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+
+                            <mat-form-field *ngSwitchCase="'textarea_editor'">
+                                <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
+                                <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchDefault>
+                                <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                            </mat-form-field>
                         </span>
-
-                        <input *ngIf="records[x].type != 'textarea_editor'" matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
-                    </mat-form-field>
+                    </span>
 
                     <button mat-raised-button matStepperNext type="submit" color="accent">
                         Искать
