@@ -41,7 +41,7 @@ import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-clie
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { QuillModule } from 'ngx-quill';
 
 const routes = [
     {
@@ -128,7 +128,7 @@ const routes = [
 
 
         FuseSharedModule,
-        CKEditorModule,
+        QuillModule,
     ],
     providers: [
         FilterService,

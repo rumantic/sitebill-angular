@@ -8,8 +8,6 @@ import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 
 @Component({
     selector: 'form-selector',
@@ -19,8 +17,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export class FormComponent implements OnInit {
 
     form: FormGroup;
-    public Editor = {};
-    anons_edit;
+    public text_area_editor_storage = {};
     rows: any[];
     records: any[];
     api_url: string;
@@ -70,12 +67,7 @@ export class FormComponent implements OnInit {
             }
 
             if (this.records[this.rows[i]].type == 'textarea_editor') {
-                console.log(this.records[this.rows[i]].type);
-                console.log(this.records[this.rows[i]].name);
-
-                this.Editor[this.records[this.rows[i]].name] = ClassicEditor;
-                this.anons_edit = this.records[this.rows[i]].value;
-                console.log(this.Editor);
+                this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
 
 
@@ -106,8 +98,6 @@ export class FormComponent implements OnInit {
 
     save() {
         //console.log(this.form);
-        console.log(this.anons_edit);
-        this.form.controls['anons'].patchValue(this.anons_edit);
         
         /*
         this.editing[rowIndex + '-' + cell] = false;
@@ -124,6 +114,10 @@ export class FormComponent implements OnInit {
 
         for (var i = 0; i < this.rows.length; i++) {
             //ql_items.push({ '123': 'test'});
+            if (this.text_area_editor_storage[this.rows[i]]) {
+                this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
+            }
+
             ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
         }
         console.log(ql_items);
