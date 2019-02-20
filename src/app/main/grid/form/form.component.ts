@@ -74,6 +74,9 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'select_by_query') {
                 this.init_select_by_query_options(this.records[this.rows[i]].name);
             }
+            if (this.records[this.rows[i]].type == 'select_box_structure') {
+                this.init_select_by_query_options(this.records[this.rows[i]].name);
+            }
 
 
 

@@ -29,6 +29,30 @@
                                             panelClass="example-month-picker">
                             </mat-datepicker>
                         </mat-form-field>
+
+                        <ng-select *ngSwitchCase="'select_box_structure'" formControlName="{{records[x].name}}"
+                                   appendTo="body"
+                                   bindValue="id"
+                                   bindLabel="name"
+                                   [items]="options_storage[records[x].name]"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="true"
+                                   [multiple]="false"
+                                   [hideSelected]="false"
+                                   [closeOnSelect]="true"
+                                   placeholder="{{records[x].title}}">
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span [innerHTML]="item.breadcrumbs">
+                                </span>
+                            </ng-template>
+
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                
+                                <span [innerHTML]="item.name" class="level{{item.level}}">
+                                </span>
+                            </ng-template>
+                        </ng-select>
+
                         <ng-select *ngSwitchCase="'select_by_query'" formControlName="{{records[x].name}}"
                                    appendTo="body"
                                    bindValue="id"
