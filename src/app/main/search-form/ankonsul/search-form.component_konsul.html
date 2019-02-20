@@ -13,7 +13,7 @@
                     <div fxFlex="10">
                         <ng-select formControlName="topic_id_selector"
                                    bindValue="id"
-                                   bindLabel="value"
+                                   bindLabel="name"
                                    [items]="topic_id_options"
                                    [clearOnBackspace]="true"
                                    [searchable]="false"
@@ -21,6 +21,17 @@
                                    [hideSelected]="true"
                                    [closeOnSelect]="false"
                                    placeholder="Тип">
+                            <ng-template ng-label-tmp let-item="item" let-index="index">
+                                <span [innerHTML]="item.breadcrumbs">
+                                </span>
+                            </ng-template>
+
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+
+                                <span [innerHTML]="item.name" class="level{{item.level}}">
+                                </span>
+                            </ng-template>
+
                         </ng-select>
 
                     </div>
