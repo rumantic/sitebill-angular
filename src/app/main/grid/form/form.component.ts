@@ -8,6 +8,8 @@ import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import { UploaderComponent } from 'app/main/uploader/uploader.component';
+
 
 @Component({
     selector: 'form-selector',

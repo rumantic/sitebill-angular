@@ -29,6 +29,7 @@
                                             panelClass="example-month-picker">
                             </mat-datepicker>
                         </mat-form-field>
+                        <uploader-component *ngSwitchCase="'uploads'"></uploader-component>
 
                         <ng-select *ngSwitchCase="'select_box_structure'" formControlName="{{records[x].name}}"
                                    appendTo="body"
@@ -47,7 +48,7 @@
                             </ng-template>
 
                             <ng-template ng-option-tmp let-item="item" let-index="index">
-                                
+
                                 <span [innerHTML]="item.name" class="level{{item.level}}">
                                 </span>
                             </ng-template>

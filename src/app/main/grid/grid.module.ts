@@ -42,6 +42,11 @@ import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-clie
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
 import { QuillModule } from 'ngx-quill';
+import { NgxUploaderModule } from 'ngx-uploader';
+import { UploaderComponent } from 'app/main/uploader/uploader.component';
+import { NgxGalleryModule } from 'ngx-gallery';
+import { GalleryComponent } from 'app/main/gallery/gallery.component';
+
 
 const routes = [
     {
@@ -88,6 +93,8 @@ const routes = [
         ChatLeftSidenavComponent,
         ChatRightSidenavComponent,
         ChatContactSidenavComponent,
+        UploaderComponent,
+        GalleryComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -129,6 +136,11 @@ const routes = [
 
         FuseSharedModule,
         QuillModule,
+        NgxUploaderModule,
+        NgxGalleryModule,
+    ],
+    exports: [
+        NgxUploaderModule
     ],
     providers: [
         FilterService,
