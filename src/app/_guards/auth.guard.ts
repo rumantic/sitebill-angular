@@ -15,6 +15,9 @@ export class AuthGuard implements CanActivate {
             console.log(localStorage.getItem('currentUser'));
             // logged in so return true
             return true;
+        } else {
+            //Попробуем получить данные от cms sitebill для текущей сессии
+
         }
 
         // not logged in so redirect to login page with the return url
