@@ -1,5 +1,6 @@
+<gallery-component *ngIf="galleryImages.length > 0" [galleryImages]="galleryImages"></gallery-component>
+
 <div class="upload-box">
-    <gallery-component [galleryImages]="galleryImages"></gallery-component>
     <div class="upload-box-content">
         <div class="drop-container" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput">
             <p>

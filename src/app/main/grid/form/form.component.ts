@@ -9,6 +9,7 @@ import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import { UploaderComponent } from 'app/main/uploader/uploader.component';
+import { NgxGalleryImage } from 'ngx-gallery';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class FormComponent implements OnInit {
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
     square_options: any[] = [{ id: 1, value: 'range', actual: 1 }];
+    galleryImages: NgxGalleryImage[];
+
     
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
@@ -80,9 +83,31 @@ export class FormComponent implements OnInit {
                 this.init_select_by_query_options(this.records[this.rows[i]].name);
             }
 
+            if (this.records[this.rows[i]].type == 'uploads') {
+                this.init_gallery_images(this.records[this.rows[i]].value);
+            }
+
+
+
+
 
 
             this.form.addControl(this.rows[i], form_control_item);
+        }
+    }
+
+    init_gallery_images(images) {
+        if (images) {
+            this.galleryImages = images.map(function (image: any) {
+
+                return {
+                    small: 'http://genplan1/img/data/' + image.preview,
+                    medium: 'http://genplan1/img/data/' + image.normal,
+                    big: 'http://genplan1/img/data/' + image.normal
+                };
+            });
+        } else {
+            this.galleryImages = [];
         }
     }
 

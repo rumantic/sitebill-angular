@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery';
 
@@ -16,7 +16,10 @@ export class UploaderComponent {
     humanizeBytes: Function;
     dragOver: boolean;
     options: UploaderOptions;
+
+    @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
+
 
 
     constructor() {
@@ -27,12 +30,10 @@ export class UploaderComponent {
     }
 
     ngOnInit() {
-        this.galleryImages = [];
 
     }
 
     onUploadOutput(output: UploadOutput): void {
-        console.log(output);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -46,7 +47,7 @@ export class UploaderComponent {
             let gallery_image = {
                 small: 'http://genplan1'+output.file.response.msg,
                 medium: 'http://genplan1' + output.file.response.msg,
-                big: 'http://genplan1' + output.file.response.msg
+                big: 'http://genplan1' + output.file.response.msg,
             };
             this.galleryImages.push(gallery_image);
 
