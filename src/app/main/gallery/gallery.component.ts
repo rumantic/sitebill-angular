@@ -9,6 +9,7 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModu
 export class GalleryComponent implements OnInit {
     galleryOptions: NgxGalleryOptions[];
     private differ: DefaultIterableDiffer<any>;
+    public can_move: boolean;
 
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
@@ -17,6 +18,7 @@ export class GalleryComponent implements OnInit {
     galleryImages: NgxGalleryImage[];
     constructor(private differs: IterableDiffers) {
         //this.galleryImages = [];
+        this.can_move = true;
     }
 
 
@@ -29,6 +31,8 @@ export class GalleryComponent implements OnInit {
         }
         let height_calc = rows_number_calc * 100;
 
+        console.log('init');
+        console.log(this.galleryImages);
 
         this.galleryOptions = [
             {
@@ -49,9 +53,9 @@ export class GalleryComponent implements OnInit {
                 imageInfinityMove: true,
                 imageAnimation: NgxGalleryAnimation.Slide,
                 thumbnailActions: [
-                    { icon: 'fa fa-chevron-left fa-sm', onClick: this.deleteImage.bind(this), titleText: 'выше' },
+                    { icon: 'fa fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
                     { icon: 'fa fa-times-circle fa-sm', onClick: this.deleteImage.bind(this), titleText: 'удалить' },
-                    { icon: 'fa fa-chevron-right fa-sm', onClick: this.deleteImage.bind(this), titleText: 'ниже' },
+                    { icon: 'fa fa-chevron-right fa-sm', onClick: this.moveRight.bind(this), titleText: 'ниже' },
                     { icon: 'fa fa-star fa-sm', onClick: this.deleteImage.bind(this), titleText: 'сделать главной' },
                 ]
             },
@@ -80,16 +84,67 @@ export class GalleryComponent implements OnInit {
 
     }
 
-    deleteImage() {
+    deleteImage(event, index) {
+        this.can_move = false;
+        this.galleryImages.splice(index, 1);
+        setTimeout(() => this.enable_move(), 1);
 
-        this.moveToEnd();
+    }
+    enable_move() {
+        this.can_move = true;
+    }
+
+    moveRight(event, index) {
+        this.can_move = false;
+        let tmp_images = this.array_move(this.galleryImages, index, index+1);
+        this.galleryImages = [];
+        setTimeout(() => this.reorder(tmp_images), 10);
+        setTimeout(() => this.enable_move(), 1);
+    }
+    moveLeft(event, index) {
+        this.can_move = false;
+        let tmp_images = this.array_move(this.galleryImages, index, index - 1);
+        this.galleryImages = [];
+        setTimeout(() => this.reorder(tmp_images), 1);
+        setTimeout(() => this.enable_move(), 1);
+    }
+
+
+    reorder(tmp_images) {
+        this.galleryImages = tmp_images;
+    }
+
+    array_move(arr, old_index, new_index) {
+        console.log(arr.length);
+        console.log(new_index);
+        if (new_index < 0) {
+            return arr;
+        }
+        if (arr.length <= new_index) {
+            return arr;
+        }
+        while (old_index < 0) {
+            old_index += arr.length;
+        }
+        while (new_index < 0) {
+            new_index += arr.length;
+        }
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+
+        return arr; // for testing purposes
     }
 
     ngDoCheck() {
         //console.log(this.galleryImages);
         if (this.galleryImages ) {
             let changes = this.differ.diff(this.galleryImages);
-            if (changes != null) {
+            if (changes != null && this.can_move) {
                 this.galleryImages
                 setTimeout(() => this.moveToEnd(), 10);
             }
@@ -100,7 +155,8 @@ export class GalleryComponent implements OnInit {
 
 
     moveToEnd() {
-        if (this.gallery_object instanceof NgxGalleryComponent ) {
+        if (this.gallery_object instanceof NgxGalleryComponent) {
+            console.log('move to end');
             while (this.gallery_object.canMoveThumbnailsRight()) {
                 this.gallery_object.moveThumbnailsRight();
             }
