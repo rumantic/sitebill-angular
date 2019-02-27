@@ -9,7 +9,7 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModu
 export class GalleryComponent implements OnInit {
     galleryOptions: NgxGalleryOptions[];
     private differ: DefaultIterableDiffer<any>;
-    public can_move: boolean;
+    public previous_image_count: number;
 
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
@@ -18,7 +18,20 @@ export class GalleryComponent implements OnInit {
     galleryImages: NgxGalleryImage[];
     constructor(private differs: IterableDiffers) {
         //this.galleryImages = [];
-        this.can_move = true;
+    }
+
+    recalculate_options() {
+        let rows_number_calc_f = this.galleryImages.length / 4;
+        this.previous_image_count = this.galleryImages.length;
+
+        let rows_number_calc = Math.ceil(this.galleryImages.length / 4);
+        if (rows_number_calc < 1) {
+            rows_number_calc = 1;
+        }
+        let height_calc = rows_number_calc * 100;
+        this.gallery_object.options[0].thumbnailsCols = 4;
+        this.gallery_object.options[0].thumbnailsRows = rows_number_calc;
+        this.gallery_object.options[0].height = height_calc + 'px';
     }
 
 
@@ -30,9 +43,8 @@ export class GalleryComponent implements OnInit {
             rows_number_calc = 1;
         }
         let height_calc = rows_number_calc * 100;
+        this.previous_image_count = this.galleryImages.length;
 
-        console.log('init');
-        console.log(this.galleryImages);
 
         this.galleryOptions = [
             {
@@ -85,28 +97,21 @@ export class GalleryComponent implements OnInit {
     }
 
     deleteImage(event, index) {
-        this.can_move = false;
         this.galleryImages.splice(index, 1);
-        setTimeout(() => this.enable_move(), 1);
-
+        this.recalculate_options();
     }
     enable_move() {
-        this.can_move = true;
     }
 
     moveRight(event, index) {
-        this.can_move = false;
         let tmp_images = this.array_move(this.galleryImages, index, index+1);
         this.galleryImages = [];
         setTimeout(() => this.reorder(tmp_images), 10);
-        setTimeout(() => this.enable_move(), 1);
     }
     moveLeft(event, index) {
-        this.can_move = false;
         let tmp_images = this.array_move(this.galleryImages, index, index - 1);
         this.galleryImages = [];
         setTimeout(() => this.reorder(tmp_images), 1);
-        setTimeout(() => this.enable_move(), 1);
     }
 
 
@@ -115,8 +120,6 @@ export class GalleryComponent implements OnInit {
     }
 
     array_move(arr, old_index, new_index) {
-        console.log(arr.length);
-        console.log(new_index);
         if (new_index < 0) {
             return arr;
         }
@@ -144,9 +147,10 @@ export class GalleryComponent implements OnInit {
         //console.log(this.galleryImages);
         if (this.galleryImages ) {
             let changes = this.differ.diff(this.galleryImages);
-            if (changes != null && this.can_move) {
-                this.galleryImages
+            if (changes != null && this.previous_image_count < changes.length) {
+                this.recalculate_options();
                 setTimeout(() => this.moveToEnd(), 10);
+                this.previous_image_count = changes.length;
             }
 
         }
@@ -156,7 +160,6 @@ export class GalleryComponent implements OnInit {
 
     moveToEnd() {
         if (this.gallery_object instanceof NgxGalleryComponent) {
-            console.log('move to end');
             while (this.gallery_object.canMoveThumbnailsRight()) {
                 this.gallery_object.moveThumbnailsRight();
             }
