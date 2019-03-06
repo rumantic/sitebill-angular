@@ -18,6 +18,7 @@ import {
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
+import { ConfirmDialogModule } from 'app/dialogs/confirm/confirm.module';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { ChatComponent } from 'app/main/apps/chat/chat.component';
 import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
@@ -82,7 +83,6 @@ const routes = [
         FilterComponent,
         CourseDialogComponent,
         ViewModalComponent,
-        FormComponent,
         ProfileTimelineComponent,
         DeclineClientComponent,
         ChatComponent,
@@ -95,6 +95,7 @@ const routes = [
         ChatContactSidenavComponent,
         UploaderComponent,
         GalleryComponent,
+        FormComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -138,6 +139,7 @@ const routes = [
         QuillModule,
         NgxUploaderModule,
         NgxGalleryModule,
+        ConfirmDialogModule
     ],
     exports: [
         NgxUploaderModule

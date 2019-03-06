@@ -1,22 +1,31 @@
 import { Component, OnInit, Input, ViewChild,TemplateRef, ElementRef, SimpleChange, OnChanges, IterableDiffers, DefaultIterableDiffer } from '@angular/core';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery';
+import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
+import { fuseAnimations } from '@fuse/animations';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
 
 @Component({
     selector: 'gallery-component',
     templateUrl: './gallery.component.html',
     styleUrls: ['./gallery.component.scss'],
+    animations: fuseAnimations
 })
 export class GalleryComponent implements OnInit {
     galleryOptions: NgxGalleryOptions[];
     private differ: DefaultIterableDiffer<any>;
     public previous_image_count: number;
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
 
     @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
-    constructor(private differs: IterableDiffers) {
+    constructor(
+        private differs: IterableDiffers,
+        public _matDialog: MatDialog
+    ) {
         //this.galleryImages = [];
     }
 
@@ -29,9 +38,11 @@ export class GalleryComponent implements OnInit {
             rows_number_calc = 1;
         }
         let height_calc = rows_number_calc * 100;
-        this.gallery_object.options[0].thumbnailsCols = 4;
-        this.gallery_object.options[0].thumbnailsRows = rows_number_calc;
-        this.gallery_object.options[0].height = height_calc + 'px';
+        if (this.gallery_object instanceof NgxGalleryComponent) {
+            this.gallery_object.options[0].thumbnailsColumns = 4;
+            this.gallery_object.options[0].thumbnailsRows = rows_number_calc;
+            this.gallery_object.options[0].height = height_calc + 'px';
+        }
     }
 
 
@@ -68,7 +79,7 @@ export class GalleryComponent implements OnInit {
                     { icon: 'fa fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
                     { icon: 'fa fa-times-circle fa-sm', onClick: this.deleteImage.bind(this), titleText: 'удалить' },
                     { icon: 'fa fa-chevron-right fa-sm', onClick: this.moveRight.bind(this), titleText: 'ниже' },
-                    { icon: 'fa fa-star fa-sm', onClick: this.deleteImage.bind(this), titleText: 'сделать главной' },
+                    { icon: 'fa fa-star fa-sm', onClick: this.moveToStart.bind(this), titleText: 'сделать главной' },
                 ]
             },
             // max-width 800
@@ -97,8 +108,21 @@ export class GalleryComponent implements OnInit {
     }
 
     deleteImage(event, index) {
-        this.galleryImages.splice(index, 1);
-        this.recalculate_options();
+        this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить фото?';
+        //this.confirmDialogRef.componentInstance.;
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.galleryImages.splice(index, 1);
+                this.recalculate_options();
+            }
+            this.confirmDialogRef = null;
+        });
+
     }
     enable_move() {
     }
@@ -110,6 +134,11 @@ export class GalleryComponent implements OnInit {
     }
     moveLeft(event, index) {
         let tmp_images = this.array_move(this.galleryImages, index, index - 1);
+        this.galleryImages = [];
+        setTimeout(() => this.reorder(tmp_images), 1);
+    }
+    moveToStart(event, index) {
+        let tmp_images = this.array_move(this.galleryImages, index, 0);
         this.galleryImages = [];
         setTimeout(() => this.reorder(tmp_images), 1);
     }
