@@ -138,19 +138,31 @@ export class GalleryComponent implements OnInit {
     }
 
     moveRight(event, index) {
-        let tmp_images = this.array_move(this.galleryImages, index, index+1);
-        this.galleryImages = [];
-        setTimeout(() => this.reorder(tmp_images), 10);
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'down')
+            .subscribe((result: any) => {
+                let tmp_images = this.array_move(this.galleryImages, index, index + 1);
+                this.galleryImages = [];
+                setTimeout(() => this.reorder(tmp_images), 10);
+            });
+
     }
     moveLeft(event, index) {
-        let tmp_images = this.array_move(this.galleryImages, index, index - 1);
-        this.galleryImages = [];
-        setTimeout(() => this.reorder(tmp_images), 1);
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'up')
+            .subscribe((result: any) => {
+                let tmp_images = this.array_move(this.galleryImages, index, index - 1);
+                this.galleryImages = [];
+                setTimeout(() => this.reorder(tmp_images), 1);
+            });
+
     }
     moveToStart(event, index) {
-        let tmp_images = this.array_move(this.galleryImages, index, 0);
-        this.galleryImages = [];
-        setTimeout(() => this.reorder(tmp_images), 1);
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'make_main')
+            .subscribe((result: any) => {
+                let tmp_images = this.array_move(this.galleryImages, index, 0);
+                this.galleryImages = [];
+                setTimeout(() => this.reorder(tmp_images), 1);
+            });
+
     }
 
 
