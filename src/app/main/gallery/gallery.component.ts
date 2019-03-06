@@ -3,6 +3,8 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModu
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { ModelService } from 'app/_services/model.service';
+import { SitebillEntity } from 'app/_models';
 
 
 @Component({
@@ -22,9 +24,14 @@ export class GalleryComponent implements OnInit {
 
     @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
+
+    @Input("entity")
+    entity: SitebillEntity;
+
     constructor(
         private differs: IterableDiffers,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private modelSerivce: ModelService,
     ) {
         //this.galleryImages = [];
     }
@@ -117,8 +124,11 @@ export class GalleryComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.galleryImages.splice(index, 1);
-                this.recalculate_options();
+                this.modelSerivce.deleteImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index)
+                    .subscribe((result: any) => {
+                        this.galleryImages.splice(index, 1);
+                        this.recalculate_options();
+                    });
             }
             this.confirmDialogRef = null;
         });

@@ -10,6 +10,7 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryImage } from 'ngx-gallery';
+import { SitebillEntity } from 'app/_models';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class FormComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) private _data: any
+        @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
         ) {
         this.loadingIndicator = true;
         

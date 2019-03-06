@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery';
+import { SitebillEntity } from 'app/_models';
 
 
 @Component({
@@ -20,6 +21,8 @@ export class UploaderComponent {
     @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
 
+    @Input("entity")
+    entity: SitebillEntity;
 
 
     constructor() {
