@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, isDevMode, Inject } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
+import { AppConfig, APP_CONFIG } from 'app/app.config.module';
+import { currentUser } from 'app/_models/currentuser';
 
 
 @Component({
@@ -11,7 +13,8 @@ import { ModelService } from 'app/_services/model.service';
     styleUrls: ['uploader.component.sass']
 })
 export class UploaderComponent {
-    url = 'http://genplan1/apps/system/js/uploadify/uploadify.php?uploader_type=dropzone&element=image&model=data&primary_key_value=id&primary_key=1';
+    url: string;
+    api_url: string;
     formData: FormData;
     files: UploadFile[];
     uploadInput: EventEmitter<UploadInput>;
@@ -28,9 +31,20 @@ export class UploaderComponent {
     @Input("image_field")
     image_field: string;
 
+    protected currentUser: currentUser;
+
+
     constructor(
         private modelSerivce: ModelService,
+        @Inject(APP_CONFIG) private config: AppConfig,
     ) {
+        if (isDevMode()) {
+            this.api_url = this.config.apiEndpoint;
+        } else {
+            this.api_url = '';
+        }
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+
         this.options = { concurrency: 1, maxUploads: 100 };
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
@@ -38,6 +52,14 @@ export class UploaderComponent {
     }
 
     ngOnInit() {
+        this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
+            + this.image_field
+            + '&model=' + this.entity.app_name
+            + '&layer=native_ajax'
+            + '&is_uploadify=1'
+            + '&primary_key_value=' + this.entity.primary_key
+            + '&primary_key=' + this.entity.key_value
+            + '&session_key=' + this.currentUser.session_key;
     }
 
     onUploadOutput(output: UploadOutput): void {
@@ -53,9 +75,9 @@ export class UploaderComponent {
             this.uploadInput.emit(event);
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
             let gallery_image = {
-                small: 'http://genplan1'+output.file.response.msg,
-                medium: 'http://genplan1' + output.file.response.msg,
-                big: 'http://genplan1' + output.file.response.msg,
+                small: this.api_url+output.file.response.msg,
+                medium: this.api_url + output.file.response.msg,
+                big: this.api_url + output.file.response.msg,
             };
             this.galleryImages[this.image_field].push(gallery_image);
             this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
