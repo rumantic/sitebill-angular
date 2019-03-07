@@ -1,4 +1,14 @@
 /deep/ .ngx-gallery-thumbnail.ngx-gallery-active {
     border: 1px solid green;
-    /* your styles */
+}
+
+/deep/ .ngx-gallery-icon {
+    padding: 2px;
+    font-size: 0.5rem;
+}
+
+/deep/ .ngx-gallery-icon:hover {
+    background-color: white;
+    font-size: 0.5rem;
+    padding: 2px;
 }

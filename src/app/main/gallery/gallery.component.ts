@@ -18,6 +18,7 @@ export class GalleryComponent implements OnInit {
     private differ: DefaultIterableDiffer<any>;
     public previous_image_count: number;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
+    gallery_columns = 3;
 
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
@@ -37,16 +38,16 @@ export class GalleryComponent implements OnInit {
     }
 
     recalculate_options() {
-        let rows_number_calc_f = this.galleryImages.length / 4;
+        let rows_number_calc_f = this.galleryImages.length / this.gallery_columns;
         this.previous_image_count = this.galleryImages.length;
 
-        let rows_number_calc = Math.ceil(this.galleryImages.length / 4);
+        let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
         }
         let height_calc = rows_number_calc * 100;
         if (this.gallery_object instanceof NgxGalleryComponent) {
-            this.gallery_object.options[0].thumbnailsColumns = 4;
+            this.gallery_object.options[0].thumbnailsColumns = this.gallery_columns;
             this.gallery_object.options[0].thumbnailsRows = rows_number_calc;
             this.gallery_object.options[0].height = height_calc + 'px';
         }
@@ -56,7 +57,7 @@ export class GalleryComponent implements OnInit {
     ngOnInit(): void {
         this.differ =
             <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
-        let rows_number_calc = Math.ceil(this.galleryImages.length / 4);
+        let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
         }
@@ -76,7 +77,7 @@ export class GalleryComponent implements OnInit {
                 "spinnerIcon": "fa fa-refresh fa-spin fa-3x fa-fw",
                 "previewFullscreen": true,
                 "thumbnailsOrder": 2,
-                thumbnailsColumns: 4,
+                thumbnailsColumns: this.gallery_columns,
                 thumbnailsRows: rows_number_calc,
                 previewCloseOnClick: true,
                 imageBullets: true,
@@ -87,6 +88,8 @@ export class GalleryComponent implements OnInit {
                     { icon: 'fa fa-times-circle fa-sm', onClick: this.deleteImage.bind(this), titleText: 'удалить' },
                     { icon: 'fa fa-chevron-right fa-sm', onClick: this.moveRight.bind(this), titleText: 'ниже' },
                     { icon: 'fa fa-star fa-sm', onClick: this.moveToStart.bind(this), titleText: 'сделать главной' },
+                    { icon: 'fa fa-undo fa-sm', onClick: this.rotateRight.bind(this), titleText: 'повернуть против часовой стрелки' },
+                    { icon: 'fa fa-repeat fa-sm', onClick: this.rotateLeft.bind(this), titleText: 'повернуть по часовой стрелке' },
                 ]
             },
             // max-width 800
@@ -165,6 +168,39 @@ export class GalleryComponent implements OnInit {
 
     }
 
+    rotateLeft(event, index) {
+        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'acw')
+            .subscribe((result: any) => {
+                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
+                this.galleryImages = [];
+                setTimeout(() => this.reorder(tmp_images), 1);
+            });
+
+    }
+
+    rotateRight(event, index) {
+        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'ccw')
+            .subscribe((result: any) => {
+                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
+                this.galleryImages = [];
+                setTimeout(() => this.reorder(tmp_images), 1);
+            });
+
+    }
+
+    add_timestamp_prefix(images) {
+        if (images) {
+            return images.map(function (image: any) {
+
+                return {
+                    small: image.small + '?' + new Date().getTime(),
+                    medium: image.medium + '?' + new Date().getTime(),
+                    big: image.big + '?' + new Date().getTime()
+                };
+            });
+        }
+        return [];
+    }
 
     reorder(tmp_images) {
         this.galleryImages = tmp_images;
