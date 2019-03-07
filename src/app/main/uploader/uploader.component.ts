@@ -24,6 +24,8 @@ export class UploaderComponent {
     @Input("entity")
     entity: SitebillEntity;
 
+    @Input("image_field")
+    image_field: string;
 
     constructor() {
         this.options = { concurrency: 1, maxUploads: 100 };
@@ -33,7 +35,6 @@ export class UploaderComponent {
     }
 
     ngOnInit() {
-
     }
 
     onUploadOutput(output: UploadOutput): void {
@@ -52,7 +53,7 @@ export class UploaderComponent {
                 medium: 'http://genplan1' + output.file.response.msg,
                 big: 'http://genplan1' + output.file.response.msg,
             };
-            this.galleryImages.push(gallery_image);
+            this.galleryImages[this.image_field].push(gallery_image);
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);

@@ -29,7 +29,7 @@
                                             panelClass="example-month-picker">
                             </mat-datepicker>
                         </mat-form-field>
-                        <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data"></uploader-component>
+                        <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
 
                         <ng-select *ngSwitchCase="'select_box_structure'" formControlName="{{records[x].name}}"
                                    appendTo="body"

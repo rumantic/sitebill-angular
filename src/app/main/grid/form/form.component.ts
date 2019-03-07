@@ -8,7 +8,6 @@ import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
-import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryImage } from 'ngx-gallery';
 import { SitebillEntity } from 'app/_models';
 
@@ -29,7 +28,7 @@ export class FormComponent implements OnInit {
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
     square_options: any[] = [{ id: 1, value: 'range', actual: 1 }];
-    galleryImages: NgxGalleryImage[];
+    galleryImages = {};
 
     
     private _unsubscribeAll: Subject<any>;
@@ -85,7 +84,7 @@ export class FormComponent implements OnInit {
             }
 
             if (this.records[this.rows[i]].type == 'uploads') {
-                this.init_gallery_images(this.records[this.rows[i]].value);
+                this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
 
@@ -97,9 +96,10 @@ export class FormComponent implements OnInit {
         }
     }
 
-    init_gallery_images(images) {
+    init_gallery_images(field_name, images) {
+        this.galleryImages[field_name] = {};
         if (images) {
-            this.galleryImages = images.map(function (image: any) {
+            this.galleryImages[field_name] = images.map(function (image: any) {
 
                 return {
                     small: 'http://genplan1/img/data/' + image.preview,
@@ -108,7 +108,7 @@ export class FormComponent implements OnInit {
                 };
             });
         } else {
-            this.galleryImages = [];
+            this.galleryImages[field_name] = [];
         }
     }
 

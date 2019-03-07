@@ -23,11 +23,17 @@ export class GalleryComponent implements OnInit {
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
 
-    @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
+
+
+    @Input("galleryImages")
+    galleryImagesInput: NgxGalleryImage[];
 
     @Input("entity")
     entity: SitebillEntity;
+
+    @Input("image_field")
+    image_field: string;
 
     constructor(
         private differs: IterableDiffers,
@@ -55,6 +61,8 @@ export class GalleryComponent implements OnInit {
 
 
     ngOnInit(): void {
+        this.galleryImages = this.galleryImagesInput[this.image_field];
+
         this.differ =
             <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
         let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
@@ -127,7 +135,7 @@ export class GalleryComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index)
+                this.modelSerivce.deleteImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
@@ -141,7 +149,7 @@ export class GalleryComponent implements OnInit {
     }
 
     moveRight(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'down')
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
@@ -150,7 +158,7 @@ export class GalleryComponent implements OnInit {
 
     }
     moveLeft(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'up')
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, index - 1);
                 this.galleryImages = [];
@@ -159,7 +167,7 @@ export class GalleryComponent implements OnInit {
 
     }
     moveToStart(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'make_main')
+        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
@@ -169,7 +177,7 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateLeft(event, index) {
-        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'acw')
+        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];
@@ -179,7 +187,7 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateRight(event, index) {
-        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'ccw')
+        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];
