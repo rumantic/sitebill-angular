@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery';
 import { SitebillEntity } from 'app/_models';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -27,7 +28,9 @@ export class UploaderComponent {
     @Input("image_field")
     image_field: string;
 
-    constructor() {
+    constructor(
+        private modelSerivce: ModelService,
+    ) {
         this.options = { concurrency: 1, maxUploads: 100 };
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
@@ -38,6 +41,7 @@ export class UploaderComponent {
     }
 
     onUploadOutput(output: UploadOutput): void {
+        //console.log('upload event');
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -54,6 +58,10 @@ export class UploaderComponent {
                 big: 'http://genplan1' + output.file.response.msg,
             };
             this.galleryImages[this.image_field].push(gallery_image);
+            this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+                .subscribe((result: any) => {
+            });
+ 
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);
