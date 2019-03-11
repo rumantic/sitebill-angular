@@ -98,13 +98,14 @@ export class FormComponent implements OnInit {
 
     init_gallery_images(field_name, images) {
         this.galleryImages[field_name] = {};
+        var self = this;
         if (images) {
             this.galleryImages[field_name] = images.map(function (image: any) {
 
                 return {
-                    small: 'http://genplan1/img/data/' + image.preview,
-                    medium: 'http://genplan1/img/data/' + image.normal,
-                    big: 'http://genplan1/img/data/' + image.normal
+                    small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                    medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                    big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
                 };
             });
         } else {
