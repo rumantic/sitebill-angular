@@ -89,12 +89,26 @@ export class UploaderComponent {
 
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
             this.queue_size--;
+            //console.log(this.entity);
             if (this.queue_size == 0) {
                 if (this.entity.key_value == null) {
                     this.modelSerivce.new_empty_record(this.entity.app_name)
                         .subscribe((result: UploadResult) => {
-                            this.entity.key_value = result.message['id'];
-                            this.uppend_uploads();
+                            this.entity.key_value = result.message[this.entity.primary_key]['value'];
+                            //console.log(result.message);
+
+                            for (var prop in result.message[this.image_field]['value']) {
+
+                                let gallery_image = {
+                                    small: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].preview + '?' + new Date().getTime(),
+                                    medium: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                    big: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                };
+                                this.galleryImages[this.image_field].push(gallery_image);
+                            }
+
+
+                            //this.uppend_uploads();
                         });
 
                 } else {
@@ -127,7 +141,7 @@ export class UploaderComponent {
     uppend_uploads() {
         this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
             .subscribe((result: UploadResult) => {
-                let upload_result_test = new UploadResult;
+                //console.log(result);
 
                 for (var prop in result.data) {
                     let gallery_image = {
