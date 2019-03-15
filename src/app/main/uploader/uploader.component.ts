@@ -6,6 +6,10 @@ import { ModelService } from 'app/_services/model.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
 
+export class UploadResult {
+    state: string;
+    data: any[];
+}
 
 @Component({
     selector: 'uploader-component',
@@ -21,6 +25,7 @@ export class UploaderComponent {
     humanizeBytes: Function;
     dragOver: boolean;
     options: UploaderOptions;
+    queue_size: number =  0;
 
     @Input("galleryImages")
     galleryImages: NgxGalleryImage[];
@@ -64,6 +69,7 @@ export class UploaderComponent {
 
     onUploadOutput(output: UploadOutput): void {
         //console.log('upload event');
+        //console.log(output.type);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -71,18 +77,27 @@ export class UploaderComponent {
                 method: 'POST',
                 data: { foo: 'bar' }
             };
+            this.queue_size = this.files.length;
 
             this.uploadInput.emit(event);
+
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
-            let gallery_image = {
-                small: this.api_url+output.file.response.msg,
-                medium: this.api_url + output.file.response.msg,
-                big: this.api_url + output.file.response.msg,
-            };
-            this.galleryImages[this.image_field].push(gallery_image);
-            this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
-                .subscribe((result: any) => {
-            });
+            this.queue_size--;
+            if (this.queue_size == 0) {
+                this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+                    .subscribe((result: UploadResult) => {
+                        let upload_result_test = new UploadResult;
+
+                        for (var prop in result.data) {
+                            let gallery_image = {
+                                small: this.api_url + '/img/data/' + result.data[prop].preview + '?' + new Date().getTime(),
+                                medium: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
+                                big: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
+                            };
+                            this.galleryImages[this.image_field].push(gallery_image);
+                        }
+                    });
+            }
  
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
