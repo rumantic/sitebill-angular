@@ -5,6 +5,8 @@ import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 
 export class UploadResult {
     state: string;
@@ -22,6 +24,8 @@ export class UploaderComponent {
     formData: FormData;
     files: UploadFile[];
     uploadInput: EventEmitter<UploadInput>;
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
+
     humanizeBytes: Function;
     dragOver: boolean;
     options: UploaderOptions;
@@ -41,6 +45,7 @@ export class UploaderComponent {
 
     constructor(
         private modelSerivce: ModelService,
+        public _matDialog: MatDialog,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         if (isDevMode()) {
@@ -118,6 +123,27 @@ export class UploaderComponent {
         }
 
         this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
+    }
+
+    delete_all_images() {
+        this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все фото?';
+        //this.confirmDialogRef.componentInstance.;
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.modelSerivce.deleteAllImages(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+                    .subscribe((result: any) => {
+                        this.galleryImages[this.image_field] = [];
+                        //console.log(this.galleryImages);
+                        //this.recalculate_options();
+                    });
+            }
+            this.confirmDialogRef = null;
+        });
     }
 
     startUpload(): void {

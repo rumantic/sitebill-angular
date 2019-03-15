@@ -122,7 +122,6 @@ export class GalleryComponent implements OnInit {
                 preview: false
             }
         ];
-
     }
 
     deleteImage(event, index) {
@@ -143,8 +142,9 @@ export class GalleryComponent implements OnInit {
             }
             this.confirmDialogRef = null;
         });
-
     }
+
+
     enable_move() {
     }
 
