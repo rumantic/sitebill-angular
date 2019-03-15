@@ -11,6 +11,7 @@ import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 export class UploadResult {
     state: string;
     data: any[];
+    message: any[];
 }
 
 @Component({
@@ -89,19 +90,17 @@ export class UploaderComponent {
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
             this.queue_size--;
             if (this.queue_size == 0) {
-                this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
-                    .subscribe((result: UploadResult) => {
-                        let upload_result_test = new UploadResult;
+                if (this.entity.key_value == null) {
+                    this.modelSerivce.new_empty_record(this.entity.app_name)
+                        .subscribe((result: UploadResult) => {
+                            this.entity.key_value = result.message['id'];
+                            this.uppend_uploads();
+                        });
 
-                        for (var prop in result.data) {
-                            let gallery_image = {
-                                small: this.api_url + '/img/data/' + result.data[prop].preview + '?' + new Date().getTime(),
-                                medium: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
-                                big: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
-                            };
-                            this.galleryImages[this.image_field].push(gallery_image);
-                        }
-                    });
+                } else {
+                    this.uppend_uploads();
+                }
+
             }
  
 
@@ -123,6 +122,22 @@ export class UploaderComponent {
         }
 
         this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
+    }
+
+    uppend_uploads() {
+        this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+            .subscribe((result: UploadResult) => {
+                let upload_result_test = new UploadResult;
+
+                for (var prop in result.data) {
+                    let gallery_image = {
+                        small: this.api_url + '/img/data/' + result.data[prop].preview + '?' + new Date().getTime(),
+                        medium: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
+                        big: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
+                    };
+                    this.galleryImages[this.image_field].push(gallery_image);
+                }
+            });
     }
 
     delete_all_images() {
