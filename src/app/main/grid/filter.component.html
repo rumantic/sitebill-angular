@@ -1,0 +1,22 @@
+<ng-select *ngIf="filter_enable"
+           [(ngModel)]="selectedFilter"
+           appendTo="body"
+           bindValue="id"
+           bindLabel="value"
+           [items]="options"
+           [clearOnBackspace]="false"
+           [searchable]="true"
+           [multiple]="true"
+           [hideSelected]="false"
+           [closeOnSelect]="false"
+           (ngModelChange)="selectItem($event)"
+           placeholder="{{columnObject.title}}">
+
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
+    </ng-template>
+</ng-select>
+
+<div *ngIf="!filter_enable">
+    {{columnObject.title}}
+</div>
