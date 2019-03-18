@@ -2,12 +2,14 @@ import { Injectable, Inject, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
+import { SitebillEntity } from 'app/_models';
 
 
 @Injectable()
 export class ModelService {
     api_url: string;
     protected currentUser: currentUser;
+    public entity: SitebillEntity;
 
 
     constructor(
@@ -19,6 +21,10 @@ export class ModelService {
         } else {
             this.api_url = '';
         }
+        this.entity = new SitebillEntity;
+        this.entity.app_name = null;
+        this.entity.primary_key = null;
+        this.entity.key_value = null;
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
     }
