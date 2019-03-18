@@ -95,6 +95,7 @@ export class UploaderComponent {
                     this.modelSerivce.new_empty_record(this.entity.app_name)
                         .subscribe((result: UploadResult) => {
                             this.entity.key_value = result.message[this.entity.primary_key]['value'];
+                            this.modelSerivce.entity.key_value = this.entity.key_value;
                             //console.log(result.message);
 
                             for (var prop in result.message[this.image_field]['value']) {

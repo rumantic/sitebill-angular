@@ -11,6 +11,14 @@ import { ModelService } from 'app/_services/model.service';
 import { NgxGalleryImage } from 'ngx-gallery';
 import { SitebillEntity } from 'app/_models';
 
+import {
+    MatSnackBar,
+    MatSnackBarHorizontalPosition,
+    MatSnackBarVerticalPosition,
+} from '@angular/material';
+import { SnackBarComponent } from 'app/main/snackbar/snackbar.component';
+
+
 
 @Component({
     selector: 'form-selector',
@@ -33,6 +41,10 @@ export class FormComponent implements OnInit {
     
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
+
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
     
     
 
@@ -42,6 +54,7 @@ export class FormComponent implements OnInit {
         private modelSerivce: ModelService,
         private _formBuilder: FormBuilder,
         private _chatService: ChatService,
+        public snackBar: MatSnackBar,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
         ) {
@@ -129,7 +142,10 @@ export class FormComponent implements OnInit {
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
         const model_name = this._data.app_name;
-        
+        console.log(this.modelSerivce.entity);
+        this.modelSerivce.entity.app_name = model_name;
+        this.modelSerivce.entity.primary_key = primary_key;
+        this.modelSerivce.entity.key_value = key_value;
         
 
         this.modelSerivce.loadById(model_name, primary_key, key_value)
@@ -147,7 +163,8 @@ export class FormComponent implements OnInit {
 
 
     save() {
-        //console.log(this.form);
+        console.log(this.modelSerivce.entity);
+
         
         /*
         this.editing[rowIndex + '-' + cell] = false;
@@ -166,6 +183,8 @@ export class FormComponent implements OnInit {
             //ql_items.push({ '123': 'test'});
             if (this.text_area_editor_storage[this.rows[i]]) {
                 this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
+            } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {
+                this.form.controls[this.rows[i]].patchValue(this.modelSerivce.entity.key_value);
             }
 
             ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
@@ -176,6 +195,23 @@ export class FormComponent implements OnInit {
 
         this.modelSerivce.update(this._data.app_name, this._data.key_value, ql_items)
             .subscribe((response: any) => {
+                if (response.state == 'error') {
+                    this.snackBar.openFromComponent(SnackBarComponent, {
+                        duration: 3000,
+                        announcementMessage: 'some test',
+                        horizontalPosition: this.horizontalPosition,
+                        verticalPosition: this.verticalPosition,
+                    });
+                    /*
+                    this.snackBar.open(response.message, 'Закрыть', {
+                        duration: 3000,
+                        horizontalPosition: this.horizontalPosition,
+                        verticalPosition: this.verticalPosition,
+                    });
+                    */
+                }
+
+
                 console.log(response);
             });
 
@@ -190,3 +226,4 @@ export class FormComponent implements OnInit {
     }
 
 }
+
