@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
+import {FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
 
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -18,7 +18,11 @@ import {
 } from '@angular/material';
 import { SnackBarComponent } from 'app/main/snackbar/snackbar.component';
 
-
+export function forbiddenNullValue(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        return control.value == null || control.value == 0 ? { 'forbiddenNullValue': { value: control.value } } : null;
+    };
+}
 
 @Component({
     selector: 'form-selector',
@@ -30,6 +34,7 @@ export class FormComponent implements OnInit {
     form: FormGroup;
     public text_area_editor_storage = {};
     public options_storage = {};
+    form_submitted: boolean = false;
     rows: any[];
     records: any[];
     api_url: string;
@@ -82,30 +87,32 @@ export class FormComponent implements OnInit {
         for (var i = 0; i < this.rows.length; i++) {
             //console.log(this.records[this.rows[i]]);
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
+            form_control_item.clearValidators();
             if (this.records[this.rows[i]].required == 'on') {
-                form_control_item.setValidators(Validators.required);
+                form_control_item.setValidators(forbiddenNullValue());
             }
+
+            this.form.addControl(this.rows[i], form_control_item);
 
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
             if (this.records[this.rows[i]].type == 'select_by_query') {
                 this.init_select_by_query_options(this.records[this.rows[i]].name);
+                if (this.records[this.rows[i]].value == 0) {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
             }
             if (this.records[this.rows[i]].type == 'select_box_structure') {
                 this.init_select_by_query_options(this.records[this.rows[i]].name);
+                if (this.records[this.rows[i]].value == 0) {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
             }
 
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
-
-
-
-
-
-
-            this.form.addControl(this.rows[i], form_control_item);
         }
     }
 
@@ -163,7 +170,7 @@ export class FormComponent implements OnInit {
 
 
     save() {
-        console.log(this.modelSerivce.entity);
+        //console.log(this.modelSerivce.entity);
 
         
         /*
@@ -189,6 +196,11 @@ export class FormComponent implements OnInit {
 
             ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
         }
+        this.form_submitted = true;
+        if (!this.form.valid) {
+            return null;
+        }
+
         console.log(ql_items);
         //return;
 
