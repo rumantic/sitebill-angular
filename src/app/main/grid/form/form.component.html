@@ -105,9 +105,10 @@
                 <button mat-raised-button matStepperNext type="submit" color="accent">
                     Сохранить
                 </button>
-                <button mat-icon-button matTooltip="Attach a file">
-                    <mat-icon>attach_file</mat-icon>
+                <button mat-raised-button matStepperNext type="button" (click)="close()">
+                    Отмена
                 </button>
+
             </div>
             <button mat-icon-button aria-label="Delete"
                     matTooltip="Delete">

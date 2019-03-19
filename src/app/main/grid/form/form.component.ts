@@ -207,14 +207,17 @@ export class FormComponent implements OnInit {
 
         this.modelSerivce.update(this._data.app_name, this._data.key_value, ql_items)
             .subscribe((response: any) => {
+                console.log(response);
+
                 if (response.state == 'error') {
                     this.snackBar.openFromComponent(SnackBarComponent, {
                         duration: 3000,
                         horizontalPosition: this.horizontalPosition,
                         verticalPosition: this.verticalPosition,
                         data: { message: response.message },
-                        
+
                     });
+                    return null;
                     /*
                     this.snackBar.open(response.message, 'Закрыть', {
                         duration: 3000,
@@ -222,14 +225,19 @@ export class FormComponent implements OnInit {
                         verticalPosition: this.verticalPosition,
                     });
                     */
+                } else {
+                    this.snackBar.openFromComponent(SnackBarComponent, {
+                        duration: 3000,
+                        horizontalPosition: this.horizontalPosition,
+                        verticalPosition: this.verticalPosition,
+                        data: { message: 'Запись сохранена успешно' },
+
+                    });
+                    this.close();
                 }
-
-
-                console.log(response);
             });
 
 
-        //this.dialogRef.close(this.form.value);
     }
 
     close() {
