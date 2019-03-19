@@ -102,16 +102,15 @@
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
             <div>
-                <button mat-raised-button matStepperNext type="submit" color="accent">
+                <button mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
                     Сохранить
                 </button>
-                <button mat-raised-button matStepperNext type="button" (click)="close()">
+                <button mat-raised-button type="button" (click)="close()" aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
                     Отмена
                 </button>
 
             </div>
-            <button mat-icon-button aria-label="Delete"
-                    matTooltip="Delete">
+            <button mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

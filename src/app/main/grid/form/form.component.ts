@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, isDevMode, ViewEncapsulation, Input }  from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
@@ -17,6 +17,7 @@ import {
     MatSnackBarVerticalPosition,
 } from '@angular/material';
 import { SnackBarComponent } from 'app/main/snackbar/snackbar.component';
+import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -49,6 +50,8 @@ export class FormComponent implements OnInit {
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
+
 
     
     
@@ -59,6 +62,7 @@ export class FormComponent implements OnInit {
         private modelSerivce: ModelService,
         private _formBuilder: FormBuilder,
         private _chatService: ChatService,
+        public _matDialog: MatDialog,
         public snackBar: MatSnackBar,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
@@ -167,6 +171,20 @@ export class FormComponent implements OnInit {
             });
     }
 
+
+    delete() {
+        this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+            }
+            this.confirmDialogRef = null;
+        });
+    }
 
 
     save() {
