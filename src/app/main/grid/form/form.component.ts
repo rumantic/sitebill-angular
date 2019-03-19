@@ -198,9 +198,10 @@ export class FormComponent implements OnInit {
                 if (response.state == 'error') {
                     this.snackBar.openFromComponent(SnackBarComponent, {
                         duration: 3000,
-                        announcementMessage: 'some test',
                         horizontalPosition: this.horizontalPosition,
                         verticalPosition: this.verticalPosition,
+                        data: { message: response.message },
+                        
                     });
                     /*
                     this.snackBar.open(response.message, 'Закрыть', {
