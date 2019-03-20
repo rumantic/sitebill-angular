@@ -181,6 +181,30 @@ export class FormComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.modelSerivce.delete(this._data.app_name, this._data.primary_key, this._data.key_value)
+                    .subscribe((response: any) => {
+                        console.log(response);
+
+                        if (response.state == 'error') {
+                            this.snackBar.openFromComponent(SnackBarComponent, {
+                                duration: 3000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                data: { message: response.message },
+
+                            });
+                            return null;
+                        } else {
+                            this.snackBar.openFromComponent(SnackBarComponent, {
+                                duration: 3000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                data: { message: 'Запись удалена успешно' },
+
+                            });
+                            this.close();
+                        }
+                    });
             }
             this.confirmDialogRef = null;
         });
