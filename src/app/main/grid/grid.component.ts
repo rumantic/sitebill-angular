@@ -20,6 +20,7 @@ import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
+import { Page } from './page';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class GridComponent implements OnInit, OnDestroy
     test_indicator: string;
     objectKeys = Object.keys;
     primary_key: string;
+    page = new Page();
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
@@ -97,6 +99,9 @@ export class GridComponent implements OnInit, OnDestroy
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 48;
+
+        this.page.pageNumber = 0;
+        this.page.size = 10;
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
@@ -300,10 +305,22 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     refreash() {
-        this.load_grid_data(this.app_name, [], []);
+        //this.load_grid_data(this.app_name, [], []);
+        //const params = { owner: true };
+        //this.load_grid_data(this.app_name, [], params);
+        this.setPage({ offset: this.page.pageNumber });
+    }
+
+    /**
+       * Populate the table with new data based on the page number
+       * @param page The page to select
+       */
+    setPage(pageInfo) {
+        this.page.pageNumber = pageInfo.offset;
         const params = { owner: true };
         this.load_grid_data(this.app_name, [], params);
     }
+
 
     get_grid_items(params: any) {
         let grid_item;
@@ -321,6 +338,7 @@ export class GridComponent implements OnInit, OnDestroy
         //console.log(params);
         let filter_params_json = {};
 
+
         if (this.filterSharedData) {
             var obj = this.filterSharedData;
             var mapped = Object.keys(obj);
@@ -330,13 +348,15 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
         }
+        let page_number = this.page.pageNumber + 1;
 
-        this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner)
+        this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(result);
+                console.log(result);
                 this.item_model = result.rows[0];
                 this.loadGridComplete = true;
+                this.page.totalElements = result.total_count;
 
                 //console.log(this.item_model);
                 if (app_name == 'client') {
@@ -357,6 +377,7 @@ export class GridComponent implements OnInit, OnDestroy
             });
 
     }
+
 
     updateValue(event, cell, rowIndex, row) {
         /*

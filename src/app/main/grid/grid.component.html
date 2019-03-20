@@ -152,9 +152,14 @@
                                            [rowHeight]="'auto'"
                                            [scrollbarH]="true"
                                            [reorderable]="reorderable"
-                                           [limit]="10"
+                                           [externalPaging]="true"
+                                           [count]="page.totalElements"
+                                           [offset]="page.pageNumber"
+                                           [limit]="page.size"
                                            [selectionType]="'single'"
-                                           (activate)="onActivate($event)">
+                                           (activate)="onActivate($event)"
+                                           (page)='setPage($event)'
+                                           >
                             </ngx-datatable>
                         </div>
                         <!-- / Front -->

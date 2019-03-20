@@ -18,6 +18,7 @@ import {
 } from '@angular/material';
 import { SnackBarComponent } from 'app/main/snackbar/snackbar.component';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
+import { FilterService } from 'app/_services/filter.service';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -64,6 +65,7 @@ export class FormComponent implements OnInit {
         private _chatService: ChatService,
         public _matDialog: MatDialog,
         public snackBar: MatSnackBar,
+        private filterService: FilterService
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
         ) {
@@ -200,8 +202,8 @@ export class FormComponent implements OnInit {
                                 horizontalPosition: this.horizontalPosition,
                                 verticalPosition: this.verticalPosition,
                                 data: { message: 'Запись удалена успешно' },
-
                             });
+                            this.filterService.empty_share();
                             this.close();
                         }
                     });
@@ -273,8 +275,8 @@ export class FormComponent implements OnInit {
                         horizontalPosition: this.horizontalPosition,
                         verticalPosition: this.verticalPosition,
                         data: { message: 'Запись сохранена успешно' },
-
                     });
+                    this.filterService.empty_share();
                     this.close();
                 }
             });
