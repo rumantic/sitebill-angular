@@ -18,8 +18,8 @@ export class DataComponent extends GridComponent {
     }
 
     setup_apps() {
-        this.app_name = 'data';
-        this.primary_key = 'id';
+        this.entity.app_name = 'data';
+        this.entity.primary_key = 'id';
 
         this.data_columns = [
             {

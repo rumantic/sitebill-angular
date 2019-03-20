@@ -5,6 +5,7 @@ import {takeUntil} from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
 import {FilterService} from 'app/_services/filter.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { SitebillEntity } from 'app/_models';
 
 @Component({
     selector: 'filter-comp',
@@ -14,6 +15,7 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 export class FilterComponent {
     options: any;
     @Input() columnObject: any;
+    @Input() entity: SitebillEntity;
     api_url: string;
     selectedFilter: any;
     filter_enable: boolean;
@@ -61,7 +63,8 @@ export class FilterComponent {
     }
 
     selectItem(value) {
-        this.filterService.share_data(this.columnObject.model_name, value);
+        //console.log(this.selectedFilter);
+        this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 
     load_dictionary(columnName) {
@@ -71,6 +74,9 @@ export class FilterComponent {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
+                    if (this.filterService.share_array[this.entity.app_name] != undefined) {
+                        this.selectedFilter = this.filterService.share_array[this.entity.app_name][columnName];
+                    }
                     this.options = result.data;
                     //this.load_grid_data(result.selected);
                 }

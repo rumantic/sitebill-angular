@@ -18,8 +18,8 @@ export class NewsComponent extends GridComponent {
     }
 
     setup_apps() {
-        this.app_name = 'news';
-        this.primary_key = 'news_id';
+        this.entity.app_name = 'news';
+        this.entity.primary_key = 'news_id';
 
         this.data_columns = [
             {

@@ -31,6 +31,7 @@ export class ModelService {
 
     load(model_name, grid_item, filter_params_json, owner, page, per_page) {
         const body = { action: 'model', do: 'get_data', model_name: model_name, owner: owner, page: page, per_page: per_page, params: filter_params_json, session_key: this.currentUser.session_key, grid_item: grid_item };
+        //console.log(body);
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 

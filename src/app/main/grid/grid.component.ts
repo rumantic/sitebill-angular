@@ -21,6 +21,7 @@ import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
 import { Page } from './page';
+import { SitebillEntity } from 'app/_models';
 
 
 @Component({
@@ -48,7 +49,6 @@ export class GridComponent implements OnInit, OnDestroy
     columns_data_all = [];
     columns_client_my = [];
     rows1 = [];
-    app_name: string;
     total_all: number;
     total_my: number;
     data_all: number;
@@ -56,8 +56,10 @@ export class GridComponent implements OnInit, OnDestroy
     options_test = {};
     test_indicator: string;
     objectKeys = Object.keys;
-    primary_key: string;
     page = new Page();
+    entity: SitebillEntity;
+
+
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
@@ -99,9 +101,10 @@ export class GridComponent implements OnInit, OnDestroy
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 48;
+        this.entity = new SitebillEntity();
 
         this.page.pageNumber = 0;
-        this.page.size = 10;
+        this.page.size = 0;
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
@@ -148,8 +151,10 @@ export class GridComponent implements OnInit, OnDestroy
     }
     setup_apps() {
         //console.log('setup client');
-        this.app_name = 'client';
-        this.primary_key = 'client_id';
+
+        this.entity.app_name = 'client';
+        this.entity.primary_key = 'client_id';
+
         this.columns_client_all = [
             {
                 cellTemplate: this.clientControlTmpl,
@@ -267,7 +272,7 @@ export class GridComponent implements OnInit, OnDestroy
         //dialogConfig.width = '100%';
         //dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
 
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()
@@ -318,7 +323,7 @@ export class GridComponent implements OnInit, OnDestroy
     setPage(pageInfo) {
         this.page.pageNumber = pageInfo.offset;
         const params = { owner: true };
-        this.load_grid_data(this.app_name, [], params);
+        this.load_grid_data(this.entity.app_name, [], params);
     }
 
 
@@ -339,8 +344,8 @@ export class GridComponent implements OnInit, OnDestroy
         let filter_params_json = {};
 
 
-        if (this.filterSharedData) {
-            var obj = this.filterSharedData;
+        if (this.filterService.params_count[this.entity.app_name] > 0) {
+            var obj = this.filterService.share_array[this.entity.app_name];
             var mapped = Object.keys(obj);
             mapped.forEach(function (item, i, arr) {
                 if (obj[item] != 0) {
@@ -353,10 +358,11 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 this.item_model = result.rows[0];
                 this.loadGridComplete = true;
                 this.page.totalElements = result.total_count;
+                this.page.size = result.per_page;
 
                 //console.log(this.item_model);
                 if (app_name == 'client') {
@@ -397,7 +403,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [...this.rows_my];
         //console.log('UPDATED!', this.rows[rowIndex][cell]);
         const ql_items = { status_id: event.target.value };
-        const body = { action: 'model', do: 'graphql_update', model_name: this.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key };
+        const body = { action: 'model', do: 'graphql_update', model_name: this.entity.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key };
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((response: any) => {
                 //console.log(response);
@@ -484,7 +490,7 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.width = '100%';
         dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
 
         this.dialog.open(CourseDialogComponent, dialogConfig);
     }
@@ -494,7 +500,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(FormComponent, dialogConfig);
@@ -506,7 +512,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.app_name, primary_key: this.primary_key, key_value: item_id };
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
