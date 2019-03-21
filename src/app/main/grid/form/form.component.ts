@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit, isDevMode }  from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE} from "@angular/material";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
+import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
@@ -11,6 +11,7 @@ import { SitebillEntity } from 'app/_models';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { FilterService } from 'app/_services/filter.service';
 import { SnackService } from 'app/_services/snack.service';
+import * as moment from 'moment';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -77,7 +78,16 @@ export class FormComponent implements OnInit {
 
     }
 
+    is_date_type(type: string) {
+        if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime') {
+            return true;
+        }
+        return false;
+    }
+
     init_form() {
+        console.log(this.records);
+
         for (var i = 0; i < this.rows.length; i++) {
             //console.log(this.records[this.rows[i]]);
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
@@ -87,7 +97,11 @@ export class FormComponent implements OnInit {
             }
 
             this.form.addControl(this.rows[i], form_control_item);
+            if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == "now") {
+                this.form.controls[this.rows[i]].patchValue(moment());
+            }
 
+            
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
@@ -191,6 +205,7 @@ export class FormComponent implements OnInit {
 
 
     save() {
+        console.log(this.form.controls);
         //console.log(this.modelSerivce.entity);
 
         

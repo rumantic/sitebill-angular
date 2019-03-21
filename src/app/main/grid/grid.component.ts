@@ -76,6 +76,7 @@ export class GridComponent implements OnInit, OnDestroy
     // Private
     protected _unsubscribeAll: Subject<any>;
     protected currentUser: currentUser;
+    filterSharedData: any;
 
     
     /**
