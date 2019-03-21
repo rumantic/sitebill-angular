@@ -10,6 +10,7 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {Model} from 'app/model';
 import {currentUser} from 'app/_models/currentuser';
+import { SitebillEntity } from 'app/_models';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class SelectDistrictDialogComponent implements OnInit {
     declinePressed: boolean;
     declineProcessing: boolean;
     options: any;
+    entity: SitebillEntity;
+
     
 
     dialogForm: FormGroup;
@@ -78,6 +81,8 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.declineProcessing = false;
 
         this.description = '123';
+        this.entity.app_name = 'data';
+        this.entity.primary_key = 'id';
 
     }
 
@@ -141,10 +146,10 @@ export class SelectDistrictDialogComponent implements OnInit {
         console.log(this.dialogForm.controls.street_id.value);
         //this.filterService.announceMission(this.dialogForm.controls.district_id.value);
         this.filterService.save(this.dialogForm.controls);
-        
-        this.filterService.share_data('district_id', this.district_options);
-        this.filterService.share_data('complex_id', this.complex_options);
-        this.filterService.share_data('street_id', this.street_options);
+
+        this.filterService.share_data(this.entity, 'district_id', this.district_options);
+        this.filterService.share_data(this.entity, 'complex_id', this.complex_options);
+        this.filterService.share_data(this.entity, 'street_id', this.street_options);
 
         this.dialogRef.close();
     }

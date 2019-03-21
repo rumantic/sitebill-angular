@@ -65,7 +65,7 @@ export class FormComponent implements OnInit {
         private _chatService: ChatService,
         public _matDialog: MatDialog,
         public snackBar: MatSnackBar,
-        private filterService: FilterService
+        private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
         ) {
