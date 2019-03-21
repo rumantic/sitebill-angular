@@ -20,6 +20,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { ConfirmDialogModule } from 'app/dialogs/confirm/confirm.module';
 import { ChatService } from 'app/main/apps/chat/chat.service';
+import { SnackService } from 'app/_services/snack.service';
 import { ChatComponent } from 'app/main/apps/chat/chat.component';
 import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
 import { ChatViewComponent } from 'app/main/apps/chat/chat-view/chat-view.component';
@@ -150,6 +151,7 @@ const routes = [
         FilterService,
         ChatService,
         ModelService,
+        SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, FormComponent, SnackBarComponent]

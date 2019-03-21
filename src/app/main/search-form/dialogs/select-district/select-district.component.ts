@@ -1,9 +1,8 @@
-import {Component, Inject, OnInit, isDevMode, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Subject, Subscription} from 'rxjs';
+import {Component, Inject, OnInit, isDevMode, Input, Output, EventEmitter} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {Course} from "app/model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {FilterService} from 'app/_services/filter.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';

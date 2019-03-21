@@ -1,24 +1,16 @@
-import {Component, Inject, OnInit, isDevMode, ViewEncapsulation, Input }  from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Component, Inject, OnInit, isDevMode }  from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
 
-import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
-import { NgxGalleryImage } from 'ngx-gallery';
 import { SitebillEntity } from 'app/_models';
 
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material';
-import { SnackBarComponent } from 'app/main/snackbar/snackbar.component';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { FilterService } from 'app/_services/filter.service';
+import { SnackService } from 'app/_services/snack.service';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -49,8 +41,6 @@ export class FormComponent implements OnInit {
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
 
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
 
@@ -59,12 +49,10 @@ export class FormComponent implements OnInit {
 
     constructor(
         private dialogRef: MatDialogRef<FormComponent>,
-        private _httpClient: HttpClient,
         private modelSerivce: ModelService,
         private _formBuilder: FormBuilder,
-        private _chatService: ChatService,
+        private _snackService: SnackService,
         public _matDialog: MatDialog,
-        public snackBar: MatSnackBar,
         private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
@@ -188,21 +176,10 @@ export class FormComponent implements OnInit {
                         console.log(response);
 
                         if (response.state == 'error') {
-                            this.snackBar.openFromComponent(SnackBarComponent, {
-                                duration: 3000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                                data: { message: response.message },
-
-                            });
+                            this._snackService.message(response.message);
                             return null;
                         } else {
-                            this.snackBar.openFromComponent(SnackBarComponent, {
-                                duration: 3000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                                data: { message: 'Запись удалена успешно' },
-                            });
+                            this._snackService.message('Запись удалена успешно');
                             this.filterService.empty_share();
                             this.close();
                         }
@@ -254,28 +231,10 @@ export class FormComponent implements OnInit {
                 console.log(response);
 
                 if (response.state == 'error') {
-                    this.snackBar.openFromComponent(SnackBarComponent, {
-                        duration: 3000,
-                        horizontalPosition: this.horizontalPosition,
-                        verticalPosition: this.verticalPosition,
-                        data: { message: response.message },
-
-                    });
+                    this._snackService.message(response.message);
                     return null;
-                    /*
-                    this.snackBar.open(response.message, 'Закрыть', {
-                        duration: 3000,
-                        horizontalPosition: this.horizontalPosition,
-                        verticalPosition: this.verticalPosition,
-                    });
-                    */
                 } else {
-                    this.snackBar.openFromComponent(SnackBarComponent, {
-                        duration: 3000,
-                        horizontalPosition: this.horizontalPosition,
-                        verticalPosition: this.verticalPosition,
-                        data: { message: 'Запись сохранена успешно' },
-                    });
+                    this._snackService.message('Запись сохранена успешно');
                     this.filterService.empty_share();
                     this.close();
                 }
@@ -283,6 +242,7 @@ export class FormComponent implements OnInit {
 
 
     }
+
 
     close() {
         this._unsubscribeAll.next();

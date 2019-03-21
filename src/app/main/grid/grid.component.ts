@@ -11,7 +11,6 @@ import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { Subject } from 'rxjs';
 import { FilterService } from 'app/_services/filter.service';
-import { FilterComponent } from 'app/main/grid/filter.component';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
@@ -23,12 +22,7 @@ import { FormComponent } from './form/form.component';
 import { Page } from './page';
 import { SitebillEntity } from 'app/_models';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
-import { SnackBarComponent } from '../snackbar/snackbar.component';
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material';
+import { SnackService } from 'app/_services/snack.service';
 
 
 
@@ -75,13 +69,7 @@ export class GridComponent implements OnInit, OnDestroy
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
     @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
 
-    private filter: number;
-    private filterControls: any;
-    private filterSharedData: any;
-
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
 
@@ -101,7 +89,7 @@ export class GridComponent implements OnInit, OnDestroy
         private dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         private modelSerivce: ModelService,
-        public snackBar: MatSnackBar,
+        private _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
@@ -504,21 +492,10 @@ export class GridComponent implements OnInit, OnDestroy
                         console.log(response);
 
                         if (response.state == 'error') {
-                            this.snackBar.openFromComponent(SnackBarComponent, {
-                                duration: 3000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                                data: { message: response.message },
-
-                            });
+                            this._snackService.message(response.message);
                             return null;
                         } else {
-                            this.snackBar.openFromComponent(SnackBarComponent, {
-                                duration: 3000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                                data: { message: 'Запись удалена успешно' },
-                            });
+                            this._snackService.message('Запись удалена успешно');
                             this.filterService.empty_share();
                         }
                     });
