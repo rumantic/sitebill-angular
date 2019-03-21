@@ -12,11 +12,14 @@
 
 <ng-template #controlTmpl let-row="row" let-value="value">
     <button mat-icon-button>
-        <mat-icon (click)="view(value)" aria-label="Просмотр">pageview</mat-icon>
+        <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
     </button>
 
     <button mat-icon-button>
-        <mat-icon (click)="edit_form(value)" aria-label="Редактировать">edit</mat-icon>
+        <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
     </button>
 </ng-template>
 

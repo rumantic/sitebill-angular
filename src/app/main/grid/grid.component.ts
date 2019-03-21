@@ -14,7 +14,7 @@ import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil } from 'rxjs/operators';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ModelService } from 'app/_services/model.service';
@@ -22,6 +22,14 @@ import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
 import { Page } from './page';
 import { SitebillEntity } from 'app/_models';
+import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
+import { SnackBarComponent } from '../snackbar/snackbar.component';
+import {
+    MatSnackBar,
+    MatSnackBarHorizontalPosition,
+    MatSnackBarVerticalPosition,
+} from '@angular/material';
+
 
 
 @Component({
@@ -59,9 +67,6 @@ export class GridComponent implements OnInit, OnDestroy
     page = new Page();
     entity: SitebillEntity;
 
-
-
-
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
@@ -74,6 +79,9 @@ export class GridComponent implements OnInit, OnDestroy
     private filterControls: any;
     private filterSharedData: any;
 
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
 
@@ -93,6 +101,7 @@ export class GridComponent implements OnInit, OnDestroy
         private dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         private modelSerivce: ModelService,
+        public snackBar: MatSnackBar,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
@@ -479,6 +488,43 @@ export class GridComponent implements OnInit, OnDestroy
                 this.loadingIndicator = false;
             });
 
+    }
+
+    delete(item_id: any) {
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.modelSerivce.delete(this.entity.app_name, this.entity.primary_key, item_id)
+                    .subscribe((response: any) => {
+                        console.log(response);
+
+                        if (response.state == 'error') {
+                            this.snackBar.openFromComponent(SnackBarComponent, {
+                                duration: 3000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                data: { message: response.message },
+
+                            });
+                            return null;
+                        } else {
+                            this.snackBar.openFromComponent(SnackBarComponent, {
+                                duration: 3000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                data: { message: 'Запись удалена успешно' },
+                            });
+                            this.filterService.empty_share();
+                        }
+                    });
+            }
+            this.confirmDialogRef = null;
+        });
     }
 
     view_details(item_id: any) {
