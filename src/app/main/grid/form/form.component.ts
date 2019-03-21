@@ -219,6 +219,8 @@ export class FormComponent implements OnInit {
         }
         this.form_submitted = true;
         if (!this.form.valid) {
+
+            this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
             return null;
         }
 

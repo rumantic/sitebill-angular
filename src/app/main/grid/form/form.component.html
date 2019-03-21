@@ -83,7 +83,7 @@
                             <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                         </span>
 
-                        <mat-checkbox *ngSwitchCase="'checkbox'" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+                        <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
                         <mat-form-field *ngSwitchCase="'textarea_editor'">
                             <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
