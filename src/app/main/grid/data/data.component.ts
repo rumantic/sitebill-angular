@@ -24,6 +24,17 @@ export class DataComponent extends GridComponent {
         this.data_columns = [
             {
                 headerTemplate: this.hdrTpl,
+                cellTemplate: this.controlTmpl,
+                type: 'primary_key',
+                ngx_name: 'id.title',
+                model_name: 'id',
+                width: 1,
+                title: '',
+                prop: 'id.value',
+            },
+
+            {
+                headerTemplate: this.hdrTpl,
                 type: 'primary_key',
                 ngx_name: 'id.title',
                 model_name: 'id',
@@ -89,15 +100,6 @@ export class DataComponent extends GridComponent {
                 model_name: 'image',
                 title: 'Фото',
                 prop: 'image.value'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                cellTemplate: this.controlTmpl,
-                type: 'primary_key',
-                ngx_name: 'id.title',
-                model_name: 'id',
-                title: '',
-                prop: 'id.value'
             },
 
         ];

@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 export class NewsComponent extends GridComponent {
     get_grid_items(params: any) {
         let grid_item;
-        grid_item = ['news_id', 'title'];
+        grid_item = ['news_id', 'title', 'anons'];
         return grid_item;
     }
 
@@ -37,6 +37,14 @@ export class NewsComponent extends GridComponent {
                 model_name: 'title',
                 title: 'Заголовок',
                 prop: 'title.value'
+            },
+            {
+                headerTemplate: this.hdrTpl,
+                type: 'safe_string',
+                ngx_name: 'news.anons',
+                model_name: 'anons',
+                title: 'Анонс',
+                prop: 'anons.value'
             },
             {
                 headerTemplate: this.hdrTpl,

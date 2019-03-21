@@ -11,16 +11,19 @@
 </ng-template>
 
 <ng-template #controlTmpl let-row="row" let-value="value">
-    <button mat-icon-button>
-        <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
-    </button>
+    <mat-checkbox  class="form-checkbox"></mat-checkbox>
+    <div class="control_hover">
+        <button mat-icon-button>
+            <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
+        </button>
 
-    <button mat-icon-button>
-        <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
-    </button>
-    <button mat-icon-button>
-        <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
-    </button>
+        <button mat-icon-button>
+            <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
+        </button>
+    </div>
 </ng-template>
 
 <ng-template #clientControlTmpl let-row="row" let-value="value">
@@ -67,74 +70,12 @@
         </select>
     </div>
 </ng-template>
-
 <div id="ngx-datatable" class="page-layout simple fullwidth">
     <!-- CONTENT -->
     <div class="content" layout="row" fusePerfectScrollbar>
         <button mat-button (click)="edit_form(null)" color="accent" matTooltip="Добавить запись">Добавить запись</button>
 
         <mat-tab-group dynamicHeight>
-            <mat-tab label="Все ({{total_all}})" *ngIf="columns_client_all.length > 0">
-                <!-- WIDGET GROUP -->
-                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                     [@animateStagger]="{value:'50'}">
-                    <!-- WIDGET 11 -->
-                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                                 fxFlex="100">
-                        <!-- Front -->
-                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows">
-                            <ngx-datatable class="material"
-                                           [rows]="rows"
-                                           [columns]="columns_client_all"
-                                           [loadingIndicator]="loadingIndicator"
-                                           [columnMode]="'force'"
-                                           [headerHeight]="48"
-                                           [footerHeight]="56"
-                                           [rowHeight]="'auto'"
-                                           [scrollbarH]="true"
-                                           [reorderable]="reorderable"
-                                           [limit]="10"
-                                           (activate)="onActivate($event)"
-                                           [selectionType]="'single'"
-                                           (select)='onSelect($event)'>
-                            </ngx-datatable>
-                        </div>
-                        <!-- / Front -->
-                    </fuse-widget>
-                    <!-- / WIDGET 11 -->
-                </div>
-                <!-- / WIDGET GROUP -->
-            </mat-tab>
-            <mat-tab label="Мои ({{total_my}})" *ngIf="columns_client_my.length > 0">
-                <!-- WIDGET GROUP -->
-                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                     [@animateStagger]="{value:'50'}">
-                    <!-- WIDGET 11 -->
-                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                                 fxFlex="100">
-                        <!-- Front -->
-                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
-                            <ngx-datatable class="material"
-                                           [rows]="rows_my"
-                                           [columns]="columns_client_my"
-                                           [loadingIndicator]="loadingIndicator"
-                                           [columnMode]="'force'"
-                                           [headerHeight]="48"
-                                           [footerHeight]="56"
-                                           [rowHeight]="'auto'"
-                                           [scrollbarH]="true"
-                                           [reorderable]="reorderable"
-                                           [limit]="10"
-                                           [selectionType]="'single'"
-                                           (activate)="onActivate($event)">
-                            </ngx-datatable>
-                        </div>
-                        <!-- / Front -->
-                    </fuse-widget>
-                    <!-- / WIDGET 11 -->
-                </div>
-                <!-- / WIDGET GROUP -->
-            </mat-tab>
 
             <mat-tab label="Объявления" *ngIf="rows_data.length > 0">
                 <!-- WIDGET GROUP -->
@@ -159,10 +100,9 @@
                                            [count]="page.totalElements"
                                            [offset]="page.pageNumber"
                                            [limit]="page.size"
-                                           [selectionType]="'single'"
+                                           [selectionType]="'checkbox'"
                                            (activate)="onActivate($event)"
-                                           (page)='setPage($event)'
-                                           >
+                                           (page)='setPage($event)'>
                             </ngx-datatable>
                         </div>
                         <!-- / Front -->

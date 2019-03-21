@@ -37,3 +37,24 @@
         flex-direction: column;
     }
 }
+:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+}
+
+.control_hover {
+    width: 1px;
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    top: 5px;
+    left: 50px;
+}
+
+:host /deep/ .datatable-body-row:hover .control_hover {
+    display: flex;
+    width: inherit;
+    background-color: lightgray;
+    overflow: visible;
+}
+:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+    overflow: visible !important;
+}
