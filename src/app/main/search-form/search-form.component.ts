@@ -570,8 +570,11 @@ export class SearchFormComponent implements OnInit {
         console.log('search');
         let query_parts = [];
         let url = '';
+        console.log(this.form.controls);
+        if (this.form.controls.location != null) {
+            query_parts = query_parts.concat(this.render_address_parts());
+        }
 
-        query_parts = query_parts.concat(this.render_address_parts());
         query_parts = query_parts.concat(this.render_address_parts_separate());
         query_parts = query_parts.concat(this.render_price_parts());
         query_parts = query_parts.concat(this.render_square_parts());
@@ -732,23 +735,30 @@ export class SearchFormComponent implements OnInit {
 
     render_address_parts() {
         let query_parts = [];
-        this.form.controls.location.patchValue('');
+        if (this.form.controls.location != null) {
+            this.form.controls.location.patchValue('');
+        }
+
         try {
             query_parts = query_parts.concat(this.render_address_query_part('district_id', this.filterControls.district_id.value));
             query_parts = query_parts.concat(this.render_address_query_part('street_id', this.filterControls.street_id.value));
             query_parts = query_parts.concat(this.render_address_query_part('complex_id', this.filterControls.complex_id.value));
-        } catch {
-
+        } catch (e) {
+            console.log('Ошибка address ' + e.name + ":" + e.message + "\n" + e.stack);
         }
         return query_parts;
     }
 
     render_address_parts_separate() {
         let query_parts = [];
-        this.form.controls.location.patchValue('');
+        if (this.form.controls.location != null ) {
+            this.form.controls.location.patchValue('');
+        }
         try {
-            if (this.form.controls.city_id_selector.value != null) {
-                query_parts = query_parts.concat(this.render_address_query_part_separate('city_id', this.form.controls.city_id_selector.value));
+            if (this.form.controls.city_id_selector != null ) {
+                if (this.form.controls.city_id_selector.value != null) {
+                    query_parts = query_parts.concat(this.render_address_query_part_separate('city_id', this.form.controls.city_id_selector.value));
+                }
             }
             if (this.form.controls.district_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
@@ -759,8 +769,8 @@ export class SearchFormComponent implements OnInit {
             if (this.form.controls.complex_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('complex_id', this.form.controls.complex_id_selector.value));
             }
-        } catch {
-
+        } catch (e) {
+            console.log('Ошибка  separate' + e.name + ":" + e.message + "\n" + e.stack);
         }
         return query_parts;
     }

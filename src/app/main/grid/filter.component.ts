@@ -55,6 +55,13 @@ export class FilterComponent {
                 break;
             }
 
+            case "select_box_structure": {
+                this.load_dictionary(this.columnObject.model_name);
+                this.filter_enable = true;
+                break;
+            }
+
+
             default: {
                 this.options = ['Angular', 'PHP'];
                 break;
@@ -74,6 +81,7 @@ export class FilterComponent {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
+                    //console.log(result);
                     if (this.filterService.share_array[this.entity.app_name] != undefined) {
                         this.selectedFilter = this.filterService.share_array[this.entity.app_name][columnName];
                     }
