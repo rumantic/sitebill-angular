@@ -155,6 +155,7 @@ export class SearchFormComponent implements OnInit {
     topic_id_options: any[];
     district_id_options: any[];
     street_id_options: any[];
+    city_id_options: any[];
     complex_id_options: any[];
     dead_line_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 1, value: 'range', actual: 0}];
     default_elements: string[] = ["room_count", "location", "price_selector", "square_selector", "floor_selector", "material_selector", "dead_line_selector", "second_realty", "no_commision"];
@@ -188,6 +189,7 @@ export class SearchFormComponent implements OnInit {
     people3Loading = false;
     people3input$ = new Subject<string>();
     selectedPersons: Person[] = <any>[{ name: 'Karyn Wright' }, { name: 'Other' }];
+    dictionaries_loaded: boolean = false;
 
 
     constructor(
@@ -241,14 +243,20 @@ export class SearchFormComponent implements OnInit {
 
     }
 
+    load_dictionaries() {
+        if (!this.dictionaries_loaded) {
+            this.load_dictionary('topic_id');
+            this.load_dictionary('walls');
+            this.load_dictionary('district_id');
+            this.load_dictionary('street_id');
+            this.load_dictionary('complex_id');
+            this.load_dictionary('city_id');
+        }
+        this.dictionaries_loaded = true;
+    }
+
 
     ngOnInit() {
-        this.loadPeople3();
-        this.load_dictionary('topic_id');
-        this.load_dictionary('walls');
-        this.load_dictionary('district_id');
-        this.load_dictionary('street_id');
-        this.load_dictionary('complex_id');
 
 
         // Reactive Form
@@ -266,6 +274,7 @@ export class SearchFormComponent implements OnInit {
             topic_id_selector: [],
             district_id_selector: [],
             street_id_selector: [],
+            city_id_selector: [],
             complex_id_selector: [],
             material_selector: [],
             floor_selector: [],
@@ -336,6 +345,25 @@ export class SearchFormComponent implements OnInit {
             if (!elements.find(x => x == 'room_count')) {
                 delete this.form.controls.room_count;
             }
+            if (!elements.find(x => x == 'city_id_selector')) {
+                delete this.form.controls.city_id_selector;
+            }
+            if (!elements.find(x => x == 'street_id_selector')) {
+                delete this.form.controls.street_id_selector;
+            }
+            if (!elements.find(x => x == 'complex_id_selector')) {
+                delete this.form.controls.complex_id_selector;
+            }
+            if (!elements.find(x => x == 'district_id_selector')) {
+                delete this.form.controls.district_id_selector;
+            }
+            if (!elements.find(x => x == 'srch_word')) {
+                delete this.form.controls.srch_word;
+            }
+            if (!elements.find(x => x == 'topic_id_selector')) {
+                delete this.form.controls.topic_id_selector;
+            }
+            
 
         }
 
@@ -433,6 +461,9 @@ export class SearchFormComponent implements OnInit {
         if (params["street_id[]"] != null) {
             this.form.controls.street_id_selector.patchValue(params["street_id[]"]);
         }
+        if (params["city_id[]"] != null) {
+            this.form.controls.city_id_selector.patchValue(params["city_id[]"]);
+        }
         if (params["complex_id[]"] != null) {
             this.form.controls.complex_id_selector.patchValue(params["complex_id[]"]);
         }
@@ -477,6 +508,8 @@ export class SearchFormComponent implements OnInit {
                         this.street_id_options = result.data;
                     } else if (columnName == 'complex_id') {
                         this.complex_id_options = result.data;
+                    } else if (columnName == 'city_id') {
+                        this.city_id_options = result.data;
                     } else if (columnName == 'walls') {
                         this.material_options = result.data;
                     }
@@ -714,6 +747,9 @@ export class SearchFormComponent implements OnInit {
         let query_parts = [];
         this.form.controls.location.patchValue('');
         try {
+            if (this.form.controls.city_id_selector.value != null) {
+                query_parts = query_parts.concat(this.render_address_query_part_separate('city_id', this.form.controls.city_id_selector.value));
+            }
             if (this.form.controls.district_id_selector.value != null) {
                 query_parts = query_parts.concat(this.render_address_query_part_separate('district_id', this.form.controls.district_id_selector.value));
             }

@@ -1,5 +1,5 @@
 <div id="search">
-    <div class="content gold_bg" fxLayout="column">
+    <div class="content gold_bg" fxLayout="column" (mouseenter) ="load_dictionaries()">
 
         <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
             <form class="mat-card" fxLayout="column" fxLayoutAlign="start"
@@ -10,7 +10,7 @@
                         <h2><span class="red-fg">Я</span> хочу</h2>
                     </div>
 
-                    <div fxFlex="10">
+                    <div fxFlex="10" *ngIf="form.controls.topic_id_selector">
                         <ng-select formControlName="topic_id_selector"
                                    bindValue="id"
                                    bindLabel="name"
@@ -36,10 +36,26 @@
 
                     </div>
 
-                    <mat-form-field fxFlex="25" style="margin-top: 4px;">
+                    <mat-form-field fxFlex="25" style="margin-top: 4px;" *ngIf="form.controls.srch_word">
                         <mat-label>поиск по слову</mat-label>
                         <input matInput formControlName="srch_word">
                     </mat-form-field>
+
+                    <div class="input-range" fxFlex="20" *ngIf="form.controls.city_id_selector">
+                        <ng-select formControlName="city_id_selector"
+                                   bindValue="id"
+                                   bindLabel="value"
+                                   [items]="city_id_options"
+                                   [clearOnBackspace]="false"
+                                   [searchable]="false"
+                                   [multiple]="true"
+                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   placeholder="Город">
+                        </ng-select>
+
+                    </div>
+
 
                     <div class="input-range" fxFlex="20" *ngIf="form.controls.price_selector">
                         <ng-select formControlName="price_selector"
@@ -82,7 +98,7 @@
                             </ng-template>
                         </ng-select>
                     </div>
-                    <div class="input-range" fxFlex="20">
+                    <div class="input-range" fxFlex="20" *ngIf="form.controls.district_id_selector">
                         <ng-select formControlName="district_id_selector"
                                    bindValue="id"
                                    bindLabel="value"
@@ -259,7 +275,7 @@
 
                     </div>
 
-                    <div class="input-range" fxFlex="20">
+                    <div class="input-range" fxFlex="20" *ngIf="form.controls.street_id_selector">
 
                     <ng-select formControlName="street_id_selector"
                                bindValue="id"
@@ -276,7 +292,7 @@
                         
                 </div>
                     
-                    <div class="input-range" fxFlex="20">
+                    <div class="input-range" fxFlex="20"  *ngIf="form.controls.complex_id_selector">
 
                     <ng-select formControlName="complex_id_selector"
                                bindValue="id"

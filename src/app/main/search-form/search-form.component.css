@@ -8,9 +8,9 @@
 ::ng-deep .gold_bg {
     /*background-color: rgb(218,165,32);*/
 }
-    ::ng-deep .gold_bg .ng-select-container, ::ng-deep .gold_bg .mat-form-field-flex {
-        border-bottom: 2px solid red;
-    }
+::ng-deep .theme-red-light .gold_bg .ng-select-container, ::ng-deep .theme-red-light .gold_bg .mat-form-field-flex {
+    border-bottom: 2px solid red;
+}
 
 ::ng-deep .more_params {
     height: 400px;
@@ -22,10 +22,10 @@
 ::ng-deep .custom-slider .ng5-slider .ng5-slider-bar {
     height: 2px;
 }
-::ng-deep .custom-slider .ng5-slider .ng5-slider-selection {
+::ng-deep .theme-red-light .custom-slider .ng5-slider .ng5-slider-selection {
     background-color: #f44336; /*red*/
 }
-::ng-deep .custom-slider .ng5-slider .ng5-slider-pointer {
+::ng-deep .theme-red-light .custom-slider .ng5-slider .ng5-slider-pointer {
     background-color: #f44336;
     width: 8px;
     height: 8px;
@@ -34,6 +34,18 @@
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
+::ng-deep .theme-default .custom-slider .ng5-slider .ng5-slider-pointer {
+}
+
+::ng-deep .theme-default .custom-slider .ng5-slider .ng5-slider-pointer {
+    width: 8px;
+    height: 8px;
+    top: auto; /* to remove the default positioning */
+    bottom: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
 ::ng-deep .theme-red-light .custom-slider .ng5-slider .ng5-slider-pointer {
     background-color: #f44336;
 }

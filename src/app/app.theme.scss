@@ -265,6 +265,6 @@ body.theme-red-light {
     );
 
     @include fuse-color-classes($palettes);
-    @import "app/custom-theme/ng_select_red.css";
+    //@import "app/custom-theme/ng_select_red.css";
 }
 
