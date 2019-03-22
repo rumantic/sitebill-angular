@@ -13,7 +13,7 @@
                     <div fxFlex="10" *ngIf="form.controls.topic_id_selector">
                         <ng-select formControlName="topic_id_selector"
                                    bindValue="id"
-                                   bindLabel="name"
+                                   bindLabel="value"
                                    [items]="topic_id_options"
                                    [clearOnBackspace]="true"
                                    [searchable]="false"
