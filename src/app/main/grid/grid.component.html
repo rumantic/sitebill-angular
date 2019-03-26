@@ -77,7 +77,7 @@
 
         <mat-tab-group dynamicHeight>
 
-            <mat-tab label="Объявления" *ngIf="rows_data.length > 0">
+            <mat-tab label="Объявления">
                 <!-- WIDGET GROUP -->
                 <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                      [@animateStagger]="{value:'50'}">
@@ -85,7 +85,7 @@
                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
                                  fxFlex="100">
                         <!-- Front -->
-                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
+                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
                             <ngx-datatable class="material"
                                            [rows]="rows_data"
                                            [columns]="data_columns"

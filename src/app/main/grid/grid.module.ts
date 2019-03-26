@@ -49,6 +49,7 @@ import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { GalleryComponent } from 'app/main/gallery/gallery.component';
 import { SnackBarComponent } from '../snackbar/snackbar.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 
 const routes = [
@@ -136,7 +137,7 @@ const routes = [
         MatExpansionModule,
 
         NgSelectModule,
-
+        Ng5SliderModule,
 
         FuseSharedModule,
         QuillModule,

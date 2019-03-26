@@ -23,6 +23,7 @@ export class FilterService {
         }
         this.share_array[entity.app_name][key] = datas;
         this.share.emit(this.share_array);
+        //console.log(this.share_array);
     }
     empty_share() {
         this.share.emit(this.share_array);

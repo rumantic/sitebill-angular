@@ -1,10 +1,11 @@
-<ng-select *ngIf="filter_enable"
+<ng-select *ngIf="select_filter_enable"
            [(ngModel)]="selectedFilter"
            appendTo="body"
            bindValue="id"
            bindLabel="value"
            [items]="options"
            [clearOnBackspace]="false"
+           class="select_options"
            [searchable]="true"
            [multiple]="true"
            [hideSelected]="false"
@@ -14,6 +15,50 @@
 
     <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
         <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
+    </ng-template>
+</ng-select>
+
+<ng-select *ngIf="price_filter_enable"
+           [(ngModel)]="price_selector"
+           bindValue="id"
+           bindLabel="value"
+           appendTo="body"
+           [ngStyle]="{ 'width': '250px'}"
+           [items]="price_options"
+           [clearOnBackspace]="false"
+           [searchable]="false"
+           [multiple]="false"
+           [hideSelected]="true"
+           [closeOnSelect]="false"
+           (close)="onPriceSelectorClose()"
+           placeholder="{{columnObject.title}}">
+    <ng-template ng-label-tmp let-item="item" let-index="index">
+        <span *ngIf="item.value == 'range'">
+            от {{price_min}} до {{price_max}}
+        </span>
+        <span *ngIf="item.value != 'range'">
+            {{item.value}}
+        </span>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+        <div *ngIf="price_options[index].value == 'range'">
+            <mat-form-field fxFlex="50" class=" pl-4">
+                <input type="text" aria-label="Number" matInput [(ngModel)]="price_min" >
+            </mat-form-field>
+            <mat-form-field fxFlex="50" class="pl-4">
+                <input type="text" aria-label="Number" matInput [(ngModel)]="price_max" >
+            </mat-form-field>
+        </div>
+        <span *ngIf="price_options[index].value != 'range'">
+            {{price_options[index].value}}
+        </span>
+
+    </ng-template>
+    <ng-template ng-footer-tmp>
+        <div class="custom-slider" fxFlex="100">
+            <ng5-slider (userChange)="onPriceSliderChange($event)" [(value)]="price_min" [(highValue)]="price_max" [options]="options_price_zero_10m"></ng5-slider>
+        </div>
+
     </ng-template>
 </ng-select>
 

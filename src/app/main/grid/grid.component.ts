@@ -352,12 +352,14 @@ export class GridComponent implements OnInit, OnDestroy
             });
         }
         let page_number = this.page.pageNumber + 1;
+        //console.log(filter_params_json);
 
         this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(result);
-                this.item_model = result.rows[0];
+                console.log(result);
+                //this.item_model = result.rows[0];
+                this.item_model = result.columns;
                 this.loadGridComplete = true;
                 this.page.totalElements = result.total_count;
                 this.page.size = result.per_page;

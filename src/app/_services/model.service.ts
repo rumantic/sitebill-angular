@@ -40,6 +40,10 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, request);
     }
 
+    get_max(model_name, columnName) {
+        const request = { action: 'model', do: 'get_max', model_name: model_name, columnName: columnName, anonymous: true, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, request);
+    }
 
     loadById(model_name, primary_key, key_value) {
         const load_data_request = { action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key };
