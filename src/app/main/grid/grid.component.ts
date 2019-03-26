@@ -357,7 +357,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 //this.item_model = result.rows[0];
                 this.item_model = result.columns;
                 this.loadGridComplete = true;

@@ -25,6 +25,11 @@ export class FilterService {
         this.share.emit(this.share_array);
         //console.log(this.share_array);
     }
+    unshare_data(entity: SitebillEntity, key: string) {
+        if (this.share_array[entity.app_name] != null ) {
+            delete (this.share_array[entity.app_name][key]);
+        }
+    }
     empty_share() {
         this.share.emit(this.share_array);
     }

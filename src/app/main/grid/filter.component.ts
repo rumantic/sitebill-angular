@@ -135,14 +135,21 @@ export class FilterComponent {
 
 
     onPriceSelectorClose() {
-        this.filterService.share_data(this.entity, 'price_min', this.price_min);
-        this.filterService.share_data(this.entity, 'price_max', this.price_max);
+        if (this.price_selector != 0 ) {
+            this.filterService.share_data(this.entity, 'price_min', this.price_min);
+            this.filterService.share_data(this.entity, 'price_max', this.price_max);
+        }
+    }
+    onPriceSelectorChange() {
+        console.log(this.price_selector);
+        if (this.price_selector == 0) {
+            this.filterService.unshare_data(this.entity, 'price_min');
+            this.filterService.unshare_data(this.entity, 'price_max');
+        }
     }
 
     onPriceSliderChange(changeContext: ChangeContext): void {
         this.price_selector = 5;
-        this.current_price_min = changeContext.value;
-        this.current_price_max = changeContext.highValue;
     }
 
 }

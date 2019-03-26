@@ -30,6 +30,7 @@
            [multiple]="false"
            [hideSelected]="true"
            [closeOnSelect]="false"
+           (change)="onPriceSelectorChange($event)"
            (close)="onPriceSelectorClose()"
            placeholder="{{columnObject.title}}">
     <ng-template ng-label-tmp let-item="item" let-index="index">
