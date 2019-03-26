@@ -10,7 +10,7 @@ import { SitebillEntity } from 'app/_models';
 @Component({
     selector: 'filter-comp',
     templateUrl: './filter.component.html',
-    styles: [`h2, p, div {color:red;}`]
+    styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {
     options: any;
@@ -81,7 +81,7 @@ export class FilterComponent {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    //console.log(result);
+                    console.log(result);
                     if (this.filterService.share_array[this.entity.app_name] != undefined) {
                         this.selectedFilter = this.filterService.share_array[this.entity.app_name][columnName];
                     }
