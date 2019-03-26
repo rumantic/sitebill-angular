@@ -10,7 +10,7 @@ import { SitebillEntity } from 'app/_models';
 @Component({
     selector: 'filter-comp',
     templateUrl: './filter.component.html',
-    styleUrls: ['./filter.component.css']
+    styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent {
     options: any;
