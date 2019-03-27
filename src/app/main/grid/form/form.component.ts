@@ -118,6 +118,13 @@ export class FormComponent implements OnInit {
                 }
             }
 
+            if (this.records[this.rows[i]].type == 'checkbox') {
+                if (this.records[this.rows[i]].value != 1) {
+                    this.form.controls[this.rows[i]].patchValue(false);
+                }
+            }
+
+
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
@@ -226,6 +233,8 @@ export class FormComponent implements OnInit {
             //ql_items.push({ '123': 'test'});
             if (this.text_area_editor_storage[this.rows[i]]) {
                 this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
+            } else if (this.records[this.rows[i]].type == 'checkbox' && this.form.controls[this.rows[i]].value == '') {
+                this.form.controls[this.rows[i]].patchValue(0);
             } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {
                 this.form.controls[this.rows[i]].patchValue(this.modelSerivce.entity.key_value);
             }
