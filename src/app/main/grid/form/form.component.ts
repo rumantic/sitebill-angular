@@ -31,6 +31,8 @@ export class FormComponent implements OnInit {
     public options_storage = {};
     form_submitted: boolean = false;
     rows: any[];
+    tabs: any[];
+    tabs_keys: any[];
     records: any[];
     api_url: string;
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
@@ -166,7 +168,7 @@ export class FormComponent implements OnInit {
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
         const model_name = this._data.app_name;
-        console.log(this.modelSerivce.entity);
+        //console.log(this.modelSerivce.entity);
         this.modelSerivce.entity.app_name = model_name;
         this.modelSerivce.entity.primary_key = primary_key;
         this.modelSerivce.entity.key_value = key_value;
@@ -176,8 +178,13 @@ export class FormComponent implements OnInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
+                    console.log(result);
                     this.records = result.data;
+                    this.tabs = result.tabs;
+                    this.tabs_keys = Object.keys(result.tabs);
                     this.rows = Object.keys(result.data);
+                    console.log(this.rows);
+                    console.log(this.tabs);
                     this.init_form();
                 }
 

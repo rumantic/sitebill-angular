@@ -6,14 +6,9 @@
 
             <div class="h3">Всего фото: {{galleryImages[image_field].length}}</div>
             <div>
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="опции">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #moreMenu="matMenu">
-                    <button mat-menu-item aria-label="Flip widget" (click)="delete_all_images()">
+                    <button color="warn" mat-raised-button type="button" aria-label="Удалить все фото" (click)="delete_all_images()" *ngIf="galleryImages[image_field].length > 0">
                         Удалить все фото
                     </button>
-                </mat-menu>
             </div>
         </div>
         <div class="p-16 pb-24" fxLayout="column" fxLayoutAlign="center center">

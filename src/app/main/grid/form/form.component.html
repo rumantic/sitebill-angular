@@ -14,90 +14,102 @@
         <!--h2 mat-dialog-title>Объект</h2-->
         <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
             <div *ngIf="rows; else loggedOut">
+                <mat-tab-group dynamicHeight *ngIf="tabs_keys">
+
+                    <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
+                        <span *ngFor="let x of tabs[tab]">
+                            <span [ngSwitch]="records[x].type">
+                                <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+
+                                <mat-form-field *ngSwitchCase="'primary_key'">
+                                    <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'dtdatetime'">
+                                    <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp
+                                                    panelClass="example-month-picker">
+                                    </mat-datepicker>
+                                </mat-form-field>
+                                <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
+
+                                <span *ngSwitchCase="'select_box_structure'">
+                                    <ng-select formControlName="{{records[x].name}}"
+                                               [required]="records[x].required_boolean"
+                                               appendTo="body"
+                                               bindValue="id"
+                                               bindLabel="name"
+                                               [items]="options_storage[records[x].name]"
+                                               [clearOnBackspace]="false"
+                                               [searchable]="true"
+                                               [multiple]="false"
+                                               [hideSelected]="false"
+                                               [closeOnSelect]="true"
+                                               placeholder="{{records[x].title}}">
+                                        <ng-template ng-label-tmp let-item="item" let-index="index">
+                                            <span [innerHTML]="item.breadcrumbs">
+                                            </span>
+                                        </ng-template>
+
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+
+                                            <span [innerHTML]="item.name" class="level{{item.level}}">
+                                            </span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                </span>
+
+
+                                <span *ngSwitchCase="'select_by_query'">
+                                    <ng-select formControlName="{{records[x].name}}"
+                                               [required]="records[x].required_boolean"
+                                               appendTo="body"
+                                               bindValue="id"
+                                               bindLabel="value"
+                                               [items]="options_storage[records[x].name]"
+                                               [clearOnBackspace]="false"
+                                               [searchable]="true"
+                                               [multiple]="false"
+                                               [hideSelected]="false"
+                                               [closeOnSelect]="true"
+                                               placeholder="{{records[x].title}}">
+                                        <ng-template ng-label-tmp let-item="item" let-index="index">
+                                            <span [innerHTML]="item.value">
+                                            </span>
+                                        </ng-template>
+
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <span [innerHTML]="item.value">
+                                            </span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                </span>
+
+                                <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+
+                                <mat-form-field *ngSwitchCase="'textarea_editor'">
+                                    <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
+                                    <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchDefault>
+                                    <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
+                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                </mat-form-field>
+                            </span>
+
+                        </span>
+                    </mat-tab>
+
+                </mat-tab-group>
+
                 <span *ngFor="let x of rows">
-                    <span [ngSwitch]="records[x].type">
-                        <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
-
-                        <mat-form-field *ngSwitchCase="'primary_key'">
-                            <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
-                        </mat-form-field>
-
-                        <mat-form-field *ngSwitchCase="'dtdatetime'">
-                            <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [matDatepicker]="dp" placeholder="{{records[x].title}}">
-                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                            <mat-datepicker #dp
-                                            panelClass="example-month-picker">
-                            </mat-datepicker>
-                        </mat-form-field>
-                        <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
-
-                        <span *ngSwitchCase="'select_box_structure'">
-                            <ng-select formControlName="{{records[x].name}}"
-                                       [required]="records[x].required_boolean"
-                                       appendTo="body"
-                                       bindValue="id"
-                                       bindLabel="name"
-                                       [items]="options_storage[records[x].name]"
-                                       [clearOnBackspace]="false"
-                                       [searchable]="true"
-                                       [multiple]="false"
-                                       [hideSelected]="false"
-                                       [closeOnSelect]="true"
-                                       placeholder="{{records[x].title}}">
-                                <ng-template ng-label-tmp let-item="item" let-index="index">
-                                    <span [innerHTML]="item.breadcrumbs">
-                                    </span>
-                                </ng-template>
-
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
-
-                                    <span [innerHTML]="item.name" class="level{{item.level}}">
-                                    </span>
-                                </ng-template>
-                            </ng-select>
-                            <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
-                        </span>
 
 
-                        <span *ngSwitchCase="'select_by_query'">
-                            <ng-select formControlName="{{records[x].name}}"
-                                       [required]="records[x].required_boolean"
-                                       appendTo="body"
-                                       bindValue="id"
-                                       bindLabel="value"
-                                       [items]="options_storage[records[x].name]"
-                                       [clearOnBackspace]="false"
-                                       [searchable]="true"
-                                       [multiple]="false"
-                                       [hideSelected]="false"
-                                       [closeOnSelect]="true"
-                                       placeholder="{{records[x].title}}">
-                                <ng-template ng-label-tmp let-item="item" let-index="index">
-                                    <span [innerHTML]="item.value">
-                                    </span>
-                                </ng-template>
-
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
-                                    <span [innerHTML]="item.value">
-                                    </span>
-                                </ng-template>
-                            </ng-select>
-                            <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
-                        </span>
-
-                        <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean"  matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
-
-                        <mat-form-field *ngSwitchCase="'textarea_editor'">
-                            <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
-                            <input formControlName="{{records[x].name}}" matInput [hidden]="true">
-                            <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field *ngSwitchDefault>
-                            <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
-                            <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                        </mat-form-field>
-                    </span>
                 </span>
 
             </div>
