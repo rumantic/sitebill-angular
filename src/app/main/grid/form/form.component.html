@@ -23,7 +23,7 @@
                         </mat-form-field>
 
                         <mat-form-field *ngSwitchCase="'dtdatetime'">
-                            <input matInput formControlName="{{records[x].name}}" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                            <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                             <mat-datepicker #dp
                                             panelClass="example-month-picker">
@@ -33,6 +33,7 @@
 
                         <span *ngSwitchCase="'select_box_structure'">
                             <ng-select formControlName="{{records[x].name}}"
+                                       [required]="records[x].required_boolean"
                                        appendTo="body"
                                        bindValue="id"
                                        bindLabel="name"
@@ -60,6 +61,7 @@
 
                         <span *ngSwitchCase="'select_by_query'">
                             <ng-select formControlName="{{records[x].name}}"
+                                       [required]="records[x].required_boolean"
                                        appendTo="body"
                                        bindValue="id"
                                        bindLabel="value"
@@ -83,7 +85,7 @@
                             <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                         </span>
 
-                        <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+                        <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean"  matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
                         <mat-form-field *ngSwitchCase="'textarea_editor'">
                             <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
@@ -92,7 +94,7 @@
                         </mat-form-field>
 
                         <mat-form-field *ngSwitchDefault>
-                            <input matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
+                            <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                             <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                         </mat-form-field>
                     </span>

@@ -92,8 +92,10 @@ export class FormComponent implements OnInit {
             //console.log(this.records[this.rows[i]]);
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
+            this.records[this.rows[i]].required_boolean = false;
             if (this.records[this.rows[i]].required == 'on') {
                 form_control_item.setValidators(forbiddenNullValue());
+                this.records[this.rows[i]].required_boolean = true;
             }
 
             this.form.addControl(this.rows[i], form_control_item);
