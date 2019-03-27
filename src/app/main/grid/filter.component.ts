@@ -84,6 +84,7 @@ export class FilterComponent {
 
             case "price": {
                 //this.load_dictionary(this.columnObject.model_name);
+                //console.log(this.filterService.share_array);
                 this.get_max(this.entity, this.columnObject.model_name);
                 this.filter_enable = true;
                 this.price_filter_enable = true;
@@ -107,9 +108,15 @@ export class FilterComponent {
                     this.options_price_zero_10m.ceil = result.message;
                 }
                 if (this.filterService.share_array[this.entity.app_name] != undefined) {
-                    this.price_min = this.filterService.share_array[this.entity.app_name]['price_min'];
-                    this.price_max = this.filterService.share_array[this.entity.app_name]['price_max'];
-                    this.price_selector = 5;
+                    if (this.filterService.share_array[this.entity.app_name]['price_min'] != undefined ) {
+                        this.price_min = this.filterService.share_array[this.entity.app_name]['price_min'];
+                    }
+                    if (this.filterService.share_array[this.entity.app_name]['price_max'] != undefined) {
+                        this.price_max = this.filterService.share_array[this.entity.app_name]['price_max'];
+                    }
+                    if (this.filterService.share_array[this.entity.app_name]['price_min'] != undefined || this.filterService.share_array[this.entity.app_name]['price_max'] != undefined) {
+                        this.price_selector = 5;
+                    }
                 }
             });
     }
@@ -141,7 +148,7 @@ export class FilterComponent {
         }
     }
     onPriceSelectorChange() {
-        console.log(this.price_selector);
+        //console.log(this.price_selector);
         if (this.price_selector == 0) {
             this.filterService.unshare_data(this.entity, 'price_min');
             this.filterService.unshare_data(this.entity, 'price_max');
