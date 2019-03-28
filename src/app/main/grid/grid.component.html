@@ -3,7 +3,7 @@
     </filter-comp>
 </ng-template>
 
-<ng-template #editTmpl let-row="row" let-value="value">
+<ng-template #imageTmpl let-row="row" let-value="value">
     <div *ngIf="value.length > 0">
         <img width="50"
              src="{{api_url}}/img/data/{{value[0].preview}}" />

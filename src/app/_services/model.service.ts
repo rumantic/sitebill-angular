@@ -91,6 +91,12 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
+    load_grid_columns(entity: SitebillEntity) {
+        let body = {};
+        body = { action: 'model', do: 'load_grid_columns', model_name: entity.app_name, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
     uppend_uploads(model_name, key_name, key_value, field_name) {
         let body = {};
         body = { action: 'model', do: 'uppend_uploads', model_name: model_name, primary_key: key_name, key_value: key_value, image_field: field_name, session_key: this.currentUser.session_key };

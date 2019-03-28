@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
     animations: fuseAnimations
 })
 export class DataComponent extends GridComponent {
-    get_grid_items(params: any) {
+    get_grid_items1(params: any) {
         let grid_item;
         grid_item = ['id', 'city_id', 'metro_id', 'district_id', 'street_id', 'user_id', 'topic_id', 'number', 'price', 'image'];
         return grid_item;
@@ -20,7 +20,15 @@ export class DataComponent extends GridComponent {
     setup_apps() {
         this.entity.app_name = 'data';
         this.entity.primary_key = 'id';
+        //this.init_grid();
+        //this.init_default_columns();
 
+
+        
+
+    }
+
+    init_default_columns() {
         this.data_columns = [
             {
                 headerTemplate: this.hdrTpl,
@@ -94,7 +102,7 @@ export class DataComponent extends GridComponent {
             },
             {
                 headerTemplate: this.hdrTpl,
-                cellTemplate: this.editTmpl,
+                cellTemplate: this.imageTmpl,
                 type: 'image',
                 ngx_name: 'image.title',
                 model_name: 'image',
@@ -103,5 +111,6 @@ export class DataComponent extends GridComponent {
             },
 
         ];
+        //console.log(this.data_columns);
     }
 }

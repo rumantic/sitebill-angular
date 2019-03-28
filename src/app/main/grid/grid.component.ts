@@ -46,6 +46,7 @@ export class GridComponent implements OnInit, OnDestroy
     api_url: string;
     records: any[];
     columns = [];
+    columns_index = [];
     data_columns = [];
     columns_client_all = [];
     columns_data_all = [];
@@ -62,7 +63,7 @@ export class GridComponent implements OnInit, OnDestroy
     entity: SitebillEntity;
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
-    @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+    @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
@@ -147,11 +148,17 @@ export class GridComponent implements OnInit, OnDestroy
             app_root_element = this.document.getElementById('app_root');
         }
     }
+
+
+
     setup_apps() {
         //console.log('setup client');
 
         this.entity.app_name = 'client';
         this.entity.primary_key = 'client_id';
+        //this.init_grid();
+
+
 
         this.columns_client_all = [
             {
@@ -221,111 +228,19 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    load_selected() {
-        const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
+    init_grid(params) {
+        this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log('selected > ');
-                //console.log(result.selected);
-                /*
-                if (result.selected) {
-                    //this.selected = result.selected;
-                    this.load_grid_data(app_name, result.selected, []);
-                } else {
-                    this.load_grid_data(app_name, [], []);
-                }
-                */
-                this.refreash();
-
-
-                this.loadingIndicator = false;
+                console.log(result);
+                this.load_grid_data(this.entity.app_name, result.data, params);
             });
     }
 
-    toggleUserGet(row) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.refreash();
-            });
-
-    }
-
-    declineClient(row) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = false;
-        //dialogConfig.width = '100%';
-        //dialogConfig.height = '100%';
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
-
-        let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
-        dialogRef.afterClosed()
-            .subscribe(() => {
-                this.refreash();
-            })
-        return;
-
-        /*
-        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.refreash();
-            });
-        */
-
-    }
-
-
-    init_selected_rows(rows, selected) {
-        if (selected.length == 0) {
-            return;
-        }
-        for (let entry of selected) {
-            rows.forEach((row, index) => {
-                if (row.id.value == entry.id.value) {
-                    this.selected.push(rows[index]);
-                }
-            });
-        }
-    }
-
-    refreash() {
-        //this.load_grid_data(this.app_name, [], []);
-        //const params = { owner: true };
-        //this.load_grid_data(this.app_name, [], params);
-        this.setPage({ offset: this.page.pageNumber });
-    }
-
-    /**
-       * Populate the table with new data based on the page number
-       * @param page The page to select
-       */
-    setPage(pageInfo) {
-        this.page.pageNumber = pageInfo.offset;
-        const params = { owner: true };
-        this.load_grid_data(this.entity.app_name, [], params);
-    }
 
 
     get_grid_items(params: any) {
+        return this.entity.columns;
         let grid_item;
 
         if (params.owner) {
@@ -333,10 +248,11 @@ export class GridComponent implements OnInit, OnDestroy
         } else {
             grid_item = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'topic_choice'];
         }
+        console.log(this.entity.columns);
         return grid_item;
     }
 
-    load_grid_data(app_name, selected, params: any) {
+    load_grid_data(app_name, grid_columns: string[], params: any) {
         //console.log('load_grid_data');
         //console.log(params);
         let filter_params_json = {};
@@ -354,35 +270,76 @@ export class GridComponent implements OnInit, OnDestroy
         let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
 
-        this.modelSerivce.load(app_name, this.get_grid_items(params), filter_params_json, params.owner, page_number, this.page.size)
+        this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(result);
+                console.log(result);
                 //this.item_model = result.rows[0];
                 this.item_model = result.columns;
+                this.columns_index = result.columns_index;
+                console.log(this.item_model);
                 this.loadGridComplete = true;
                 this.page.totalElements = result.total_count;
                 this.page.size = result.per_page;
+                this.compose_columns(result.grid_columns, this.item_model);
 
                 //console.log(this.item_model);
-                if (app_name == 'client') {
-                    if (params.owner) {
-                        this.rows_my = result.rows;
-                        this.total_my = result.rows.length;
-                    } else {
-                        this.rows = result.rows;
-                        this.total_all = result.rows.length;
-                    }
-                } else {
-                    this.rows_data = result.rows;
-                    this.data_all = result.rows.length;
-                }
+                this.rows_data = result.rows;
+                this.data_all = result.rows.length;
 
-                this.init_selected_rows(this.rows, selected);
+                //this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
             });
 
     }
+
+    compose_columns(columns_list, model) {
+        //проходим по columns_list
+        //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
+        let control_column = {
+            headerTemplate: this.hdrTpl,
+            cellTemplate: this.controlTmpl,
+            type: 'primary_key',
+            ngx_name: this.entity.primary_key + '.title',
+            model_name: this.entity.primary_key,
+            title: '',
+            prop: this.entity.primary_key + '.value'
+        }
+        this.data_columns.push(control_column);
+
+        columns_list.forEach((row, index) => {
+            console.log(model[this.columns_index[row]]);
+            this.entity.add_column(model[this.columns_index[row]].name);
+            let cellTemplate = null;
+            let prop = '';
+            switch (model[this.columns_index[row]].type) {
+                case 'uploads':
+                    console.log('uploads');
+                    cellTemplate = this.imageTmpl;
+                    prop = model[this.columns_index[row]].name + '.value';
+                    break;
+                default:
+                    cellTemplate = null;
+                    prop = model[this.columns_index[row]].name + '.value_string';
+
+            }
+
+            let column = {
+                headerTemplate: this.hdrTpl,
+                cellTemplate: cellTemplate,
+                type: model[this.columns_index[row]].type,
+                ngx_name: model[this.columns_index[row]].name + '.title',
+                model_name: model[this.columns_index[row]].name,
+                title: model[this.columns_index[row]].title,
+                prop: prop
+            }
+            this.data_columns.push(column);
+        });
+        console.log(this.data_columns);
+
+    }
+
+
 
 
     updateValue(event, cell, rowIndex, row) {
@@ -558,4 +515,106 @@ export class GridComponent implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
     }
     
+    load_selected() {
+        const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log('selected > ');
+                //console.log(result.selected);
+                /*
+                if (result.selected) {
+                    //this.selected = result.selected;
+                    this.load_grid_data(app_name, result.selected, []);
+                } else {
+                    this.load_grid_data(app_name, [], []);
+                }
+                */
+                this.refreash();
+
+
+                this.loadingIndicator = false;
+            });
+    }
+
+    toggleUserGet(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refreash();
+            });
+
+    }
+
+    declineClient(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        //dialogConfig.width = '100%';
+        //dialogConfig.height = '100%';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+
+        let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
+        dialogRef.afterClosed()
+            .subscribe(() => {
+                this.refreash();
+            })
+        return;
+
+        /*
+        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refreash();
+            });
+        */
+
+    }
+
+
+    init_selected_rows(rows, selected) {
+        if (selected.length == 0) {
+            return;
+        }
+        for (let entry of selected) {
+            rows.forEach((row, index) => {
+                if (row.id.value == entry.id.value) {
+                    this.selected.push(rows[index]);
+                }
+            });
+        }
+    }
+
+    refreash() {
+        //this.load_grid_data(this.app_name, [], []);
+        //const params = { owner: true };
+        //this.load_grid_data(this.app_name, [], params);
+        this.setPage({ offset: this.page.pageNumber });
+    }
+
+    /**
+       * Populate the table with new data based on the page number
+       * @param page The page to select
+       */
+    setPage(pageInfo) {
+        this.page.pageNumber = pageInfo.offset;
+        const params = { owner: true };
+        this.init_grid(params);
+    }
 }

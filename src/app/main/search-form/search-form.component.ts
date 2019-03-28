@@ -245,12 +245,12 @@ export class SearchFormComponent implements OnInit {
 
     load_dictionaries() {
         if (!this.dictionaries_loaded) {
-            this.load_dictionary('topic_id');
             this.load_dictionary('walls');
             this.load_dictionary('district_id');
             this.load_dictionary('street_id');
             this.load_dictionary('complex_id');
             this.load_dictionary('city_id');
+            this.load_dictionary('topic_id');
         }
         this.dictionaries_loaded = true;
     }
