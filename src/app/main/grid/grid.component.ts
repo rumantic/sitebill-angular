@@ -232,7 +232,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 this.load_grid_data(this.entity.app_name, result.data, params);
             });
     }
@@ -277,7 +277,7 @@ export class GridComponent implements OnInit, OnDestroy
                 //this.item_model = result.rows[0];
                 this.item_model = result.columns;
                 this.columns_index = result.columns_index;
-                console.log(this.item_model);
+                //console.log(this.item_model);
                 this.loadGridComplete = true;
                 this.page.totalElements = result.total_count;
                 this.page.size = result.per_page;
@@ -614,7 +614,8 @@ export class GridComponent implements OnInit, OnDestroy
        */
     setPage(pageInfo) {
         this.page.pageNumber = pageInfo.offset;
-        const params = { owner: true };
+        //const params = { owner: true };
+        const params = {};
         this.init_grid(params);
     }
 }
