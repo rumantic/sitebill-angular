@@ -117,7 +117,7 @@
                              fxFlex="100">
                     <!-- Front -->
                     <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                        <ngx-datatable class="material"
+                        <ngx-datatable *ngIf="compose_complete" class="material"
                                        [rows]="rows_data"
                                        [columns]="data_columns"
                                        [loadingIndicator]="loadingIndicator"

@@ -48,6 +48,7 @@ export class GridComponent implements OnInit, OnDestroy
     columns = [];
     columns_index = [];
     data_columns = [];
+    compose_complete: boolean = false;
     columns_client_all = [];
     columns_data_all = [];
     columns_client_my = [];
@@ -130,12 +131,12 @@ export class GridComponent implements OnInit, OnDestroy
         this.setup_apps();
         this.rows = [];
         this.rows_my = [];
-        this.refreash();
+        this.refresh();
 
         this.filterService.share.subscribe((datas) => {
-            this.filterSharedData = datas;
+            //this.filterSharedData = datas;
             this.ngxHeaderHeight = "auto";
-            this.refreash();
+            this.refresh();
         });
 
     }
@@ -294,6 +295,10 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     compose_columns(columns_list, model) {
+        console.log('compose columns');
+        if (this.compose_complete) {
+            return;
+        }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         let control_column = {
@@ -335,6 +340,7 @@ export class GridComponent implements OnInit, OnDestroy
             }
             this.data_columns.push(column);
         });
+        this.compose_complete = true;
         console.log(this.data_columns);
 
     }
@@ -531,7 +537,7 @@ export class GridComponent implements OnInit, OnDestroy
                     this.load_grid_data(app_name, [], []);
                 }
                 */
-                this.refreash();
+                this.refresh();
 
 
                 this.loadingIndicator = false;
@@ -549,7 +555,7 @@ export class GridComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
-                this.refreash();
+                this.refresh();
             });
 
     }
@@ -569,7 +575,7 @@ export class GridComponent implements OnInit, OnDestroy
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()
             .subscribe(() => {
-                this.refreash();
+                this.refresh();
             })
         return;
 
@@ -601,7 +607,8 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
 
-    refreash() {
+    refresh() {
+        console.log('refresh');
         //this.load_grid_data(this.app_name, [], []);
         //const params = { owner: true };
         //this.load_grid_data(this.app_name, [], params);
