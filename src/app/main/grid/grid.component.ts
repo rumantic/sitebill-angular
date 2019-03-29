@@ -117,7 +117,7 @@ export class GridComponent implements OnInit, OnDestroy
                     hidden: false
                 },
                 toolbar: {
-                    hidden: true
+                    hidden: false
                 },
                 footer: {
                     hidden: true
@@ -308,13 +308,13 @@ export class GridComponent implements OnInit, OnDestroy
         this.data_columns.push(control_column);
 
         columns_list.forEach((row, index) => {
-            console.log(model[this.columns_index[row]]);
+            //console.log(model[this.columns_index[row]]);
             this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';
             switch (model[this.columns_index[row]].type) {
                 case 'uploads':
-                    console.log('uploads');
+                    //console.log('uploads');
                     cellTemplate = this.imageTmpl;
                     prop = model[this.columns_index[row]].name + '.value';
                     break;

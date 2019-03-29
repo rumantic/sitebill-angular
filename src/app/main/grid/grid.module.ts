@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -40,6 +41,7 @@ import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
+import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/settings.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
@@ -100,6 +102,7 @@ const routes = [
         GalleryComponent,
         FormComponent,
         SnackBarComponent,
+        GridSettingsSidenavComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -143,7 +146,8 @@ const routes = [
         QuillModule,
         NgxUploaderModule,
         NgxGalleryModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        DragDropModule
     ],
     exports: [
         NgxUploaderModule

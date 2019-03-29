@@ -97,27 +97,16 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
+    format_grid(entity: SitebillEntity, grid_items: string[]) {
+        let body = {};
+        body = { action: 'model', do: 'format_grid', model_name: entity.app_name, grid_items: grid_items, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
     uppend_uploads(model_name, key_name, key_value, field_name) {
         let body = {};
         body = { action: 'model', do: 'uppend_uploads', model_name: model_name, primary_key: key_name, key_value: key_value, image_field: field_name, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
-    /*
-    getById(id: number) {
-        return this.http.get('/api/users/' + id);
-    }
-
-    create(user: User) {
-        return this.http.post('/api/users', user);
-    }
-
-    update(user: User) {
-        return this.http.put('/api/users/' + user.id, user);
-    }
-
-    delete(id: number) {
-        return this.http.delete('/api/users/' + id);
-    }
-    */
 }
