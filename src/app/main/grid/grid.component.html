@@ -91,7 +91,7 @@
                 <!-- / BOARD NAME -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
-                    <button mat-icon-button (click)="refreash()" matTooltip="Обновить таблицу">
+                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу">
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
@@ -149,6 +149,6 @@
     </div>
 
     <mat-sidenav #settingsSidenav position="end">
-        <grid-settings [entity]="entity"></grid-settings>
+        <grid-settings [entity]="entity" [grid_items]="grid_columns_for_compose" *ngIf="compose_complete"></grid-settings>
     </mat-sidenav>
 </mat-sidenav-container>
