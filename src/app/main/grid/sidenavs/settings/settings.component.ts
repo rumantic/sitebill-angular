@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModelService } from 'app/_services/model.service';
 import { SitebillEntity, SitebillModelItem } from 'app/_models';
+import { FilterService } from 'app/_services/filter.service';
 
 @Component({
     selector     : 'grid-settings',
@@ -34,6 +35,7 @@ export class GridSettingsSidenavComponent implements OnInit
 
     constructor(
         private modelSerivce: ModelService,
+        private filterService: FilterService
     )
     {
         this._unsubscribeAll = new Subject();
@@ -136,6 +138,7 @@ export class GridSettingsSidenavComponent implements OnInit
         this.modelSerivce.format_grid(this.entity, new_grid_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
+                this.filterService.empty_share();
             });
 
     }

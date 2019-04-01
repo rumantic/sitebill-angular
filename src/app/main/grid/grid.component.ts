@@ -303,11 +303,11 @@ export class GridComponent implements OnInit, OnDestroy
         console.log(this.columns_index);
 
         if (this.compose_complete) {
-            return;
+            //return;
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-
+        this.data_columns = [];
         columns_list.forEach((row, index) => {
             console.log(model);
             console.log(model[this.columns_index[row]].name);
