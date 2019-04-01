@@ -28,6 +28,7 @@ export class GridSettingsSidenavComponent implements OnInit
     active_columns: SitebillModelItem[];
     not_active_columns: SitebillModelItem[];
     protected _unsubscribeAll: Subject<any>;
+    init_columns_complete: boolean = false;
 
 
 
@@ -64,8 +65,9 @@ export class GridSettingsSidenavComponent implements OnInit
         }
 
         this.active_columns = [];
+        this.not_active_columns = [];
         //this.not_active_columns = this.entity.model;
-        this.not_active_columns = Object.assign([], this.entity.model);
+        //this.not_active_columns = Object.assign([], this.entity.model);
 
 
         console.log(this.entity.model);
@@ -76,15 +78,20 @@ export class GridSettingsSidenavComponent implements OnInit
         //массив активных колонок
         grid_items.forEach((item, index) => {
             this.active_columns.push(this.entity.model[this.entity.columns_index[item]]);
-            let index_var = this.entity.columns_index[item];
-            console.log(index_var);
-            let index_number = parseInt(index_var);
-            console.log(index_number);
-            this.not_active_columns.splice(index_number, 1);
-            //not_active_columns.splice(0, 1);
-            //console.log(item);
-            //console.log(this.entity.columns_index[item]);
         });
+
+        this.entity.model.forEach((item, index) => {
+            if (grid_items.indexOf(item.name) == -1 ) {
+                console.log(item.name);
+                this.not_active_columns.push(item);
+            }
+            //if (this.entity.columns_index[item.name]  != ) {
+            //}
+
+        });
+
+
+        this.init_columns_complete = true;
         /*
 
         */
