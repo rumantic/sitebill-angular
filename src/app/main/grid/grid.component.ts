@@ -66,6 +66,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
+    @ViewChild('textTmpl') textTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
@@ -313,6 +314,12 @@ export class GridComponent implements OnInit, OnDestroy
             let cellTemplate = null;
             let prop = '';
             switch (model[this.columns_index[row]].type) {
+                case 'textarea_editor':
+                    console.log(model[this.columns_index[row]].name);
+                    cellTemplate = this.textTmpl;
+                    prop = model[this.columns_index[row]].name + '.value';
+                    break;
+
                 case 'uploads':
                     //console.log('uploads');
                     cellTemplate = this.imageTmpl;

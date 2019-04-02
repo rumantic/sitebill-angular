@@ -10,6 +10,10 @@
     </div>
 </ng-template>
 
+<ng-template #textTmpl let-row="row" let-value="value">
+    <div  [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
+</ng-template>
+
 <ng-template #controlTmpl let-row="row" let-value="value">
     <mat-checkbox class="form-checkbox"></mat-checkbox>
     <div class="control_hover">

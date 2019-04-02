@@ -5,11 +5,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 
 export class ReplacePipe implements PipeTransform {
-    transform(value: string, term: string): string {
-        if (value == undefined) {
-            return '';
+    transform(value: string, regexValue: string, replaceValue: string): any {
+        let pattern = new RegExp(regexValue, 'g');
+
+        if (regexValue == 'htmlEntities') {
+            return this.htmlEntities(value);
+        } else {
+            pattern = new RegExp(regexValue, 'g');
         }
-        value = '<span class="highlight" style="color: green;">' + term + '</span> ' + value;
-        return value;
+        return value.replace(pattern, replaceValue);
+    }
+
+    htmlEntities(str) {
+        return String(str).replace(/&nbsp;/g, ' ').replace(/&laquo/g, '"').replace(/&raquo;/g, '"').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&mdash;/g, ' - ');
     }
 }

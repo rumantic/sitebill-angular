@@ -52,6 +52,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { GalleryComponent } from 'app/main/gallery/gallery.component';
 import { SnackBarComponent } from '../snackbar/snackbar.component';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ReplacePipe } from 'app/pipes/replace.pipe';
 
 
 const routes = [
@@ -103,6 +104,7 @@ const routes = [
         FormComponent,
         SnackBarComponent,
         GridSettingsSidenavComponent,
+        ReplacePipe,
     ],
     imports     : [
         RouterModule.forChild(routes),
