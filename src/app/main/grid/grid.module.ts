@@ -10,7 +10,7 @@ import {
     MatButtonModule, MatCheckboxModule, MatGridListModule,
     MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
     MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
-    MatAutocompleteModule, MatButtonToggleModule, MatExpansionModule, MAT_DATE_LOCALE
+    MatAutocompleteModule, MatButtonToggleModule, MatExpansionModule, MatBadgeModule, MAT_DATE_LOCALE
 } from '@angular/material';
 import {
     MatSnackBarModule
@@ -140,6 +140,7 @@ const routes = [
         MatSnackBarModule,
         MatButtonToggleModule,
         MatExpansionModule,
+        MatBadgeModule,
 
         NgSelectModule,
         Ng5SliderModule,

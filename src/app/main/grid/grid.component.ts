@@ -24,7 +24,9 @@ import { SitebillEntity } from 'app/_models';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
 
-
+import localeRu from '@angular/common/locales/ru';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeRu, 'ru');
 
 @Component({
     selector   : 'grid',
@@ -66,7 +68,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
+    @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
     @ViewChild('textTmpl') textTmpl: TemplateRef<any>;
+    @ViewChild('checkboxTmpl') checkboxTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
@@ -311,6 +315,7 @@ export class GridComponent implements OnInit, OnDestroy
         let control_column = {
             headerTemplate: this.hdrTpl,
             cellTemplate: this.controlTmpl,
+            width: 50,
             type: 'primary_key',
             ngx_name: this.entity.primary_key + '.title',
             model_name: this.entity.primary_key,
@@ -331,6 +336,16 @@ export class GridComponent implements OnInit, OnDestroy
                 case 'textarea_editor':
                     console.log(model[this.columns_index[row]].name);
                     cellTemplate = this.textTmpl;
+                    prop = model[this.columns_index[row]].name + '.value';
+                    break;
+
+                case 'dtdatetime':
+                    cellTemplate = this.dtdatetimeTmpl;
+                    prop = model[this.columns_index[row]].name + '.value';
+                    break;
+
+                case 'checkbox':
+                    cellTemplate = this.checkboxTmpl;
                     prop = model[this.columns_index[row]].name + '.value';
                     break;
 

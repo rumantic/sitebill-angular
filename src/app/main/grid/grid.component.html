@@ -4,16 +4,27 @@
 </ng-template>
 
 <ng-template #imageTmpl let-row="row" let-value="value">
-    <div *ngIf="value.length > 0">
+    <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
         <img width="50"
              src="{{api_url}}/img/data/{{value[0].preview}}" />
-        <div class="image_count">{{value.length}}</div>
     </div>
 </ng-template>
 
 <ng-template #textTmpl let-row="row" let-value="value">
-    <div  [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
+    <div [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
 </ng-template>
+
+<ng-template #checkboxTmpl let-row="row" let-value="value">
+    <a>
+        <mat-icon aria-label="Да" *ngIf="value == 1">check_box</mat-icon>
+        <mat-icon aria-label="Нет" *ngIf="value == 0">check_box_outline_blank</mat-icon>
+    </a>
+</ng-template>
+<ng-template #dtdatetimeTmpl let-row="row" let-value="value">
+    {{value|date}}
+</ng-template>
+
+
 
 <ng-template #controlTmpl let-row="row" let-value="value">
     <mat-checkbox class="form-checkbox"></mat-checkbox>

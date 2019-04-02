@@ -66,27 +66,15 @@ mat-sidenav-container {
 
 :host /deep/ .datatable-body-row:hover .control_hover {
     display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
     width: inherit;
     background-color: lightgray;
     overflow: visible;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
 :host /deep/ .datatable-body-row:hover .datatable-body-cell {
     overflow: visible !important;
 }
 
-:host /deep/ .image_count {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    top: 8px;
-    border-radius: 9px;
-    padding: 0 5px;
-    font-size: 11px;
-    text-align: center;
-    background-color: #039be5;
-    color: white;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
-}
