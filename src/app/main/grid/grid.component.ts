@@ -235,7 +235,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 this.load_grid_data(this.entity.app_name, result.data, params);
             });
     }
@@ -262,16 +262,14 @@ export class GridComponent implements OnInit, OnDestroy
             });
         }
         let page_number = this.page.pageNumber + 1;
-        console.log(filter_params_json);
+        //console.log(filter_params_json);
 
         this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                console.log(result_f1);
+                //console.log(result_f1);
                 //this.item_model = result.rows[0];
-                let tmp_model = result_f1.columns;
-                console.log(tmp_model);
-                this.entity.model = tmp_model;
+                this.entity.model = result_f1.columns;
                 //this.item_model = result.columns;
                 this.columns_index = result_f1.columns_index;
                 this.entity.default_columns_list = result_f1.default_columns_list;
@@ -295,12 +293,12 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     compose_columns(columns_list, model) {
-        console.log('compose columns');
-        console.log(model);
-        console.log(model.length);
-        console.log(model[0]);
-        console.log(columns_list);
-        console.log(this.columns_index);
+        //console.log('compose columns');
+        //console.log(model);
+        //console.log(model.length);
+        //console.log(model[0]);
+        //console.log(columns_list);
+        //console.log(this.columns_index);
 
         if (this.compose_complete) {
             //return;
@@ -309,8 +307,8 @@ export class GridComponent implements OnInit, OnDestroy
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         this.data_columns = [];
         columns_list.forEach((row, index) => {
-            console.log(model);
-            console.log(model[this.columns_index[row]].name);
+            //console.log(model);
+            //console.log(model[this.columns_index[row]].name);
             this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';

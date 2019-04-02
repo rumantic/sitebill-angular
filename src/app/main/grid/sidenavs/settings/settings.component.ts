@@ -72,10 +72,10 @@ export class GridSettingsSidenavComponent implements OnInit
         //this.not_active_columns = Object.assign([], this.entity.model);
 
 
-        console.log(this.entity.model);
-        console.log(grid_items);
-        console.log(this.entity.columns_index);
-        console.log(this.not_active_columns);
+        //console.log(this.entity.model);
+        //console.log(grid_items);
+        //console.log(this.entity.columns_index);
+        //console.log(this.not_active_columns);
 
         //массив активных колонок
         grid_items.forEach((item, index) => {
@@ -84,7 +84,7 @@ export class GridSettingsSidenavComponent implements OnInit
 
         this.entity.model.forEach((item, index) => {
             if (grid_items.indexOf(item.name) == -1 ) {
-                console.log(item.name);
+                //console.log(item.name);
                 this.not_active_columns.push(item);
             }
             //if (this.entity.columns_index[item.name]  != ) {
@@ -99,27 +99,12 @@ export class GridSettingsSidenavComponent implements OnInit
         */
         //this.not_active_columns.splice(3, 1);
 
-        console.log(this.active_columns);
-        console.log(this.not_active_columns);
-
-
-        /*
-        this.modelSerivce.load_grid_columns(this.entity)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                console.log(result);
-
-                //массив неактивных колонок
-
-                //console.log(result);
-                //this.grid_items = result.data;
-                //this.load_grid_data(this.entity.app_name, result.data, params);
-            });
-            */
+        //console.log(this.active_columns);
+        //console.log(this.not_active_columns);
     }
 
     drop(event: CdkDragDrop<string[]>) {
-        console.log('drop');
+        //console.log('drop');
 
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
