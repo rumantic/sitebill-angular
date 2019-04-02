@@ -53,6 +53,7 @@ import { GalleryComponent } from 'app/main/gallery/gallery.component';
 import { SnackBarComponent } from '../snackbar/snackbar.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
+import { UserComponent } from './user/user.component';
 
 
 const routes = [
@@ -73,6 +74,14 @@ const routes = [
 
     },
     {
+        path: 'user',
+        component: UserComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
         path: 'client',
         component: GridComponent,
         resolve: {
@@ -86,6 +95,7 @@ const routes = [
         GridComponent,
         DataComponent,
         NewsComponent,
+        UserComponent,
         FilterComponent,
         CourseDialogComponent,
         ViewModalComponent,
