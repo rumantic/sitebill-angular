@@ -55,6 +55,11 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
+    update_column_meta(model_name, column_name, params) {
+        const body = { action: 'model', do: 'update_column_meta', model_name: model_name, column_name: column_name, params: params, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
     delete(model_name, primary_key, key_value) {
         const body = { action: 'model', do: 'delete', model_name: model_name, key_value: key_value, primary_key: primary_key, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);

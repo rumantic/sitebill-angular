@@ -48,6 +48,7 @@ export class GridComponent implements OnInit, OnDestroy
     api_url: string;
     records: any[];
     columns = [];
+    grid_meta = [];
     columns_index = [];
     grid_columns_for_compose = [];
     data_columns = [];
@@ -273,7 +274,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //console.log(result_f1);
+                console.log(result_f1);
                 //this.item_model = result.rows[0];
                 this.entity.model = result_f1.columns;
                 //this.item_model = result.columns;
@@ -284,7 +285,8 @@ export class GridComponent implements OnInit, OnDestroy
                 this.loadGridComplete = true;
                 this.page.totalElements = result_f1.total_count;
                 this.page.size = result_f1.per_page;
-                this.grid_columns_for_compose = result_f1.grid_columns;
+                this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                this.grid_meta = result_f1.grid_columns.meta;
                 let model_compose = this.entity.model;
                 this.compose_columns(this.grid_columns_for_compose, model_compose);
 
@@ -331,13 +333,21 @@ export class GridComponent implements OnInit, OnDestroy
             this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';
+            let width = 150;
             prop = model[this.columns_index[row]].name + '.value';
+            if (this.grid_meta != null) {
+                if (this.grid_meta[model[this.columns_index[row]].name] != null) {
+                    width = this.grid_meta[model[this.columns_index[row]].name].width;
+                    //console.log(model[this.columns_index[row]].name);
+                    //console.log(width);
+                }
+            }
 
             switch (model[this.columns_index[row]].type) {
                 case 'safe_string':
                 case 'textarea':
                 case 'textarea_editor':
-                    console.log(model[this.columns_index[row]].name);
+                    //console.log(model[this.columns_index[row]].name);
                     cellTemplate = this.textTmpl;
                     break;
 
@@ -370,6 +380,7 @@ export class GridComponent implements OnInit, OnDestroy
                 ngx_name: model[this.columns_index[row]].name + '.title',
                 model_name: model[this.columns_index[row]].name,
                 title: model[this.columns_index[row]].title,
+                width: width,
                 prop: prop
             }
             this.data_columns.push(column);
@@ -660,5 +671,15 @@ export class GridComponent implements OnInit, OnDestroy
         //const params = { owner: true };
         const params = {};
         this.init_grid(params);
+    }
+
+    onResize(event) {
+        const params = {width:event.newValue};
+
+        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, params)
+            .subscribe((response: any) => {
+                console.log(response);
+            });
+
     }
 }

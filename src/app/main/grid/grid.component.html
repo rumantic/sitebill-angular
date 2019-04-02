@@ -152,6 +152,7 @@
                                        [limit]="page.size"
                                        [selectionType]="'checkbox'"
                                        (activate)="onActivate($event)"
+                                       (resize)="onResize($event)"
                                        (page)='setPage($event)'>
                         </ngx-datatable>
                     </div>
