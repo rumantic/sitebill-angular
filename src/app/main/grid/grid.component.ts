@@ -68,6 +68,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
+    @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
     @ViewChild('textTmpl') textTmpl: TemplateRef<any>;
     @ViewChild('checkboxTmpl') checkboxTmpl: TemplateRef<any>;
@@ -330,28 +331,31 @@ export class GridComponent implements OnInit, OnDestroy
             this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';
+            prop = model[this.columns_index[row]].name + '.value';
+
             switch (model[this.columns_index[row]].type) {
                 case 'safe_string':
                 case 'textarea':
                 case 'textarea_editor':
                     console.log(model[this.columns_index[row]].name);
                     cellTemplate = this.textTmpl;
-                    prop = model[this.columns_index[row]].name + '.value';
                     break;
 
                 case 'dtdatetime':
                     cellTemplate = this.dtdatetimeTmpl;
-                    prop = model[this.columns_index[row]].name + '.value';
+                    break;
+
+                case 'geodata':
+                    cellTemplate = this.geoTmpl;
+                    prop = model[this.columns_index[row]].name + '.value_string';
                     break;
 
                 case 'checkbox':
                     cellTemplate = this.checkboxTmpl;
-                    prop = model[this.columns_index[row]].name + '.value';
                     break;
 
                 case 'uploads':
                     cellTemplate = this.imageTmpl;
-                    prop = model[this.columns_index[row]].name + '.value';
                     break;
                 default:
                     cellTemplate = null;
