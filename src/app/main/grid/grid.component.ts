@@ -307,6 +307,18 @@ export class GridComponent implements OnInit, OnDestroy
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         this.data_columns = [];
+
+        let control_column = {
+            headerTemplate: this.hdrTpl,
+            cellTemplate: this.controlTmpl,
+            type: 'primary_key',
+            ngx_name: this.entity.primary_key + '.title',
+            model_name: this.entity.primary_key,
+            title: '',
+            prop: this.entity.primary_key + '.value'
+        }
+        this.data_columns.push(control_column);
+
         columns_list.forEach((row, index) => {
             //console.log(model);
             //console.log(model[this.columns_index[row]].name);
@@ -314,6 +326,8 @@ export class GridComponent implements OnInit, OnDestroy
             let cellTemplate = null;
             let prop = '';
             switch (model[this.columns_index[row]].type) {
+                case 'safe_string':
+                case 'textarea':
                 case 'textarea_editor':
                     console.log(model[this.columns_index[row]].name);
                     cellTemplate = this.textTmpl;
@@ -321,7 +335,6 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
 
                 case 'uploads':
-                    //console.log('uploads');
                     cellTemplate = this.imageTmpl;
                     prop = model[this.columns_index[row]].name + '.value';
                     break;
