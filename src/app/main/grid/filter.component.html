@@ -18,6 +18,24 @@
     </ng-template>
 </ng-select>
 
+<ng-select *ngIf="string_filter_enable"
+           [(ngModel)]="selectedFilter"
+           appendTo="body"
+           [items]="options"
+           [clearOnBackspace]="false"
+           class="select_options"
+           [searchable]="true"
+           [multiple]="true"
+           [hideSelected]="false"
+           [closeOnSelect]="false"
+           (ngModelChange)="selectItem($event)"
+           placeholder="{{columnObject.title}}">
+
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item}}
+    </ng-template>
+</ng-select>
+
 <ng-select *ngIf="price_filter_enable"
            [(ngModel)]="price_selector"
            bindValue="id"
@@ -44,10 +62,10 @@
     <ng-template ng-option-tmp let-item="item" let-index="index">
         <div *ngIf="price_options[index].value == 'range'">
             <mat-form-field fxFlex="50" class=" pl-4">
-                <input type="text" aria-label="Number" matInput [(ngModel)]="price_min" >
+                <input type="text" aria-label="Number" matInput [(ngModel)]="price_min">
             </mat-form-field>
             <mat-form-field fxFlex="50" class="pl-4">
-                <input type="text" aria-label="Number" matInput [(ngModel)]="price_max" >
+                <input type="text" aria-label="Number" matInput [(ngModel)]="price_max">
             </mat-form-field>
         </div>
         <span *ngIf="price_options[index].value != 'range'">

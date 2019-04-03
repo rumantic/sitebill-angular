@@ -22,6 +22,7 @@ export class FilterComponent {
     selectedFilter: any;
     filter_enable: boolean = false;
     select_filter_enable: boolean = false;
+    string_filter_enable: boolean = false;
 
     price_selector: any;
     price_filter_enable: boolean = false;
@@ -67,10 +68,19 @@ export class FilterComponent {
     }
 
     ngOnInit(): void {
+
         switch (this.columnObject.type) {
             case "select_by_query": {
                 this.load_dictionary(this.columnObject.model_name);
                 this.select_filter_enable = true;
+                this.filter_enable = true;
+                break;
+            }
+
+            case "mobilephone": 
+            case "safe_string": {
+                this.load_dictionary(this.columnObject.model_name);
+                this.string_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
@@ -131,6 +141,7 @@ export class FilterComponent {
         this.modelSerivce.load_dictionary_model(this.entity.app_name, columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+                //console.log(columnName);
                 //console.log(result);
                 if (this.filterService.share_array[this.entity.app_name] != undefined) {
                     this.selectedFilter = this.filterService.share_array[this.entity.app_name][columnName];
