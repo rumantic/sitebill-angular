@@ -1,36 +1,43 @@
 <div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
-        <!-- SIDENAV HEADER -->
-        <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>Порядок колонок</div>
-        </div>
-        <!-- / SIDENAV HEADER -->
-        <!-- SIDENAV CONTENT -->
-        <div class="content p-8" fusePerfectScrollbar>
-            <div cdkDropList class="example-list" 
-                 #active_columns_list="cdkDropList"
-                 [cdkDropListData]="active_columns"
-                 [cdkDropListConnectedTo]="[not_active_columns_list]"
-                 (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let item of active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center" fxFlex="1 0 auto">
+            <div fxFlex="50" fusePerfectScrollbar>
+                <!-- SIDENAV HEADER -->
+                <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>Порядок колонок</div>
+                </div>
+                <!-- / SIDENAV HEADER -->
+                <!-- SIDENAV CONTENT -->
+                <div class="content p-8" fusePerfectScrollbar>
+                    <div cdkDropList class="example-list"
+                         #active_columns_list="cdkDropList"
+                         [cdkDropListData]="active_columns"
+                         [cdkDropListConnectedTo]="[not_active_columns_list]"
+                         (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let item of active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
+                    </div>
+                </div>
+                <!-- / SIDENAV CONTENT -->
+            </div>
+            <div fxFlex="50" fusePerfectScrollbar>
+                <!-- SIDENAV HEADER -->
+                <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>Выбрать дополнительные колонки</div>
+                </div>
+                <!-- / SIDENAV HEADER -->
+                <!-- SIDENAV CONTENT -->
+                <div class="content p-8" fusePerfectScrollbar>
+                    <div cdkDropList class="example-list"
+                         #not_active_columns_list="cdkDropList"
+                         [cdkDropListData]="not_active_columns"
+                         [cdkDropListConnectedTo]="[active_columns_list]"
+                         (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let item of not_active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
+                    </div>
+                </div>
+                <!-- / SIDENAV CONTENT -->
             </div>
         </div>
-        <!-- / SIDENAV CONTENT -->
-        <!-- SIDENAV HEADER -->
-        <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>Выбрать дополнительные колонки</div>
-        </div>
-        <!-- / SIDENAV HEADER -->
-        <!-- SIDENAV CONTENT -->
-        <div class="content p-8" fusePerfectScrollbar>
-            <div cdkDropList class="example-list" 
-                 #not_active_columns_list="cdkDropList"
-                 [cdkDropListData]="not_active_columns"
-                 [cdkDropListConnectedTo]="[active_columns_list]"
-                 (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let item of not_active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
-            </div>
-        </div>
-        <!-- / SIDENAV CONTENT -->
+
     </div>
-</div>
+    </div>
