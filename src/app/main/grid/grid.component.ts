@@ -673,6 +673,23 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
 
+    toggle_active(row, value) {
+        let ql_items = {};
+        if (row.active.value == 0) {
+            ql_items['active'] = 1;
+        } else {
+            ql_items['active'] = 0;
+        }
+
+        this.modelSerivce.update(this.entity.app_name, value, ql_items)
+            .subscribe((response: any) => {
+                //console.log(response);
+                this.refresh();
+            });
+
+    }
+
+
     refresh() {
         console.log('refresh');
         //this.load_grid_data(this.app_name, [], []);
