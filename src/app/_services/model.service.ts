@@ -39,6 +39,10 @@ export class ModelService {
         const request = { action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, request);
     }
+    load_dictionary_model(model_name, columnName) {
+        const request = { action: 'model', do: 'load_dictionary', columnName: columnName, model_name: model_name, anonymous: true, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, request);
+    }
 
     get_max(model_name, columnName) {
         const request = { action: 'model', do: 'get_max', model_name: model_name, columnName: columnName, anonymous: true, session_key: this.currentUser.session_key };

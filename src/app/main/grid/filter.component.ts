@@ -128,7 +128,7 @@ export class FilterComponent {
 
     load_dictionary(columnName) {
 
-        this.modelSerivce.load_dictionary(columnName)
+        this.modelSerivce.load_dictionary_model(this.entity.app_name, columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
