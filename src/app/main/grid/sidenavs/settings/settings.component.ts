@@ -123,7 +123,7 @@ export class GridSettingsSidenavComponent implements OnInit
         this.modelSerivce.format_grid(this.entity, new_grid_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                this.filterService.empty_share();
+                this.filterService.empty_share(this.entity);
             });
 
     }

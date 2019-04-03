@@ -22,16 +22,16 @@ export class FilterService {
             this.share_array[entity.app_name] = [];
         }
         this.share_array[entity.app_name][key] = datas;
-        this.share.emit(this.share_array);
+        this.share.emit(entity);
         //console.log(this.share_array);
     }
     unshare_data(entity: SitebillEntity, key: string) {
         if (this.share_array[entity.app_name] != null ) {
             delete (this.share_array[entity.app_name][key]);
-            this.share.emit(this.share_array);
+            this.share.emit(entity);
         }
     }
-    empty_share() {
-        this.share.emit(this.share_array);
+    empty_share(entity: SitebillEntity) {
+        this.share.emit(entity);
     }
 }

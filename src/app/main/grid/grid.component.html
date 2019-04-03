@@ -151,6 +151,7 @@
                                        [offset]="page.pageNumber"
                                        [limit]="page.size"
                                        [selectionType]="'checkbox'"
+                                       [rowClass]="getRowClass"
                                        (activate)="onActivate($event)"
                                        (resize)="onResize($event)"
                                        (page)='setPage($event)'>

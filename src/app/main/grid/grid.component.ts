@@ -26,6 +26,7 @@ import { SnackService } from 'app/_services/snack.service';
 
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
+import { TryCatchStmt } from '@angular/compiler';
 registerLocaleData(localeRu, 'ru');
 
 @Component({
@@ -50,6 +51,7 @@ export class GridComponent implements OnInit, OnDestroy
     columns = [];
     grid_meta = [];
     columns_index = [];
+    rows_index = [];
     grid_columns_for_compose = [];
     data_columns = [];
     compose_complete: boolean = false;
@@ -141,10 +143,12 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [];
         this.refresh();
 
-        this.filterService.share.subscribe((datas) => {
-            //this.filterSharedData = datas;
-            this.ngxHeaderHeight = "auto";
-            this.refresh();
+        this.filterService.share.subscribe((entity: SitebillEntity) => {
+            //console.log(entity);
+            if (entity.app_name == this.entity.app_name) {
+                this.ngxHeaderHeight = "auto";
+                this.refresh();
+            }
         });
 
     }
@@ -279,6 +283,7 @@ export class GridComponent implements OnInit, OnDestroy
                 this.entity.model = result_f1.columns;
                 //this.item_model = result.columns;
                 this.columns_index = result_f1.columns_index;
+                this.rows_index = result_f1.rows_index;
                 this.entity.default_columns_list = result_f1.default_columns_list;
                 this.entity.columns_index = result_f1.columns_index;
                 //console.log(this.item_model);
@@ -325,6 +330,8 @@ export class GridComponent implements OnInit, OnDestroy
             title: '',
             prop: this.entity.primary_key + '.value'
         }
+        //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
+
         this.data_columns.push(control_column);
 
         columns_list.forEach((row, index) => {
@@ -509,7 +516,7 @@ export class GridComponent implements OnInit, OnDestroy
                             return null;
                         } else {
                             this._snackService.message('Запись удалена успешно');
-                            this.filterService.empty_share();
+                            this.filterService.empty_share(this.entity);
                         }
                     });
             }
@@ -651,6 +658,18 @@ export class GridComponent implements OnInit, OnDestroy
                     this.selected.push(rows[index]);
                 }
             });
+        }
+    }
+
+    getRowClass = (row) => {
+        try {
+            if (row.active.value != 1) {
+                return 'red-100-bg';
+            }
+            if (row.hot.value == 1) {
+                return 'amber-100-bg';
+            }
+        } catch {
         }
     }
 

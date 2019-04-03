@@ -210,7 +210,7 @@ export class FormComponent implements OnInit {
                             return null;
                         } else {
                             this._snackService.message('Запись удалена успешно');
-                            this.filterService.empty_share();
+                            this.filterService.empty_share(this._data);
                             this.close();
                         }
                     });
@@ -270,7 +270,7 @@ export class FormComponent implements OnInit {
                     return null;
                 } else {
                     this._snackService.message('Запись сохранена успешно');
-                    this.filterService.empty_share();
+                    this.filterService.empty_share(this._data);
                     this.close();
                 }
             });

@@ -77,4 +77,9 @@ mat-sidenav-container {
 :host /deep/ .datatable-body-row:hover .datatable-body-cell {
     overflow: visible !important;
 }
-
+:host /deep/ .not-active {
+    background: #ef5350;
+}
+:host /deep/ .hot {
+    background: #ffecb3;
+}
