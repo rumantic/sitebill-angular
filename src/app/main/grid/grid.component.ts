@@ -290,7 +290,11 @@ export class GridComponent implements OnInit, OnDestroy
                 this.loadGridComplete = true;
                 this.page.totalElements = result_f1.total_count;
                 this.page.size = result_f1.per_page;
-                this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                if (result_f1.grid_columns.grid_fields != null) {
+                    this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                } else {
+                    this.grid_columns_for_compose = result_f1.default_columns_list;
+                }
                 this.grid_meta = result_f1.grid_columns.meta;
                 let model_compose = this.entity.model;
                 this.compose_columns(this.grid_columns_for_compose, model_compose);

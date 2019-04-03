@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
         this.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grid/data/';
         /*
         this.loginForm = this._formBuilder.group({
             domain: ['', [Validators.required]],
