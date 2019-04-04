@@ -59,6 +59,11 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
+    update_only_ql(model_name, key_value, ql_items) {
+        const body = { action: 'model', do: 'graphql_update', model_name: model_name, only_ql: true, key_value: key_value, ql_items: ql_items, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
     update_column_meta(model_name, column_name, params) {
         const body = { action: 'model', do: 'update_column_meta', model_name: model_name, column_name: column_name, params: params, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);

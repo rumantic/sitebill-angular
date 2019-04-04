@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
-import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
@@ -26,7 +25,6 @@ import { SnackService } from 'app/_services/snack.service';
 
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
-import { TryCatchStmt } from '@angular/compiler';
 registerLocaleData(localeRu, 'ru');
 
 @Component({
@@ -331,6 +329,181 @@ export class GridComponent implements OnInit, OnDestroy
 
 
 
+
+    delete(item_id: any) {
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.modelSerivce.delete(this.entity.app_name, this.entity.primary_key, item_id)
+                    .subscribe((response: any) => {
+                        console.log(response);
+
+                        if (response.state == 'error') {
+                            this._snackService.message(response.message);
+                            return null;
+                        } else {
+                            this._snackService.message('Запись удалена успешно');
+                            this.filterService.empty_share(this.entity);
+                        }
+                    });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    edit_form(item_id: any) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this.dialog.open(FormComponent, dialogConfig);
+    }
+
+
+    view(item_id: any) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this.dialog.open(ViewModalComponent, dialogConfig);
+    }
+
+    toggle_active(row, value) {
+        let ql_items = {};
+        if (row.active.value == 0) {
+            ql_items['active'] = 1;
+        } else {
+            ql_items['active'] = 0;
+        }
+
+        this.modelSerivce.update_only_ql(this.entity.app_name, value, ql_items)
+            .subscribe((response: any) => {
+                if (response.state == 'error') {
+                    this._snackService.message(response.message);
+                } else {
+                    this.refresh();
+                }
+            });
+
+    }
+
+
+    refresh() {
+        console.log('refresh');
+        //this.load_grid_data(this.app_name, [], []);
+        //const params = { owner: true };
+        //this.load_grid_data(this.app_name, [], params);
+        this.setPage({ offset: this.page.pageNumber });
+    }
+
+    /**
+       * Populate the table with new data based on the page number
+       * @param page The page to select
+       */
+    setPage(pageInfo) {
+        this.page.pageNumber = pageInfo.offset;
+        //const params = { owner: true };
+        const params = {};
+        this.init_grid(params);
+    }
+
+    onResize(event) {
+        const params = { width: event.newValue };
+
+        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, params)
+            .subscribe((response: any) => {
+                console.log(response);
+            });
+
+    }
+
+
+
+    /**
+     * On destroy
+     */
+    ngOnDestroy(): void {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+    
+    load_selected() {
+        const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log('selected > ');
+                //console.log(result.selected);
+                /*
+                if (result.selected) {
+                    //this.selected = result.selected;
+                    this.load_grid_data(app_name, result.selected, []);
+                } else {
+                    this.load_grid_data(app_name, [], []);
+                }
+                */
+                this.refresh();
+
+
+                this.loadingIndicator = false;
+            });
+    }
+
+    toggleUserGet(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refresh();
+            });
+
+    }
+
+    init_selected_rows(rows, selected) {
+        if (selected.length == 0) {
+            return;
+        }
+        for (let entry of selected) {
+            rows.forEach((row, index) => {
+                if (row.id.value == entry.id.value) {
+                    this.selected.push(rows[index]);
+                }
+            });
+        }
+    }
+
+    getRowClass = (row) => {
+        try {
+            if (row.active.value != 1) {
+                return 'red-100-bg';
+            }
+            if (row.hot.value == 1) {
+                return 'amber-100-bg';
+            }
+        } catch {
+        }
+    }
+
+
     updateValue(event, cell, rowIndex, row) {
         /*
         console.log(event)
@@ -358,6 +531,10 @@ export class GridComponent implements OnInit, OnDestroy
             });
 
         */
+    }
+
+
+    onActivate() {
     }
 
 
@@ -428,123 +605,6 @@ export class GridComponent implements OnInit, OnDestroy
             });
 
     }
-
-    delete(item_id: any) {
-        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
-            disableClose: false
-        });
-
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
-
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.modelSerivce.delete(this.entity.app_name, this.entity.primary_key, item_id)
-                    .subscribe((response: any) => {
-                        console.log(response);
-
-                        if (response.state == 'error') {
-                            this._snackService.message(response.message);
-                            return null;
-                        } else {
-                            this._snackService.message('Запись удалена успешно');
-                            this.filterService.empty_share(this.entity);
-                        }
-                    });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    view_details(item_id: any) {
-        //console.log('view details');
-        //console.log(item_id);
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = true;
-        dialogConfig.width = '100%';
-        dialogConfig.height = '100%';
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
-
-        this.dialog.open(CourseDialogComponent, dialogConfig);
-    }
-
-    edit_form(item_id: any) {
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = false;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
-
-        this.dialog.open(FormComponent, dialogConfig);
-    }
-
-
-    view(item_id: any) {
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = false;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
-
-        this.dialog.open(ViewModalComponent, dialogConfig);
-    }
-
-    onActivate(event) {
-        //console.log('Activate Event', event);
-    }
-
-
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-    
-    load_selected() {
-        const load_selected_request = { action: 'model', do: 'load_selected', session_key: this.currentUser.session_key };
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log('selected > ');
-                //console.log(result.selected);
-                /*
-                if (result.selected) {
-                    //this.selected = result.selected;
-                    this.load_grid_data(app_name, result.selected, []);
-                } else {
-                    this.load_grid_data(app_name, [], []);
-                }
-                */
-                this.refresh();
-
-
-                this.loadingIndicator = false;
-            });
-    }
-
-    toggleUserGet(row) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.refresh();
-            });
-
-    }
-
     declineClient(row) {
         //console.log('user_id');
         //console.log(row.client_id.value);
@@ -578,75 +638,4 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-
-    init_selected_rows(rows, selected) {
-        if (selected.length == 0) {
-            return;
-        }
-        for (let entry of selected) {
-            rows.forEach((row, index) => {
-                if (row.id.value == entry.id.value) {
-                    this.selected.push(rows[index]);
-                }
-            });
-        }
-    }
-
-    getRowClass = (row) => {
-        try {
-            if (row.active.value != 1) {
-                return 'red-100-bg';
-            }
-            if (row.hot.value == 1) {
-                return 'amber-100-bg';
-            }
-        } catch {
-        }
-    }
-
-    toggle_active(row, value) {
-        let ql_items = {};
-        if (row.active.value == 0) {
-            ql_items['active'] = 1;
-        } else {
-            ql_items['active'] = 0;
-        }
-
-        this.modelSerivce.update(this.entity.app_name, value, ql_items)
-            .subscribe((response: any) => {
-                //console.log(response);
-                this.refresh();
-            });
-
-    }
-
-
-    refresh() {
-        console.log('refresh');
-        //this.load_grid_data(this.app_name, [], []);
-        //const params = { owner: true };
-        //this.load_grid_data(this.app_name, [], params);
-        this.setPage({ offset: this.page.pageNumber });
-    }
-
-    /**
-       * Populate the table with new data based on the page number
-       * @param page The page to select
-       */
-    setPage(pageInfo) {
-        this.page.pageNumber = pageInfo.offset;
-        //const params = { owner: true };
-        const params = {};
-        this.init_grid(params);
-    }
-
-    onResize(event) {
-        const params = {width:event.newValue};
-
-        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, params)
-            .subscribe((response: any) => {
-                console.log(response);
-            });
-
-    }
 }
