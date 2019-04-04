@@ -21,6 +21,7 @@ export class FilterComponent {
     filter_enable: boolean = false;
     select_filter_enable: boolean = false;
     string_filter_enable: boolean = false;
+    checkbox_filter_enable: boolean = false;
     focus_complete: boolean = false;
 
     price_selector: any;
@@ -58,10 +59,15 @@ export class FilterComponent {
     }
 
     ngOnInit(): void {
+        if (this.filterService.share_array[this.entity.app_name] != null) {
+            //console.log(this.filterService.share_array[this.entity.app_name]);
+            if (this.filterService.share_array[this.entity.app_name][this.columnObject.model_name] != null) {
+                this.onFocus(null);
+            }
+        }
 
         switch (this.columnObject.type) {
             case "select_by_query": {
-                //this.load_dictionary(this.columnObject.model_name);
                 this.select_filter_enable = true;
                 this.filter_enable = true;
                 break;
@@ -75,16 +81,19 @@ export class FilterComponent {
                 break;
             }
 
+            case "checkbox": {
+                this.checkbox_filter_enable = true;
+                this.filter_enable = true;
+                break;
+            }
+
             case "select_box_structure": {
-                //this.load_dictionary(this.columnObject.model_name);
                 this.select_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
 
             case "price": {
-                //this.load_dictionary(this.columnObject.model_name);
-                //console.log(this.filterService.share_array);
                 this.filter_enable = true;
                 this.price_filter_enable = true;
                 break;
@@ -99,14 +108,11 @@ export class FilterComponent {
 
     onFocus(event) {
         if (!this.focus_complete) {
-            this.load_dictionary(this.columnObject.model_name);
-            this.focus_complete = true;
-        }
-    }
-
-    onFocusPrice(event) {
-        if (!this.focus_complete) {
-            this.get_max(this.entity, this.columnObject.model_name);
+            if (this.columnObject.type == 'price') {
+                this.get_max(this.entity, this.columnObject.model_name);
+            } else {
+                this.load_dictionary(this.columnObject.model_name);
+            }
             this.focus_complete = true;
         }
     }
@@ -136,6 +142,12 @@ export class FilterComponent {
 
     selectItem(value) {
         //console.log(this.selectedFilter);
+        if (this.columnObject.type == 'checkbox') {
+            if (value == null) {
+                this.filterService.unshare_data(this.entity, this.columnObject.model_name);
+                return;
+            }
+        }
         this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 

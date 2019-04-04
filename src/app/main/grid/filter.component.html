@@ -38,6 +38,29 @@
     </ng-template>
 </ng-select>
 
+<ng-select *ngIf="checkbox_filter_enable"
+           [(ngModel)]="selectedFilter"
+           appendTo="body"
+           [items]="options"
+           [clearOnBackspace]="false"
+           class="select_options"
+           [searchable]="false"
+           [ngStyle]="{ 'width': '100px'}"
+           [multiple]="false"
+           (focus)="onFocus($event)"
+           [hideSelected]="false"
+           [closeOnSelect]="false"
+           (ngModelChange)="selectItem($event)"
+           placeholder="{{columnObject.title}}">
+    <ng-template ng-label-tmp let-item="item" let-index="index">
+        <span *ngIf="item == 1"> Да</span><span *ngIf="item == 0"> Нет</span>
+    </ng-template>
+
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> <span *ngIf="item == 1"> Да</span><span *ngIf="item == 0"> Нет</span>
+    </ng-template>
+</ng-select>
+
 <ng-select *ngIf="price_filter_enable"
            [(ngModel)]="price_selector"
            bindValue="id"
@@ -50,7 +73,7 @@
            [multiple]="false"
            [hideSelected]="true"
            [closeOnSelect]="false"
-           (focus)="onFocusPrice($event)"
+           (focus)="onFocus($event)"
            (change)="onPriceSelectorChange($event)"
            (close)="onPriceSelectorClose()"
            placeholder="{{columnObject.title}}">
