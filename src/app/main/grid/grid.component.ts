@@ -193,8 +193,10 @@ export class GridComponent implements OnInit, OnDestroy
             var mapped = Object.keys(obj);
             mapped.forEach(function (item, i, arr) {
                 //console.log(obj[item].length);
-                if (obj[item].length != 0) {
-                    filter_params_json[item] = obj[item];
+                if (obj[item] != null ) {
+                    if (obj[item].length != 0) {
+                        filter_params_json[item] = obj[item];
+                    }
                 }
             });
         }

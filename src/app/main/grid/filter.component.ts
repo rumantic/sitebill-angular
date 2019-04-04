@@ -14,7 +14,7 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class FilterComponent {
     options: any;
-    options_checkbox: boolean[] =  [1,0];
+    options_checkbox: number[] =  [1,0];
     @Input() columnObject: any;
     @Input() entity: SitebillEntity;
     api_url: string;
@@ -81,7 +81,7 @@ export class FilterComponent {
                 this.filter_enable = true;
                 break;
             }
-
+            case "uploads":
             case "checkbox": {
                 this.checkbox_filter_enable = true;
                 this.filter_enable = true;
