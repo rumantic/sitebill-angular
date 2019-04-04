@@ -66,6 +66,7 @@ export class GridComponent implements OnInit, OnDestroy
     objectKeys = Object.keys;
     page = new Page();
     entity: SitebillEntity;
+    refresh_complete: boolean = true;
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
@@ -142,11 +143,16 @@ export class GridComponent implements OnInit, OnDestroy
         this.refresh();
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
-            //console.log(entity);
             if (entity.app_name == this.entity.app_name) {
                 this.ngxHeaderHeight = "auto";
-                this.refresh();
+                if (this.refresh_complete) {
+                    this.refresh_complete = false;
+                    console.log(entity);
+                    this.refresh();
+
+                }
             }
+
         });
 
     }
@@ -233,6 +239,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                 //this.init_selected_rows(this.rows, selected);
                 this.loadingIndicator = false;
+                this.refresh_complete = true;
             });
 
     }
