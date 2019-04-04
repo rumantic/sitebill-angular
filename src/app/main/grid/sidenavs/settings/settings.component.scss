@@ -37,6 +37,9 @@ grid-settings {
         }
     }
 }
+.column-height {
+    max-height: 50%;
+}
 .example-list {
     width: 500px;
     max-width: 100%;
@@ -51,15 +54,15 @@ grid-settings {
 .example-box {
     padding: 10px 5px;
     border-bottom: solid 1px #ccc;
-    color: rgba(0, 0, 0, 0.87);
+    color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
     cursor: move;
-    background: white;
     font-size: 14px;
+
 }
 
 .cdk-drag-preview {
