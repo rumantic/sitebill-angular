@@ -10,6 +10,7 @@
            [multiple]="true"
            [hideSelected]="false"
            [closeOnSelect]="false"
+           (focus)="onFocus($event)"
            (ngModelChange)="selectItem($event)"
            placeholder="{{columnObject.title}}">
 
@@ -26,6 +27,7 @@
            class="select_options"
            [searchable]="true"
            [multiple]="true"
+           (focus)="onFocus($event)"
            [hideSelected]="false"
            [closeOnSelect]="false"
            (ngModelChange)="selectItem($event)"
@@ -48,6 +50,7 @@
            [multiple]="false"
            [hideSelected]="true"
            [closeOnSelect]="false"
+           (focus)="onFocusPrice($event)"
            (change)="onPriceSelectorChange($event)"
            (close)="onPriceSelectorClose()"
            placeholder="{{columnObject.title}}">

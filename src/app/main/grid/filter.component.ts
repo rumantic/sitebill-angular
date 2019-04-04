@@ -1,8 +1,6 @@
-import {Component, Input, isDevMode, Inject} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Component, Input} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {currentUser} from 'app/_models/currentuser';
 import {FilterService} from 'app/_services/filter.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { SitebillEntity } from 'app/_models';
@@ -23,6 +21,7 @@ export class FilterComponent {
     filter_enable: boolean = false;
     select_filter_enable: boolean = false;
     string_filter_enable: boolean = false;
+    focus_complete: boolean = false;
 
     price_selector: any;
     price_filter_enable: boolean = false;
@@ -41,7 +40,6 @@ export class FilterComponent {
 
 
     private _unsubscribeAll: Subject<any>;
-    private currentUser: currentUser;
     subscription: Subscription;
 
 
@@ -52,41 +50,33 @@ export class FilterComponent {
      * @param {HttpClient} _httpClient
      */
     constructor(
-        private _httpClient: HttpClient,
-        @Inject(APP_CONFIG) private config: AppConfig,
         private modelSerivce: ModelService,
         private filterService: FilterService
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
     }
 
     ngOnInit(): void {
 
         switch (this.columnObject.type) {
             case "select_by_query": {
-                this.load_dictionary(this.columnObject.model_name);
+                //this.load_dictionary(this.columnObject.model_name);
                 this.select_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
 
             case "mobilephone": 
+            case "primary_key": 
             case "safe_string": {
-                this.load_dictionary(this.columnObject.model_name);
                 this.string_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
 
             case "select_box_structure": {
-                this.load_dictionary(this.columnObject.model_name);
+                //this.load_dictionary(this.columnObject.model_name);
                 this.select_filter_enable = true;
                 this.filter_enable = true;
                 break;
@@ -95,7 +85,6 @@ export class FilterComponent {
             case "price": {
                 //this.load_dictionary(this.columnObject.model_name);
                 //console.log(this.filterService.share_array);
-                this.get_max(this.entity, this.columnObject.model_name);
                 this.filter_enable = true;
                 this.price_filter_enable = true;
                 break;
@@ -105,6 +94,20 @@ export class FilterComponent {
             default: {
                 break;
             }
+        }
+    }
+
+    onFocus(event) {
+        if (!this.focus_complete) {
+            this.load_dictionary(this.columnObject.model_name);
+            this.focus_complete = true;
+        }
+    }
+
+    onFocusPrice(event) {
+        if (!this.focus_complete) {
+            this.get_max(this.entity, this.columnObject.model_name);
+            this.focus_complete = true;
         }
     }
 
