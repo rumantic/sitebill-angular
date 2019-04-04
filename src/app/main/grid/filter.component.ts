@@ -14,6 +14,7 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class FilterComponent {
     options: any;
+    options_checkbox: boolean[] =  [1,0];
     @Input() columnObject: any;
     @Input() entity: SitebillEntity;
     api_url: string;
