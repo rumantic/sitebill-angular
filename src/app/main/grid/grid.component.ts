@@ -165,81 +165,8 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     setup_apps() {
-        //console.log('setup client');
-
         this.entity.app_name = 'client';
         this.entity.primary_key = 'client_id';
-        //this.init_grid();
-
-
-        /*
-        this.columns_client_all = [
-            {
-                cellTemplate: this.clientControlTmpl,
-                name: 'Ответственный',
-                prop: 'user_id.value_string'
-            },
-            {
-                name: 'Дата',
-                prop: 'date.value_string'
-            },
-            {
-                name: 'Тип',
-                prop: 'type_id.value_string'
-            },
-            {
-                name: 'Категория',
-                prop: 'topic_choice.value'
-            },
-            {
-                name: 'Статус',
-                cellTemplate: this.clientStatusIdTmpl,
-                prop: 'status_id.value_string'
-            },
-            {
-                name: 'ФИО клиента',
-                prop: 'fio.value'
-            },
-        ];
-        this.columns_client_my = [
-            {
-                name: 'ID',
-                cellTemplate: this.clientIdTmpl,
-                prop: 'client_id.value'
-            },
-            {
-                cellTemplate: this.clientControlTmpl,
-                name: 'Ответственный',
-                prop: 'user_id.value_string'
-            },
-            {
-                name: 'Дата',
-                prop: 'date.value_string'
-            },
-            {
-                name: 'Тип',
-                prop: 'type_id.value_string'
-            },
-            {
-                name: 'Статус',
-                cellTemplate: this.clientStatusIdTmpl,
-                prop: 'status_id.value_string'
-            },
-            {
-                name: 'ФИО клиента',
-                prop: 'fio.value'
-            },
-            {
-                name: 'Телефон',
-                prop: 'phone.value'
-            },
-            {
-                name: 'Категория',
-                prop: 'topic_choice.value'
-            },
-        ];
-        */
-
     }
 
     init_grid(params) {
