@@ -88,10 +88,10 @@ export class FormComponent implements OnInit {
     }
 
     init_form() {
-        console.log(this.records);
+        //console.log(this.records);
 
         for (var i = 0; i < this.rows.length; i++) {
-            //console.log(this.records[this.rows[i]]);
+            //console.log(this.records[this.rows[i]].type);
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
@@ -121,6 +121,14 @@ export class FormComponent implements OnInit {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
             }
+            if (this.records[this.rows[i]].type == 'select_box') {
+                this.init_select_box_options(this.records[this.rows[i]].name);
+                if (this.records[this.rows[i]].value_string == '') {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
+
+            }
+
 
             if (this.records[this.rows[i]].type == 'checkbox') {
                 if (this.records[this.rows[i]].value != 1) {
@@ -151,6 +159,18 @@ export class FormComponent implements OnInit {
             this.galleryImages[field_name] = [];
         }
     }
+
+    init_select_box_options(columnName) {
+        this.options_storage[columnName] = this.records[columnName].select_data_indexed;
+        try {
+            this.options_storage[columnName].forEach((row, index) => {
+                row.id = row.id.toString();
+                row.value = row.value.toString();
+            });
+        } catch {
+        }
+    }
+
 
     init_select_by_query_options(columnName) {
         this.modelSerivce.load_dictionary(columnName)
@@ -183,8 +203,8 @@ export class FormComponent implements OnInit {
                     this.tabs = result.tabs;
                     this.tabs_keys = Object.keys(result.tabs);
                     this.rows = Object.keys(result.data);
-                    console.log(this.rows);
-                    console.log(this.tabs);
+                    //console.log(this.rows);
+                    //console.log(this.tabs);
                     this.init_form();
                 }
 

@@ -88,6 +88,33 @@
                                     <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                                 </span>
 
+                                <span *ngSwitchCase="'select_box'">
+                                    <ng-select formControlName="{{records[x].name}}"
+                                               [required]="records[x].required_boolean"
+                                               appendTo="body"
+                                               bindValue="id"
+                                               bindLabel="value"
+                                               [items]="options_storage[records[x].name]"
+                                               [clearOnBackspace]="false"
+                                               [searchable]="false"
+                                               [multiple]="false"
+                                               [hideSelected]="false"
+                                               [closeOnSelect]="true"
+                                               placeholder="{{records[x].title}}">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span [innerHTML]="item.value">
+                                            </span>
+                                        </ng-template>
+
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <span [innerHTML]="item.value">
+                                            </span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                </span>
+
+
                                 <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
                                 <mat-form-field *ngSwitchCase="'textarea_editor'">
