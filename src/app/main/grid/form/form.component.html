@@ -123,6 +123,16 @@
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
 
+                                <mat-form-field *ngSwitchCase="'geodata'">
+                                    Координаты
+                                    <ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)" >
+                                        <ya-marker [latitude]="55.847" [longitude]="38.6">
+                                        </ya-marker>
+                                    </ya-map>
+                                    <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                </mat-form-field>
+
                                 <mat-form-field *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>

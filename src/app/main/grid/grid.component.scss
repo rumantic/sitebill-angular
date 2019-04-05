@@ -83,3 +83,7 @@ mat-sidenav-container {
 :host /deep/ .hot {
     background: #ffecb3;
 }
+:host /deep/ .map-container-inner {
+    width: 300px;
+    height: 200px;
+}

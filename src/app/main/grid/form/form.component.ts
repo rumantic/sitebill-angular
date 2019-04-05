@@ -39,6 +39,8 @@ export class FormComponent implements OnInit {
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
     square_options: any[] = [{ id: 1, value: 'range', actual: 1 }];
     galleryImages = {};
+    latitude: any;
+    longitude: any;
 
     
     private _unsubscribeAll: Subject<any>;
@@ -296,6 +298,11 @@ export class FormComponent implements OnInit {
             });
 
 
+    }
+
+    mapClick(event) {
+        console.log('map click');
+        console.log(event);
     }
 
 

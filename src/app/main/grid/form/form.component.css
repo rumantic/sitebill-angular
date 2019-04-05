@@ -39,3 +39,7 @@ textarea {
 .form-checkbox {
     margin: 6px 12px 6px 0;
 }
+:host /deep/ .map-container-inner {
+    width: 300px;
+    height: 200px;
+}
