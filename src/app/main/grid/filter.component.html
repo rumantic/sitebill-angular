@@ -38,6 +38,27 @@
     </ng-template>
 </ng-select>
 
+<ng-select *ngIf="select_box_filter_enable"
+           [(ngModel)]="selectedFilter"
+           appendTo="body"
+           bindValue="id"
+           bindLabel="value"
+           [items]="options_select_box"
+           [clearOnBackspace]="false"
+           class="select_options"
+           [searchable]="true"
+           [multiple]="true"
+           (focus)="onFocus($event)"
+           [hideSelected]="false"
+           [closeOnSelect]="false"
+           (ngModelChange)="selectItem($event)"
+           placeholder="{{columnObject.title}}">
+
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
+    </ng-template>
+</ng-select>
+
 <ng-select *ngIf="checkbox_filter_enable"
            [(ngModel)]="selectedFilter"
            appendTo="body"

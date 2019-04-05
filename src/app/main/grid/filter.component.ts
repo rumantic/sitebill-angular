@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FilterService} from 'app/_services/filter.service';
-import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { SitebillEntity } from 'app/_models';
 import { Options, ChangeContext } from 'ng5-slider';
 import { ModelService } from 'app/_services/model.service';
@@ -15,12 +14,14 @@ import { ModelService } from 'app/_services/model.service';
 export class FilterComponent {
     options: any;
     options_checkbox: number[] =  [1,0];
+    options_select_box: any;
     @Input() columnObject: any;
     @Input() entity: SitebillEntity;
     api_url: string;
     selectedFilter: any;
     filter_enable: boolean = false;
     select_filter_enable: boolean = false;
+    select_box_filter_enable: boolean = false;
     string_filter_enable: boolean = false;
     checkbox_filter_enable: boolean = false;
     focus_complete: boolean = false;
@@ -94,6 +95,14 @@ export class FilterComponent {
                 break;
             }
 
+            case "select_box": {
+                this.initSelectBox();
+                this.select_box_filter_enable = true;
+                this.filter_enable = true;
+                break;
+            }
+
+
             case "price": {
                 this.filter_enable = true;
                 this.price_filter_enable = true;
@@ -104,6 +113,14 @@ export class FilterComponent {
             default: {
                 break;
             }
+        }
+    }
+
+    initSelectBox() {
+        try {
+            this.options_select_box = this.entity.model[this.entity.columns_index[this.columnObject.model_name]].select_data_indexed;
+        } catch (e) {
+            console.log(e);
         }
     }
 
