@@ -24,4 +24,5 @@ export class SitebillModelItem {
     action: string;
     active_in_topic: number[];
     name: string;
+    select_data_indexed: any;
 }
