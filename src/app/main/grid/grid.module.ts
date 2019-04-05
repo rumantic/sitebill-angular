@@ -54,8 +54,7 @@ import { SnackBarComponent } from '../snackbar/snackbar.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
 import { UserComponent } from './user/user.component';
-import { YamapngModule, YaCoreModule } from 'yamapng';
-
+import { AgmCoreModule } from '@agm/core';
 
 const routes = [
     {
@@ -162,9 +161,8 @@ const routes = [
         NgxGalleryModule,
         ConfirmDialogModule,
         DragDropModule,
-        YamapngModule,
-        YaCoreModule.forRoot({
-            apiKey: 'ffd9327c-2a00-4ca9-86dc-37b909eb10b9'
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyAIujOA0HllbFQKc7rXEoAXbsAQ-2whqzQ'
         })
     ],
     exports: [

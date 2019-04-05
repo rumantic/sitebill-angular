@@ -122,16 +122,28 @@
                                     <input formControlName="{{records[x].name}}" matInput [hidden]="true">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
-
-                                <mat-form-field *ngSwitchCase="'geodata'">
+                                <span *ngSwitchCase="'geodata'">
                                     Координаты
-                                    <ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)" >
-                                        <ya-marker [latitude]="55.847" [longitude]="38.6">
-                                        </ya-marker>
-                                    </ya-map>
-                                    <input formControlName="{{records[x].name}}" matInput [hidden]="true">
-                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                                </mat-form-field>
+                                    <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}">
+                                    <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}">
+                                    <mat-form-field>
+                                        <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
+                                            <ya-marker 
+                                                       [latitude]="lat" 
+                                                       [longitude]="lng"
+                                                       [draggable]="true"
+                                                       >
+                                            </ya-marker>
+                                        </ya-map-->
+
+                                        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClick($event)">
+                                            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                        </agm-map>
+
+                                        <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                                        <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                    </mat-form-field>
+                                </span>
 
                                 <mat-form-field *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">

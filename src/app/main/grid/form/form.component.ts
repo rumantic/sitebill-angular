@@ -41,6 +41,8 @@ export class FormComponent implements OnInit {
     galleryImages = {};
     latitude: any;
     longitude: any;
+    lat: any;
+    lng: any;
 
     
     private _unsubscribeAll: Subject<any>;
@@ -71,6 +73,8 @@ export class FormComponent implements OnInit {
         } else {
             this.api_url = '';
         }
+        this.lat = 55.76;
+        this.lng = 37.64;
 
     }
 
@@ -303,6 +307,13 @@ export class FormComponent implements OnInit {
     mapClick(event) {
         console.log('map click');
         console.log(event);
+        if (event.coords) {
+            this.lat = event.coords.lat;
+            this.lng = event.coords.lng;
+        } else {
+            this.lat = event.lat;
+            this.lng = event.lng;
+        }
     }
 
 
