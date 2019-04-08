@@ -12,7 +12,7 @@ import { locale as russian } from './i18n/ru';
 import { Subject } from 'rxjs';
 import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { ModelService } from 'app/_services/model.service';
@@ -25,6 +25,7 @@ import { SnackService } from 'app/_services/snack.service';
 
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
+import { FormControl } from '@angular/forms';
 registerLocaleData(localeRu, 'ru');
 
 @Component({
@@ -67,6 +68,8 @@ export class GridComponent implements OnInit, OnDestroy
     page = new Page();
     entity: SitebillEntity;
     refresh_complete: boolean = true;
+    searchInput: FormControl;
+
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
@@ -114,6 +117,8 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.page.pageNumber = 0;
         this.page.size = 0;
+        this.searchInput = new FormControl('');
+
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
@@ -141,13 +146,18 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows = [];
         this.rows_my = [];
         this.refresh();
+        if (this.filterService.share_array[this.entity.app_name] != null) {
+            if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
+                this.searchInput = new FormControl(this.filterService.share_array[this.entity.app_name]['concatenate_search']);
+            }
+        }
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
             if (entity.app_name == this.entity.app_name) {
                 this.ngxHeaderHeight = "auto";
                 if (this.refresh_complete) {
                     this.refresh_complete = false;
-                    console.log(entity);
+                    //console.log(entity);
                     this.refresh();
 
                 }
@@ -155,6 +165,16 @@ export class GridComponent implements OnInit, OnDestroy
 
         });
 
+        this.searchInput.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                debounceTime(300),
+                distinctUntilChanged()
+            )
+            .subscribe(searchText => {
+                //console.log(searchText);
+                this.filterService.share_data(this.entity, 'concatenate_search', searchText);
+            });
     }
     
     init_input_parameters () {
@@ -212,7 +232,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                console.log(result_f1);
+                //console.log(result_f1);
                 //this.item_model = result.rows[0];
                 this.entity.model = result_f1.columns;
                 //this.item_model = result.columns;
@@ -336,6 +356,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
+    clear_search_text() {
+        this.searchInput.patchValue('');
+    }
 
 
 
@@ -410,7 +433,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     refresh() {
-        console.log('refresh');
+        //console.log('refresh');
         //this.load_grid_data(this.app_name, [], []);
         //const params = { owner: true };
         //this.load_grid_data(this.app_name, [], params);

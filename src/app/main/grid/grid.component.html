@@ -105,18 +105,23 @@
         <div class="header p-16 p-md-24 accent" fxLayout="column">
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
-                <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="2" fxFlexOrder.gt-xs="1">
+                <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись</button>
                 </div>
                 <!-- / BOARD SELECTION BUTTON -->
-                <!-- BOARD NAME -->
-                <div class="header-board-name mb-8 mb-md-0"
-                     fxLayout="row" fxLayoutAlign="center center"
-                     fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="center center"
-                     fxFlex="1 0 100%" fxFlex.gt-xs="1 0 auto"
-                     fxFlexOrder="1" fxFlexOrder.gt-xs="2">
+                <!-- SEARCH -->
+                <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+                    <div class="search-wrapper mt-16 mt-sm-0">
+                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon color="primary">search</mat-icon>
+                            <input [formControl]="searchInput"  placeholder="Поиск по слову">
+                            <button mat-icon-button (click)="clear_search_text()" *ngIf="searchInput.value != ''">
+                                <mat-icon color="primary" matSuffix>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <!-- / BOARD NAME -->
+                <!-- / SEARCH -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
                     <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу">

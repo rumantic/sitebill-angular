@@ -9,6 +9,10 @@ export class FilterService {
 
     @Output() change: EventEmitter<any> = new EventEmitter();
     @Output() share: EventEmitter<any> = new EventEmitter();
+
+    constructor() {
+        this.share_array = [];
+    }
     
     save(controls: any) {
         this.change.emit(controls);
