@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxFlex="70">
+        <span [innerHTML]="_data.message"></span>
+    </div>
+    <div fxFlex="30">
+        <button mat-raised-button
+                color="accent"
+                (click)="snackBarRef.dismiss()">
+            закрыть
+        </button>
+        </div>
+    </div>
