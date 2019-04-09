@@ -153,13 +153,5 @@ export const navigation: FuseNavigation[] = [
         type: 'item',
         icon: 'exit_to_app',
         url: '/login'
-    }, {
-        id: 'applications',
-        title: 'CRM',
-        translate: 'NAV.APPLICATIONS',
-        type: 'group',
-        children: [
-        ]
-
-    }
+    },
 ];
