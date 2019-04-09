@@ -306,11 +306,13 @@ export class GridComponent implements OnInit, OnDestroy
             let prop = '';
             let width = 150;
             prop = model[this.columns_index[row]].name + '.value';
-            if (this.grid_meta['columns'] != null) {
-                if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
-                    width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
-                    //console.log(model[this.columns_index[row]].name);
-                    //console.log(width);
+            if (this.grid_meta != null) {
+                if (this.grid_meta['columns'] != null) {
+                    if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
+                        width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
+                        //console.log(model[this.columns_index[row]].name);
+                        //console.log(width);
+                    }
                 }
             }
 

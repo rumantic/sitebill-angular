@@ -2,7 +2,7 @@
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
         <div fxLayout="row" fxLayoutAlign="start">
             <div fxFlex="100">
-                <div class="content p-8 column-height">
+                <div class="content p-8">
                     <mat-form-field>
                         <mat-select [ngStyle]="{ 'width': '150px'}" selected="per_page" (selectionChange)="per_page_change($event)" panelClass="pageselector" placeholder="Строк в таблице" [(ngModel)]="per_page">
                             <mat-option *ngFor="let page_value of page_options" [value]="page_value">

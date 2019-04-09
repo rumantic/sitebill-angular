@@ -34,6 +34,8 @@ import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/c
 import { GridComponent } from './grid.component';
 import { DataComponent } from './data/data.component';
 import { NewsComponent } from './news/news.component';
+import { CountryComponent } from './entity/country/country.component';
+import { RegionComponent } from './entity/region/region.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
 import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
@@ -55,6 +57,10 @@ import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
 import { UserComponent } from './user/user.component';
 import { AgmCoreModule } from '@agm/core';
+import { CityComponent } from './entity/city/city.component';
+import { DistrictComponent } from './entity/district/district.component';
+import { MetroComponent } from './entity/metro/metro.component';
+import { StreetComponent } from './entity/street/street.component';
 
 const routes = [
     {
@@ -68,6 +74,54 @@ const routes = [
     {
         path: 'news',
         component: NewsComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'country',
+        component: CountryComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'region',
+        component: RegionComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'city',
+        component: CityComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'district',
+        component: DistrictComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'metro',
+        component: MetroComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'street',
+        component: StreetComponent,
         resolve: {
             chat: ChatService
         }
@@ -95,6 +149,12 @@ const routes = [
         GridComponent,
         DataComponent,
         NewsComponent,
+        CountryComponent,
+        RegionComponent,
+        CityComponent,
+        DistrictComponent,
+        MetroComponent,
+        StreetComponent,
         UserComponent,
         FilterComponent,
         CourseDialogComponent,
