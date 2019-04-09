@@ -197,8 +197,13 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log(result);
-                this.load_grid_data(this.entity.app_name, result.data, params);
+                console.log(result);
+                if (result.data['meta'] != null) {
+                    if (result.data['meta']['per_page'] != null) {
+                        this.page.size = result.data['meta']['per_page'];
+                    }
+                }
+                this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params);
             });
     }
 
@@ -232,7 +237,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //console.log(result_f1);
+                console.log(result_f1);
                 //this.item_model = result.rows[0];
                 this.entity.model = result_f1.columns;
                 //this.item_model = result.columns;
@@ -301,9 +306,9 @@ export class GridComponent implements OnInit, OnDestroy
             let prop = '';
             let width = 150;
             prop = model[this.columns_index[row]].name + '.value';
-            if (this.grid_meta != null) {
-                if (this.grid_meta[model[this.columns_index[row]].name] != null) {
-                    width = this.grid_meta[model[this.columns_index[row]].name].width;
+            if (this.grid_meta['columns'] != null) {
+                if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
+                    width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
                     //console.log(model[this.columns_index[row]].name);
                     //console.log(width);
                 }
@@ -453,8 +458,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     onResize(event) {
         const params = { width: event.newValue };
+        console.log(event);
 
-        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, params)
+        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, 'columns', params)
             .subscribe((response: any) => {
                 console.log(response);
             });

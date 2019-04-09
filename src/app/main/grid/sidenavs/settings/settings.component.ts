@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ModelService } from 'app/_services/model.service';
 import { SitebillEntity, SitebillModelItem } from 'app/_models';
 import { FilterService } from 'app/_services/filter.service';
+import { Page } from '../../page';
 
 @Component({
     selector     : 'grid-settings',
@@ -26,6 +27,12 @@ export class GridSettingsSidenavComponent implements OnInit
     @Input("grid_items")
     grid_items: any[];
 
+    @Input("page")
+    page: Page;
+
+    page_options: number[];
+    per_page: number;
+
     active_columns: SitebillModelItem[];
     not_active_columns: SitebillModelItem[];
     protected _unsubscribeAll: Subject<any>;
@@ -42,6 +49,7 @@ export class GridSettingsSidenavComponent implements OnInit
 
         // Set the defaults
         this.view = 'main';
+        this.page_options = [5,10,20,30,40,50,60,70,80,90,100];
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -53,6 +61,8 @@ export class GridSettingsSidenavComponent implements OnInit
      */
     ngOnInit(): void
     {
+        this.per_page = this.page.size;
+        console.log(this.per_page);
         this.init_grid();
     }
 
@@ -120,9 +130,19 @@ export class GridSettingsSidenavComponent implements OnInit
             new_grid_items.push(item.name);
         });
 
-        this.modelSerivce.format_grid(this.entity, new_grid_items)
+        this.modelSerivce.format_grid(this.entity, new_grid_items, this.per_page)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
+                this.filterService.empty_share(this.entity);
+            });
+
+    }
+
+    per_page_change(event) {
+        const params = event.value;
+
+        this.modelSerivce.update_column_meta(this.entity.app_name, null, 'per_page', params)
+            .subscribe((response: any) => {
                 this.filterService.empty_share(this.entity);
             });
 

@@ -1,6 +1,21 @@
 <div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
-        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center" fxFlex="1 0 auto">
+        <div fxLayout="row" fxLayoutAlign="start">
+            <div fxFlex="100">
+                <div class="content p-8 column-height">
+                    <mat-form-field>
+                        <mat-select [ngStyle]="{ 'width': '150px'}" selected="per_page" (selectionChange)="per_page_change($event)" panelClass="pageselector" placeholder="Строк в таблице" [(ngModel)]="per_page">
+                            <mat-option *ngFor="let page_value of page_options" [value]="page_value">
+                                {{page_value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start">
             <div fxFlex="50">
                 <!-- SIDENAV HEADER -->
                 <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">

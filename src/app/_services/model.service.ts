@@ -64,8 +64,8 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
-    update_column_meta(model_name, column_name, params) {
-        const body = { action: 'model', do: 'update_column_meta', model_name: model_name, column_name: column_name, params: params, session_key: this.currentUser.session_key };
+    update_column_meta(model_name, column_name, key, params) {
+        const body = { action: 'model', do: 'update_column_meta', model_name: model_name, column_name: column_name, key: key, params: params, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
@@ -111,9 +111,9 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
-    format_grid(entity: SitebillEntity, grid_items: string[]) {
+    format_grid(entity: SitebillEntity, grid_items: string[], per_page) {
         let body = {};
-        body = { action: 'model', do: 'format_grid', model_name: entity.app_name, grid_items: grid_items, session_key: this.currentUser.session_key };
+        body = { action: 'model', do: 'format_grid', model_name: entity.app_name, grid_items: grid_items, per_page: per_page, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
