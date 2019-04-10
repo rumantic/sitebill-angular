@@ -61,6 +61,7 @@ import { CityComponent } from './entity/city/city.component';
 import { DistrictComponent } from './entity/district/district.component';
 import { MetroComponent } from './entity/metro/metro.component';
 import { StreetComponent } from './entity/street/street.component';
+import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 
 const routes = [
     {
@@ -159,6 +160,7 @@ const routes = [
         FilterComponent,
         CourseDialogComponent,
         ViewModalComponent,
+        GalleryModalComponent,
         ProfileTimelineComponent,
         DeclineClientComponent,
         ChatComponent,
@@ -235,7 +237,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, FormComponent, SnackBarComponent]
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, SnackBarComponent]
 
 })
 

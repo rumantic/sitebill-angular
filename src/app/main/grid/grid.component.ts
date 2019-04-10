@@ -26,6 +26,7 @@ import { SnackService } from 'app/_services/snack.service';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 registerLocaleData(localeRu, 'ru');
 
 @Component({
@@ -428,6 +429,19 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
+    }
+
+    view_gallery(value) {
+        console.log(value);
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        //dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this.dialog.open(GalleryModalComponent, dialogConfig);
+
     }
 
     toggle_active(row, value) {
