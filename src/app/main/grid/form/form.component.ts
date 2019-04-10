@@ -249,20 +249,6 @@ export class FormComponent implements OnInit {
 
     save() {
         console.log(this.form.controls);
-        //console.log(this.modelSerivce.entity);
-
-        
-        /*
-        this.editing[rowIndex + '-' + cell] = false;
-        this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
-
-        const status_id = this.item_model['status_id'];
-        const select_data = status_id['select_data'];
-
-        this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
-        this.rows_my = [...this.rows_my];
-        */
-        //console.log('UPDATED!', this.rows[rowIndex][cell]);
         const ql_items = {};
 
         for (var i = 0; i < this.rows.length; i++) {
