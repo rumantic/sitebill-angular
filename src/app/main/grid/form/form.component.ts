@@ -205,14 +205,20 @@ export class FormComponent implements OnInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    console.log(result);
-                    this.records = result.data;
-                    this.tabs = result.tabs;
-                    this.tabs_keys = Object.keys(result.tabs);
-                    this.rows = Object.keys(result.data);
-                    //console.log(this.rows);
-                    //console.log(this.tabs);
-                    this.init_form();
+                    if (result.state == 'error') {
+                        this._snackService.message(result.message);
+                        this.close();
+                        return false;
+                    } else {
+                        //console.log(result);
+                        this.records = result.data;
+                        this.tabs = result.tabs;
+                        this.tabs_keys = Object.keys(result.tabs);
+                        this.rows = Object.keys(result.data);
+                        //console.log(this.rows);
+                        //console.log(this.tabs);
+                        this.init_form();
+                    }
                 }
 
             });

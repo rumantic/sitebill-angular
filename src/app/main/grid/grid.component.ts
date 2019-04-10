@@ -69,6 +69,8 @@ export class GridComponent implements OnInit, OnDestroy
     entity: SitebillEntity;
     refresh_complete: boolean = true;
     searchInput: FormControl;
+    error: boolean = false;
+    error_message: string;
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
@@ -197,7 +199,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
                 if (result.data['meta'] != null) {
                     if (result.data['meta']['per_page'] != null) {
                         this.page.size = result.data['meta']['per_page'];
@@ -238,35 +240,44 @@ export class GridComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 console.log(result_f1);
-                //this.item_model = result.rows[0];
-                this.entity.model = result_f1.columns;
-                //this.item_model = result.columns;
-                this.columns_index = result_f1.columns_index;
-                this.rows_index = result_f1.rows_index;
-                this.entity.default_columns_list = result_f1.default_columns_list;
-                this.entity.columns_index = result_f1.columns_index;
-                //console.log(this.item_model);
-                this.loadGridComplete = true;
-                this.page.totalElements = result_f1.total_count;
-                this.page.size = result_f1.per_page;
-                if (result_f1.grid_columns.grid_fields != null) {
-                    this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                if (result_f1.state == 'error') {
+                    this.rise_error(result_f1.message);
                 } else {
-                    this.grid_columns_for_compose = result_f1.default_columns_list;
+                    //this.item_model = result.rows[0];
+                    this.entity.model = result_f1.columns;
+                    //this.item_model = result.columns;
+                    this.columns_index = result_f1.columns_index;
+                    this.rows_index = result_f1.rows_index;
+                    this.entity.default_columns_list = result_f1.default_columns_list;
+                    this.entity.columns_index = result_f1.columns_index;
+                    //console.log(this.item_model);
+                    this.loadGridComplete = true;
+                    this.page.totalElements = result_f1.total_count;
+                    this.page.size = result_f1.per_page;
+                    if (result_f1.grid_columns.grid_fields != null) {
+                        this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                    } else {
+                        this.grid_columns_for_compose = result_f1.default_columns_list;
+                    }
+                    this.grid_meta = result_f1.grid_columns.meta;
+                    let model_compose = this.entity.model;
+                    this.compose_columns(this.grid_columns_for_compose, model_compose);
+
+                    //console.log(this.item_model);
+                    this.rows_data = result_f1.rows;
+                    this.data_all = result_f1.rows.length;
+
+                    //this.init_selected_rows(this.rows, selected);
+                    this.loadingIndicator = false;
                 }
-                this.grid_meta = result_f1.grid_columns.meta;
-                let model_compose = this.entity.model;
-                this.compose_columns(this.grid_columns_for_compose, model_compose);
-
-                //console.log(this.item_model);
-                this.rows_data = result_f1.rows;
-                this.data_all = result_f1.rows.length;
-
-                //this.init_selected_rows(this.rows, selected);
-                this.loadingIndicator = false;
                 this.refresh_complete = true;
             });
 
+    }
+
+    rise_error(message: string) {
+        this.error = true;
+        this.error_message = message;
     }
 
     compose_columns(columns_list, model) {
