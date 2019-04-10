@@ -179,10 +179,11 @@ export class FormComponent implements OnInit {
 
 
     init_select_by_query_options(columnName) {
-        this.modelSerivce.load_dictionary(columnName)
+        this.modelSerivce.load_dictionary_model_all(this._data.app_name, columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
+                    //console.log(result);
                     this.options_storage[columnName] = result.data;
                 }
 
