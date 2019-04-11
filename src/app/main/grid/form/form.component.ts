@@ -43,6 +43,8 @@ export class FormComponent implements OnInit {
     longitude: any;
     lat: any;
     lng: any;
+    lat_center: any;
+    lng_center: any;
 
     
     private _unsubscribeAll: Subject<any>;
@@ -73,9 +75,8 @@ export class FormComponent implements OnInit {
         } else {
             this.api_url = '';
         }
-        this.lat = 55.76;
-        this.lng = 37.64;
-
+        this.lat_center = 55.76;
+        this.lng_center = 37.64;
     }
 
     ngOnInit() {
@@ -142,12 +143,37 @@ export class FormComponent implements OnInit {
                 }
             }
 
+            if (this.records[this.rows[i]].type == 'geodata') {
+                this.init_geodata(this.records[this.rows[i]].name);
+            }
+
 
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
         }
     }
+
+    init_geodata(columnName) {
+        try {
+            console.log(parseFloat(this.records[columnName].value.lat));
+            if (parseFloat(this.records[columnName].value.lat)) {
+                this.lat = parseFloat(this.records[columnName].value.lat);
+                this.lat_center = this.lat;
+            } else {
+                this.lat = '';
+            }
+            if (parseFloat(this.records[columnName].value.lng)) {
+                this.lng = parseFloat(this.records[columnName].value.lng);
+                this.lng_center = this.lng;
+            } else {
+                this.lng = '';
+            }
+        } catch {
+        }
+        
+    }
+
 
     init_gallery_images(field_name, images) {
         this.galleryImages[field_name] = {};
@@ -262,7 +288,9 @@ export class FormComponent implements OnInit {
             if (this.text_area_editor_storage[this.rows[i]]) {
                 this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
             } else if (this.records[this.rows[i]].type == 'checkbox' && this.form.controls[this.rows[i]].value == '') {
-                this.form.controls[this.rows[i]].patchValue(0);
+                this.form.controls[this.rows[i]].patchValue(null);
+            } else if (this.records[this.rows[i]].type == 'geodata') {
+                this.form.controls[this.rows[i]].patchValue({ lat: this.lat, lng: this.lng });
             } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {
                 this.form.controls[this.rows[i]].patchValue(this.modelSerivce.entity.key_value);
             }
@@ -298,8 +326,8 @@ export class FormComponent implements OnInit {
     }
 
     mapClick(event) {
-        console.log('map click');
-        console.log(event);
+        //console.log('map click');
+        //console.log(event);
         if (event.coords) {
             this.lat = event.coords.lat;
             this.lng = event.coords.lng;

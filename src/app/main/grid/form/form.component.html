@@ -124,8 +124,8 @@
                                 </mat-form-field>
                                 <span *ngSwitchCase="'geodata'">
                                     Координаты
-                                    <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}">
-                                    <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}">
+                                    <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
+                                    <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
                                     <mat-form-field>
                                         <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
                 <ya-marker
@@ -135,8 +135,10 @@
                            >
                 </ya-marker>
             </ya-map-->
-                                        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClick($event)">
-                                            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                        <agm-map [latitude]="lat_center" [longitude]="lng_center" (mapClick)="mapClick($event)">
+                                            <ng-container *ngIf="lat != '' && lng != ''">
+                                            <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
+                                            </ng-container>
                                         </agm-map>
 
                                         <input formControlName="{{records[x].name}}" matInput [hidden]="true">
