@@ -25,9 +25,6 @@ export class GalleryModalComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this._data.entity);
-        console.log(this._data.galleryImages);
-        console.log(this._data.image_field);
     }
 
     close() {

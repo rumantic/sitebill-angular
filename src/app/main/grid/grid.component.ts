@@ -431,12 +431,10 @@ export class GridComponent implements OnInit, OnDestroy
         this.dialog.open(ViewModalComponent, dialogConfig);
     }
 
-    view_gallery(row, images) {
-        console.log(row);
-        console.log(images);
+    view_gallery(row, column, images) {
         this.entity.key_value = row[this.entity.primary_key].value;
 
-        let image_field = 'image';
+        let image_field = column.model_name;
         let galleryImages = {};
         galleryImages[image_field] = {};
         var self = this;
