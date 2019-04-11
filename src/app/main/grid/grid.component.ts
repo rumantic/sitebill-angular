@@ -431,13 +431,34 @@ export class GridComponent implements OnInit, OnDestroy
         this.dialog.open(ViewModalComponent, dialogConfig);
     }
 
-    view_gallery(value) {
-        console.log(value);
+    view_gallery(row, images) {
+        console.log(row);
+        console.log(images);
+        this.entity.key_value = row[this.entity.primary_key].value;
+
+        let image_field = 'image';
+        let galleryImages = {};
+        galleryImages[image_field] = {};
+        var self = this;
+        if (images) {
+            galleryImages[image_field] = images.map(function (image: any) {
+
+                return {
+                    small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                    medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                    big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
+                };
+            });
+        } else {
+            galleryImages[image_field] = [];
+        }
+
+
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        //dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.data = { entity: this.entity, galleryImages: galleryImages, image_field: image_field };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(GalleryModalComponent, dialogConfig);

@@ -4,7 +4,7 @@
 </ng-template>
 
 <ng-template #imageTmpl let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(value)">
+    <button mat-icon-button (click)="view_gallery(row, value)">
         <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
             <img width="50"
                  src="{{api_url}}/img/data/{{value[0].preview}}" />

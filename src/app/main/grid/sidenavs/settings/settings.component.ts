@@ -62,8 +62,8 @@ export class GridSettingsSidenavComponent implements OnInit
     ngOnInit(): void
     {
         this.per_page = this.page.size;
-        console.log(this.per_page);
         this.init_grid();
+        this.drop(null);
     }
 
 
@@ -116,13 +116,15 @@ export class GridSettingsSidenavComponent implements OnInit
     drop(event: CdkDragDrop<string[]>) {
         //console.log('drop');
 
-        if (event.previousContainer === event.container) {
-            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-        } else {
-            transferArrayItem(event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex);
+        if ( event != null ) {
+            if (event.previousContainer === event.container) {
+                moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+            } else {
+                transferArrayItem(event.previousContainer.data,
+                    event.container.data,
+                    event.previousIndex,
+                    event.currentIndex);
+            }
         }
         //moveItemInArray(this.grid_items, event.previousIndex, event.currentIndex);
         let new_grid_items = [];
@@ -133,7 +135,9 @@ export class GridSettingsSidenavComponent implements OnInit
         this.modelSerivce.format_grid(this.entity, new_grid_items, this.per_page)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                this.filterService.empty_share(this.entity);
+                if ( event != null ) {
+                    this.filterService.empty_share(this.entity);
+                }
             });
 
     }
