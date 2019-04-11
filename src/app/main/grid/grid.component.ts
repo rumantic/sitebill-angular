@@ -464,11 +464,12 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     toggle_active(row, value) {
+        //console.log(value);
         let ql_items = {};
         if (row.active.value == 0) {
             ql_items['active'] = 1;
         } else {
-            ql_items['active'] = 0;
+            ql_items['active'] = null;
         }
 
         this.modelSerivce.update_only_ql(this.entity.app_name, value, ql_items)
