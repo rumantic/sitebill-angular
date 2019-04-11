@@ -128,14 +128,13 @@
                                     <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}">
                                     <mat-form-field>
                                         <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
-                                            <ya-marker 
-                                                       [latitude]="lat" 
-                                                       [longitude]="lng"
-                                                       [draggable]="true"
-                                                       >
-                                            </ya-marker>
-                                        </ya-map-->
-
+                <ya-marker
+                           [latitude]="lat"
+                           [longitude]="lng"
+                           [draggable]="true"
+                           >
+                </ya-marker>
+            </ya-map-->
                                         <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClick($event)">
                                             <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
                                         </agm-map>
@@ -144,6 +143,11 @@
                                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                     </mat-form-field>
                                 </span>
+
+                                <mat-form-field *ngSwitchCase="'textarea'">
+                                    <textarea matInput matTextareaAutosize formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
+                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                </mat-form-field>
 
                                 <mat-form-field *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
@@ -155,11 +159,6 @@
                     </mat-tab>
 
                 </mat-tab-group>
-
-                <span *ngFor="let x of rows">
-
-
-                </span>
 
             </div>
         </div>
