@@ -123,11 +123,23 @@
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
                                 <span *ngSwitchCase="'geodata'">
-                                    Координаты
-                                    <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
-                                    <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
-                                    <mat-form-field>
-                                        <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
+
+                                    <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                            <span fxFlex="100">Координаты</span>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                            <mat-form-field fxFlex="50" class="pr-4">
+                                                <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
+                                            </mat-form-field>
+                                            <mat-form-field fxFlex="50" class="pl-4">
+                                                <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                            <mat-form-field fxFlex="100">
+                                                <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
                 <ya-marker
                            [latitude]="lat"
                            [longitude]="lng"
@@ -135,15 +147,22 @@
                            >
                 </ya-marker>
             </ya-map-->
-                                        <agm-map [latitude]="lat_center" [longitude]="lng_center" (mapClick)="mapClick($event)">
-                                            <ng-container *ngIf="lat != '' && lng != ''">
-                                            <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
-                                            </ng-container>
-                                        </agm-map>
+                                                <agm-map [latitude]="lat_center" [longitude]="lng_center" (mapClick)="mapClick($event)">
+                                                    <ng-container *ngIf="lat != '' && lng != ''">
+                                                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                                    </ng-container>
+                                                </agm-map>
 
-                                        <input formControlName="{{records[x].name}}" matInput [hidden]="true">
-                                        <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                                    </mat-form-field>
+                                                <input formControlName="{{records[x].name}}" matInput [hidden]="true">
+                                                <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                            </mat-form-field>
+
+                                        </div>
+
+                                    </div>
+
+
+
                                 </span>
 
                                 <mat-form-field *ngSwitchCase="'textarea'">
