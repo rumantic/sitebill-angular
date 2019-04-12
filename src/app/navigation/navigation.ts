@@ -2,7 +2,7 @@ import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     {
-        id: 'data_grid',
+        id: 'data',
         title: 'Объекты',
         type: 'item',
         icon: 'home',
@@ -17,7 +17,7 @@ export const navigation: FuseNavigation[] = [
         */
     },
     {
-        id: 'client_grid',
+        id: 'client',
         title: 'Клиенты',
         type: 'item',
         icon: 'favorite',
@@ -105,7 +105,7 @@ export const navigation: FuseNavigation[] = [
     },
 
     {
-        id: 'user_grid',
+        id: 'user',
         title: 'Пользователи',
         type: 'item',
         icon: 'supervisor_account',

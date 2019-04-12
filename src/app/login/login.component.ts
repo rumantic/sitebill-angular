@@ -79,6 +79,9 @@ export class LoginComponent implements OnInit {
     }
 
     logout() {
+        //console.log('logout');
+        localStorage.removeItem('currentUser');
+        localStorage.clear();
         this.authenticationService.logout()
             .subscribe(
                 data => {

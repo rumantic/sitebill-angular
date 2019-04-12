@@ -20,7 +20,7 @@ export class GalleryModalComponent implements OnInit {
         private modelSerivce: ModelService,
         private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) private _data: any
+        @Inject(MAT_DIALOG_DATA) public _data: any
     ) {
     }
 
