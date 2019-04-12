@@ -65,6 +65,8 @@ import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component'
 import { GroupComponent } from './entity/group/group.component';
 import { ComponentComponent } from './entity/component/component.component';
 import { FunctionComponent } from './entity/function/function.component';
+import { PageComponent } from './entity/page/page.component';
+import { MenuComponent } from './entity/menu/menu.component';
 
 const routes = [
     {
@@ -78,6 +80,22 @@ const routes = [
     {
         path: 'news',
         component: NewsComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'page',
+        component: PageComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'menu',
+        component: MenuComponent,
         resolve: {
             chat: ChatService
         }
@@ -178,6 +196,8 @@ const routes = [
         GridComponent,
         DataComponent,
         NewsComponent,
+        MenuComponent,
+        PageComponent,
         CountryComponent,
         RegionComponent,
         CityComponent,

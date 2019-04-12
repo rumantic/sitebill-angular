@@ -18,25 +18,10 @@ export const navigation: FuseNavigation[] = [
     },
     {
         id: 'client_grid',
-        title: 'Заявки',
+        title: 'Клиенты',
         type: 'item',
-        icon: 'face',
+        icon: 'favorite',
         url: 'grid/client',
-        /*
-        badge    : {
-            title    : '25',
-            translate: 'NAV.SAMPLE.BADGE',
-            bg       : '#F44336',
-            fg       : '#FFFFFF'
-        }
-        */
-    },
-    {
-        id: 'user_grid',
-        title: 'Пользователи',
-        type: 'item',
-        icon: 'supervisor_account',
-        url: 'grid/user',
         /*
         badge    : {
             title    : '25',
@@ -92,13 +77,39 @@ export const navigation: FuseNavigation[] = [
         ]
     },
 
+    {
+        id: 'content',
+        title: 'Контент',
+        type: 'collapsable',
+        icon: 'free_breakfast',
+        children: [
+            {
+                id: 'news',
+                title: 'Новости',
+                type: 'item',
+                url: 'grid/news'
+            },
+            {
+                id: 'page',
+                title: 'Страницы',
+                type: 'item',
+                url: 'grid/page'
+            },
+            {
+                id: 'menu',
+                title: 'Меню',
+                type: 'item',
+                url: 'grid/menu'
+            },
+        ]
+    },
 
     {
-        id: 'news_grid',
-        title: 'Новости',
+        id: 'user_grid',
+        title: 'Пользователи',
         type: 'item',
-        icon: 'email',
-        url: 'grid/news',
+        icon: 'supervisor_account',
+        url: 'grid/user',
         /*
         badge    : {
             title    : '25',
