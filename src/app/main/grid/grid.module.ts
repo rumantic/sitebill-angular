@@ -62,6 +62,9 @@ import { DistrictComponent } from './entity/district/district.component';
 import { MetroComponent } from './entity/metro/metro.component';
 import { StreetComponent } from './entity/street/street.component';
 import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
+import { GroupComponent } from './entity/group/group.component';
+import { ComponentComponent } from './entity/component/component.component';
+import { FunctionComponent } from './entity/function/function.component';
 
 const routes = [
     {
@@ -137,6 +140,31 @@ const routes = [
 
     },
     {
+        path: 'group',
+        component: GroupComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'component',
+        component: ComponentComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'function',
+        component: FunctionComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+
+    {
         path: 'client',
         component: GridComponent,
         resolve: {
@@ -156,6 +184,9 @@ const routes = [
         DistrictComponent,
         MetroComponent,
         StreetComponent,
+        GroupComponent,
+        ComponentComponent,
+        FunctionComponent,
         UserComponent,
         FilterComponent,
         CourseDialogComponent,

@@ -147,6 +147,34 @@ export const navigation: FuseNavigation[] = [
         }
     },
     */
+
+    {
+        id: 'access',
+        title: 'Доступ',
+        type: 'collapsable',
+        icon: 'group',
+        children: [
+            {
+                id: 'group',
+                title: 'Группы',
+                type: 'item',
+                url: 'grid/group'
+            },
+            {
+                id: 'component',
+                title: 'Компоненты',
+                type: 'item',
+                url: 'grid/component'
+            },
+            {
+                id: 'function',
+                title: 'Функции',
+                type: 'item',
+                url: 'grid/function'
+            },
+        ]
+    },
+
     {
         id: 'login',
         title: 'Выход',
