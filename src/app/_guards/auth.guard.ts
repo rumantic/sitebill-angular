@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigation } from '@fuse/types';
+import { FuseConfigService } from '@fuse/services/config.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
     constructor(
         private router: Router,
-        private _fuseNavigationService: FuseNavigationService
+        private _fuseNavigationService: FuseNavigationService,
+        private _fuseConfigService: FuseConfigService
     ) {
         //this._fuseNavigationService.removeNavigationItem('page');
     }
@@ -24,6 +26,7 @@ export class AuthGuard implements CanActivate {
             let storage = JSON.parse(localStorage.getItem('currentUser')) || []
             if (storage.admin_panel_login != 1) {
                 console.log('access denied');
+                this.disable_menu();
                 this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                 return false;
             }
@@ -43,7 +46,7 @@ export class AuthGuard implements CanActivate {
             //Попробуем получить данные от cms sitebill для текущей сессии
 
         }
-
+        this.disable_menu();
         // not logged in so redirect to login page with the return url
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
         return false;
@@ -92,4 +95,21 @@ export class AuthGuard implements CanActivate {
         return remove_counter;
 
     }
+    disable_menu() {
+        //console.log('disable menu');
+        this._fuseConfigService.config = {
+            layout: {
+                navbar: {
+                    hidden: true
+                },
+                toolbar: {
+                    hidden: true
+                },
+                footer: {
+                    hidden: true
+                }
+            }
+        };
+    }
+
 }

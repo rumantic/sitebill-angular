@@ -70,7 +70,7 @@ import {Error500Component} from 'app/main/pages/errors/500/error-500.component';
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
-    //{path: '', redirectTo: 'client/my', pathMatch: 'full', canActivate: [AuthGuard]},
+    {path: '', redirectTo: 'grid/data', pathMatch: 'full', canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
     {path: 'logout', component: LoginComponent},
     {

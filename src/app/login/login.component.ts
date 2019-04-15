@@ -77,7 +77,25 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    disable_menu() {
+        //console.log('disable menu');
+        this._fuseConfigService.config = {
+            layout: {
+                navbar: {
+                    hidden: true
+                },
+                toolbar: {
+                    hidden: true
+                },
+                footer: {
+                    hidden: true
+                }
+            }
+        };
+    }
+
     logout() {
+        this.disable_menu();
         //console.log('logout');
         localStorage.removeItem('currentUser');
         localStorage.clear();
@@ -93,6 +111,7 @@ export class LoginComponent implements OnInit {
 
 
     login() {
+        this.disable_menu();
         this.loading = true;
         //console.log(this.loginForm.value);
         //return;
