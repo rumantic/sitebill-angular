@@ -23,13 +23,13 @@ export class AuthGuard implements CanActivate {
             let navigtaion_clone = navigation_origin.slice(0);
             let storage = JSON.parse(localStorage.getItem('currentUser')) || []
 
-            console.log('navigation');
-            console.log(navigtaion_clone);
-            console.log('permission');
-            console.log(storage['structure']);
+            //console.log('navigation');
+            //console.log(navigtaion_clone);
+            //console.log('permission');
+            //console.log(storage['structure']);
 
             this.cleanUpNavigation(navigtaion_clone, storage['structure']);
-            console.log('complete cleanUp');
+            //console.log('complete cleanUp');
 
             // logged in so return true
             return true;
@@ -44,7 +44,8 @@ export class AuthGuard implements CanActivate {
     }
 
     cleanUpNavigation(navigation: any[], permission) {
-        //console.log(permission['group_name']);
+        //console.log(navigation.length);
+        let remove_counter = 0;
         if (permission['group_name'] == 'admin') {
             return -1;
         }
@@ -66,23 +67,23 @@ export class AuthGuard implements CanActivate {
             }
             if (need_remove && (row.id != 'access' && row.id != 'content' && row.id != 'dictionaries')) {
                 //console.log('remove ' + row.id);
+                ++remove_counter;
                 //Этот механизм только удаляет записи. 
                 //Если хотите чтобы в текущей сессии добавился пункт, после того как вы его в админке добавили тогда надо перегружать браузер
                 this._fuseNavigationService.removeNavigationItem(row.id);
+                //console.log('remove');
             } else {
                 //this._fuseNavigationService.addNavigationItem(row.id);
             }
             if (row.children != null) {
-                //console.log(row.children);
-                //console.log(row.children.length);
                 let children_clone = row.children.slice(0);
-
-
-                //if (row.children.length > 0) {
-                this.cleanUpNavigation(children_clone, permission);
-                //}
+                let current_remove = this.cleanUpNavigation(children_clone, permission);
+                if (current_remove == children_clone.length) {
+                    this._fuseNavigationService.removeNavigationItem(row.id);
+                }
             }
         });
+        return remove_counter;
 
     }
 }
