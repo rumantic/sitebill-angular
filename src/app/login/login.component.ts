@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
-
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -92,6 +91,7 @@ export class LoginComponent implements OnInit {
                 });
     }
 
+
     login() {
         this.loading = true;
         //console.log(this.loginForm.value);
@@ -100,6 +100,8 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
                 data => {
+                    //console.log(data);
+
                     if (data.state == 'error') {
                         this.alertService.error(data.error);
                         this.loading = false;
@@ -110,7 +112,18 @@ export class LoginComponent implements OnInit {
                         });
 
                     } else {
-                        this.router.navigate([this.returnUrl]);
+                        if (data.admin_panel_login == 1) {
+                            this.router.navigate([this.returnUrl]);
+                        } else {
+                            let error = 'Доступ запрещен';
+                            this.alertService.error(error);
+                            this.loading = false;
+                            this.snackBar.open(error, 'ok', {
+                                duration: 2000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                            });
+                        }
                     }
                 },
                 error => {

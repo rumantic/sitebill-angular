@@ -22,6 +22,12 @@ export class AuthGuard implements CanActivate {
             let navigation_origin = this._fuseNavigationService.getNavigation('main');
             let navigtaion_clone = navigation_origin.slice(0);
             let storage = JSON.parse(localStorage.getItem('currentUser')) || []
+            if (storage.admin_panel_login != 1) {
+                console.log('access denied');
+                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                return false;
+            }
+            console.log(storage);
 
             //console.log('navigation');
             //console.log(navigtaion_clone);
