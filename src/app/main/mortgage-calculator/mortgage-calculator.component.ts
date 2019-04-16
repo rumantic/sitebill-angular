@@ -242,12 +242,6 @@ export class MortgageCalculatorComponent implements OnInit {
             return 0;
         }
         return (this.realty_price - value)/this.realty_price;
-
-        if (value >= 1000) {
-            return value / 1000000 + ' млн';
-        }
-
-        return value;
     }
     
     displayFnDown (value: number | null) {

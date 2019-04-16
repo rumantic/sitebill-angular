@@ -10,8 +10,13 @@ export class FilterService {
     @Output() change: EventEmitter<any> = new EventEmitter();
     @Output() share: EventEmitter<any> = new EventEmitter();
 
+
     constructor() {
         this.share_array = [];
+    }
+
+    onInnerChange(value) {
+        this.share.emit(value);
     }
     
     save(controls: any) {
@@ -26,18 +31,15 @@ export class FilterService {
             this.share_array[entity.app_name] = [];
         }
         this.share_array[entity.app_name][key] = datas;
-        this.share.emit(entity);
-        //console.log(this.share_array);
+        this.onInnerChange(entity);
     }
     unshare_data(entity: SitebillEntity, key: string) {
         if (this.share_array[entity.app_name] != null ) {
             delete (this.share_array[entity.app_name][key]);
-            this.share.emit(entity);
-            //console.log(this.share_array);
+            this.onInnerChange(entity);
         }
     }
     empty_share(entity: SitebillEntity) {
-        //console.log(this.share_array);
-        this.share.emit(entity);
+        this.onInnerChange(entity);
     }
 }

@@ -166,6 +166,7 @@ export class FilterComponent {
                 return;
             }
         }
+        //console.log('selectItem');
         this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 

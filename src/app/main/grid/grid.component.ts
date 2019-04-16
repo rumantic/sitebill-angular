@@ -27,6 +27,8 @@ import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
+import { throttleTime } from 'rxjs/operators';
+
 registerLocaleData(localeRu, 'ru');
 
 @Component({
@@ -68,7 +70,7 @@ export class GridComponent implements OnInit, OnDestroy
     objectKeys = Object.keys;
     page = new Page();
     entity: SitebillEntity;
-    refresh_complete: boolean = true;
+    refresh_complete: boolean = false;
     searchInput: FormControl;
     error: boolean = false;
     error_message: string;
@@ -94,6 +96,9 @@ export class GridComponent implements OnInit, OnDestroy
     protected _unsubscribeAll: Subject<any>;
     protected currentUser: currentUser;
     filterSharedData: any;
+
+    private resizeSubject = new Subject<number>();
+    private resizeObservable = this.resizeSubject.pipe(debounceTime(300),throttleTime(1000));
 
     
     /**
@@ -148,6 +153,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.setup_apps();
         this.rows = [];
         this.rows_my = [];
+        //console.log('init');
         this.refresh();
         if (this.filterService.share_array[this.entity.app_name] != null) {
             if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
@@ -157,15 +163,21 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
             if (entity.app_name == this.entity.app_name) {
-                this.ngxHeaderHeight = "auto";
                 if (this.refresh_complete) {
-                    this.refresh_complete = false;
-                    //console.log(entity);
-                    this.refresh();
-
+                    this.resizeSubject.next(0);
+                    this.ngxHeaderHeight = "auto";
                 }
-            }
 
+            }
+        });
+
+        this.resizeObservable.subscribe(() => {
+            //console.log('subscirbe');
+            //console.log(entity);
+            if (this.refresh_complete) {
+                this.refresh_complete = false;
+                this.refresh();
+            }
         });
 
         this.searchInput.valueChanges
@@ -176,9 +188,27 @@ export class GridComponent implements OnInit, OnDestroy
             )
             .subscribe(searchText => {
                 //console.log(searchText);
+                //console.log('search string share');
                 this.filterService.share_data(this.entity, 'concatenate_search', searchText);
             });
     }
+
+    refresh() {
+        //console.log('refresh');
+        //console.log(this.refresh_complete);
+        //console.log(this.entity.app_name);
+        //this.load_grid_data(this.app_name, [], []);
+        //const params = { owner: true };
+        //this.load_grid_data(this.app_name, [], params);
+        //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+        this.setPage({ offset: this.page.pageNumber });
+
+        //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+
+
+    }
+
+
     
     init_input_parameters () {
         let app_root_element;
@@ -484,19 +514,14 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
 
-    refresh() {
-        //console.log('refresh');
-        //this.load_grid_data(this.app_name, [], []);
-        //const params = { owner: true };
-        //this.load_grid_data(this.app_name, [], params);
-        this.setPage({ offset: this.page.pageNumber });
-    }
+
 
     /**
        * Populate the table with new data based on the page number
        * @param page The page to select
        */
     setPage(pageInfo) {
+        //console.log('setPage');
         this.page.pageNumber = pageInfo.offset;
         //const params = { owner: true };
         const params = {};
@@ -505,11 +530,11 @@ export class GridComponent implements OnInit, OnDestroy
 
     onResize(event) {
         const params = { width: event.newValue };
-        console.log(event);
+        //console.log(event);
 
         this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, 'columns', params)
             .subscribe((response: any) => {
-                console.log(response);
+                //console.log(response);
             });
 
     }
@@ -523,6 +548,8 @@ export class GridComponent implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        //this.resizeObservable.next(0);
+        this.resizeSubject.complete();
     }
     
     load_selected() {
