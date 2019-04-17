@@ -32,6 +32,15 @@
                                                     panelClass="example-month-picker">
                                     </mat-datepicker>
                                 </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'dtdate'">
+                                    <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp
+                                                    panelClass="example-month-picker">
+                                    </mat-datepicker>
+                                </mat-form-field>
+
                                 <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
 
                                 <span *ngSwitchCase="'select_box_structure'">
