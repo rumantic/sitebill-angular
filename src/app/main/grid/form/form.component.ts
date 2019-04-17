@@ -88,7 +88,7 @@ export class FormComponent implements OnInit {
     }
 
     is_date_type(type: string) {
-        if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime') {
+        if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime' || type == 'date') {
             return true;
         }
         return false;
@@ -131,6 +131,12 @@ export class FormComponent implements OnInit {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
             }
+
+            if (this.records[this.rows[i]].type == 'date') {
+                //this.form.controls[this.rows[i]].patchValue();
+                this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "DD.MM.YYYY"));
+            }
+
             if (this.records[this.rows[i]].type == 'select_box') {
                 this.init_select_box_options(this.records[this.rows[i]].name);
                 if (this.records[this.rows[i]].value_string == '') {
