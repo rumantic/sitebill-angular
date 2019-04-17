@@ -140,13 +140,13 @@
                                         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                                             <mat-form-field fxFlex="100">
                                                 <!--ya-map [latitude]="55.76" [longitude]="37.64" (mapClick)="mapClick($event)">
-                <ya-marker
-                           [latitude]="lat"
-                           [longitude]="lng"
-                           [draggable]="true"
-                           >
-                </ya-marker>
-            </ya-map-->
+                        <ya-marker
+                                   [latitude]="lat"
+                                   [longitude]="lng"
+                                   [draggable]="true"
+                                   >
+                        </ya-marker>
+                    </ya-map-->
                                                 <agm-map [latitude]="lat_center" [longitude]="lng_center" (mapClick)="mapClick($event)">
                                                     <ng-container *ngIf="lat != '' && lng != ''">
                                                         <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
@@ -169,6 +169,12 @@
                                     <textarea matInput matTextareaAutosize formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'password'">
+                                    <input matInput type="password" formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
+                                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                </mat-form-field>
+
 
                                 <mat-form-field *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
