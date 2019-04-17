@@ -63,6 +63,16 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, load_data_request);
     }
 
+    native_insert(model_name, ql_items) {
+        const body = { action: 'model', do: 'native_insert', model_name: model_name, ql_items: ql_items, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
+    native_update(model_name, key_value, ql_items) {
+        const body = { action: 'model', do: 'native_update', model_name: model_name, key_value: key_value, ql_items: ql_items, session_key: this.currentUser.session_key };
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
     update(model_name, key_value, ql_items) {
         const body = { action: 'model', do: 'graphql_update', model_name: model_name, key_value: key_value, ql_items: ql_items, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);

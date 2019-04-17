@@ -298,29 +298,46 @@ export class FormComponent implements OnInit {
             ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
         }
         this.form_submitted = true;
+        //console.log(this._data.key_value);
+
         if (!this.form.valid) {
 
             this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
             return null;
         }
 
-        console.log(ql_items);
+        //console.log(ql_items);
         //return;
 
+        if (this._data.key_value == null) {
+            this.modelSerivce.native_insert(this._data.app_name, ql_items)
+                .subscribe((response: any) => {
+                    console.log(response);
 
-        this.modelSerivce.update(this._data.app_name, this._data.key_value, ql_items)
-            .subscribe((response: any) => {
-                console.log(response);
+                    if (response.state == 'error') {
+                        this._snackService.message(response.message);
+                        return null;
+                    } else {
+                        this._snackService.message('Запись создана успешно');
+                        this.filterService.empty_share(this._data);
+                        this.close();
+                    }
+                });
+        } else {
+            this.modelSerivce.native_update(this._data.app_name, this._data.key_value, ql_items)
+                .subscribe((response: any) => {
+                    console.log(response);
 
-                if (response.state == 'error') {
-                    this._snackService.message(response.message);
-                    return null;
-                } else {
-                    this._snackService.message('Запись сохранена успешно');
-                    this.filterService.empty_share(this._data);
-                    this.close();
-                }
-            });
+                    if (response.state == 'error') {
+                        this._snackService.message(response.message);
+                        return null;
+                    } else {
+                        this._snackService.message('Запись сохранена успешно');
+                        this.filterService.empty_share(this._data);
+                        this.close();
+                    }
+                });
+        }
 
 
     }
