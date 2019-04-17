@@ -68,6 +68,7 @@ import { FunctionComponent } from './entity/function/function.component';
 import { PageComponent } from './entity/page/page.component';
 import { MenuComponent } from './entity/menu/menu.component';
 
+
 const routes = [
     {
         path     : 'data',
