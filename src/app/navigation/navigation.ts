@@ -163,7 +163,7 @@ export const navigation: FuseNavigation[] = [
         id: 'access',
         title: 'Доступ',
         type: 'collapsable',
-        icon: 'group',
+        icon: 'vpn_key',
         children: [
             {
                 id: 'group',

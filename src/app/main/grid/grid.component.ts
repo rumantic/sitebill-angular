@@ -80,6 +80,8 @@ export class GridComponent implements OnInit, OnDestroy
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
+    @ViewChild('dtdateTmpl') dtdateTmpl: TemplateRef<any>;
+    @ViewChild('dttimeTmpl') dttimeTmpl: TemplateRef<any>;
     @ViewChild('textTmpl') textTmpl: TemplateRef<any>;
     @ViewChild('checkboxTmpl') checkboxTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
@@ -366,8 +368,16 @@ export class GridComponent implements OnInit, OnDestroy
                     cellTemplate = this.textTmpl;
                     break;
 
+                case 'dttime':
+                    cellTemplate = this.dttimeTmpl;
+                    break;
+
                 case 'dtdatetime':
                     cellTemplate = this.dtdatetimeTmpl;
+                    break;
+
+                case 'dtdate':
+                    cellTemplate = this.dtdateTmpl;
                     break;
 
                 case 'geodata':

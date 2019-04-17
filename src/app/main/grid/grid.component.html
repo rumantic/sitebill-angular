@@ -25,7 +25,19 @@
 </ng-template>
 <ng-template #dtdatetimeTmpl let-row="row" let-value="value">
     <ng-container *ngIf="value != '0000-00-00 00:00:00'">
-        {{value|date}}
+        {{value|date:'dd.LL.yyyy HH:mm:ss'}}
+    </ng-container>
+</ng-template>
+
+<ng-template #dtdateTmpl let-row="row" let-value="value">
+    <ng-container *ngIf="value != '0000-00-00 00:00:00'">
+        {{value|date:'dd.LL.yyyy'}}
+    </ng-container>
+</ng-template>
+
+<ng-template #dttimeTmpl let-row="row" let-value="value">
+    <ng-container *ngIf="value != '0000-00-00 00:00:00'">
+        {{value|slice:10:19}}
     </ng-container>
 </ng-template>
 
@@ -119,7 +131,7 @@
                     <div class="search-wrapper mt-16 mt-sm-0">
                         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon color="primary">search</mat-icon>
-                            <input [formControl]="searchInput"  placeholder="Поиск по слову">
+                            <input [formControl]="searchInput" placeholder="Поиск по слову">
                             <button mat-icon-button (click)="clear_search_text()" *ngIf="searchInput.value != ''">
                                 <mat-icon color="primary" matSuffix>close</mat-icon>
                             </button>
