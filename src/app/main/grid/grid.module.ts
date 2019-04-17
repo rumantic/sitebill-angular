@@ -67,6 +67,7 @@ import { ComponentComponent } from './entity/component/component.component';
 import { FunctionComponent } from './entity/function/function.component';
 import { PageComponent } from './entity/page/page.component';
 import { MenuComponent } from './entity/menu/menu.component';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 const routes = [
@@ -265,6 +266,7 @@ const routes = [
         MatButtonToggleModule,
         MatExpansionModule,
         MatBadgeModule,
+        NgxMaterialTimepickerModule,
 
         NgSelectModule,
         Ng5SliderModule,
