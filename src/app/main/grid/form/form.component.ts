@@ -2,7 +2,7 @@ import {Component, Inject, OnInit, isDevMode }  from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE} from "@angular/material";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
+import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators} from "@angular/forms";
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
@@ -112,6 +112,9 @@ export class FormComponent implements OnInit {
                 this.form.controls[this.rows[i]].patchValue(moment());
             }
 
+            if (this.records[this.rows[i]].name == 'email') {
+                form_control_item.setValidators(Validators.email);
+            }
             
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;

@@ -175,7 +175,6 @@
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
 
-
                                 <mat-form-field *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
