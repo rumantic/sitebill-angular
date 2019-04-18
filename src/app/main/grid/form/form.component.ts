@@ -138,8 +138,7 @@ export class FormComponent implements OnInit {
             }
 
             if (this.records[this.rows[i]].type == 'dttime') {
-                //this.form.controls[this.rows[i]].patchValue();
-                this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "HH.mm"));
+                this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value.slice(10, 16));
             }
 
             if (this.records[this.rows[i]].type == 'select_box') {
