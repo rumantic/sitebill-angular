@@ -3,8 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
-import { NgxGalleryImage } from 'ngx-gallery';
-import { SitebillEntity } from 'app/_models';
 import { FilterService } from 'app/_services/filter.service';
 
 
@@ -14,6 +12,7 @@ import { FilterService } from 'app/_services/filter.service';
     styleUrls: ['./gallery-modal.component.css']
 })
 export class GalleryModalComponent implements OnInit {
+    max_uploads: number = 100;
 
     constructor(
         private dialogRef: MatDialogRef<GalleryModalComponent>,
@@ -25,6 +24,9 @@ export class GalleryModalComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this._data.entity.app_name == 'user' && this._data.image_field == 'imgfile') {
+            this.max_uploads = 1;
+        }
     }
 
     close() {

@@ -477,6 +477,16 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     view_gallery(row, column, images) {
+        if (column.type == 'photo' && !Array.isArray(images) && images != '') {
+            let tmp_images = [];
+
+            let item = {
+                normal: 'user/' + images,
+                preview: 'user/' + images,
+            };
+            tmp_images[0] = item;
+            images = tmp_images;
+        }
         this.entity.key_value = row[this.entity.primary_key].value;
 
         let image_field = column.model_name;
