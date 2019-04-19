@@ -7,6 +7,7 @@ import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
+import { SnackService } from 'app/_services/snack.service';
 
 export class UploadResult {
     state: string;
@@ -51,6 +52,7 @@ export class UploaderComponent {
     constructor(
         private modelSerivce: ModelService,
         public _matDialog: MatDialog,
+        private _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         if (isDevMode()) {
@@ -102,18 +104,24 @@ export class UploaderComponent {
                 if (this.entity.key_value == null) {
                     this.modelSerivce.new_empty_record(this.entity.app_name)
                         .subscribe((result: UploadResult) => {
-                            this.entity.key_value = result.message[this.entity.primary_key]['value'];
-                            this.modelSerivce.entity.key_value = this.entity.key_value;
-                            //console.log(result.message);
+                            if (result.state == 'error') {
+                                this._snackService.message('Невозможно загрузить фото к новой записи. Сначала сохраните запись без фото, а потом загрузите к ней фото.', 5000);
+                                return false;
+                            }
+                            if (result.message[this.entity.primary_key]['value'] != null ) {
+                                this.entity.key_value = result.message[this.entity.primary_key]['value'];
+                                this.modelSerivce.entity.key_value = this.entity.key_value;
+                                //console.log(result.message);
 
-                            for (var prop in result.message[this.image_field]['value']) {
+                                for (var prop in result.message[this.image_field]['value']) {
 
-                                let gallery_image = {
-                                    small: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].preview + '?' + new Date().getTime(),
-                                    medium: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
-                                    big: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
-                                };
-                                this.galleryImages[this.image_field].push(gallery_image);
+                                    let gallery_image = {
+                                        small: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].preview + '?' + new Date().getTime(),
+                                        medium: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                        big: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                    };
+                                    this.galleryImages[this.image_field].push(gallery_image);
+                                }
                             }
 
 

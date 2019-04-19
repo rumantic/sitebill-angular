@@ -17,9 +17,9 @@ export class SnackService {
     ) {
     }
 
-    message(message: string) {
+    message(message: string, duration = 3000) {
         this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 3000,
+            duration: duration,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             data: { message: message },
