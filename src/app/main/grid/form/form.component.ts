@@ -160,6 +160,10 @@ export class FormComponent implements OnInit {
                 this.init_geodata(this.records[this.rows[i]].name);
             }
 
+            if (this.records[this.rows[i]].type == 'photo') {
+                this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
+            }
+
 
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
@@ -187,6 +191,21 @@ export class FormComponent implements OnInit {
         
     }
 
+    init_photo_image(field_name, image) {
+        this.galleryImages[field_name] = [];
+        var self = this;
+        if (image != '') {
+            let item = {
+                small: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
+                medium: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
+                big: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime()
+            };
+            this.galleryImages[field_name][0] = item;
+        } else {
+            this.galleryImages[field_name] = [];
+        }
+
+    }
 
     init_gallery_images(field_name, images) {
         this.galleryImages[field_name] = {};
@@ -203,6 +222,7 @@ export class FormComponent implements OnInit {
         } else {
             this.galleryImages[field_name] = [];
         }
+        console.log(this.galleryImages[field_name]);
     }
 
     init_select_box_options(columnName) {
@@ -302,6 +322,8 @@ export class FormComponent implements OnInit {
                 this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
             } else if (this.records[this.rows[i]].type == 'checkbox' && this.form.controls[this.rows[i]].value == '') {
                 this.form.controls[this.rows[i]].patchValue(null);
+            } else if (this.records[this.rows[i]].type == 'dtdate') {
+                console.log(this.form.controls[this.rows[i]].value);
             } else if (this.records[this.rows[i]].type == 'geodata') {
                 this.form.controls[this.rows[i]].patchValue({ lat: this.lat, lng: this.lng });
             } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {

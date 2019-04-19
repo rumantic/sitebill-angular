@@ -41,6 +41,10 @@ export class UploaderComponent {
     @Input("image_field")
     image_field: string;
 
+    @Input("max_uploads")
+    max_uploads: any;
+
+
     protected currentUser: currentUser;
 
 
@@ -56,13 +60,17 @@ export class UploaderComponent {
         }
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
 
-        this.options = { concurrency: 1, maxUploads: 100 };
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
         this.humanizeBytes = humanizeBytes;
     }
 
     ngOnInit() {
+        if (this.max_uploads == null) {
+            this.max_uploads = 100;
+        }
+        this.options = { concurrency: 1, maxUploads: this.max_uploads };
+
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
             + '&model=' + this.entity.app_name
@@ -142,13 +150,18 @@ export class UploaderComponent {
     uppend_uploads() {
         this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
             .subscribe((result: UploadResult) => {
-                //console.log(result);
+                console.log(result);
+
+                let prefix = '';
+                if (this.entity.app_name == 'user') {
+                    prefix = 'user/';
+                }
 
                 for (var prop in result.data) {
                     let gallery_image = {
-                        small: this.api_url + '/img/data/' + result.data[prop].preview + '?' + new Date().getTime(),
-                        medium: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
-                        big: this.api_url + '/img/data/' + result.data[prop].normal + '?' + new Date().getTime(),
+                        small: this.api_url + '/img/data/' + prefix + result.data[prop].preview + '?' + new Date().getTime(),
+                        medium: this.api_url + '/img/data/' + prefix + result.data[prop].normal + '?' + new Date().getTime(),
+                        big: this.api_url + '/img/data/' + prefix + result.data[prop].normal + '?' + new Date().getTime(),
                     };
                     this.galleryImages[this.image_field].push(gallery_image);
                 }

@@ -34,7 +34,7 @@
                                 </mat-form-field>
 
                                 <mat-form-field *ngSwitchCase="'dttime'">
-                                    <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [ngxTimepicker]="picker"  [format]="24" placeholder="{{records[x].title}}">
+                                    <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                                     <mat-icon matSuffix>access_time</mat-icon>
                                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                                 </mat-form-field>
@@ -65,6 +65,8 @@
                                 </mat-form-field>
 
                                 <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
+
+                                <uploader-component *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
 
                                 <span *ngSwitchCase="'select_box_structure'">
                                     <ng-select formControlName="{{records[x].name}}"

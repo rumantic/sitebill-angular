@@ -78,6 +78,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
+    @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
     @ViewChild('dtdateTmpl') dtdateTmpl: TemplateRef<any>;
@@ -387,6 +388,10 @@ export class GridComponent implements OnInit, OnDestroy
 
                 case 'checkbox':
                     cellTemplate = this.checkboxTmpl;
+                    break;
+
+                case 'photo':
+                    cellTemplate = this.photoTmpl;
                     break;
 
                 case 'uploads':

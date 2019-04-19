@@ -13,6 +13,16 @@
     </button>
 </ng-template>
 
+<ng-template #photoTmpl let-column="column" let-row="row" let-value="value">
+    <button mat-icon-button (click)="view_gallery(row, column, value)">
+        <ng-container *ngIf="value != ''">
+            <img width="50"
+                 src="{{api_url}}/img/data/user/{{value}}" />
+        </ng-container>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0">image_search</mat-icon>
+    </button>
+</ng-template>
+
 <ng-template #textTmpl let-row="row" let-value="value">
     <div [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
 </ng-template>
