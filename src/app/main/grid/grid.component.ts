@@ -426,7 +426,6 @@ export class GridComponent implements OnInit, OnDestroy
 
 
 
-
     delete(item_id: any) {
         this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
             disableClose: false
