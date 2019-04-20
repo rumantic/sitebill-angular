@@ -89,6 +89,12 @@ export class FilterComponent {
                 break;
             }
 
+            case "dtdatetime": {
+                this.select_filter_enable = true;
+                this.filter_enable = true;
+                break;
+            }
+
             case "select_box_structure": {
                 this.select_filter_enable = true;
                 this.filter_enable = true;
