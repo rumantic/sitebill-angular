@@ -40,6 +40,9 @@ export class FilterComponent {
     slider_value = 0;
     value: any;
 
+    date_filter_enable: boolean = false;
+    options_date: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
+
 
 
     private _unsubscribeAll: Subject<any>;
@@ -90,7 +93,7 @@ export class FilterComponent {
             }
 
             case "dtdatetime": {
-                this.select_filter_enable = true;
+                this.date_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
