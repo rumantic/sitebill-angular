@@ -134,6 +134,8 @@
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись</button>
+                    <input matInput type="text" appendTo="body" ngxDaterangepickerMd [(ngModel)]="selected_date_filter" class="form-control" />
+
                 </div>
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->

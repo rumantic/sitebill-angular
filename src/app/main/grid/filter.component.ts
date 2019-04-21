@@ -5,6 +5,7 @@ import {FilterService} from 'app/_services/filter.service';
 import { SitebillEntity } from 'app/_models';
 import { Options, ChangeContext } from 'ng5-slider';
 import { ModelService } from 'app/_services/model.service';
+import { Moment } from 'moment';
 
 @Component({
     selector: 'filter-comp',
@@ -41,7 +42,7 @@ export class FilterComponent {
     value: any;
 
     date_filter_enable: boolean = false;
-    options_date: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
+    selected_date_filter: { startDate: Moment, endDate: Moment };
 
 
 

@@ -68,6 +68,7 @@ import { FunctionComponent } from './entity/function/function.component';
 import { PageComponent } from './entity/page/page.component';
 import { MenuComponent } from './entity/menu/menu.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 
 const routes = [
@@ -267,7 +268,7 @@ const routes = [
         MatExpansionModule,
         MatBadgeModule,
         NgxMaterialTimepickerModule,
-
+        NgxDaterangepickerMd.forRoot(),
         NgSelectModule,
         Ng5SliderModule,
 

@@ -28,6 +28,7 @@ import { registerLocaleData } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 import { throttleTime } from 'rxjs/operators';
+import { Moment } from 'moment';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -74,6 +75,8 @@ export class GridComponent implements OnInit, OnDestroy
     searchInput: FormControl;
     error: boolean = false;
     error_message: string;
+
+    selected_date_filter: { startDate: Moment, endDate: Moment };
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
