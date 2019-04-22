@@ -19,10 +19,6 @@
     </ng-template>
 </ng-select>
 
-<ng-container *ngIf="date_filter_enable">
-    <input  matInput type="text" appendTo="body" ngxDaterangepickerMd [(ngModel)]="selected_date_filter" class="form-control" />
-    {{columnObject.title}}
-</ng-container>
 
 
 <ng-select *ngIf="string_filter_enable"

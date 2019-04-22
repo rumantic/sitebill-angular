@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
-import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -11,106 +10,9 @@ import { takeUntil } from 'rxjs/operators';
     animations: fuseAnimations
 })
 export class DataComponent extends GridComponent {
-    get_grid_items1(params: any) {
-        let grid_item;
-        grid_item = ['id', 'city_id', 'metro_id', 'district_id', 'street_id', 'user_id', 'topic_id', 'number', 'price', 'image'];
-        return grid_item;
-    }
-
     setup_apps() {
         this.entity.app_name = 'data';
         this.entity.primary_key = 'id';
-        //this.init_grid();
-        //this.init_default_columns();
-
-
-        
-
-    }
-
-    init_default_columns() {
-        this.data_columns = [
-            {
-                headerTemplate: this.hdrTpl,
-                cellTemplate: this.controlTmpl,
-                type: 'primary_key',
-                ngx_name: 'id.title',
-                model_name: 'id',
-                width: 1,
-                title: '',
-                prop: 'id.value',
-            },
-
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'primary_key',
-                ngx_name: 'id.title',
-                model_name: 'id',
-                title: 'ID',
-                prop: 'id.value'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'select_by_query',
-                ngx_name: 'topic_id.title',
-                model_name: 'topic_id',
-                title: 'Тип',
-                prop: 'topic_id.value_string'
-            },
-
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'select_by_query',
-                ngx_name: 'city_id.title',
-                model_name: 'city_id',
-                title: 'Город',
-                prop: 'city_id.value_string'
-            },
-            /*
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'select_by_query',
-                ngx_name: 'district_id.title',
-                model_name: 'district_id',
-                title: 'Район',
-                prop: 'district_id.value_string'
-            },
-            */
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'select_by_query',
-                ngx_name: 'street_id.title',
-                model_name: 'street_id',
-                title: 'Улица',
-                prop: 'street_id.value_string'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'select_by_query',
-                ngx_name: 'user_id.title',
-                model_name: 'user_id',
-                title: 'Пользователь',
-                prop: 'user_id.value_string'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                type: 'price',
-                ngx_name: 'price.title',
-                model_name: 'price',
-                title: 'Цена',
-                prop: 'price.value'
-            },
-            {
-                headerTemplate: this.hdrTpl,
-                cellTemplate: this.imageTmpl,
-                type: 'image',
-                ngx_name: 'image.title',
-                model_name: 'image',
-                title: 'Фото',
-                prop: 'image.value'
-            },
-
-        ];
-        //console.log(this.data_columns);
+        this.enable_date_range('date_added');
     }
 }

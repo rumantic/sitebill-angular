@@ -28,7 +28,7 @@ import { registerLocaleData } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 import { throttleTime } from 'rxjs/operators';
-import { Moment } from 'moment';
+import * as moment from 'moment';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -76,7 +76,24 @@ export class GridComponent implements OnInit, OnDestroy
     error: boolean = false;
     error_message: string;
 
-    selected_date_filter: { startDate: Moment, endDate: Moment };
+    date_range_enable: boolean = false;
+    date_range_key: string;
+    selected_date_filter = {};
+    ranges: any = {
+        'Сегодня': [moment(), moment()],
+        'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'За 7 дней': [moment().subtract(6, 'days'), moment()],
+        'За 30 дней': [moment().subtract(29, 'days'), moment()],
+        'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
+        'Прошлый месяц': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    };
+    date_range_locale = {
+        format: 'DD.MM.YYYY',
+        separator: ' - ', // default is ' - '
+        cancelLabel: 'Отмена', // detault is 'Cancel'
+        applyLabel: 'Применить', // detault is 'Apply'
+        firstDay: 1 // first day is monday
+    };
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
@@ -164,6 +181,19 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.filterService.share_array[this.entity.app_name] != null) {
             if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
                 this.searchInput = new FormControl(this.filterService.share_array[this.entity.app_name]['concatenate_search']);
+            }
+
+            if (this.filterService.share_array[this.entity.app_name][this.date_range_key] != null) {
+                //console.log('range');
+                //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
+                //console.log(this.selected_date_filter);
+                //console.log(this.selected_date_filter.startDate);
+                this.selected_date_filter['startDate'] = null;
+                this.selected_date_filter['endDate'] = null;
+
+                this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key]['startDate'];
+                this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key]['endDate'];
+                //selected_date_filter: { startDate: Moment, endDate: Moment };
             }
         }
 
@@ -427,7 +457,14 @@ export class GridComponent implements OnInit, OnDestroy
         this.searchInput.patchValue('');
     }
 
+    date_range_change(event, column_name) {
+        this.filterService.share_data(this.entity, column_name, event);
+    }
 
+    enable_date_range(key) {
+        this.date_range_enable = true;
+        this.date_range_key = key;
+    }
 
     delete(item_id: any) {
         this.confirmDialogRef = this.dialog.open(ConfirmComponent, {

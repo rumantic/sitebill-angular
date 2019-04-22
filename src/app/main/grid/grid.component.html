@@ -134,7 +134,6 @@
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись</button>
-                    <input matInput type="text" appendTo="body" ngxDaterangepickerMd [(ngModel)]="selected_date_filter" class="form-control" />
 
                 </div>
                 <!-- / BOARD SELECTION BUTTON -->
@@ -148,18 +147,24 @@
                                 <mat-icon color="primary" matSuffix>close</mat-icon>
                             </button>
                         </div>
+
                     </div>
                 </div>
                 <!-- / SEARCH -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
-                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу">
+                    <mat-form-field class="pt-12 pr-8" *ngIf="date_range_enable">
+                        <input autocomplete="off" matInput type="text" ngxDaterangepickerMd [ranges]="ranges" opens="left" [locale]="date_range_locale" (change)="date_range_change($event, date_range_key)" alwaysShowCalendars="true" [(ngModel)]="selected_date_filter" class="date-range-control" />
+                        <mat-icon matSuffix>calendar_today</mat-icon>
+                    </mat-form-field>
+
+                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
                     <!-- SETTINGS BUTTON -->
                     <button mat-icon-button (click)="settingsSidenav.toggle()"
-                            aria-label="Настройки таблицы" matTooltip="Настройки таблицы">
+                            aria-label="Настройки таблицы" matTooltip="Настройки таблицы"  class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
 
@@ -179,6 +184,7 @@
                              fxFlex="100">
                     <!-- Front -->
                     <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+
                         <div class="message-box error" *ngIf="error">
                             {{error_message}}
                         </div>

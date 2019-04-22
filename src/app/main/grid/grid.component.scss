@@ -87,7 +87,11 @@ mat-sidenav-container {
     width: 300px;
     height: 200px;
 }
-
+:host /deep/ .md-drppicker {
+    left: -443px;
+    top: 42px !important;
+    width: 700px !important;
+}
 
 #ngx-datatable {
 

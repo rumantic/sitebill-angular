@@ -41,11 +41,6 @@ export class FilterComponent {
     slider_value = 0;
     value: any;
 
-    date_filter_enable: boolean = false;
-    selected_date_filter: { startDate: Moment, endDate: Moment };
-
-
-
     private _unsubscribeAll: Subject<any>;
     subscription: Subscription;
 
@@ -89,12 +84,6 @@ export class FilterComponent {
             case "uploads":
             case "checkbox": {
                 this.checkbox_filter_enable = true;
-                this.filter_enable = true;
-                break;
-            }
-
-            case "dtdatetime": {
-                this.date_filter_enable = true;
                 this.filter_enable = true;
                 break;
             }
