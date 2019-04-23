@@ -36,6 +36,17 @@ export class AuthGuard implements CanActivate {
             //console.log(navigtaion_clone);
             //console.log('permission');
             //console.log(storage['structure']);
+            if (storage['structure'] == null ) {
+                this.disable_menu();
+                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                return false;
+            }
+
+            if (storage['structure']['group_name'] == null) {
+                this.disable_menu();
+                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                return false;
+            }
 
             this.cleanUpNavigation(navigtaion_clone, storage['structure']);
             //console.log('complete cleanUp');
