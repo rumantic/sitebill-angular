@@ -152,7 +152,7 @@
                                 <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
                                 <mat-form-field *ngSwitchCase="'textarea_editor'">
-                                    <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [ngModelOptions]="{standalone: true}"></quill-editor>
+                                    <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [modules]="quillConfig" [ngModelOptions]="{standalone: true}"></quill-editor>
                                     <input formControlName="{{records[x].name}}" matInput [hidden]="true">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>

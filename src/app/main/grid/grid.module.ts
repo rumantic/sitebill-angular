@@ -48,6 +48,7 @@ import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/se
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
 import { QuillModule } from 'ngx-quill';
+
 import { NgxUploaderModule } from 'ngx-uploader';
 import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryModule } from 'ngx-gallery';
