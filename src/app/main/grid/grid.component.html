@@ -3,6 +3,9 @@
     </filter-comp>
 </ng-template>
 
+<ng-template #controlHdrTpl let-column="column">
+</ng-template>
+
 <ng-template #imageTmpl let-column="column" let-row="row" let-value="value">
     <button mat-icon-button (click)="view_gallery(row, column, value)">
         <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
@@ -57,7 +60,7 @@
 
 
 <ng-template #controlTmpl let-row="row" let-value="value">
-    <mat-checkbox class="form-checkbox"></mat-checkbox>
+    <!--mat-checkbox class="form-checkbox"></mat-checkbox-->
     <div class="control_hover">
         <button mat-icon-button>
             <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
@@ -153,6 +156,10 @@
                 <!-- / SEARCH -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
+                    <button mat-icon-button matTooltip="Очистить фильтр по дате" (click)="clear_selected_date_filter(date_range_key)" *ngIf="selected_date_filter_has_values">
+                        <mat-icon color="white" matSuffix>close</mat-icon>
+                    </button>
+
                     <mat-form-field class="pt-12 pr-8" *ngIf="date_range_enable">
                         <input autocomplete="off" matInput type="text" ngxDaterangepickerMd [ranges]="ranges" opens="left" [locale]="date_range_locale" (change)="date_range_change($event, date_range_key)" alwaysShowCalendars="true" [(ngModel)]="selected_date_filter" class="date-range-control" />
                         <mat-icon matSuffix>calendar_today</mat-icon>
@@ -164,7 +171,7 @@
 
                     <!-- SETTINGS BUTTON -->
                     <button mat-icon-button (click)="settingsSidenav.toggle()"
-                            aria-label="Настройки таблицы" matTooltip="Настройки таблицы"  class="mb-4">
+                            aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
 

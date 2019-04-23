@@ -78,7 +78,8 @@ export class GridComponent implements OnInit, OnDestroy
 
     date_range_enable: boolean = false;
     date_range_key: string;
-    selected_date_filter = {};
+    selected_date_filter;
+    selected_date_filter_has_values: boolean = false;
     ranges: any = {
         'Сегодня': [moment(), moment()],
         'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -97,6 +98,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
+    @ViewChild('controlHdrTpl') controlHdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
@@ -178,22 +180,33 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [];
         //console.log('init');
         this.refresh();
+
         if (this.filterService.share_array[this.entity.app_name] != null) {
             if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
                 this.searchInput = new FormControl(this.filterService.share_array[this.entity.app_name]['concatenate_search']);
             }
 
             if (this.filterService.share_array[this.entity.app_name][this.date_range_key] != null) {
-                //console.log('range');
-                //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
-                //console.log(this.selected_date_filter);
-                //console.log(this.selected_date_filter.startDate);
-                this.selected_date_filter['startDate'] = null;
-                this.selected_date_filter['endDate'] = null;
+                console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate);
 
-                this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key]['startDate'];
-                this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key]['endDate'];
-                //selected_date_filter: { startDate: Moment, endDate: Moment };
+                if (
+                    this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate != null &&
+                    this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate != null
+                ) {
+                    this.selected_date_filter = {};
+                    this.selected_date_filter_has_values = true;
+                    //console.log('set range from filterService');
+                    //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
+                    //console.log(this.selected_date_filter);
+                    //console.log(this.selected_date_filter.startDate);
+
+                    //this.selected_date_filter['startDate'] = null;
+                    //this.selected_date_filter['endDate'] = null;
+
+                    this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate;
+                    this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate;
+                    //selected_date_filter: { startDate: Moment, endDate: Moment };
+                }
             }
         }
 
@@ -306,7 +319,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                console.log(result_f1);
+                //console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
@@ -363,9 +376,9 @@ export class GridComponent implements OnInit, OnDestroy
         this.data_columns = [];
 
         let control_column = {
-            headerTemplate: this.hdrTpl,
+            headerTemplate: this.controlHdrTpl,
             cellTemplate: this.controlTmpl,
-            width: 50,
+            width: 40,
             type: 'primary_key',
             ngx_name: this.entity.primary_key + '.title',
             model_name: this.entity.primary_key,
@@ -458,6 +471,15 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     date_range_change(event, column_name) {
+        if (event.startDate != null && event.endDate != null) {
+            this.selected_date_filter_has_values = true;
+            this.filterService.share_data(this.entity, column_name, event);
+        }
+    }
+    clear_selected_date_filter(column_name) {
+        this.selected_date_filter_has_values = false;
+        const event = null;
+        this.selected_date_filter = null;
         this.filterService.share_data(this.entity, column_name, event);
     }
 

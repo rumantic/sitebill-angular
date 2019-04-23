@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
         
         if (localStorage.getItem('currentUser')) {
             //@todo: Нужно проверять текущую сессию на пригодность
-            console.log('Activate result = ');
+            //console.log('Activate result = ');
             let navigation_origin = this._fuseNavigationService.getNavigation('main');
             let navigtaion_clone = navigation_origin.slice(0);
             let storage = JSON.parse(localStorage.getItem('currentUser')) || []
@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
                 this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                 return false;
             }
-            console.log(storage);
+            //console.log(storage);
 
             //console.log('navigation');
             //console.log(navigtaion_clone);

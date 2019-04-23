@@ -31,6 +31,7 @@ export class FilterService {
             this.share_array[entity.app_name] = [];
         }
         this.share_array[entity.app_name][key] = datas;
+        //console.log(this.share_array);
         this.onInnerChange(entity);
     }
     unshare_data(entity: SitebillEntity, key: string) {

@@ -173,7 +173,7 @@ export class FormComponent implements OnInit {
 
     init_geodata(columnName) {
         try {
-            console.log(parseFloat(this.records[columnName].value.lat));
+            //console.log(parseFloat(this.records[columnName].value.lat));
             if (parseFloat(this.records[columnName].value.lat)) {
                 this.lat = parseFloat(this.records[columnName].value.lat);
                 this.lat_center = this.lat;
@@ -222,7 +222,7 @@ export class FormComponent implements OnInit {
         } else {
             this.galleryImages[field_name] = [];
         }
-        console.log(this.galleryImages[field_name]);
+        //console.log(this.galleryImages[field_name]);
     }
 
     init_select_box_options(columnName) {
@@ -313,7 +313,7 @@ export class FormComponent implements OnInit {
 
 
     save() {
-        console.log(this.form.controls);
+        //console.log(this.form.controls);
         const ql_items = {};
 
         for (var i = 0; i < this.rows.length; i++) {
@@ -347,7 +347,7 @@ export class FormComponent implements OnInit {
         if (this._data.key_value == null) {
             this.modelSerivce.native_insert(this._data.app_name, ql_items)
                 .subscribe((response: any) => {
-                    console.log(response);
+                    //console.log(response);
 
                     if (response.state == 'error') {
                         this._snackService.message(response.message);
@@ -361,7 +361,7 @@ export class FormComponent implements OnInit {
         } else {
             this.modelSerivce.native_update(this._data.app_name, this._data.key_value, ql_items)
                 .subscribe((response: any) => {
-                    console.log(response);
+                    //console.log(response);
 
                     if (response.state == 'error') {
                         this._snackService.message(response.message);
