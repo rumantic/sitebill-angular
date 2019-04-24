@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'data-grid',
-    templateUrl: '../../grid.component.html',
+    templateUrl: './myclient.component.html',
     styleUrls: ['../../grid.component.scss'],
     animations: fuseAnimations
 })
