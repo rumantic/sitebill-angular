@@ -56,6 +56,15 @@
     <Content Include="src\app\main\gallery\modal\gallery-modal.component.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\app\main\grid\common-template\common-template.component.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\app\main\grid\common-template\common-template.component.scss">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\app\main\grid\entity\myclient\myclient.component.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\app\main\grid\filter.component.html" />
     <Content Include="src\app\main\grid\filter.component.scss">
       <SubType>Code</SubType>
@@ -106,6 +115,9 @@
     <TypeScriptCompile Include="src\app\main\gallery\modal\gallery-modal.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\main\grid\common-template\common-template.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\grid\data\data.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\entity\city\city.component.ts">
       <SubType>Code</SubType>
@@ -123,6 +135,10 @@
     <TypeScriptCompile Include="src\app\main\grid\entity\metro\metro.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\main\grid\entity\myclient\myclient.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\main\grid\entity\page\page.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\entity\region\region.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -150,7 +166,13 @@
     <TypeScriptCompile Include="src\app\main\uploader\uploader.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\navigation\public.navigation.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\pipes\replace.pipe.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\_guards\public.guard.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\_models\sitebillentity.ts">
@@ -606,11 +628,14 @@
     <Folder Include="src\app\main\grid\entity\group\" />
     <Folder Include="src\app\main\grid\entity\menu\" />
     <Folder Include="src\app\main\grid\entity\metro\" />
+    <Folder Include="src\app\main\grid\entity\myclient\" />
+    <Folder Include="src\app\main\grid\entity\page\" />
     <Folder Include="src\app\main\grid\entity\street\" />
     <Folder Include="src\app\main\grid\entity\region\" />
     <Folder Include="src\app\main\grid\i18n\" />
     <Folder Include="src\app\main\grid\form\" />
     <Folder Include="src\app\main\grid\entity\" />
+    <Folder Include="src\app\main\grid\common-template\" />
     <Folder Include="src\app\main\grid\user\" />
     <Folder Include="src\app\main\grid\news\" />
     <Folder Include="src\app\main\grid\sidenavs\" />
