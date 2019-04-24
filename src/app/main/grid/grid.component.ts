@@ -353,6 +353,21 @@ export class GridComponent implements OnInit, OnDestroy
         this.error_message = message;
     }
 
+    get_control_column() {
+        let control_column = {
+            headerTemplate: this.commonTemplate.controlHdrTmpl,
+            cellTemplate: this.commonTemplate.controlTmpl,
+            width: 40,
+            type: 'primary_key',
+            ngx_name: this.entity.primary_key + '.title',
+            model_name: this.entity.primary_key,
+            title: '',
+            prop: this.entity.primary_key + '.value'
+        }
+        return control_column;
+
+    }
+
     compose_columns(columns_list, model) {
         //console.log('compose columns');
         //console.log(model);
@@ -368,19 +383,9 @@ export class GridComponent implements OnInit, OnDestroy
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         this.data_columns = [];
 
-        let control_column = {
-            headerTemplate: this.commonTemplate.controlHdrTmpl,
-            cellTemplate: this.commonTemplate.controlTmpl,
-            width: 40,
-            type: 'primary_key',
-            ngx_name: this.entity.primary_key + '.title',
-            model_name: this.entity.primary_key,
-            title: '',
-            prop: this.entity.primary_key + '.value'
-        }
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
-        this.data_columns.push(control_column);
+        this.data_columns.push(this.get_control_column());
 
         columns_list.forEach((row, index) => {
             //console.log(model);

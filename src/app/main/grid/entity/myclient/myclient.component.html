@@ -5,6 +5,28 @@
                  (view_galleryEvent)="view_gallery($event)"
                  (toggle_activeEvent)="toggle_active($event)">
 </common-template>
+
+<ng-template #controlTmpl let-row="row" let-value="value">
+    <!--mat-checkbox class="form-checkbox"></mat-checkbox-->
+    <div class="control_hover">
+        <button mat-icon-button>
+            <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
+        </button>
+        <span *ngIf="row.active">
+            <button mat-icon-button *ngIf="row.active.value == '0'" color="accent">
+                <mat-icon (click)="toggle_active(row, value)" aria-label="Включить" matTooltip="Включить">power_settings_new</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="row.active.value == '1'" color="warn">
+                <mat-icon (click)="toggle_active(row, value)" aria-label="Выключить" matTooltip="Выключить">power_settings_new</mat-icon>
+            </button>
+        </span>
+
+        <button mat-icon-button>
+            <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
+        </button>
+    </div>
+</ng-template>
+
 <mat-sidenav-container>
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
