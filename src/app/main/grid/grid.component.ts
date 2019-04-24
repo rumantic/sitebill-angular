@@ -29,6 +29,7 @@ import { FormControl } from '@angular/forms';
 import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 import { throttleTime } from 'rxjs/operators';
 import * as moment from 'moment';
+import { CommonTemplateComponent } from './common-template/common-template.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -97,21 +98,6 @@ export class GridComponent implements OnInit, OnDestroy
     };
 
 
-    @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
-    @ViewChild('controlHdrTpl') controlHdrTpl: TemplateRef<any>;
-    @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
-    @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
-    @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
-    @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
-    @ViewChild('dtdateTmpl') dtdateTmpl: TemplateRef<any>;
-    @ViewChild('dttimeTmpl') dttimeTmpl: TemplateRef<any>;
-    @ViewChild('textTmpl') textTmpl: TemplateRef<any>;
-    @ViewChild('checkboxTmpl') checkboxTmpl: TemplateRef<any>;
-    @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
-    @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
-    @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
-    @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
-    @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
@@ -120,11 +106,14 @@ export class GridComponent implements OnInit, OnDestroy
     // Private
     protected _unsubscribeAll: Subject<any>;
     protected currentUser: currentUser;
+    protected template_ready: boolean = false;
     filterSharedData: any;
 
     private resizeSubject = new Subject<number>();
-    private resizeObservable = this.resizeSubject.pipe(debounceTime(300),throttleTime(1000));
+    private resizeObservable = this.resizeSubject.pipe(debounceTime(300), throttleTime(1000));
 
+    @ViewChild(CommonTemplateComponent)
+    public commonTemplate: CommonTemplateComponent;
     
     /**
      * Constructor
@@ -147,6 +136,7 @@ export class GridComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 48;
         this.entity = new SitebillEntity();
+        //console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
         this.page.pageNumber = 0;
         this.page.size = 0;
@@ -173,6 +163,7 @@ export class GridComponent implements OnInit, OnDestroy
             }
         };
 
+
     }
     ngOnInit() {
         this.setup_apps();
@@ -180,6 +171,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [];
         //console.log('init');
         this.refresh();
+
 
         if (this.filterService.share_array[this.entity.app_name] != null) {
             if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
@@ -221,6 +213,7 @@ export class GridComponent implements OnInit, OnDestroy
         });
 
         this.resizeObservable.subscribe(() => {
+
             //console.log('subscirbe');
             //console.log(entity);
             if (this.refresh_complete) {
@@ -376,8 +369,8 @@ export class GridComponent implements OnInit, OnDestroy
         this.data_columns = [];
 
         let control_column = {
-            headerTemplate: this.controlHdrTpl,
-            cellTemplate: this.controlTmpl,
+            headerTemplate: this.commonTemplate.controlHdrTmpl,
+            cellTemplate: this.commonTemplate.controlTmpl,
             width: 40,
             type: 'primary_key',
             ngx_name: this.entity.primary_key + '.title',
@@ -412,36 +405,36 @@ export class GridComponent implements OnInit, OnDestroy
                 case 'textarea':
                 case 'textarea_editor':
                     //console.log(model[this.columns_index[row]].name);
-                    cellTemplate = this.textTmpl;
+                    cellTemplate = this.commonTemplate.textTmpl;
                     break;
 
                 case 'dttime':
-                    cellTemplate = this.dttimeTmpl;
+                    cellTemplate = this.commonTemplate.dttimeTmpl;
                     break;
 
                 case 'dtdatetime':
-                    cellTemplate = this.dtdatetimeTmpl;
+                    cellTemplate = this.commonTemplate.dtdatetimeTmpl;
                     break;
 
                 case 'dtdate':
-                    cellTemplate = this.dtdateTmpl;
+                    cellTemplate = this.commonTemplate.dtdateTmpl;
                     break;
 
                 case 'geodata':
-                    cellTemplate = this.geoTmpl;
+                    cellTemplate = this.commonTemplate.geoTmpl;
                     prop = model[this.columns_index[row]].name + '.value_string';
                     break;
 
                 case 'checkbox':
-                    cellTemplate = this.checkboxTmpl;
+                    cellTemplate = this.commonTemplate.checkboxTmpl;
                     break;
 
                 case 'photo':
-                    cellTemplate = this.photoTmpl;
+                    cellTemplate = this.commonTemplate.photoTmpl;
                     break;
 
                 case 'uploads':
-                    cellTemplate = this.imageTmpl;
+                    cellTemplate = this.commonTemplate.imageTmpl;
                     break;
                 default:
                     cellTemplate = null;
@@ -450,7 +443,7 @@ export class GridComponent implements OnInit, OnDestroy
             }
 
             let column = {
-                headerTemplate: this.hdrTpl,
+                headerTemplate: this.commonTemplate.hdrTpl,
                 cellTemplate: cellTemplate,
                 type: model[this.columns_index[row]].type,
                 ngx_name: model[this.columns_index[row]].name + '.title',
@@ -537,7 +530,10 @@ export class GridComponent implements OnInit, OnDestroy
         this.dialog.open(ViewModalComponent, dialogConfig);
     }
 
-    view_gallery(row, column, images) {
+    view_gallery(event) {
+        let row = event.row;
+        let column = event.column;
+        let images = event.images;
         if (column.type == 'photo' && !Array.isArray(images) && images != '') {
             let tmp_images = [];
 
@@ -579,8 +575,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    toggle_active(row, value) {
-        //console.log(value);
+    toggle_active(event) {
+        let row = event.row;
+        let value = event.value;
         let ql_items = {};
         if (row.active.value == 0) {
             ql_items['active'] = 1;

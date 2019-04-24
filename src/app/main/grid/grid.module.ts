@@ -45,6 +45,7 @@ import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/settings.component';
+import { CommonTemplateComponent } from 'app/main/grid/common-template/common-template.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModelService } from 'app/_services/model.service';
@@ -242,6 +243,7 @@ const routes = [
         SnackBarComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
+        CommonTemplateComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -300,10 +302,11 @@ const routes = [
         FilterService,
         ChatService,
         ModelService,
+        CommonTemplateComponent,
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, SnackBarComponent]
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, SnackBarComponent, CommonTemplateComponent]
 
 })
 
