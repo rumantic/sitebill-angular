@@ -40,6 +40,7 @@ import {LayoutModule} from 'app/layout/layout.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
+import { PublicGuard } from './_guards/public.guard';
 import {AlertService, AuthenticationService} from './_services/index';
 
 import {MessageService} from './message.service';
@@ -110,6 +111,11 @@ const appRoutes: Routes = [
         path: 'grid',
         loadChildren: 'app/main/grid/grid.module#GridModule',
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'public',
+        loadChildren: 'app/main/grid/grid.module#GridModule',
+        canActivate: [PublicGuard]
     },
     {
         path: 'facebook',
@@ -250,6 +256,7 @@ const appRoutes: Routes = [
     providers: [
         MessageService,
         AuthGuard,
+        PublicGuard,
         AlertService,
         AuthenticationService,
         FilterService

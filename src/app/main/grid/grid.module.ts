@@ -35,6 +35,7 @@ import { GridComponent } from './grid.component';
 import { DataComponent } from './data/data.component';
 import { NewsComponent } from './news/news.component';
 import { CountryComponent } from './entity/country/country.component';
+import { MyClientComponent } from './entity/myclient/myclient.component';
 import { RegionComponent } from './entity/region/region.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
@@ -192,7 +193,15 @@ const routes = [
         resolve: {
             chat: ChatService
         },
+    },
+    {
+        path: 'myclient',
+        component: MyClientComponent,
+        resolve: {
+            chat: ChatService
+        },
     }
+
 ];
 
 @NgModule({
@@ -200,6 +209,7 @@ const routes = [
         GridComponent,
         DataComponent,
         NewsComponent,
+        MyClientComponent,
         MenuComponent,
         PageComponent,
         CountryComponent,

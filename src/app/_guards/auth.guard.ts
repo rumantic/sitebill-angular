@@ -8,9 +8,9 @@ import { FuseConfigService } from '@fuse/services/config.service';
 export class AuthGuard implements CanActivate {
 
     constructor(
-        private router: Router,
-        private _fuseNavigationService: FuseNavigationService,
-        private _fuseConfigService: FuseConfigService
+        protected router: Router,
+        protected _fuseNavigationService: FuseNavigationService,
+        protected _fuseConfigService: FuseConfigService
     ) {
         //this._fuseNavigationService.removeNavigationItem('page');
     }

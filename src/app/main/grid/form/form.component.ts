@@ -192,15 +192,15 @@ export class FormComponent implements OnInit {
                 form_control_item.setValidators(forbiddenNullValue());
                 this.records[this.rows[i]].required_boolean = true;
             }
+            if (this.records[this.rows[i]].name == 'email') {
+                form_control_item.setValidators(Validators.email);
+            }
 
             this.form.addControl(this.rows[i], form_control_item);
             if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == "now") {
                 this.form.controls[this.rows[i]].patchValue(moment());
             }
 
-            if (this.records[this.rows[i]].name == 'email') {
-                form_control_item.setValidators(Validators.email);
-            }
             
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
@@ -220,7 +220,12 @@ export class FormComponent implements OnInit {
 
             if (this.records[this.rows[i]].type == 'date') {
                 //this.form.controls[this.rows[i]].patchValue();
-                this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "DD.MM.YYYY"));
+                //console.log(this.records[this.rows[i]]);
+                if (this.records[this.rows[i]].value_string != '') {
+                    this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "DD.MM.YYYY"));
+                } else {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
             }
 
             if (this.records[this.rows[i]].type == 'dttime') {

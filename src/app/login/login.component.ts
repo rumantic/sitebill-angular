@@ -6,6 +6,8 @@ import {fuseAnimations} from '@fuse/animations';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 
 import {AlertService, AuthenticationService} from '../_services/index';
+import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { navigation } from 'app/navigation/navigation';
 
 @Component({
     selector: 'login',
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
         public snackBar: MatSnackBar,
+        protected _fuseNavigationService: FuseNavigationService,
         private alertService: AlertService) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -119,7 +122,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
                 data => {
-                    //console.log(data);
+                    console.log(data);
 
                     if (data.state == 'error') {
                         this.alertService.error(data.error);
@@ -132,7 +135,14 @@ export class LoginComponent implements OnInit {
 
                     } else {
                         if (data.admin_panel_login == 1) {
+
+                            this._fuseNavigationService.unregister('main');
+                            this._fuseNavigationService.register('main', navigation);
+                            this._fuseNavigationService.setCurrentNavigation('main');
+
                             this.router.navigate([this.returnUrl]);
+                        } else if (data.success == 1) {
+                            this.router.navigate(['/public/']);
                         } else {
                             let error = 'Доступ запрещен';
                             this.alertService.error(error);
