@@ -65,12 +65,12 @@ export class GridComponent implements OnInit, OnDestroy
     rows1 = [];
     total_all: number;
     total_my: number;
-    data_all: number;
+    data_all = [];
     editing = {};
     options_test = {};
     test_indicator: string;
     objectKeys = Object.keys;
-    page = new Page();
+    page: Page[];
     entity: SitebillEntity;
     refresh_complete: boolean = false;
     searchInput: FormControl;
@@ -100,6 +100,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
+    table_index_params = [];
 
 
 
@@ -130,16 +131,21 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
-    )
-    {
+    ) {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 48;
         this.entity = new SitebillEntity();
         //console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
-        this.page.pageNumber = 0;
-        this.page.size = 0;
+
+        this.page = [];
+        this.page.push(new Page());
+        //console.log(this.page);
+
+        //this.page[0] = new Page();
+        this.page[0].pageNumber = 0;
+        this.page[0].size = 0;
         this.searchInput = new FormControl('');
 
 
@@ -170,7 +176,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows = [];
         this.rows_my = [];
         //console.log('init');
-        this.refresh();
+        this.refresh(0);
 
 
         if (this.filterService.share_array[this.entity.app_name] != null) {
@@ -218,7 +224,7 @@ export class GridComponent implements OnInit, OnDestroy
             //console.log(entity);
             if (this.refresh_complete) {
                 this.refresh_complete = false;
-                this.refresh();
+                this.refresh(0);
             }
         });
 
@@ -235,7 +241,7 @@ export class GridComponent implements OnInit, OnDestroy
             });
     }
 
-    refresh() {
+    refresh(table_index) {
         //console.log('refresh');
         //console.log(this.refresh_complete);
         //console.log(this.entity.app_name);
@@ -243,7 +249,7 @@ export class GridComponent implements OnInit, OnDestroy
         //const params = { owner: true };
         //this.load_grid_data(this.app_name, [], params);
         //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
-        this.setPage({ offset: this.page.pageNumber });
+        this.setPage({ offset: this.page[table_index].pageNumber }, table_index);
 
         //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
 
@@ -268,17 +274,17 @@ export class GridComponent implements OnInit, OnDestroy
         this.entity.primary_key = 'client_id';
     }
 
-    init_grid(params) {
+    init_grid(params, table_index: number) {
         this.modelSerivce.load_grid_columns(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
                 if (result.data['meta'] != null) {
                     if (result.data['meta']['per_page'] != null) {
-                        this.page.size = result.data['meta']['per_page'];
+                        this.page[table_index].size = result.data['meta']['per_page'];
                     }
                 }
-                this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params);
+                this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params, table_index);
             });
     }
 
@@ -288,7 +294,7 @@ export class GridComponent implements OnInit, OnDestroy
         return this.entity.columns;
     }
 
-    load_grid_data(app_name, grid_columns: string[], params: any) {
+    load_grid_data(app_name, grid_columns: string[], params: any, table_index: number) {
         //console.log('load_grid_data');
         //console.log(params);
         let filter_params_json = {};
@@ -306,10 +312,13 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
         }
-        let page_number = this.page.pageNumber + 1;
+        if (params != null) {
+            Object.assign(filter_params_json, params);
+        }
+        let page_number = this.page[table_index].pageNumber + 1;
         //console.log(filter_params_json);
 
-        this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
+        this.modelSerivce.load(app_name, grid_columns, filter_params_json, null, page_number, this.page[table_index].size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 //console.log(result_f1);
@@ -319,26 +328,26 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.item_model = result.rows[0];
                     this.entity.model = result_f1.columns;
                     //this.item_model = result.columns;
-                    this.columns_index = result_f1.columns_index;
-                    this.rows_index = result_f1.rows_index;
+                    this.columns_index[table_index] = result_f1.columns_index;
+                    this.rows_index[table_index] = result_f1.rows_index;
                     this.entity.default_columns_list = result_f1.default_columns_list;
                     this.entity.columns_index = result_f1.columns_index;
                     //console.log(this.item_model);
                     this.loadGridComplete = true;
-                    this.page.totalElements = result_f1.total_count;
-                    this.page.size = result_f1.per_page;
+                    this.page[table_index].totalElements = result_f1.total_count;
+                    this.page[table_index].size = result_f1.per_page;
                     if (result_f1.grid_columns.grid_fields != null) {
-                        this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
+                        this.grid_columns_for_compose[table_index] = result_f1.grid_columns.grid_fields;
                     } else {
-                        this.grid_columns_for_compose = result_f1.default_columns_list;
+                        this.grid_columns_for_compose[table_index] = result_f1.default_columns_list;
                     }
-                    this.grid_meta = result_f1.grid_columns.meta;
+                    this.grid_meta[table_index] = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
-                    this.compose_columns(this.grid_columns_for_compose, model_compose);
+                    this.compose_columns(this.grid_columns_for_compose[table_index], model_compose, table_index);
 
                     //console.log(this.item_model);
-                    this.rows_data = result_f1.rows;
-                    this.data_all = result_f1.rows.length;
+                    this.rows_data[table_index] = result_f1.rows;
+                    this.data_all[table_index] = result_f1.rows.length;
 
                     //this.init_selected_rows(this.rows, selected);
                     this.loadingIndicator = false;
@@ -368,7 +377,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    compose_columns(columns_list, model) {
+    compose_columns(columns_list, model, table_index) {
         //console.log('compose columns');
         //console.log(model);
         //console.log(model.length);
@@ -381,31 +390,31 @@ export class GridComponent implements OnInit, OnDestroy
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-        this.data_columns = [];
+        this.data_columns[table_index] = [];
 
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
-        this.data_columns.push(this.get_control_column());
+        this.data_columns[table_index].push(this.get_control_column());
 
         columns_list.forEach((row, index) => {
             //console.log(model);
             //console.log(model[this.columns_index[row]].name);
-            this.entity.add_column(model[this.columns_index[row]].name);
+            this.entity.add_column(model[this.columns_index[table_index][row]].name);
             let cellTemplate = null;
             let prop = '';
             let width = 150;
-            prop = model[this.columns_index[row]].name + '.value';
-            if (this.grid_meta != null) {
-                if (this.grid_meta['columns'] != null) {
-                    if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
-                        width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
+            prop = model[this.columns_index[table_index][row]].name + '.value';
+            if (this.grid_meta[table_index] != null) {
+                if (this.grid_meta[table_index]['columns'] != null) {
+                    if (this.grid_meta[table_index]['columns'][model[this.columns_index[table_index][row]].name] != null) {
+                        width = this.grid_meta[table_index]['columns'][model[this.columns_index[table_index][row]].name].width;
                         //console.log(model[this.columns_index[row]].name);
                         //console.log(width);
                     }
                 }
             }
 
-            switch (model[this.columns_index[row]].type) {
+            switch (model[this.columns_index[table_index][row]].type) {
                 case 'safe_string':
                 case 'textarea':
                 case 'textarea_editor':
@@ -427,7 +436,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                 case 'geodata':
                     cellTemplate = this.commonTemplate.geoTmpl;
-                    prop = model[this.columns_index[row]].name + '.value_string';
+                    prop = model[this.columns_index[table_index][row]].name + '.value_string';
                     break;
 
                 case 'checkbox':
@@ -443,21 +452,21 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
                 default:
                     cellTemplate = null;
-                    prop = model[this.columns_index[row]].name + '.value_string';
+                    prop = model[this.columns_index[table_index][row]].name + '.value_string';
 
             }
 
             let column = {
                 headerTemplate: this.commonTemplate.hdrTpl,
                 cellTemplate: cellTemplate,
-                type: model[this.columns_index[row]].type,
-                ngx_name: model[this.columns_index[row]].name + '.title',
-                model_name: model[this.columns_index[row]].name,
-                title: model[this.columns_index[row]].title,
+                type: model[this.columns_index[table_index][row]].type,
+                ngx_name: model[this.columns_index[table_index][row]].name + '.title',
+                model_name: model[this.columns_index[table_index][row]].name,
+                title: model[this.columns_index[table_index][row]].title,
                 width: width,
                 prop: prop
             }
-            this.data_columns.push(column);
+            this.data_columns[table_index].push(column);
         });
         this.compose_complete = true;
         //console.log(this.data_columns);
@@ -595,7 +604,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
-                    this.refresh();
+                    this.refresh(0);
                 }
             });
 
@@ -608,12 +617,15 @@ export class GridComponent implements OnInit, OnDestroy
        * Populate the table with new data based on the page number
        * @param page The page to select
        */
-    setPage(pageInfo) {
+    setPage(pageInfo, table_index) {
         //console.log('setPage');
-        this.page.pageNumber = pageInfo.offset;
+        this.page[table_index].pageNumber = pageInfo.offset;
         //const params = { owner: true };
-        const params = {};
-        this.init_grid(params);
+        let params = {};
+        if (this.table_index_params[table_index] != null) {
+            params = this.table_index_params[table_index];
+        }
+        this.init_grid(params, table_index);
     }
 
     onResize(event) {
@@ -656,7 +668,7 @@ export class GridComponent implements OnInit, OnDestroy
                     this.load_grid_data(app_name, [], []);
                 }
                 */
-                this.refresh();
+                this.refresh(0);
 
 
                 this.loadingIndicator = false;
@@ -674,7 +686,7 @@ export class GridComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
-                this.refresh();
+                this.refresh(0);
             });
 
     }
@@ -821,7 +833,7 @@ export class GridComponent implements OnInit, OnDestroy
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()
             .subscribe(() => {
-                this.refresh();
+                this.refresh(0);
             })
         return;
 

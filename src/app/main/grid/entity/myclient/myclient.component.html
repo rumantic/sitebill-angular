@@ -60,7 +60,7 @@
                         <mat-icon matSuffix>calendar_today</mat-icon>
                     </mat-form-field>
 
-                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
+                    <button mat-icon-button (click)="refresh(-1)" matTooltip="Обновить таблицу" class="mb-4">
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
@@ -83,7 +83,7 @@
                     <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
 
                         <mat-tab-group dynamicHeight>
-                            <mat-tab label="Все ({{total_all}})">
+                            <mat-tab label="Все ({{data_all[0]}})">
                                 <!-- WIDGET GROUP -->
                                 <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                                      [@animateStagger]="{value:'50'}">
@@ -96,8 +96,8 @@
                                                 {{error_message}}
                                             </div>
                                             <ngx-datatable *ngIf="compose_complete" class="material"
-                                                           [rows]="rows_data"
-                                                           [columns]="data_columns"
+                                                           [rows]="rows_data[0]"
+                                                           [columns]="data_columns[0]"
                                                            [loadingIndicator]="loadingIndicator"
                                                            [columnMode]="'force'"
                                                            [headerHeight]="ngxHeaderHeight"
@@ -106,14 +106,14 @@
                                                            [scrollbarH]="true"
                                                            [reorderable]="reorderable"
                                                            [externalPaging]="true"
-                                                           [count]="page.totalElements"
-                                                           [offset]="page.pageNumber"
-                                                           [limit]="page.size"
+                                                           [count]="page[0].totalElements"
+                                                           [offset]="page[0].pageNumber"
+                                                           [limit]="page[0].size"
                                                            [selectionType]="'checkbox'"
                                                            [rowClass]="getRowClass"
                                                            (activate)="onActivate($event)"
                                                            (resize)="onResize($event)"
-                                                           (page)='setPage($event)'>
+                                                           (page)='setPage($event, 0)'>
                                             </ngx-datatable>
 
                                         </div>
@@ -123,7 +123,7 @@
                                 </div>
                                 <!-- / WIDGET GROUP -->
                             </mat-tab>
-                            <mat-tab label="Мои ({{total_my}})" *ngIf="columns_client_my.length > 0">
+                            <mat-tab label="Мои ({{data_all[1]}})">
                                 <!-- WIDGET GROUP -->
                                 <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                                      [@animateStagger]="{value:'50'}">
@@ -131,20 +131,26 @@
                                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
                                                  fxFlex="100">
                                         <!-- Front -->
-                                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
-                                            <ngx-datatable class="material"
-                                                           [rows]="rows_my"
-                                                           [columns]="columns_client_my"
+                                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                                            <ngx-datatable *ngIf="compose_complete" class="material"
+                                                           [rows]="rows_data[1]"
+                                                           [columns]="data_columns[1]"
                                                            [loadingIndicator]="loadingIndicator"
                                                            [columnMode]="'force'"
-                                                           [headerHeight]="48"
+                                                           [headerHeight]="ngxHeaderHeight"
                                                            [footerHeight]="56"
                                                            [rowHeight]="'auto'"
                                                            [scrollbarH]="true"
                                                            [reorderable]="reorderable"
-                                                           [limit]="10"
-                                                           [selectionType]="'single'"
-                                                           (activate)="onActivate($event)">
+                                                           [externalPaging]="true"
+                                                           [count]="page[1].totalElements"
+                                                           [offset]="page[1].pageNumber"
+                                                           [limit]="page[1].size"
+                                                           [selectionType]="'checkbox'"
+                                                           [rowClass]="getRowClass"
+                                                           (activate)="onActivate($event)"
+                                                           (resize)="onResize($event)"
+                                                           (page)='setPage($event, 1)'>
                                             </ngx-datatable>
                                         </div>
                                         <!-- / Front -->
