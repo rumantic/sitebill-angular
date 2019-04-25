@@ -71,6 +71,8 @@
         <!-- / HEADER -->
         <!-- CONTENT -->
         <div class="content" layout="row" fusePerfectScrollbar>
+
+
             <!-- WIDGET GROUP -->
             <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                  [@animateStagger]="{value:'50'}">
@@ -80,29 +82,81 @@
                     <!-- Front -->
                     <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
 
-                        <div class="message-box error" *ngIf="error">
-                            {{error_message}}
-                        </div>
-                        <ngx-datatable *ngIf="compose_complete" class="material"
-                                       [rows]="rows_data"
-                                       [columns]="data_columns"
-                                       [loadingIndicator]="loadingIndicator"
-                                       [columnMode]="'force'"
-                                       [headerHeight]="ngxHeaderHeight"
-                                       [footerHeight]="56"
-                                       [rowHeight]="'auto'"
-                                       [scrollbarH]="true"
-                                       [reorderable]="reorderable"
-                                       [externalPaging]="true"
-                                       [count]="page.totalElements"
-                                       [offset]="page.pageNumber"
-                                       [limit]="page.size"
-                                       [selectionType]="'checkbox'"
-                                       [rowClass]="getRowClass"
-                                       (activate)="onActivate($event)"
-                                       (resize)="onResize($event)"
-                                       (page)='setPage($event)'>
-                        </ngx-datatable>
+                        <mat-tab-group dynamicHeight>
+                            <mat-tab label="Все ({{total_all}})">
+                                <!-- WIDGET GROUP -->
+                                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                                     [@animateStagger]="{value:'50'}">
+                                    <!-- WIDGET 11 -->
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                                 fxFlex="100">
+                                        <!-- Front -->
+                                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows">
+                                            <div class="message-box error" *ngIf="error">
+                                                {{error_message}}
+                                            </div>
+                                            <ngx-datatable *ngIf="compose_complete" class="material"
+                                                           [rows]="rows_data"
+                                                           [columns]="data_columns"
+                                                           [loadingIndicator]="loadingIndicator"
+                                                           [columnMode]="'force'"
+                                                           [headerHeight]="ngxHeaderHeight"
+                                                           [footerHeight]="56"
+                                                           [rowHeight]="'auto'"
+                                                           [scrollbarH]="true"
+                                                           [reorderable]="reorderable"
+                                                           [externalPaging]="true"
+                                                           [count]="page.totalElements"
+                                                           [offset]="page.pageNumber"
+                                                           [limit]="page.size"
+                                                           [selectionType]="'checkbox'"
+                                                           [rowClass]="getRowClass"
+                                                           (activate)="onActivate($event)"
+                                                           (resize)="onResize($event)"
+                                                           (page)='setPage($event)'>
+                                            </ngx-datatable>
+
+                                        </div>
+                                        <!-- / Front -->
+                                    </fuse-widget>
+                                    <!-- / WIDGET 11 -->
+                                </div>
+                                <!-- / WIDGET GROUP -->
+                            </mat-tab>
+                            <mat-tab label="Мои ({{total_my}})" *ngIf="columns_client_my.length > 0">
+                                <!-- WIDGET GROUP -->
+                                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                                     [@animateStagger]="{value:'50'}">
+                                    <!-- WIDGET 11 -->
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                                 fxFlex="100">
+                                        <!-- Front -->
+                                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2" *ngIf="rows_my">
+                                            <ngx-datatable class="material"
+                                                           [rows]="rows_my"
+                                                           [columns]="columns_client_my"
+                                                           [loadingIndicator]="loadingIndicator"
+                                                           [columnMode]="'force'"
+                                                           [headerHeight]="48"
+                                                           [footerHeight]="56"
+                                                           [rowHeight]="'auto'"
+                                                           [scrollbarH]="true"
+                                                           [reorderable]="reorderable"
+                                                           [limit]="10"
+                                                           [selectionType]="'single'"
+                                                           (activate)="onActivate($event)">
+                                            </ngx-datatable>
+                                        </div>
+                                        <!-- / Front -->
+                                    </fuse-widget>
+                                    <!-- / WIDGET 11 -->
+                                </div>
+                                <!-- / WIDGET GROUP -->
+                            </mat-tab>
+
+
+                        </mat-tab-group>
+
                     </div>
                     <!-- / Front -->
                 </fuse-widget>
