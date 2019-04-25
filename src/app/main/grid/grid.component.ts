@@ -14,7 +14,6 @@ import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
-import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
@@ -124,10 +123,10 @@ export class GridComponent implements OnInit, OnDestroy
         protected _httpClient: HttpClient,
         private elRef: ElementRef,
         @Inject(DOCUMENT) private document: any,
-        private dialog: MatDialog,
+        protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
-        private modelSerivce: ModelService,
-        private _snackService: SnackService,
+        protected modelSerivce: ModelService,
+        protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
@@ -175,7 +174,6 @@ export class GridComponent implements OnInit, OnDestroy
         this.setup_apps();
         this.rows = [];
         this.rows_my = [];
-        //console.log('init');
         this.refresh(0);
 
 
@@ -193,17 +191,8 @@ export class GridComponent implements OnInit, OnDestroy
                 ) {
                     this.selected_date_filter = {};
                     this.selected_date_filter_has_values = true;
-                    //console.log('set range from filterService');
-                    //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
-                    //console.log(this.selected_date_filter);
-                    //console.log(this.selected_date_filter.startDate);
-
-                    //this.selected_date_filter['startDate'] = null;
-                    //this.selected_date_filter['endDate'] = null;
-
                     this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate;
                     this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate;
-                    //selected_date_filter: { startDate: Moment, endDate: Moment };
                 }
             }
         }
@@ -219,9 +208,6 @@ export class GridComponent implements OnInit, OnDestroy
         });
 
         this.resizeObservable.subscribe(() => {
-
-            //console.log('subscirbe');
-            //console.log(entity);
             if (this.refresh_complete) {
                 this.refresh_complete = false;
                 this.refresh(0);
@@ -242,18 +228,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     refresh(table_index) {
-        //console.log('refresh');
-        //console.log(this.refresh_complete);
-        //console.log(this.entity.app_name);
-        //this.load_grid_data(this.app_name, [], []);
-        //const params = { owner: true };
-        //this.load_grid_data(this.app_name, [], params);
-        //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
         this.setPage({ offset: this.page[table_index].pageNumber }, table_index);
-
-        //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
-
-
     }
 
 
@@ -347,7 +322,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                     //console.log(this.item_model);
                     this.rows_data[table_index] = result_f1.rows;
-                    this.data_all[table_index] = result_f1.rows.length;
+                    this.data_all[table_index] = result_f1.total_count;
 
                     //this.init_selected_rows(this.rows, selected);
                     this.loadingIndicator = false;
@@ -362,7 +337,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.error_message = message;
     }
 
-    get_control_column() {
+    get_control_column(table_index: number) {
         let control_column = {
             headerTemplate: this.commonTemplate.controlHdrTmpl,
             cellTemplate: this.commonTemplate.controlTmpl,
@@ -378,13 +353,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     compose_columns(columns_list, model, table_index) {
-        //console.log('compose columns');
-        //console.log(model);
-        //console.log(model.length);
-        //console.log(model[0]);
-        //console.log(columns_list);
-        //console.log(this.columns_index);
-
         if (this.compose_complete) {
             //return;
         }
@@ -392,13 +360,10 @@ export class GridComponent implements OnInit, OnDestroy
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         this.data_columns[table_index] = [];
 
-        //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
-        this.data_columns[table_index].push(this.get_control_column());
+        this.data_columns[table_index].push(this.get_control_column(table_index));
 
         columns_list.forEach((row, index) => {
-            //console.log(model);
-            //console.log(model[this.columns_index[row]].name);
             this.entity.add_column(model[this.columns_index[table_index][row]].name);
             let cellTemplate = null;
             let prop = '';
@@ -658,37 +623,11 @@ export class GridComponent implements OnInit, OnDestroy
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                //console.log('selected > ');
-                //console.log(result.selected);
-                /*
-                if (result.selected) {
-                    //this.selected = result.selected;
-                    this.load_grid_data(app_name, result.selected, []);
-                } else {
-                    this.load_grid_data(app_name, [], []);
-                }
-                */
                 this.refresh(0);
 
 
                 this.loadingIndicator = false;
             });
-    }
-
-    toggleUserGet(row) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.refresh(0);
-            });
-
     }
 
     init_selected_rows(rows, selected) {
@@ -717,35 +656,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
 
-    updateValue(event, cell, rowIndex, row) {
-        /*
-        console.log(event)
-        console.log(cell)
-        console.log(rowIndex)
-        console.log(row)
-        console.log(this.rows[rowIndex]);
-        */
-
-        /*
-        this.editing[rowIndex + '-' + cell] = false;
-        this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
-
-        const status_id = this.item_model['status_id'];
-        const select_data = status_id['select_data'];
-
-        this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
-        this.rows_my = [...this.rows_my];
-        //console.log('UPDATED!', this.rows[rowIndex][cell]);
-        const ql_items = { status_id: event.target.value };
-        const body = { action: 'model', do: 'graphql_update', model_name: this.entity.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key };
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .subscribe((response: any) => {
-                //console.log(response);
-            });
-
-        */
-    }
-
 
     onActivate() {
     }
@@ -753,35 +663,10 @@ export class GridComponent implements OnInit, OnDestroy
 
     onSelect({ selected }) {
         console.log('Select Event', selected);
-        //console.log(selected.length);
-        /*
-        const body = {action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected};
-
-        //?action=model&do=select&session_key=${this.currentUser.session_key}
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .subscribe((contacts: any) => {
-                //console.log(contacts);
-            });
-
-        this.selected.splice(0, this.selected.length);
-        this.selected.push(...selected);
-
-        //console.log(this.selected);
-        //console.log(this.selected.length);
-        */
-
     }
 
     onSelectOld({ selected }) {
-        //console.log('Select Event', selected, this.selected);
-        //console.log(selected.length);
         const body = { action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected };
-
-        //?action=model&do=select&session_key=${this.currentUser.session_key}
-        //console.log(body);
-
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((contacts: any) => {
                 //console.log(contacts);
@@ -789,10 +674,6 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.selected.splice(0, this.selected.length);
         this.selected.push(...selected);
-
-        //console.log(this.selected);
-        //console.log(this.selected.length);
-
     }
 
 
@@ -802,8 +683,6 @@ export class GridComponent implements OnInit, OnDestroy
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {
-                //console.log('selected > ');
-                //console.log(result);
                 if (result) {
                     this.selected = [];
                     this.init_selected_rows(this.rows, result.selected);
@@ -811,43 +690,8 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.selected = [];
                 }
 
-                //this.selected.splice(0, this.selected.length);
-                //this.selected.push(...result.selected);
-
                 this.loadingIndicator = false;
             });
-
-    }
-    declineClient(row) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = false;
-        //dialogConfig.width = '100%';
-        //dialogConfig.height = '100%';
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
-
-        let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
-        dialogRef.afterClosed()
-            .subscribe(() => {
-                this.refresh(0);
-            })
-        return;
-
-        /*
-        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                this.refreash();
-            });
-        */
 
     }
 
