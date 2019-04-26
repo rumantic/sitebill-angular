@@ -23,6 +23,9 @@ export class MyClientComponent extends GridComponent {
 
         this.table_index_params[0] = { user_id: 0 };
 
+        let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
+        this.define_grid_fields(grid_fields, 0);
+
         this.add_my_tab();
 
     }
@@ -34,6 +37,10 @@ export class MyClientComponent extends GridComponent {
         this.page.push(new Page());
         this.page[table_index].pageNumber = 0;
         this.page[table_index].size = 0;
+
+        let grid_fields = ['client_id', 'user_id','date', 'type_id', 'status_id', 'fio', 'phone'];
+        this.define_grid_fields(grid_fields, 1);
+
         this.refresh(table_index);
 
     }

@@ -107,6 +107,7 @@ export class GridComponent implements OnInit, OnDestroy
     protected _unsubscribeAll: Subject<any>;
     protected currentUser: currentUser;
     protected template_ready: boolean = false;
+    protected predefined_grid_fields = {};
     filterSharedData: any;
 
     private resizeSubject = new Subject<number>();
@@ -249,18 +250,36 @@ export class GridComponent implements OnInit, OnDestroy
         this.entity.primary_key = 'client_id';
     }
 
+    define_grid_fields(grid_fields: string[], table_index) {
+        if (grid_fields != null) {
+            this.predefined_grid_fields[table_index] = grid_fields;
+        }
+    }
+
+    get_predefined_grid_fiels(table_index) {
+        if (this.predefined_grid_fields != null) {
+            return this.predefined_grid_fields[table_index];
+        }
+        return null;
+    }
+
     init_grid(params, table_index: number) {
-        this.modelSerivce.load_grid_columns(this.entity)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                //console.log(result);
-                if (result.data['meta'] != null) {
-                    if (result.data['meta']['per_page'] != null) {
-                        this.page[table_index].size = result.data['meta']['per_page'];
+        let predefined_grid_fields = this.get_predefined_grid_fiels(table_index);
+        if (predefined_grid_fields != null) {
+            this.load_grid_data(this.entity.app_name, predefined_grid_fields, params, table_index);
+        } else {
+            this.modelSerivce.load_grid_columns(this.entity)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    console.log(result);
+                    if (result.data['meta'] != null) {
+                        if (result.data['meta']['per_page'] != null) {
+                            this.page[table_index].size = result.data['meta']['per_page'];
+                        }
                     }
-                }
-                this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params, table_index);
-            });
+                    this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params, table_index);
+                });
+        }
     }
 
 
@@ -311,13 +330,19 @@ export class GridComponent implements OnInit, OnDestroy
                     this.loadGridComplete = true;
                     this.page[table_index].totalElements = result_f1.total_count;
                     this.page[table_index].size = result_f1.per_page;
-                    if (result_f1.grid_columns.grid_fields != null) {
+
+                    if (this.get_predefined_grid_fiels(table_index) != null) {
+                        this.grid_columns_for_compose[table_index] = this.get_predefined_grid_fiels(table_index);
+                    } else if (result_f1.grid_columns.grid_fields != null) {
                         this.grid_columns_for_compose[table_index] = result_f1.grid_columns.grid_fields;
                     } else {
                         this.grid_columns_for_compose[table_index] = result_f1.default_columns_list;
                     }
+
                     this.grid_meta[table_index] = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
+
+                    //console.log(this.grid_columns_for_compose[table_index]);
                     this.compose_columns(this.grid_columns_for_compose[table_index], model_compose, table_index);
 
                     //console.log(this.item_model);
@@ -364,6 +389,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.data_columns[table_index].push(this.get_control_column(table_index));
 
         columns_list.forEach((row, index) => {
+            //console.log(row);
             this.entity.add_column(model[this.columns_index[table_index][row]].name);
             let cellTemplate = null;
             let prop = '';
