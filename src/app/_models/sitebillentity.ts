@@ -1,5 +1,6 @@
 export class SitebillEntity {
-    app_name: string;
+    private app_name: string;
+    private table_name: string;
     primary_key: string;
     key_value: number;
     columns: string[];
@@ -14,6 +15,21 @@ export class SitebillEntity {
         this.default_columns_list = [];
     }
 
+    get_app_name() {
+        return this.app_name;
+    }
+
+    set_app_name(app_name: string) {
+        this.app_name = app_name;
+    }
+
+    get_table_name() {
+        return this.table_name;
+    }
+
+    set_table_name(table_name: string) {
+        this.table_name = table_name;
+    }
 
     add_column(name: string) {
         this.columns.push(name);
