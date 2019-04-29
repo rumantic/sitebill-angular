@@ -7,12 +7,12 @@ import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-clien
 import { MatDialogConfig } from '@angular/material';
 
 @Component({
-    selector: 'myclient-grid',
+    selector: 'freeclient-grid',
     templateUrl: './myclient.component.html',
     styleUrls: ['../../grid.component.scss'],
     animations: fuseAnimations
 })
-export class MyClientComponent extends GridComponent {
+export class FreeClientComponent extends GridComponent {
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('controlTmplMy') controlTmplMy: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
@@ -23,10 +23,9 @@ export class MyClientComponent extends GridComponent {
         //this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };
-        this.define_grid_params({ user_id: this.currentUser.user_id });
+        this.define_grid_params({ user_id: 0 });
 
-        //let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
-        let grid_fields = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
+        let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
         this.define_grid_fields(grid_fields);
         //this.refresh();
 
@@ -47,7 +46,7 @@ export class MyClientComponent extends GridComponent {
     }
 
     get_control_column() {
-        let cellTemplate = this.controlTmplMy;
+        let cellTemplate = this.controlTmpl;
         //if (table_index == 1) {
         //    cellTemplate = this.controlTmplMy;
         //}
