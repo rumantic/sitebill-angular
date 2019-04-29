@@ -62,7 +62,14 @@
     <Content Include="src\app\main\grid\common-template\common-template.component.scss">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\app\main\grid\entity\myclient\myclient.component.html">
+    <Content Include="src\app\main\grid\entity\lead\freeclient.component.html" />
+    <Content Include="src\app\main\grid\entity\lead\lead.component.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\app\main\grid\entity\lead\lead.component.scss">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\app\main\grid\entity\lead\myclient.component.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\app\main\grid\filter.component.html" />
@@ -131,11 +138,15 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\grid\entity\function\function.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\entity\group\group.component.ts" />
+    <TypeScriptCompile Include="src\app\main\grid\entity\lead\freeclient.component.ts" />
+    <TypeScriptCompile Include="src\app\main\grid\entity\lead\lead.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\grid\entity\menu\menu.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\entity\metro\metro.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\app\main\grid\entity\myclient\myclient.component.ts">
+    <TypeScriptCompile Include="src\app\main\grid\entity\lead\myclient.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\grid\entity\page\page.component.ts" />
@@ -628,7 +639,7 @@
     <Folder Include="src\app\main\grid\entity\group\" />
     <Folder Include="src\app\main\grid\entity\menu\" />
     <Folder Include="src\app\main\grid\entity\metro\" />
-    <Folder Include="src\app\main\grid\entity\myclient\" />
+    <Folder Include="src\app\main\grid\entity\lead\" />
     <Folder Include="src\app\main\grid\entity\page\" />
     <Folder Include="src\app\main\grid\entity\street\" />
     <Folder Include="src\app\main\grid\entity\region\" />
