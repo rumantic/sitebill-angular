@@ -14,6 +14,7 @@ import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
+import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
@@ -64,12 +65,12 @@ export class GridComponent implements OnInit, OnDestroy
     rows1 = [];
     total_all: number;
     total_my: number;
-    data_all = [];
+    data_all: number;
     editing = {};
     options_test = {};
     test_indicator: string;
     objectKeys = Object.keys;
-    page: Page[];
+    page = new Page();
     entity: SitebillEntity;
     refresh_complete: boolean = false;
     searchInput: FormControl;
@@ -99,7 +100,6 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
-    table_index_params = [];
 
 
 
@@ -107,7 +107,9 @@ export class GridComponent implements OnInit, OnDestroy
     protected _unsubscribeAll: Subject<any>;
     protected currentUser: currentUser;
     protected template_ready: boolean = false;
-    protected predefined_grid_fields = {};
+    protected predefined_grid_fields = [];
+    protected predefined_grid_params = {};
+
     filterSharedData: any;
 
     private resizeSubject = new Subject<number>();
@@ -131,21 +133,16 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
-    ) {
+    )
+    {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 48;
         this.entity = new SitebillEntity();
         //console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
-
-        this.page = [];
-        this.page.push(new Page());
-        //console.log(this.page);
-
-        //this.page[0] = new Page();
-        this.page[0].pageNumber = 0;
-        this.page[0].size = 0;
+        this.page.pageNumber = 0;
+        this.page.size = 0;
         this.searchInput = new FormControl('');
 
 
@@ -175,7 +172,8 @@ export class GridComponent implements OnInit, OnDestroy
         this.setup_apps();
         this.rows = [];
         this.rows_my = [];
-        this.refresh(0);
+        //console.log('init');
+        this.refresh();
 
 
         if (this.filterService.share_array[this.entity.app_name] != null) {
@@ -192,8 +190,17 @@ export class GridComponent implements OnInit, OnDestroy
                 ) {
                     this.selected_date_filter = {};
                     this.selected_date_filter_has_values = true;
+                    //console.log('set range from filterService');
+                    //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
+                    //console.log(this.selected_date_filter);
+                    //console.log(this.selected_date_filter.startDate);
+
+                    //this.selected_date_filter['startDate'] = null;
+                    //this.selected_date_filter['endDate'] = null;
+
                     this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate;
                     this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate;
+                    //selected_date_filter: { startDate: Moment, endDate: Moment };
                 }
             }
         }
@@ -209,9 +216,12 @@ export class GridComponent implements OnInit, OnDestroy
         });
 
         this.resizeObservable.subscribe(() => {
+
+            //console.log('subscirbe');
+            //console.log(entity);
             if (this.refresh_complete) {
                 this.refresh_complete = false;
-                this.refresh(0);
+                this.refresh();
             }
         });
 
@@ -228,8 +238,19 @@ export class GridComponent implements OnInit, OnDestroy
             });
     }
 
-    refresh(table_index) {
-        this.setPage({ offset: this.page[table_index].pageNumber }, table_index);
+    refresh() {
+        //console.log('refresh');
+        //console.log(this.refresh_complete);
+        //console.log(this.entity.app_name);
+        //this.load_grid_data(this.app_name, [], []);
+        //const params = { owner: true };
+        //this.load_grid_data(this.app_name, [], params);
+        //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+        this.setPage({ offset: this.page.pageNumber });
+
+        //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+
+
     }
 
 
@@ -250,23 +271,10 @@ export class GridComponent implements OnInit, OnDestroy
         this.entity.primary_key = 'client_id';
     }
 
-    define_grid_fields(grid_fields: string[], table_index) {
-        if (grid_fields != null) {
-            this.predefined_grid_fields[table_index] = grid_fields;
-        }
-    }
-
-    get_predefined_grid_fiels(table_index) {
-        if (this.predefined_grid_fields != null) {
-            return this.predefined_grid_fields[table_index];
-        }
-        return null;
-    }
-
-    init_grid(params, table_index: number) {
-        let predefined_grid_fields = this.get_predefined_grid_fiels(table_index);
+    init_grid(params) {
+        let predefined_grid_fields = this.get_predefined_grid_fiels();
         if (predefined_grid_fields != null) {
-            this.load_grid_data(this.entity.app_name, predefined_grid_fields, params, table_index);
+            this.load_grid_data(this.entity.app_name, predefined_grid_fields, params);
         } else {
             this.modelSerivce.load_grid_columns(this.entity)
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -274,10 +282,10 @@ export class GridComponent implements OnInit, OnDestroy
                     console.log(result);
                     if (result.data['meta'] != null) {
                         if (result.data['meta']['per_page'] != null) {
-                            this.page[table_index].size = result.data['meta']['per_page'];
+                            this.page.size = result.data['meta']['per_page'];
                         }
                     }
-                    this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params, table_index);
+                    this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params);
                 });
         }
     }
@@ -288,9 +296,37 @@ export class GridComponent implements OnInit, OnDestroy
         return this.entity.columns;
     }
 
-    load_grid_data(app_name, grid_columns: string[], params: any, table_index: number) {
-        //console.log('load_grid_data');
-        //console.log(params);
+    define_grid_fields(grid_fields: string[]) {
+        if (grid_fields != null) {
+            this.predefined_grid_fields = grid_fields;
+        }
+    }
+
+    define_grid_params(params: any) {
+        if (params != null) {
+            this.predefined_grid_params = params;
+        }
+    }
+
+
+    get_predefined_grid_fiels() {
+        if (this.predefined_grid_fields != null) {
+            return this.predefined_grid_fields;
+        }
+        return null;
+    }
+
+    get_predefined_grid_params() {
+        if (this.predefined_grid_params != null) {
+            return this.predefined_grid_params;
+        }
+        return null;
+    }
+
+    load_grid_data(app_name, grid_columns: string[], params: any) {
+        console.log('load_grid_data');
+        console.log(grid_columns);
+        console.log(params);
         let filter_params_json = {};
 
 
@@ -309,45 +345,40 @@ export class GridComponent implements OnInit, OnDestroy
         if (params != null) {
             Object.assign(filter_params_json, params);
         }
-        let page_number = this.page[table_index].pageNumber + 1;
+
+        let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
 
-        this.modelSerivce.load(app_name, grid_columns, filter_params_json, null, page_number, this.page[table_index].size)
+        this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //console.log(result_f1);
+                console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
                     //this.item_model = result.rows[0];
                     this.entity.model = result_f1.columns;
                     //this.item_model = result.columns;
-                    this.columns_index[table_index] = result_f1.columns_index;
-                    this.rows_index[table_index] = result_f1.rows_index;
+                    this.columns_index = result_f1.columns_index;
+                    this.rows_index = result_f1.rows_index;
                     this.entity.default_columns_list = result_f1.default_columns_list;
                     this.entity.columns_index = result_f1.columns_index;
                     //console.log(this.item_model);
                     this.loadGridComplete = true;
-                    this.page[table_index].totalElements = result_f1.total_count;
-                    this.page[table_index].size = result_f1.per_page;
-
-                    if (this.get_predefined_grid_fiels(table_index) != null) {
-                        this.grid_columns_for_compose[table_index] = this.get_predefined_grid_fiels(table_index);
-                    } else if (result_f1.grid_columns.grid_fields != null) {
-                        this.grid_columns_for_compose[table_index] = result_f1.grid_columns.grid_fields;
+                    this.page.totalElements = result_f1.total_count;
+                    this.page.size = result_f1.per_page;
+                    if (result_f1.grid_columns.grid_fields != null) {
+                        this.grid_columns_for_compose = result_f1.grid_columns.grid_fields;
                     } else {
-                        this.grid_columns_for_compose[table_index] = result_f1.default_columns_list;
+                        this.grid_columns_for_compose = result_f1.default_columns_list;
                     }
-
-                    this.grid_meta[table_index] = result_f1.grid_columns.meta;
+                    this.grid_meta = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
-
-                    //console.log(this.grid_columns_for_compose[table_index]);
-                    this.compose_columns(this.grid_columns_for_compose[table_index], model_compose, table_index);
+                    this.compose_columns(this.grid_columns_for_compose, model_compose);
 
                     //console.log(this.item_model);
-                    this.rows_data[table_index] = result_f1.rows;
-                    this.data_all[table_index] = result_f1.total_count;
+                    this.rows_data = result_f1.rows;
+                    this.data_all = result_f1.rows.length;
 
                     //this.init_selected_rows(this.rows, selected);
                     this.loadingIndicator = false;
@@ -362,7 +393,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.error_message = message;
     }
 
-    get_control_column(table_index: number) {
+    get_control_column() {
         let control_column = {
             headerTemplate: this.commonTemplate.controlHdrTmpl,
             cellTemplate: this.commonTemplate.controlTmpl,
@@ -377,35 +408,44 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    compose_columns(columns_list, model, table_index) {
+    compose_columns(columns_list, model) {
+        //console.log('compose columns');
+        //console.log(model);
+        //console.log(model.length);
+        //console.log(model[0]);
+        //console.log(columns_list);
+        //console.log(this.columns_index);
+
         if (this.compose_complete) {
             //return;
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-        this.data_columns[table_index] = [];
+        this.data_columns = [];
 
+        //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
-        this.data_columns[table_index].push(this.get_control_column(table_index));
+        this.data_columns.push(this.get_control_column());
 
         columns_list.forEach((row, index) => {
-            //console.log(row);
-            this.entity.add_column(model[this.columns_index[table_index][row]].name);
+            //console.log(model);
+            //console.log(model[this.columns_index[row]].name);
+            this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';
             let width = 150;
-            prop = model[this.columns_index[table_index][row]].name + '.value';
-            if (this.grid_meta[table_index] != null) {
-                if (this.grid_meta[table_index]['columns'] != null) {
-                    if (this.grid_meta[table_index]['columns'][model[this.columns_index[table_index][row]].name] != null) {
-                        width = this.grid_meta[table_index]['columns'][model[this.columns_index[table_index][row]].name].width;
+            prop = model[this.columns_index[row]].name + '.value';
+            if (this.grid_meta != null) {
+                if (this.grid_meta['columns'] != null) {
+                    if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
+                        width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
                         //console.log(model[this.columns_index[row]].name);
                         //console.log(width);
                     }
                 }
             }
 
-            switch (model[this.columns_index[table_index][row]].type) {
+            switch (model[this.columns_index[row]].type) {
                 case 'safe_string':
                 case 'textarea':
                 case 'textarea_editor':
@@ -427,7 +467,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                 case 'geodata':
                     cellTemplate = this.commonTemplate.geoTmpl;
-                    prop = model[this.columns_index[table_index][row]].name + '.value_string';
+                    prop = model[this.columns_index[row]].name + '.value_string';
                     break;
 
                 case 'checkbox':
@@ -443,26 +483,31 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
                 default:
                     cellTemplate = null;
-                    prop = model[this.columns_index[table_index][row]].name + '.value_string';
+                    prop = model[this.columns_index[row]].name + '.value_string';
 
             }
 
             let column = {
-                headerTemplate: this.commonTemplate.hdrTpl,
+                headerTemplate: this.get_header_template(),
                 cellTemplate: cellTemplate,
-                type: model[this.columns_index[table_index][row]].type,
-                ngx_name: model[this.columns_index[table_index][row]].name + '.title',
-                model_name: model[this.columns_index[table_index][row]].name,
-                title: model[this.columns_index[table_index][row]].title,
+                type: model[this.columns_index[row]].type,
+                ngx_name: model[this.columns_index[row]].name + '.title',
+                model_name: model[this.columns_index[row]].name,
+                title: model[this.columns_index[row]].title,
                 width: width,
                 prop: prop
             }
-            this.data_columns[table_index].push(column);
+            this.data_columns.push(column);
         });
         this.compose_complete = true;
         //console.log(this.data_columns);
 
     }
+
+    get_header_template() {
+        return this.commonTemplate.hdrTpl;
+    }
+
 
     clear_search_text() {
         this.searchInput.patchValue('');
@@ -595,7 +640,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
-                    this.refresh(0);
+                    this.refresh();
                 }
             });
 
@@ -608,15 +653,16 @@ export class GridComponent implements OnInit, OnDestroy
        * Populate the table with new data based on the page number
        * @param page The page to select
        */
-    setPage(pageInfo, table_index) {
+    setPage(pageInfo) {
         //console.log('setPage');
-        this.page[table_index].pageNumber = pageInfo.offset;
+        this.page.pageNumber = pageInfo.offset;
         //const params = { owner: true };
         let params = {};
-        if (this.table_index_params[table_index] != null) {
-            params = this.table_index_params[table_index];
+        if (this.get_predefined_grid_params() != null) {
+            params = this.get_predefined_grid_params();
         }
-        this.init_grid(params, table_index);
+
+        this.init_grid(params);
     }
 
     onResize(event) {
@@ -649,11 +695,37 @@ export class GridComponent implements OnInit, OnDestroy
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_selected_request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                this.refresh(0);
+                //console.log('selected > ');
+                //console.log(result.selected);
+                /*
+                if (result.selected) {
+                    //this.selected = result.selected;
+                    this.load_grid_data(app_name, result.selected, []);
+                } else {
+                    this.load_grid_data(app_name, [], []);
+                }
+                */
+                this.refresh();
 
 
                 this.loadingIndicator = false;
             });
+    }
+
+    toggleUserGet(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const body = { action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key };
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refresh();
+            });
+
     }
 
     init_selected_rows(rows, selected) {
@@ -682,6 +754,35 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
 
+    updateValue(event, cell, rowIndex, row) {
+        /*
+        console.log(event)
+        console.log(cell)
+        console.log(rowIndex)
+        console.log(row)
+        console.log(this.rows[rowIndex]);
+        */
+
+        /*
+        this.editing[rowIndex + '-' + cell] = false;
+        this.rows_my[rowIndex]['status_id']['value'] = event.target.value;
+
+        const status_id = this.item_model['status_id'];
+        const select_data = status_id['select_data'];
+
+        this.rows_my[rowIndex]['status_id']['value_string'] = select_data[event.target.value];
+        this.rows_my = [...this.rows_my];
+        //console.log('UPDATED!', this.rows[rowIndex][cell]);
+        const ql_items = { status_id: event.target.value };
+        const body = { action: 'model', do: 'graphql_update', model_name: this.entity.app_name, key_value: row.client_id.value, ql_items: ql_items, session_key: this.currentUser.session_key };
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .subscribe((response: any) => {
+                //console.log(response);
+            });
+
+        */
+    }
+
 
     onActivate() {
     }
@@ -689,10 +790,13 @@ export class GridComponent implements OnInit, OnDestroy
 
     onSelect({ selected }) {
         console.log('Select Event', selected);
-    }
+        //console.log(selected.length);
+        /*
+        const body = {action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected};
 
-    onSelectOld({ selected }) {
-        const body = { action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected };
+        //?action=model&do=select&session_key=${this.currentUser.session_key}
+        //console.log(body);
+
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((contacts: any) => {
                 //console.log(contacts);
@@ -700,6 +804,32 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.selected.splice(0, this.selected.length);
         this.selected.push(...selected);
+
+        //console.log(this.selected);
+        //console.log(this.selected.length);
+        */
+
+    }
+
+    onSelectOld({ selected }) {
+        //console.log('Select Event', selected, this.selected);
+        //console.log(selected.length);
+        const body = { action: 'model', do: 'select', session_key: this.currentUser.session_key, selected_items: selected };
+
+        //?action=model&do=select&session_key=${this.currentUser.session_key}
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .subscribe((contacts: any) => {
+                //console.log(contacts);
+            });
+
+        this.selected.splice(0, this.selected.length);
+        this.selected.push(...selected);
+
+        //console.log(this.selected);
+        //console.log(this.selected.length);
+
     }
 
 
@@ -709,6 +839,8 @@ export class GridComponent implements OnInit, OnDestroy
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {
+                //console.log('selected > ');
+                //console.log(result);
                 if (result) {
                     this.selected = [];
                     this.init_selected_rows(this.rows, result.selected);
@@ -716,8 +848,43 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.selected = [];
                 }
 
+                //this.selected.splice(0, this.selected.length);
+                //this.selected.push(...result.selected);
+
                 this.loadingIndicator = false;
             });
+
+    }
+    declineClient(row) {
+        //console.log('user_id');
+        //console.log(row.client_id.value);
+
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        //dialogConfig.width = '100%';
+        //dialogConfig.height = '100%';
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+
+        let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
+        dialogRef.afterClosed()
+            .subscribe(() => {
+                this.refresh();
+            })
+        return;
+
+        /*
+        const body = {action: 'model', do: 'set_user_id_for_client', client_id: row.client_id.value, session_key: this.currentUser.session_key};
+        //console.log(body);
+
+        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                //console.log(result);
+                this.refreash();
+            });
+        */
 
     }
 

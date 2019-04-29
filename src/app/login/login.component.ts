@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit {
 
                             this.router.navigate([this.returnUrl]);
                         } else if (data.success == 1) {
-                            this.router.navigate(['/public/']);
+                            this.router.navigate(['/public/lead/']);
                         } else {
                             let error = 'Доступ запрещен';
                             this.alertService.error(error);

@@ -76,8 +76,8 @@
                             {{error_message}}
                         </div>
                         <ngx-datatable *ngIf="compose_complete" class="material"
-                                       [rows]="rows_data[0]"
-                                       [columns]="data_columns[0]"
+                                       [rows]="rows_data"
+                                       [columns]="data_columns"
                                        [loadingIndicator]="loadingIndicator"
                                        [columnMode]="'force'"
                                        [headerHeight]="ngxHeaderHeight"
@@ -86,14 +86,14 @@
                                        [scrollbarH]="true"
                                        [reorderable]="reorderable"
                                        [externalPaging]="true"
-                                       [count]="page[0].totalElements"
-                                       [offset]="page[0].pageNumber"
-                                       [limit]="page[0].size"
+                                       [count]="page.totalElements"
+                                       [offset]="page.pageNumber"
+                                       [limit]="page.size"
                                        [selectionType]="'checkbox'"
                                        [rowClass]="getRowClass"
                                        (activate)="onActivate($event)"
                                        (resize)="onResize($event)"
-                                       (page)='setPage($event, 0)'>
+                                       (page)='setPage($event)'>
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->
@@ -109,6 +109,6 @@
     </div>
 
     <mat-sidenav #settingsSidenav position="end">
-        <grid-settings [entity]="entity" [grid_items]="grid_columns_for_compose[0]" [page]="page[0]" *ngIf="compose_complete"></grid-settings>
+        <grid-settings [entity]="entity" [grid_items]="grid_columns_for_compose" [page]="page" *ngIf="compose_complete"></grid-settings>
     </mat-sidenav>
 </mat-sidenav-container>

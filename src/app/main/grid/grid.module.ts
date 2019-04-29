@@ -35,7 +35,9 @@ import { GridComponent } from './grid.component';
 import { DataComponent } from './data/data.component';
 import { NewsComponent } from './news/news.component';
 import { CountryComponent } from './entity/country/country.component';
-import { MyClientComponent } from './entity/myclient/myclient.component';
+import { MyClientComponent } from './entity/lead/myclient.component';
+import { FreeClientComponent } from './entity/lead/freeclient.component';
+import { LeadComponent } from './entity/lead/lead.component';
 import { RegionComponent } from './entity/region/region.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
@@ -196,8 +198,8 @@ const routes = [
         },
     },
     {
-        path: 'myclient',
-        component: MyClientComponent,
+        path: 'lead',
+        component: LeadComponent,
         resolve: {
             chat: ChatService
         },
@@ -211,6 +213,8 @@ const routes = [
         DataComponent,
         NewsComponent,
         MyClientComponent,
+        FreeClientComponent,
+        LeadComponent,
         MenuComponent,
         PageComponent,
         CountryComponent,
