@@ -134,7 +134,7 @@ export class GalleryComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, this.image_field)
+                this.modelSerivce.deleteImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
@@ -149,7 +149,7 @@ export class GalleryComponent implements OnInit {
     }
 
     moveRight(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
+        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
@@ -158,7 +158,7 @@ export class GalleryComponent implements OnInit {
 
     }
     moveLeft(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
+        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, index - 1);
                 this.galleryImages = [];
@@ -167,7 +167,7 @@ export class GalleryComponent implements OnInit {
 
     }
     moveToStart(event, index) {
-        this.modelSerivce.reorderImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
+        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
@@ -177,7 +177,7 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateLeft(event, index) {
-        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
+        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];
@@ -187,7 +187,7 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateRight(event, index) {
-        this.modelSerivce.rotateImage(this.entity.app_name, this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
+        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
                 let tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];

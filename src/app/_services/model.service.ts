@@ -22,7 +22,8 @@ export class ModelService {
             this.api_url = '';
         }
         this.entity = new SitebillEntity;
-        this.entity.app_name = null;
+        this.entity.set_app_name(null);
+        this.entity.set_table_name(null);
         this.entity.primary_key = null;
         this.entity.key_value = null;
 
@@ -126,13 +127,13 @@ export class ModelService {
 
     load_grid_columns(entity: SitebillEntity) {
         let body = {};
-        body = { action: 'model', do: 'load_grid_columns', model_name: entity.app_name, session_key: this.currentUser.session_key };
+        body = { action: 'model', do: 'load_grid_columns', model_name: entity.get_table_name(), session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
     format_grid(entity: SitebillEntity, grid_items: string[], per_page) {
         let body = {};
-        body = { action: 'model', do: 'format_grid', model_name: entity.app_name, grid_items: grid_items, per_page: per_page, session_key: this.currentUser.session_key };
+        body = { action: 'model', do: 'format_grid', model_name: entity.get_table_name(), grid_items: grid_items, per_page: per_page, session_key: this.currentUser.session_key };
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 

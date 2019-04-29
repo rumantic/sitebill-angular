@@ -18,7 +18,8 @@ export class FreeClientComponent extends GridComponent {
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
 
     setup_apps() {
-        this.entity.app_name = 'client';
+        this.entity.set_app_name('freeclient');
+        this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
         //this.enable_date_range('date');
 
@@ -30,18 +31,6 @@ export class FreeClientComponent extends GridComponent {
         //this.refresh();
 
         //this.add_my_tab();
-
-    }
-
-    add_my_tab() {
-        let table_index = 1;
-
-        //this.table_index_params[table_index] = { user_id: this.currentUser.user_id };
-
-        let grid_fields = ['client_id', 'user_id','date', 'type_id', 'status_id', 'fio', 'phone'];
-        this.define_grid_fields(grid_fields);
-
-        this.refresh();
 
     }
 
@@ -65,9 +54,9 @@ export class FreeClientComponent extends GridComponent {
 
     }
 
-    get_header_template() {
-        return this.hdrTpl;
-    }
+    //get_header_template() {
+    //    return this.hdrTpl;
+    //}
 
 
     toggleUserGet(event) {
@@ -78,7 +67,7 @@ export class FreeClientComponent extends GridComponent {
 
         ql_items['user_id'] = this.currentUser.user_id;
 
-        this.modelSerivce.update_only_ql(this.entity.app_name, value, ql_items)
+        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
@@ -98,7 +87,7 @@ export class FreeClientComponent extends GridComponent {
         //dialogConfig.width = '100%';
         //dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: 'client_id', key_value: row.client_id.value };
 
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()

@@ -329,7 +329,7 @@ export class FormComponent implements OnInit {
 
 
     init_select_by_query_options(columnName) {
-        this.modelSerivce.load_dictionary_model_all(this._data.app_name, columnName)
+        this.modelSerivce.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
@@ -344,9 +344,10 @@ export class FormComponent implements OnInit {
     getModel(): void {
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
-        const model_name = this._data.app_name;
+        const model_name = this._data.get_table_name();
         //console.log(this.modelSerivce.entity);
-        this.modelSerivce.entity.app_name = model_name;
+        this.modelSerivce.entity.set_app_name(this._data.get_app_name());
+        this.modelSerivce.entity.set_table_name(this._data.get_table_name());
         this.modelSerivce.entity.primary_key = primary_key;
         this.modelSerivce.entity.key_value = key_value;
         
@@ -384,7 +385,7 @@ export class FormComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.delete(this._data.app_name, this._data.primary_key, this._data.key_value)
+                this.modelSerivce.delete(this._data.get_table_name(), this._data.primary_key, this._data.key_value)
                     .subscribe((response: any) => {
                         console.log(response);
 
@@ -436,7 +437,7 @@ export class FormComponent implements OnInit {
         //return;
 
         if (this._data.key_value == null) {
-            this.modelSerivce.native_insert(this._data.app_name, ql_items)
+            this.modelSerivce.native_insert(this._data.get_table_name(), ql_items)
                 .subscribe((response: any) => {
                     //console.log(response);
 
@@ -450,7 +451,7 @@ export class FormComponent implements OnInit {
                     }
                 });
         } else {
-            this.modelSerivce.native_update(this._data.app_name, this._data.key_value, ql_items)
+            this.modelSerivce.native_update(this._data.get_table_name(), this._data.key_value, ql_items)
                 .subscribe((response: any) => {
                     //console.log(response);
 

@@ -10,7 +10,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class GroupComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'group';
+        this.entity.set_app_name('group');
+        this.entity.set_table_name('group');
         this.entity.primary_key = 'group_id';
     }
 }

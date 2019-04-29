@@ -23,20 +23,20 @@ export class FilterService {
         this.change.emit(controls);
     }
     share_data(entity: SitebillEntity, key: string, datas: any) {
-        if (this.params_count[entity.app_name] == null) {
-            this.params_count[entity.app_name] = 0;
+        if (this.params_count[entity.get_app_name()] == null) {
+            this.params_count[entity.get_app_name()] = 0;
         }
-        this.params_count[entity.app_name]++;
-        if (this.share_array[entity.app_name] == null) {
-            this.share_array[entity.app_name] = [];
+        this.params_count[entity.get_app_name()]++;
+        if (this.share_array[entity.get_app_name()] == null) {
+            this.share_array[entity.get_app_name()] = [];
         }
-        this.share_array[entity.app_name][key] = datas;
+        this.share_array[entity.get_app_name()][key] = datas;
         //console.log(this.share_array);
         this.onInnerChange(entity);
     }
     unshare_data(entity: SitebillEntity, key: string) {
-        if (this.share_array[entity.app_name] != null ) {
-            delete (this.share_array[entity.app_name][key]);
+        if (this.share_array[entity.get_app_name()] != null ) {
+            delete (this.share_array[entity.get_app_name()][key]);
             this.onInnerChange(entity);
         }
     }

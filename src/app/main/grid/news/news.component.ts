@@ -10,7 +10,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewsComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'news';
+        this.entity.set_app_name('news');
+        this.entity.set_table_name('news');
         this.entity.primary_key = 'news_id';
         this.enable_date_range('date');
     }

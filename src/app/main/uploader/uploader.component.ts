@@ -75,7 +75,7 @@ export class UploaderComponent {
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
-            + '&model=' + this.entity.app_name
+            + '&model=' + this.entity.get_table_name()
             + '&layer=native_ajax'
             + '&is_uploadify=1'
             + '&primary_key_value=' + this.entity.primary_key
@@ -102,7 +102,7 @@ export class UploaderComponent {
             //console.log(this.entity);
             if (this.queue_size == 0) {
                 if (this.entity.key_value == null) {
-                    this.modelSerivce.new_empty_record(this.entity.app_name)
+                    this.modelSerivce.new_empty_record(this.entity.get_table_name())
                         .subscribe((result: UploadResult) => {
                             if (result.state == 'error') {
                                 this._snackService.message('Невозможно загрузить фото к новой записи. Сначала сохраните запись без фото, а потом загрузите к ней фото.', 5000);
@@ -156,12 +156,12 @@ export class UploaderComponent {
     }
 
     uppend_uploads() {
-        this.modelSerivce.uppend_uploads(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+        this.modelSerivce.uppend_uploads(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
             .subscribe((result: UploadResult) => {
                 console.log(result);
 
                 let prefix = '';
-                if (this.entity.app_name == 'user') {
+                if (this.entity.get_table_name() == 'user') {
                     prefix = 'user/';
                 }
 
@@ -186,7 +186,7 @@ export class UploaderComponent {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteAllImages(this.entity.app_name, this.entity.primary_key, this.entity.key_value, this.image_field)
+                this.modelSerivce.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
                         //console.log(this.galleryImages);

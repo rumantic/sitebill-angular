@@ -10,7 +10,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class MenuComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'menu';
+        this.entity.set_app_name('menu');
+        this.entity.set_table_name('menu');
         this.entity.primary_key = 'menu_id';
     }
 }

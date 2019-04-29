@@ -18,7 +18,8 @@ export class MyClientComponent extends GridComponent {
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
 
     setup_apps() {
-        this.entity.app_name = 'client';
+        this.entity.set_app_name('myclient');
+        this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
         //this.enable_date_range('date');
 
@@ -54,9 +55,9 @@ export class MyClientComponent extends GridComponent {
 
     }
 
-    get_header_template() {
-        return this.hdrTpl;
-    }
+    //get_header_template() {
+    //    return this.hdrTpl;
+    //}
 
 
     toggleUserGet(event) {
@@ -67,7 +68,7 @@ export class MyClientComponent extends GridComponent {
 
         ql_items['user_id'] = this.currentUser.user_id;
 
-        this.modelSerivce.update_only_ql(this.entity.app_name, value, ql_items)
+        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
@@ -87,7 +88,7 @@ export class MyClientComponent extends GridComponent {
         //dialogConfig.width = '100%';
         //dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: 'client_id', key_value: row.client_id.value };
 
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()

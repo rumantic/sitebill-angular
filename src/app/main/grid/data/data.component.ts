@@ -11,7 +11,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class DataComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'data';
+        this.entity.set_app_name('data');
+        this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
         this.enable_date_range('date_added');
     }

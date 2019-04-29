@@ -145,7 +145,7 @@ export class GridSettingsSidenavComponent implements OnInit
     per_page_change(event) {
         const params = event.value;
 
-        this.modelSerivce.update_column_meta(this.entity.app_name, null, 'per_page', params)
+        this.modelSerivce.update_column_meta(this.entity.get_table_name(), null, 'per_page', params)
             .subscribe((response: any) => {
                 this.filterService.empty_share(this.entity);
             });

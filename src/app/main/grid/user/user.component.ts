@@ -11,7 +11,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class UserComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'user';
+        this.entity.set_app_name('user');
+        this.entity.set_table_name('user');
         this.entity.primary_key = 'user_id';
     }
 

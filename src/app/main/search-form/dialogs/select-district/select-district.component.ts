@@ -80,7 +80,8 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.declineProcessing = false;
 
         this.description = '123';
-        this.entity.app_name = 'data';
+        this.entity.set_app_name('data');
+        this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
 
     }

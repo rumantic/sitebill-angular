@@ -6,7 +6,7 @@ export const public_navigation: FuseNavigation[] = [
         title: 'Заявки',
         type: 'item',
         icon: 'favorite',
-        url: 'public/myclient',
+        url: 'public/lead',
     },
 
     {

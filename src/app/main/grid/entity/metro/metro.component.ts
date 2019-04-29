@@ -10,7 +10,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class MetroComponent extends GridComponent {
     setup_apps() {
-        this.entity.app_name = 'metro';
+        this.entity.set_app_name('metro');
+        this.entity.set_table_name('metro');
         this.entity.primary_key = 'metro_id';
     }
 }

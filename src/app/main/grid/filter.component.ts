@@ -60,9 +60,9 @@ export class FilterComponent {
     }
 
     ngOnInit(): void {
-        if (this.filterService.share_array[this.entity.app_name] != null) {
+        if (this.filterService.share_array[this.entity.get_app_name()] != null) {
             //console.log(this.filterService.share_array[this.entity.app_name]);
-            if (this.filterService.share_array[this.entity.app_name][this.columnObject.model_name] != null) {
+            if (this.filterService.share_array[this.entity.get_app_name()][this.columnObject.model_name] != null) {
                 this.onFocus(null);
             }
         }
@@ -135,7 +135,7 @@ export class FilterComponent {
     }
 
     get_max(entity: SitebillEntity, columnName) {
-        this.modelSerivce.get_max(entity.app_name, columnName)
+        this.modelSerivce.get_max(entity.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(result);
@@ -143,14 +143,14 @@ export class FilterComponent {
                     this.price_max = result.message;
                     this.options_price_zero_10m.ceil = result.message;
                 }
-                if (this.filterService.share_array[this.entity.app_name] != undefined) {
-                    if (this.filterService.share_array[this.entity.app_name]['price_min'] != undefined ) {
-                        this.price_min = this.filterService.share_array[this.entity.app_name]['price_min'];
+                if (this.filterService.share_array[this.entity.get_app_name()] != undefined) {
+                    if (this.filterService.share_array[this.entity.get_app_name()]['price_min'] != undefined ) {
+                        this.price_min = this.filterService.share_array[this.entity.get_app_name()]['price_min'];
                     }
-                    if (this.filterService.share_array[this.entity.app_name]['price_max'] != undefined) {
-                        this.price_max = this.filterService.share_array[this.entity.app_name]['price_max'];
+                    if (this.filterService.share_array[this.entity.get_app_name()]['price_max'] != undefined) {
+                        this.price_max = this.filterService.share_array[this.entity.get_app_name()]['price_max'];
                     }
-                    if (this.filterService.share_array[this.entity.app_name]['price_min'] != undefined || this.filterService.share_array[this.entity.app_name]['price_max'] != undefined) {
+                    if (this.filterService.share_array[this.entity.get_app_name()]['price_min'] != undefined || this.filterService.share_array[this.entity.get_app_name()]['price_max'] != undefined) {
                         this.price_selector = 5;
                     }
                 }
@@ -171,13 +171,13 @@ export class FilterComponent {
 
     load_dictionary(columnName) {
 
-        this.modelSerivce.load_dictionary_model(this.entity.app_name, columnName)
+        this.modelSerivce.load_dictionary_model(this.entity.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 //console.log(columnName);
                 //console.log(result);
-                if (this.filterService.share_array[this.entity.app_name] != undefined) {
-                    this.selectedFilter = this.filterService.share_array[this.entity.app_name][columnName];
+                if (this.filterService.share_array[this.entity.get_app_name()] != undefined) {
+                    this.selectedFilter = this.filterService.share_array[this.entity.get_app_name()][columnName];
                 }
                 this.options = result.data;
             });

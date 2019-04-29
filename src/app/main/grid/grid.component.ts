@@ -176,17 +176,17 @@ export class GridComponent implements OnInit, OnDestroy
         this.refresh();
 
 
-        if (this.filterService.share_array[this.entity.app_name] != null) {
-            if (this.filterService.share_array[this.entity.app_name]['concatenate_search'] != null) {
-                this.searchInput = new FormControl(this.filterService.share_array[this.entity.app_name]['concatenate_search']);
+        if (this.filterService.share_array[this.entity.get_app_name()] != null) {
+            if (this.filterService.share_array[this.entity.get_app_name()]['concatenate_search'] != null) {
+                this.searchInput = new FormControl(this.filterService.share_array[this.entity.get_app_name()]['concatenate_search']);
             }
 
-            if (this.filterService.share_array[this.entity.app_name][this.date_range_key] != null) {
-                console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate);
+            if (this.filterService.share_array[this.entity.get_app_name()][this.date_range_key] != null) {
+                console.log(this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate);
 
                 if (
-                    this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate != null &&
-                    this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate != null
+                    this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate != null &&
+                    this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].endDate != null
                 ) {
                     this.selected_date_filter = {};
                     this.selected_date_filter_has_values = true;
@@ -198,15 +198,15 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.selected_date_filter['startDate'] = null;
                     //this.selected_date_filter['endDate'] = null;
 
-                    this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].startDate;
-                    this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.app_name][this.date_range_key].endDate;
+                    this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate;
+                    this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].endDate;
                     //selected_date_filter: { startDate: Moment, endDate: Moment };
                 }
             }
         }
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
-            if (entity.app_name == this.entity.app_name) {
+            if (entity.get_app_name() == this.entity.get_app_name()) {
                 if (this.refresh_complete) {
                     this.resizeSubject.next(0);
                     this.ngxHeaderHeight = "auto";
@@ -267,14 +267,15 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     setup_apps() {
-        this.entity.app_name = 'client';
+        this.entity.set_app_name('client');
+        this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
     }
 
     init_grid(params) {
         let predefined_grid_fields = this.get_predefined_grid_fiels();
         if (predefined_grid_fields != null) {
-            this.load_grid_data(this.entity.app_name, predefined_grid_fields, params);
+            this.load_grid_data(this.entity.get_app_name(), predefined_grid_fields, params);
         } else {
             this.modelSerivce.load_grid_columns(this.entity)
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -285,7 +286,7 @@ export class GridComponent implements OnInit, OnDestroy
                             this.page.size = result.data['meta']['per_page'];
                         }
                     }
-                    this.load_grid_data(this.entity.app_name, result.data['grid_fields'], params);
+                    this.load_grid_data(this.entity.get_app_name(), result.data['grid_fields'], params);
                 });
         }
     }
@@ -310,7 +311,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     get_predefined_grid_fiels() {
-        if (this.predefined_grid_fields != null) {
+        if (this.predefined_grid_fields.length > 0) {
             return this.predefined_grid_fields;
         }
         return null;
@@ -324,14 +325,14 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
-        console.log('load_grid_data');
-        console.log(grid_columns);
-        console.log(params);
+        //console.log('load_grid_data');
+        //console.log(grid_columns);
+        //console.log(params);
         let filter_params_json = {};
 
 
-        if (this.filterService.params_count[this.entity.app_name] > 0) {
-            var obj = this.filterService.share_array[this.entity.app_name];
+        if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
+            var obj = this.filterService.share_array[this.entity.get_app_name()];
             var mapped = Object.keys(obj);
             mapped.forEach(function (item, i, arr) {
                 //console.log(obj[item].length);
@@ -349,10 +350,10 @@ export class GridComponent implements OnInit, OnDestroy
         let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
 
-        this.modelSerivce.load(app_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
+        this.modelSerivce.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                console.log(result_f1);
+                //console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
@@ -375,6 +376,7 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         this.grid_columns_for_compose = result_f1.default_columns_list;
                     }
+                    //console.log(this.grid_columns_for_compose);
 
                     this.grid_meta = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
@@ -544,7 +546,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.delete(this.entity.app_name, this.entity.primary_key, item_id)
+                this.modelSerivce.delete(this.entity.get_table_name(), this.entity.primary_key, item_id)
                     .subscribe((response: any) => {
                         console.log(response);
 
@@ -566,7 +568,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(FormComponent, dialogConfig);
@@ -578,7 +580,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
@@ -639,7 +641,7 @@ export class GridComponent implements OnInit, OnDestroy
             ql_items['active'] = null;
         }
 
-        this.modelSerivce.update_only_ql(this.entity.app_name, value, ql_items)
+        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
@@ -673,7 +675,7 @@ export class GridComponent implements OnInit, OnDestroy
         const params = { width: event.newValue };
         //console.log(event);
 
-        this.modelSerivce.update_column_meta(this.entity.app_name, event.column.model_name, 'columns', params)
+        this.modelSerivce.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
             .subscribe((response: any) => {
                 //console.log(response);
             });
@@ -869,7 +871,7 @@ export class GridComponent implements OnInit, OnDestroy
         //dialogConfig.width = '100%';
         //dialogConfig.height = '100%';
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.app_name, primary_key: 'client_id', key_value: row.client_id.value };
+        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: 'client_id', key_value: row.client_id.value };
 
         let dialogRef = this.dialog.open(DeclineClientComponent, dialogConfig);
         dialogRef.afterClosed()
