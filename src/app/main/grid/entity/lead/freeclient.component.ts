@@ -21,7 +21,7 @@ export class FreeClientComponent extends GridComponent {
         this.entity.set_app_name('freeclient');
         this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
-        //this.enable_date_range('date');
+        this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };
         this.define_grid_params({ user_id: 0 });
@@ -54,9 +54,9 @@ export class FreeClientComponent extends GridComponent {
 
     }
 
-    //get_header_template() {
-    //    return this.hdrTpl;
-    //}
+    get_header_template() {
+        return this.hdrTpl;
+    }
 
 
     toggleUserGet(event) {

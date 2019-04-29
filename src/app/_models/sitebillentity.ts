@@ -35,6 +35,14 @@ export class SitebillEntity {
         this.columns.push(name);
     }
 
+    get_key_value() {
+        return this.key_value;
+    }
+
+    set_key_value(key_value: any) {
+        this.key_value = key_value;
+    }
+
 }
 export class SitebillModelItem {
     action: string;

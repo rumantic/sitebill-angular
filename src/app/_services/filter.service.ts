@@ -6,6 +6,7 @@ import { SitebillEntity } from 'app/_models';
 export class FilterService {
     share_array = [];
     params_count = [];
+    private share_counter_array = [];
 
     @Output() change: EventEmitter<any> = new EventEmitter();
     @Output() share: EventEmitter<any> = new EventEmitter();
@@ -42,5 +43,19 @@ export class FilterService {
     }
     empty_share(entity: SitebillEntity) {
         this.onInnerChange(entity);
+    }
+
+    share_counter(entity: SitebillEntity, key: string, datas: any) {
+        if (this.share_counter_array[entity.get_app_name()] == null) {
+            this.share_counter_array[entity.get_app_name()] = [];
+        }
+        this.share_counter_array[entity.get_app_name()][key] = datas;
+    }
+
+    get_counter_value(app_name:string, key: string) {
+        if (this.share_counter_array[app_name] != null) {
+            return this.share_counter_array[app_name][key];
+        }
+        return null;
     }
 }

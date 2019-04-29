@@ -343,7 +343,7 @@ export class FormComponent implements OnInit {
 
     getModel(): void {
         const primary_key = this._data.primary_key;
-        const key_value = this._data.key_value;
+        const key_value = this._data.get_key_value();
         const model_name = this._data.get_table_name();
         //console.log(this.modelSerivce.entity);
         this.modelSerivce.entity.set_app_name(this._data.get_app_name());

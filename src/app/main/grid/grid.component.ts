@@ -166,7 +166,6 @@ export class GridComponent implements OnInit, OnDestroy
             }
         };
 
-
     }
     ngOnInit() {
         this.setup_apps();
@@ -367,6 +366,7 @@ export class GridComponent implements OnInit, OnDestroy
                     //console.log(this.item_model);
                     this.loadGridComplete = true;
                     this.page.totalElements = result_f1.total_count;
+                    this.filterService.share_counter(this.entity, 'total_count', result_f1.total_count);
                     this.page.size = result_f1.per_page;
 
                     if (this.get_predefined_grid_fiels() != null) {
@@ -568,7 +568,9 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        this.entity.set_key_value(item_id);
+        dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(FormComponent, dialogConfig);
@@ -580,7 +582,9 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        this.entity.set_key_value(item_id);
+        dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
@@ -600,7 +604,8 @@ export class GridComponent implements OnInit, OnDestroy
             tmp_images[0] = item;
             images = tmp_images;
         }
-        this.entity.key_value = row[this.entity.primary_key].value;
+
+        this.entity.set_key_value(row[this.entity.primary_key].value);
 
         let image_field = column.model_name;
         let galleryImages = {};
