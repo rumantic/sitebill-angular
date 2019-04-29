@@ -34,18 +34,6 @@ export class MyClientComponent extends GridComponent {
 
     }
 
-    add_my_tab() {
-        let table_index = 1;
-
-        //this.table_index_params[table_index] = { user_id: this.currentUser.user_id };
-
-        let grid_fields = ['client_id', 'user_id','date', 'type_id', 'status_id', 'fio', 'phone'];
-        this.define_grid_fields(grid_fields);
-
-        this.refresh();
-
-    }
-
     get_control_column() {
         let cellTemplate = this.controlTmplMy;
         //if (table_index == 1) {
