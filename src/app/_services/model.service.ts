@@ -143,4 +143,10 @@ export class ModelService {
         return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
     }
 
+    get_cms_session() {
+        let body = {};
+        body = { layer: 'native_ajax', get_cms_session: '1'};
+        return this.http.post(`${this.api_url}/apps/api/rest.php`, body);
+    }
+
 }

@@ -67,7 +67,9 @@ import { EscapeHtmlPipe } from 'app/pipes/keep-html.pipe';
 import {Ng5SliderModule} from 'ng5-slider';
 
 import {Error404Component} from 'app/main/pages/errors/404/error-404.component';
-import {Error500Component} from 'app/main/pages/errors/500/error-500.component';
+import { Error500Component } from 'app/main/pages/errors/500/error-500.component';
+import { ModelService } from 'app/_services/model.service';
+
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
@@ -256,6 +258,7 @@ const appRoutes: Routes = [
     providers: [
         MessageService,
         AuthGuard,
+        ModelService,
         PublicGuard,
         AlertService,
         AuthenticationService,

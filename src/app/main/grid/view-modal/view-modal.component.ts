@@ -62,7 +62,7 @@ export class ViewModalComponent implements OnInit {
     getModel(): void {
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
-        const model_name = this._data.app_name;
+        const model_name = this._data.get_table_name();
         
         this._chatService.getChat(model_name, primary_key, key_value);
         

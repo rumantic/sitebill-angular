@@ -30,6 +30,7 @@ import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component'
 import { throttleTime } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CommonTemplateComponent } from './common-template/common-template.component';
+import { Router } from '@angular/router';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -130,6 +131,7 @@ export class GridComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         protected modelSerivce: ModelService,
         protected _snackService: SnackService,
+        private router: Router,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private filterService: FilterService
@@ -280,6 +282,10 @@ export class GridComponent implements OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     console.log(result);
+                    if (result.state == 'error' && result.error == 'check_session_key_failed') {
+                        this.router.navigate(['/login']);
+                        return false;
+                    }
                     if (result.data['meta'] != null) {
                         if (result.data['meta']['per_page'] != null) {
                             this.page.size = result.data['meta']['per_page'];
@@ -578,6 +584,8 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     view(item_id: any) {
+        console.log('view');
+        //console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
@@ -585,6 +593,7 @@ export class GridComponent implements OnInit, OnDestroy
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
         dialogConfig.data = this.entity;
+        console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
