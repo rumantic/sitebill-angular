@@ -57,7 +57,6 @@ import { NgxUploaderModule } from 'ngx-uploader';
 import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { GalleryComponent } from 'app/main/gallery/gallery.component';
-import { SnackBarComponent } from '../snackbar/snackbar.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
 import { UserComponent } from './user/user.component';
@@ -244,7 +243,6 @@ const routes = [
         UploaderComponent,
         GalleryComponent,
         FormComponent,
-        SnackBarComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
@@ -310,7 +308,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, SnackBarComponent, CommonTemplateComponent]
+    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, CommonTemplateComponent]
 
 })
 

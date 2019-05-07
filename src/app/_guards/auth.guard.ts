@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { FuseNavigation } from '@fuse/types';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { ModelService } from 'app/_services/model.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { SnackService } from 'app/_services/snack.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,7 +15,8 @@ export class AuthGuard implements CanActivate {
         protected router: Router,
         protected modelSerivce: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
-        protected _fuseConfigService: FuseConfigService
+        protected _fuseConfigService: FuseConfigService,
+        protected _snackService: SnackService,
     ) {
         this._unsubscribeAll = new Subject();
 
@@ -23,8 +24,12 @@ export class AuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.check_session(route, state, '/grid/data/');
+    }
+
+    check_session(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, success_redirect: string) {
         console.log(localStorage.getItem('currentUser'));
-        
+
         if (localStorage.getItem('currentUser')) {
             return this.check_permissions(route, state);
         } else {
@@ -34,13 +39,17 @@ export class AuthGuard implements CanActivate {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     console.log(result);
+                    if (result.state == 'error') {
+                        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                        return false;
+                    }
                     let storage = JSON.parse(result) || [];
                     console.log(storage);
 
                     if (storage.user_id > 0) {
                         localStorage.setItem('currentUser', JSON.stringify(storage));
                         if (this.check_permissions(route, state)) {
-                            this.router.navigate(['/grid/data/']);
+                            this.router.navigate([success_redirect]);
                             return true;
                         } else {
                             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
@@ -53,6 +62,12 @@ export class AuthGuard implements CanActivate {
                         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                         return false;
                     }
+                }, error => {
+                    console.log(error);
+                    this.disable_menu();
+                    this._snackService.message('Невозможно подключиться к серверу');
+                    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                    return false;
                 });
         }
     }
@@ -74,12 +89,6 @@ export class AuthGuard implements CanActivate {
             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
             return false;
         }
-        //console.log(storage);
-
-        //console.log('navigation');
-        //console.log(navigtaion_clone);
-        //console.log('permission');
-        //console.log(storage['structure']);
         if (storage['structure'] == null) {
             this.disable_menu();
             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
@@ -93,15 +102,10 @@ export class AuthGuard implements CanActivate {
         }
 
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
-
-        //console.log('complete cleanUp');
-
-        // logged in so return true
         return true;
     }
 
     cleanUpNavigation(navigation: any[], permission) {
-        //console.log(navigation.length);
         let remove_counter = 0;
         if (permission['group_name'] == 'admin') {
             return -1;
@@ -112,15 +116,8 @@ export class AuthGuard implements CanActivate {
                 if (permission[row.id].access != null) {
                     if (permission[row.id].access == 1) {
                         need_remove = false;
-                        //console.log(row.id);
-                        //console.log(row);
-                        //console.log(permission);
-
-                        //console.log('dont! remove ' + row.id);
                     }
                 }
-                //console.log(permission[row.id].access);
-                //console.log(row.id);
             }
             if (need_remove && (row.id != 'access' && row.id != 'content' && row.id != 'dictionaries')) {
                 //console.log('remove ' + row.id);

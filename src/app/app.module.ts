@@ -69,6 +69,8 @@ import {Ng5SliderModule} from 'ng5-slider';
 import {Error404Component} from 'app/main/pages/errors/404/error-404.component';
 import { Error500Component } from 'app/main/pages/errors/500/error-500.component';
 import { ModelService } from 'app/_services/model.service';
+import { SnackService } from './_services/snack.service';
+import { SnackBarComponent } from './main/snackbar/snackbar.component';
 
 
 const appRoutes: Routes = [
@@ -189,6 +191,7 @@ const appRoutes: Routes = [
         SearchFormComponent,
         AnkonsulSearchFormComponent,
         HighlightPipe,
+        SnackBarComponent,
         EscapeHtmlPipe
     ],
     imports: [
@@ -262,11 +265,12 @@ const appRoutes: Routes = [
         PublicGuard,
         AlertService,
         AuthenticationService,
-        FilterService
+        FilterService,
+        SnackService
         // provider used to create fake backend
         //fakeBackendProvider
     ],
-    entryComponents: [AppComponent,  SelectDistrictDialogComponent, MortgageCalculatorComponent, CalculatorMiniComponent, SearchFormComponent]
+    entryComponents: [AppComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent, CalculatorMiniComponent, SearchFormComponent, SnackBarComponent]
 })
 export class AppModule {
     ngDoBootstrap(app) {

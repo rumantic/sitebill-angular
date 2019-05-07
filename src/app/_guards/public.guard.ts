@@ -6,6 +6,7 @@ import { FuseConfigService } from "@fuse/services/config.service";
 import { public_navigation } from 'app/navigation/public.navigation';
 import { ModelService } from "app/_services/model.service";
 import { takeUntil } from "rxjs/operators";
+import { SnackService } from "app/_services/snack.service";
 
 @Injectable()
 export class PublicGuard extends AuthGuard {
@@ -13,50 +14,21 @@ export class PublicGuard extends AuthGuard {
         router: Router,
         protected modelSerivce: ModelService,
         _fuseNavigationService: FuseNavigationService,
-        _fuseConfigService: FuseConfigService
+        _fuseConfigService: FuseConfigService,
+        protected _snackService: SnackService,
     ) {
         super(
             router,
             modelSerivce,
             _fuseNavigationService,
-            _fuseConfigService
+            _fuseConfigService,
+            _snackService
         );
         //this._fuseNavigationService.removeNavigationItem('page');
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        //console.log('canActivate');
-
-        if (localStorage.getItem('currentUser')) {
-            return this.check_permission(route, state);
-        } else {
-            //Попробуем получить данные от cms sitebill для текущей сессии
-            console.log('try get cms session');
-            this.modelSerivce.get_cms_session()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result: any) => {
-                    console.log(result);
-                    let storage = JSON.parse(result) || [];
-                    console.log(storage);
-
-                    if (storage.user_id > 0) {
-                        localStorage.setItem('currentUser', JSON.stringify(storage));
-                        if (this.check_permissions(route, state)) {
-                            this.router.navigate(['/public/lead/']);
-                            return true;
-                        } else {
-                            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-                            return false;
-                        }
-                    } else {
-                        this.disable_menu();
-                        // not logged in so redirect to login page with the return url
-                        //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
-                        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-                        return false;
-                    }
-                });
-        }
+        return this.check_session(route, state, '/public/lead/');
     }
     check_permission(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         //@todo: Нужно проверять текущую сессию на пригодность
