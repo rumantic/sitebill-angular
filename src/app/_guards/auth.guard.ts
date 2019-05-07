@@ -43,23 +43,30 @@ export class AuthGuard implements CanActivate {
                         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                         return false;
                     }
-                    let storage = JSON.parse(result) || [];
-                    console.log(storage);
+                    try {
+                        let storage = JSON.parse(result) || [];
+                        console.log(storage);
 
-                    if (storage.user_id > 0) {
-                        localStorage.setItem('currentUser', JSON.stringify(storage));
-                        if (this.check_permissions(route, state)) {
-                            this.router.navigate([success_redirect]);
-                            return true;
+                        if (storage.user_id > 0) {
+                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            if (this.check_permissions(route, state)) {
+                                this.router.navigate([success_redirect]);
+                                return true;
+                            } else {
+                                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                                return false;
+                            }
                         } else {
+                            this.disable_menu();
+                            // not logged in so redirect to login page with the return url
+                            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
                             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                             return false;
                         }
-                    } else {
+                    } catch (e) {
+                        console.log(e);
                         this.disable_menu();
-                        // not logged in so redirect to login page with the return url
-                        //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
-                        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                        this._snackService.message('Ошибка подключения к API');
                         return false;
                     }
                 }, error => {
