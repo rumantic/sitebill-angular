@@ -46,7 +46,6 @@ export class UploaderComponent {
     max_uploads: any;
 
 
-    protected currentUser: currentUser;
 
 
     constructor(
@@ -60,7 +59,6 @@ export class UploaderComponent {
         } else {
             this.api_url = '';
         }
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
 
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
@@ -80,7 +78,7 @@ export class UploaderComponent {
             + '&is_uploadify=1'
             + '&primary_key_value=' + this.entity.primary_key
             + '&primary_key=' + this.entity.key_value
-            + '&session_key=' + this.currentUser.session_key;
+            + '&session_key=' + this.modelSerivce.get_session_key();
     }
 
     onUploadOutput(output: UploadOutput): void {
