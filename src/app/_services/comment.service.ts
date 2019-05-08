@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { BehaviorSubject, Observable } from 'rxjs';
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from './model.service';
 
 @Injectable()
 export class CommentService implements Resolve<any>
@@ -13,7 +14,6 @@ export class CommentService implements Resolve<any>
     photosVideos: any;
     object_id: any;
 
-    private currentUser: currentUser;
     api_url: string;
 
     timelineOnChanged: BehaviorSubject<any>;
@@ -27,10 +27,10 @@ export class CommentService implements Resolve<any>
      */
     constructor(
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig
     )
     {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
             this.api_url = this.config.apiEndpoint;
         } else {
@@ -41,8 +41,6 @@ export class CommentService implements Resolve<any>
         this.timelineOnChanged = new BehaviorSubject({});
         this.aboutOnChanged = new BehaviorSubject({});
         this.photosVideosOnChanged = new BehaviorSubject({});
-        
-        //this.getTimeline();
         
     }
 
@@ -79,8 +77,8 @@ export class CommentService implements Resolve<any>
         const app_name = 'client';
         console.log('timeline');
         console.log('object_id get ' + this.object_id);
-        
-        const body = {action: 'comment', do: 'get', model_name:app_name, session_key: this.currentUser.session_key};
+
+        const body = { action: 'comment', do: 'get', model_name: app_name, session_key: this.modelSerivce.get_session_key() };
         
         return new Promise((resolve, reject) => {
 

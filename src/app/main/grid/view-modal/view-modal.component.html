@@ -9,17 +9,14 @@
     </mat-toolbar>
     
     <!--h2 mat-dialog-title>Объект</h2-->
-    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <div mat-dialog-content class="p-24 m-0" >
 
-        <div fxFlex="60">
+        <div fxFlex="50" fusePerfectScrollbar>
         <div *ngIf="rows; else loggedOut">
             <table>
                 <tr *ngFor="let x of rows">
                     <td width="30%">{{records[x].title}}</td>
                     <td>
-
-
-
                         <div *ngIf="render_value_string_array.indexOf(records[x].type) > 0">
                             {{records[x].value_string}}
                         </div>            
@@ -48,7 +45,7 @@
 
         </pre>
         </div>
-        <div fxFlex="40">
+        <div fxFlex="50">
                 <profile-timeline></profile-timeline>
             
         </div>

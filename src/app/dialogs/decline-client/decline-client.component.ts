@@ -8,9 +8,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import * as moment from 'moment';
 
 import {Model} from 'app/model';
-import {currentUser} from 'app/_models/currentuser';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -38,7 +38,6 @@ export class DeclineClientComponent implements OnInit {
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
     
     private _unsubscribeAll: Subject<any>;
-    private currentUser: currentUser;
     loadingIndicator: boolean;
     
     @Output() submitEvent = new EventEmitter<string>();
@@ -50,6 +49,7 @@ export class DeclineClientComponent implements OnInit {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<DeclineClientComponent>,
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any
@@ -58,7 +58,6 @@ export class DeclineClientComponent implements OnInit {
         
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (isDevMode()) {
             this.api_url = this.config.apiEndpoint;
         } else {
@@ -146,8 +145,8 @@ export class DeclineClientComponent implements OnInit {
     toggleUserGet ( client_id ) {
         //console.log('user_id');
         //console.log(row.client_id.value);
-        
-        const body = {action: 'model', do: 'set_user_id_for_client', client_id: client_id, session_key: this.currentUser.session_key};
+
+        const body = { action: 'model', do: 'set_user_id_for_client', client_id: client_id, session_key: this.modelSerivce.get_session_key() };
         //console.log(body);
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
@@ -180,7 +179,7 @@ export class DeclineClientComponent implements OnInit {
         
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
 
-        const load_data_request = {action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
+        const load_data_request = { action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.modelSerivce.get_session_key()};
         //console.log(load_data_request);
         
 
@@ -197,11 +196,6 @@ export class DeclineClientComponent implements OnInit {
                 }
 
             });
-        
-        
-        //console.log(this.model);
-        //this.model_body = JSON.stringify(this.model);
-        //this.model_body = 'test';
         
     }
 

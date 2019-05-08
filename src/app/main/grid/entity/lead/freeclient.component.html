@@ -16,7 +16,9 @@
                 <mat-icon (click)="toggle_active(row, value)" aria-label="Выключить" matTooltip="Выключить">power_settings_new</mat-icon>
             </button>
         </span>
-
+        <button mat-icon-button>
+            <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
+        </button>
         <button mat-icon-button matTooltip="Взять заявку" (click)="toggleUserGet(row)" aria-label="Взять заявку">
             <mat-icon class="green-fg">attach_money</mat-icon>
         </button>
