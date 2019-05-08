@@ -181,14 +181,7 @@ export class FormComponent implements OnInit {
     }
 
     apply_topic_activity() {
-        //commercial_subtype
-        //console.log(this.form.controls['commercial_subtype']);
-        //this.form.controls['commercial_subtype'].clearValidators();
-        //this.form.controls['commercial_subtype'].updateValueAndValidity();
-
         let current_topic_id = this.form.controls['topic_id'].value;
-        console.log('current_topic_id = ' + current_topic_id);
-
         for (var i = 0; i < this.rows.length; i++) {
             if (this.records[this.rows[i]].active_in_topic != '0') {
                 if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
@@ -196,30 +189,20 @@ export class FormComponent implements OnInit {
                     this.form.get(this.rows[i]).updateValueAndValidity();
                     this.records[this.rows[i]].required_boolean = false;
                     this.records[this.rows[i]].hidden = true;
-
-                    console.log(this.records[this.rows[i]].name);
-                    console.log(this.records[this.rows[i]].active_in_topic_array);
                 } else {
                     this.records[this.rows[i]].hidden = false;
                     if (this.records[this.rows[i]].required == 'on') {
                         this.records[this.rows[i]].required_boolean = true;
                         this.form.get(this.rows[i]).setValidators(forbiddenNullValue());
                         this.form.get(this.rows[i]).updateValueAndValidity();
-
                     }
-
                 }
             }
-
         }
-
-
-        //console.log(this.form.controls['commercial_subtype']);
-
     }
 
     init_form() {
-        console.log(this.records);
+        //console.log(this.records);
 
         //Сначала нужно получить значение topic_id
         //В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
@@ -270,7 +253,7 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'date') {
                 //this.form.controls[this.rows[i]].patchValue();
                 //console.log(this.records[this.rows[i]]);
-                if (this.records[this.rows[i]].value_string != '') {
+                if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
                     this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "DD.MM.YYYY"));
                 } else {
                     this.form.controls[this.rows[i]].patchValue(null);
