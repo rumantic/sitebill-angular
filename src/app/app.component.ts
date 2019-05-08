@@ -78,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy
         //console.log(this.hero);
         //console.log(APP_BASE_HREF);
         // Get default navigation
-        this.navigation = navigation;
+        this.navigation = navigation.slice(0);
 
         // Register the navigation to the service
         this._fuseNavigationService.register('main', this.navigation);

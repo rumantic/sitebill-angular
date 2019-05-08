@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/map'
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from './model.service';
 
 
 
@@ -15,6 +16,7 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
+        protected modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig
         ) {
         if (isDevMode()) {
@@ -44,6 +46,7 @@ export class AuthenticationService {
                 if (user && user.session_key) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.modelSerivce.reinit_currentUser();
                 }
                 return user;
             });
@@ -61,6 +64,7 @@ export class AuthenticationService {
                 if (response.state == 'success') {
                     // remove user from local storage to log user out
                     localStorage.removeItem('currentUser');
+                    this.modelSerivce.reinit_currentUser();
                 }
             });
 

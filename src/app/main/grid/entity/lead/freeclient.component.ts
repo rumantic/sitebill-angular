@@ -65,7 +65,7 @@ export class FreeClientComponent extends GridComponent {
         let value = event[this.entity.primary_key].value;
         let ql_items = {};
 
-        ql_items['user_id'] = this.currentUser.user_id;
+        ql_items['user_id'] = this.modelSerivce.get_user_id();
 
         this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {

@@ -6,6 +6,9 @@ import { ModelService } from 'app/_services/model.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SnackService } from 'app/_services/snack.service';
+import { navigation } from 'app/navigation/navigation';
+import { public_navigation } from 'app/navigation/public.navigation';
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -24,11 +27,11 @@ export class AuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.check_session(route, state, '/grid/data/');
+        return this.check_session(route, state,'/grid/data/');
     }
 
     check_session(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, success_redirect: string) {
-        console.log(localStorage.getItem('currentUser'));
+        //console.log(localStorage.getItem('currentUser'));
 
         if (localStorage.getItem('currentUser')) {
             return this.check_permissions(route, state);
@@ -40,6 +43,7 @@ export class AuthGuard implements CanActivate {
                 .subscribe((result: any) => {
                     console.log(result);
                     if (result.state == 'error') {
+                        this.disable_menu();
                         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
                         return false;
                     }
@@ -53,8 +57,9 @@ export class AuthGuard implements CanActivate {
                                 this.router.navigate([success_redirect]);
                                 return true;
                             } else {
-                                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-                                return false;
+                                this.set_public_menu();
+                                this.router.navigate(['/public/'], { queryParams: { returnUrl: state.url } });
+                                return true;
                             }
                         } else {
                             this.disable_menu();
@@ -79,17 +84,34 @@ export class AuthGuard implements CanActivate {
         }
     }
 
+    set_public_menu() {
+        //console.log('set public menu');
+        this._fuseNavigationService.unregister('main');
+        this._fuseNavigationService.register('main', public_navigation.slice(0));
+        this._fuseNavigationService.setCurrentNavigation('main');
+    }
+
     check_permissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         //@todo: Нужно проверять текущую сессию на пригодность
         //console.log('Activate result = ');
+        //console.log('check_permissions');
+        //console.log(navigation);
+
+        this._fuseNavigationService.unregister('main');
+        this._fuseNavigationService.register('main', navigation.slice(0));
+        this._fuseNavigationService.setCurrentNavigation('main');
+
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
         let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
-        console.log('check_permissions');
-        console.log(storage);
+        this.cleanUpNavigation(navigtaion_clone, storage['structure']);
+
+        //console.log(storage);
         if (storage.admin_panel_login == 0) {
+            //console.log('got to /public/lead/');
+            this.set_public_menu();
             this.router.navigate(['/public/lead/']);
-            return true;
+            return false;
         } else if (storage.admin_panel_login != 1) {
             console.log('access denied');
             this.disable_menu();
@@ -108,7 +130,6 @@ export class AuthGuard implements CanActivate {
             return false;
         }
 
-        this.cleanUpNavigation(navigtaion_clone, storage['structure']);
         return true;
     }
 

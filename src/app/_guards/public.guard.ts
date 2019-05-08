@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
 import { FuseNavigationService } from "@fuse/components/navigation/navigation.service";
 import { FuseConfigService } from "@fuse/services/config.service";
-import { public_navigation } from 'app/navigation/public.navigation';
 import { ModelService } from "app/_services/model.service";
 import { takeUntil } from "rxjs/operators";
 import { SnackService } from "app/_services/snack.service";
@@ -28,18 +27,20 @@ export class PublicGuard extends AuthGuard {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        //console.log('public canActivate');
         return this.check_session(route, state, '/public/lead/');
     }
-    check_permission(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    check_permissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         //@todo: Нужно проверять текущую сессию на пригодность
         //console.log('Activate result = ');
-        this._fuseNavigationService.unregister('main');
-        this._fuseNavigationService.register('main', public_navigation);
-        this._fuseNavigationService.setCurrentNavigation('main');
+        //console.log('check permission public');
+        this.set_public_menu();
 
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
         let storage = JSON.parse(localStorage.getItem('currentUser')) || []
+        this.cleanUpNavigation(navigtaion_clone, storage['structure']);
+
         if (storage['structure'] == null) {
             this.disable_menu();
             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
@@ -52,7 +53,6 @@ export class PublicGuard extends AuthGuard {
             return false;
         }
 
-        this.cleanUpNavigation(navigtaion_clone, storage['structure']);
         //console.log('complete cleanUp');
 
         // logged in so return true

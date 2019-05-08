@@ -303,7 +303,6 @@ const routes = [
     providers: [
         FilterService,
         ChatService,
-        ModelService,
         CommonTemplateComponent,
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },

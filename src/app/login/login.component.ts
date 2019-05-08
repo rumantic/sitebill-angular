@@ -100,16 +100,17 @@ export class LoginComponent implements OnInit {
     logout() {
         this.disable_menu();
         //console.log('logout');
-        localStorage.removeItem('currentUser');
-        localStorage.clear();
         this.authenticationService.logout()
             .subscribe(
-                data => {
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
+            data => {
+                localStorage.removeItem('currentUser');
+                localStorage.clear();
+
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 
 
@@ -122,7 +123,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
 
                     if (data.state == 'error') {
                         this.alertService.error(data.error);
