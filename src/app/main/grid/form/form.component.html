@@ -21,11 +21,11 @@
                             <span [ngSwitch]="records[x].type">
                                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
 
-                                <mat-form-field *ngSwitchCase="'primary_key'">
+                                <mat-form-field *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
                                     <input class="disabled-text" readonly matInput formControlName="{{records[x].name}}" placeholder="{{records[x].title}}">
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchCase="'date'">
+                                <mat-form-field *ngSwitchCase="'date'" [hidden]="records[x].hidden">
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                     <mat-datepicker #dp
@@ -33,13 +33,13 @@
                                     </mat-datepicker>
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchCase="'dttime'">
+                                <mat-form-field *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                                     <mat-icon matSuffix>access_time</mat-icon>
                                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchCase="'dtdatetime'">
+                                <mat-form-field *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                     <mat-datepicker #dp
@@ -47,7 +47,7 @@
                                     </mat-datepicker>
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchCase="'dtdate'">
+                                <mat-form-field *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                     <mat-datepicker #dp
@@ -55,11 +55,11 @@
                                     </mat-datepicker>
                                 </mat-form-field>
 
-                                <uploader-component *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
+                                <uploader-component  [hidden]="records[x].hidden" *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
 
-                                <uploader-component *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
+                                <uploader-component  [hidden]="records[x].hidden" *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
 
-                                <span *ngSwitchCase="'select_box_structure'">
+                                <span *ngSwitchCase="'select_box_structure'" [hidden]="records[x].hidden">
                                     <ng-select formControlName="{{records[x].name}}"
                                                [required]="records[x].required_boolean"
                                                appendTo="body"
@@ -70,6 +70,7 @@
                                                [searchable]="true"
                                                [multiple]="false"
                                                [hideSelected]="false"
+                                               (change)="apply_topic_activity()"
                                                [closeOnSelect]="true"
                                                placeholder="{{records[x].title}}">
                                         <ng-template ng-label-tmp let-item="item" let-index="index">
@@ -87,7 +88,7 @@
                                 </span>
 
 
-                                <span *ngSwitchCase="'select_by_query'">
+                                <span *ngSwitchCase="'select_by_query'"  [hidden]="records[x].hidden">
                                     <ng-select formControlName="{{records[x].name}}"
                                                [required]="records[x].required_boolean"
                                                appendTo="body"
@@ -113,7 +114,7 @@
                                     <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                                 </span>
 
-                                <span *ngSwitchCase="'select_box'">
+                                <span *ngSwitchCase="'select_box'" [hidden]="records[x].hidden">
                                     <ng-select formControlName="{{records[x].name}}"
                                                [required]="records[x].required_boolean"
                                                appendTo="body"
@@ -140,14 +141,14 @@
                                 </span>
 
 
-                                <mat-checkbox *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
+                                <mat-checkbox [hidden]="records[x].hidden" *ngSwitchCase="'checkbox'" class="form-checkbox" [required]="records[x].required_boolean" matInput formControlName="{{records[x].name}}">{{records[x].title}}</mat-checkbox>
 
-                                <mat-form-field *ngSwitchCase="'textarea_editor'">
+                                <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
                                     <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [modules]="quillConfig" [ngModelOptions]="{standalone: true}"></quill-editor>
                                     <input formControlName="{{records[x].name}}" matInput [hidden]="true">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
-                                <span *ngSwitchCase="'geodata'">
+                                <span [hidden]="records[x].hidden" *ngSwitchCase="'geodata'">
 
                                     <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
                                         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -190,17 +191,17 @@
 
                                 </span>
 
-                                <mat-form-field *ngSwitchCase="'textarea'">
+                                <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
                                     <textarea matInput matTextareaAutosize formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchCase="'password'">
+                                <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'password'">
                                     <input matInput type="password" formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field *ngSwitchDefault>
+                                <mat-form-field [hidden]="records[x].hidden" *ngSwitchDefault>
                                     <input matInput formControlName="{{records[x].name}}" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>

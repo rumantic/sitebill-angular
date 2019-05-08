@@ -180,14 +180,63 @@ export class FormComponent implements OnInit {
         return false;
     }
 
+    apply_topic_activity() {
+        //commercial_subtype
+        //console.log(this.form.controls['commercial_subtype']);
+        //this.form.controls['commercial_subtype'].clearValidators();
+        //this.form.controls['commercial_subtype'].updateValueAndValidity();
+
+        let current_topic_id = this.form.controls['topic_id'].value;
+        console.log('current_topic_id = ' + current_topic_id);
+
+        for (var i = 0; i < this.rows.length; i++) {
+            if (this.records[this.rows[i]].active_in_topic != '0') {
+                if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
+                    this.form.get(this.rows[i]).clearValidators();
+                    this.form.get(this.rows[i]).updateValueAndValidity();
+                    this.records[this.rows[i]].required_boolean = false;
+                    this.records[this.rows[i]].hidden = true;
+
+                    console.log(this.records[this.rows[i]].name);
+                    console.log(this.records[this.rows[i]].active_in_topic_array);
+                } else {
+                    this.records[this.rows[i]].hidden = false;
+                    if (this.records[this.rows[i]].required == 'on') {
+                        this.records[this.rows[i]].required_boolean = true;
+                        this.form.get(this.rows[i]).setValidators(forbiddenNullValue());
+                        this.form.get(this.rows[i]).updateValueAndValidity();
+
+                    }
+
+                }
+            }
+
+        }
+
+
+        //console.log(this.form.controls['commercial_subtype']);
+
+    }
+
     init_form() {
-        //console.log(this.records);
+        console.log(this.records);
+
+        //Сначала нужно получить значение topic_id
+        //В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
+        //При смене типа в форме, надо перезапускать процесс показа/валидации элементов
 
         for (var i = 0; i < this.rows.length; i++) {
             //console.log(this.records[this.rows[i]].type);
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
+            this.records[this.rows[i]].hidden = false;
+            if (this.records[this.rows[i]].active_in_topic != '0') {
+                this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
+            } else {
+                this.records[this.rows[i]].active_in_topic_array = null;
+            }
+
             if (this.records[this.rows[i]].required == 'on') {
                 form_control_item.setValidators(forbiddenNullValue());
                 this.records[this.rows[i]].required_boolean = true;
@@ -260,6 +309,7 @@ export class FormComponent implements OnInit {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
         }
+        this.apply_topic_activity();
     }
 
     init_geodata(columnName) {
