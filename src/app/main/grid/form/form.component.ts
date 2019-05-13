@@ -30,6 +30,7 @@ export class FormComponent implements OnInit {
     public text_area_editor_storage = {};
     public options_storage = {};
     form_submitted: boolean = false;
+    form_inited: boolean = false;
     rows: any[];
     tabs: any[];
     tabs_keys: any[];
@@ -181,20 +182,22 @@ export class FormComponent implements OnInit {
     }
 
     apply_topic_activity() {
-        let current_topic_id = this.form.controls['topic_id'].value;
-        for (var i = 0; i < this.rows.length; i++) {
-            if (this.records[this.rows[i]].active_in_topic != '0') {
-                if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
-                    this.form.get(this.rows[i]).clearValidators();
-                    this.form.get(this.rows[i]).updateValueAndValidity();
-                    this.records[this.rows[i]].required_boolean = false;
-                    this.records[this.rows[i]].hidden = true;
-                } else {
-                    this.records[this.rows[i]].hidden = false;
-                    if (this.records[this.rows[i]].required == 'on') {
-                        this.records[this.rows[i]].required_boolean = true;
-                        this.form.get(this.rows[i]).setValidators(forbiddenNullValue());
+        if (this.form.controls['topic_id'] != null) {
+            let current_topic_id = this.form.controls['topic_id'].value;
+            for (var i = 0; i < this.rows.length; i++) {
+                if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
+                    if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
+                        this.form.get(this.rows[i]).clearValidators();
                         this.form.get(this.rows[i]).updateValueAndValidity();
+                        this.records[this.rows[i]].required_boolean = false;
+                        this.records[this.rows[i]].hidden = true;
+                    } else {
+                        this.records[this.rows[i]].hidden = false;
+                        if (this.records[this.rows[i]].required == 'on') {
+                            this.records[this.rows[i]].required_boolean = true;
+                            this.form.get(this.rows[i]).setValidators(forbiddenNullValue());
+                            this.form.get(this.rows[i]).updateValueAndValidity();
+                        }
                     }
                 }
             }
@@ -214,7 +217,7 @@ export class FormComponent implements OnInit {
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
             this.records[this.rows[i]].hidden = false;
-            if (this.records[this.rows[i]].active_in_topic != '0') {
+            if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
                 this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
             } else {
                 this.records[this.rows[i]].active_in_topic_array = null;
@@ -227,6 +230,8 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].name == 'email') {
                 form_control_item.setValidators(Validators.email);
             }
+            //console.log(this.rows[i]);
+            //console.log(form_control_item);
 
             this.form.addControl(this.rows[i], form_control_item);
             if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == "now") {
@@ -292,7 +297,10 @@ export class FormComponent implements OnInit {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
         }
+
         this.apply_topic_activity();
+        this.form_inited = true;
+
     }
 
     init_geodata(columnName) {

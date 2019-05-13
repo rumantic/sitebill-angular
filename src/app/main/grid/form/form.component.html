@@ -14,7 +14,7 @@
         <!--h2 mat-dialog-title>Объект</h2-->
         <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
             <div *ngIf="rows; else loggedOut">
-                <mat-tab-group dynamicHeight *ngIf="tabs_keys">
+                <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
 
                     <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
                         <span *ngFor="let x of tabs[tab]">
