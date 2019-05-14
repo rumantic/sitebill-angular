@@ -117,7 +117,7 @@ export class ChatService implements Resolve<any>
 
         return new Promise((resolve, reject) => {
             //this._httpClient.get('api/chat-chats/' + chatItem.id)
-            this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
+            this._httpClient.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, body)
                 .subscribe((response: any) => {
                     const chat = response;
 

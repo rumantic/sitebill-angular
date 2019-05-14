@@ -23,6 +23,7 @@ export class AuthenticationService {
     }
 
     login(domain: string, username: string, password: string) {
+        this.api_url = this.modelSerivce.get_api_url();
 
         //console.log('username' + username);
 
@@ -42,6 +43,7 @@ export class AuthenticationService {
                 if (user && user.session_key) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('api_url', this.modelSerivce.get_api_url());
                     this.modelSerivce.reinit_currentUser();
                 }
                 return user;

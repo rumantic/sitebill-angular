@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import {AlertService, AuthenticationService} from '../_services/index';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { navigation } from 'app/navigation/navigation';
+import { ModelService } from 'app/_services/model.service';
 
 @Component({
     selector: 'login',
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
         public snackBar: MatSnackBar,
+        private modelSerivce: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
         private alertService: AlertService) {
         // Configure the layout
@@ -61,6 +63,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+
         // reset login status
         this.logout();
 
@@ -75,6 +78,7 @@ export class LoginComponent implements OnInit {
         */
 
         this.loginForm = this._formBuilder.group({
+            domain: [''],
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
@@ -104,6 +108,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
             data => {
                 localStorage.removeItem('currentUser');
+                localStorage.removeItem('api_url');
                 localStorage.clear();
 
             },
@@ -117,6 +122,8 @@ export class LoginComponent implements OnInit {
     login() {
         this.disable_menu();
         this.loading = true;
+        this.modelSerivce.set_api_url('http://estate.sitebill.ru');
+
         //console.log(this.loginForm.value);
         //return;
 
