@@ -122,9 +122,13 @@ export class LoginComponent implements OnInit {
     login() {
         this.disable_menu();
         this.loading = true;
-        this.modelSerivce.set_api_url('http://estate.sitebill.ru');
+        if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
+            this.modelSerivce.set_api_url(this.loginForm.value.domain);
+        } else {
+            this.modelSerivce.set_api_url('http://estate.sitebill.ru');
+        }
 
-        //console.log(this.loginForm.value);
+        //console.log(this.loginForm.value.domain);
         //return;
 
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
