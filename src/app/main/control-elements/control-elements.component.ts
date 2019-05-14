@@ -154,6 +154,32 @@ export class ControlElementsComponent implements OnInit {
 
 
     }
+
+    ngDoCheck() {
+
+        this._fuseConfigService.config
+            .subscribe((config) => {
+                //this.config = config;
+                if (config.layout.navbar.hidden == false ) {
+                    this._fuseConfigService.config = {
+                        layout: {
+                            navbar: {
+                                hidden: true
+                            },
+                            toolbar: {
+                                hidden: true
+                            },
+                            footer: {
+                                hidden: true
+                            }
+                        }
+                    };
+                }
+
+            });
+    }
+
+
     
     /**
      * On form values changed
