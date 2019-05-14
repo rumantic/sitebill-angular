@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseConfigService} from '@fuse/services/config.service';
@@ -9,6 +9,7 @@ import {AlertService, AuthenticationService} from '../_services/index';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { navigation } from 'app/navigation/navigation';
 import { ModelService } from 'app/_services/model.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
     selector: 'login',
@@ -20,6 +21,7 @@ import { ModelService } from 'app/_services/model.service';
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
+    hide_domain: boolean = true;
     returnUrl: string;
 
     loginForm: FormGroup;
@@ -37,7 +39,9 @@ export class LoginComponent implements OnInit {
         public snackBar: MatSnackBar,
         private modelSerivce: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
+        @Inject(DOCUMENT) private document: any,
         private alertService: AlertService) {
+        
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
@@ -63,6 +67,8 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.hide_domain = true;
+        this.init_input_parameters();
 
         // reset login status
         this.logout();
@@ -125,7 +131,7 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
             this.modelSerivce.set_api_url(this.loginForm.value.domain);
         } else {
-            this.modelSerivce.set_api_url('http://estate.sitebill.ru');
+            this.modelSerivce.set_api_url('');
         }
 
         //console.log(this.loginForm.value.domain);
@@ -172,4 +178,23 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+    init_input_parameters() {
+        let app_root_element;
+        let elements = [];
+        if (this.document.getElementById('angular_search')) {
+            app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('angular_search_ankonsul')) {
+            app_root_element = this.document.getElementById('angular_search_ankonsul');
+        } else if (this.document.getElementById('app_root')) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+        if (app_root_element.getAttribute('enable_domain_auth')) {
+            if (app_root_element.getAttribute('enable_domain_auth') == 'true' ) {
+                this.hide_domain = false;
+            }
+        }
+
+    }
+
 }
