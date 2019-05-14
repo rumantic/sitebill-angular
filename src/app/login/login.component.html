@@ -12,12 +12,12 @@
             <div class="title">Авторизация</div>
 
             <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-                <!--mat-form-field>
-        <input matInput placeholder="Сайт" formControlName="domain" name="domain" >
-        <mat-error *ngIf="loginFormErrors.domain.required">
-            укажите ваш сайт
-        </mat-error>
-    </mat-form-field-->
+                <mat-form-field>
+                    <input matInput placeholder="Сайт" formControlName="domain" name="domain">
+                    <mat-error *ngIf="loginFormErrors.domain.required">
+                        укажите ваш сайт
+                    </mat-error>
+                </mat-form-field>
 
                 <mat-form-field>
                     <input matInput placeholder="Логин" formControlName="username" name="username">
@@ -37,8 +37,8 @@
                         Запомпнить меня
                     </mat-checkbox>
                     <!--a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-                    Забыли пароль?
-                    </a-->
+        Забыли пароль?
+        </a-->
                 </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">
@@ -46,7 +46,7 @@
                         vpn_key
                     </mat-icon>
                     <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
-                    
+
                     Вход
                 </button>
 

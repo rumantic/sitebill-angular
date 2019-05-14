@@ -11,6 +11,7 @@ import {Model} from '../model';
 import {currentUser} from '../_models/currentuser';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class CourseDialogComponent implements OnInit {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any
@@ -48,11 +50,7 @@ export class CourseDialogComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         
 
         this.description = '123';

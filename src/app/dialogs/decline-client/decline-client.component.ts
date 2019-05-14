@@ -58,11 +58,8 @@ export class DeclineClientComponent implements OnInit {
         
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this.declineFormErrors = {
             comment: {}
         };

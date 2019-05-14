@@ -16,11 +16,7 @@ export class ModelService {
         private http: HttpClient,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.get_api_url();
         this.entity = new SitebillEntity;
         this.entity.set_app_name(null);
         this.entity.set_table_name(null);
@@ -28,6 +24,14 @@ export class ModelService {
         this.entity.key_value = null;
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+    }
+
+    get_api_url() {
+        if (isDevMode()) {
+            return this.config.apiEndpoint;
+        } else {
+            return '';
+        }
     }
 
     get_session_key() {

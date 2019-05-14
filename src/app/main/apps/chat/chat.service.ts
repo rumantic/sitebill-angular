@@ -6,6 +6,7 @@ import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {FuseUtils} from '@fuse/utils';
+import { ModelService } from 'app/_services/model.service';
 
 @Injectable()
 export class ChatService implements Resolve<any>
@@ -13,7 +14,6 @@ export class ChatService implements Resolve<any>
     contacts: any[];
     chats: any[];
     user: any;
-    user_info: any;
     open_close: boolean;
     onChatSelected: BehaviorSubject<any>;
     onContactSelected: BehaviorSubject<any>;
@@ -22,7 +22,6 @@ export class ChatService implements Resolve<any>
     onLeftSidenavViewChanged: Subject<any>;
     onRightSidenavViewChanged: Subject<any>;
 
-    private currentUser: currentUser;
     private model_name: string;
     private primary_key: string;
     private key_value: string;
@@ -36,15 +35,12 @@ export class ChatService implements Resolve<any>
      */
     constructor(
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig
     ) {
 
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this.open_close = false;
 
         // Set the defaults
@@ -98,7 +94,6 @@ export class ChatService implements Resolve<any>
         this.model_name = model_name;
         this.primary_key = primary_key;
         this.key_value = key_value;
-        this.user_info = this.currentUser;
 
         //console.log('open close ' + this.open_close);
 
@@ -116,7 +111,7 @@ export class ChatService implements Resolve<any>
             return;
         }
 
-        const body = {action: 'comment', do: 'get', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.currentUser.session_key};
+        const body = { action: 'comment', do: 'get', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.modelSerivce.get_session_key() };
         //const chat_id = '5725a680b3249760ea21de52';
 
 
@@ -133,7 +128,7 @@ export class ChatService implements Resolve<any>
                     const chatData = {
                         chatId: contactId,
                         dialog: chat.rows,
-                        current_user_id: this.currentUser.user_id,
+                        current_user_id: this.modelSerivce.get_user_id(),
                         contact: chatContact
                     };
                     //console.log(chatData);
@@ -152,7 +147,7 @@ export class ChatService implements Resolve<any>
         const chatData = {
             chatId: null,
             dialog: [],
-            current_user_id: this.currentUser.user_id,
+            current_user_id: this.modelSerivce.get_user_id(),
             contact: null
         };
 
@@ -266,7 +261,7 @@ export class ChatService implements Resolve<any>
             */
             //const comment_text = 'test';
 
-            const body = {action: 'comment', do: 'add', model_name: this.model_name, primary_key: this.primary_key, key_value: this.key_value, comment_text: comment_text, session_key: this.currentUser.session_key};
+            const body = { action: 'comment', do: 'add', model_name: this.model_name, primary_key: this.primary_key, key_value: this.key_value, comment_text: comment_text, session_key: this.modelSerivce.get_session_key()};
 
 
             this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
