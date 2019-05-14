@@ -147,11 +147,8 @@ export class GridComponent implements OnInit, OnDestroy
         this.searchInput = new FormControl('');
 
 
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

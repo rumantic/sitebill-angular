@@ -13,6 +13,7 @@ import {locale as russian} from './i18n/ru';
 import {AuthService} from 'angularx-social-login';
 import {SocialUser} from 'angularx-social-login';
 import {FacebookLoginProvider} from 'angularx-social-login';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class FacebookComponent {
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private authService: AuthService,
+        private modelSerivce: ModelService,
         private translate: TranslateService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     ) {
@@ -45,11 +47,8 @@ export class FacebookComponent {
         this.translate.use('ru');
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

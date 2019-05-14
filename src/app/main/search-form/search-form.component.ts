@@ -27,6 +27,7 @@ import {DataService, Person} from './word.service';
 
 import * as _moment from 'moment';
 import {Moment} from 'moment';
+import { ModelService } from 'app/_services/model.service';
 const moment = _moment;
 export const MY_FORMATS = {
     parse: {
@@ -201,6 +202,7 @@ export class SearchFormComponent implements OnInit {
         @Inject(DOCUMENT) private document: any,
         @Inject(APP_CONFIG) private config: AppConfig,
         private filterService: FilterService,
+        private modelSerivce: ModelService,
         private _formBuilder: FormBuilder,
         private dataService: DataService
     ) {
@@ -208,11 +210,7 @@ export class SearchFormComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 
 export interface Person {
@@ -32,14 +33,11 @@ export class DataService {
 
     constructor(
         private http: HttpClient,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig
         ) {
         this._unsubscribeAll = new Subject();
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
     }
 
     getGithubAccounts(term: string = null) {

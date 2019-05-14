@@ -3,6 +3,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
 import { SitebillEntity } from 'app/_models';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 @Component({
     selector: 'common-template',
@@ -41,12 +42,9 @@ export class CommonTemplateComponent {
 
     constructor(
         @Inject(APP_CONFIG) private config: AppConfig,
+        private modelSerivce: ModelService,
     ) {
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
     }
 
     view(item_id: number) {

@@ -54,11 +54,7 @@ export class UploaderComponent {
         private _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
 
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();

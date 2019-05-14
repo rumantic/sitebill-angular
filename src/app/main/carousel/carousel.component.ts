@@ -10,6 +10,7 @@ import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import {DOCUMENT} from '@angular/platform-browser';
+import { ModelService } from 'app/_services/model.service';
 //import { WINDOW } from "app/_services/window/services/window.service";
 //import { WindowRef } from 'app/_services/window/WindowRef';
 
@@ -88,6 +89,7 @@ export class CarouselComponent implements OnInit {
         private _httpClient: HttpClient,
         private _fuseConfigService: FuseConfigService,
         @Inject(DOCUMENT) private document: any,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
         //private winRef: WindowRef,
         private _cdr: ChangeDetectorRef
@@ -97,11 +99,8 @@ export class CarouselComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

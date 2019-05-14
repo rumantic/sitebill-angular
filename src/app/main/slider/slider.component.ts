@@ -7,6 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {currentUser} from 'app/_models/currentuser';
 import {IImage} from 'ng-simple-slideshow';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 
 
@@ -57,6 +58,7 @@ export class SliderComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,
     ) {
@@ -64,11 +66,8 @@ export class SliderComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
+
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

@@ -9,6 +9,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
+import { ModelService } from 'app/_services/model.service';
 
 @Component({
     selector   : 'vk',
@@ -27,6 +28,7 @@ export class VkComponent
     constructor(
         private _httpClient: HttpClient,
         private elRef: ElementRef,
+        private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -35,11 +37,7 @@ export class VkComponent
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

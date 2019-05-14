@@ -31,7 +31,6 @@ export class MortgageCalculatorComponent implements OnInit {
 
     rows: any[];
     records: any[];
-    api_url: string;
 
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -104,11 +103,6 @@ export class MortgageCalculatorComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

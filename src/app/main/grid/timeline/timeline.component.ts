@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
      */
     constructor(
         private _chatService: ChatService,
+        private modelSerivce: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig
     )
     {
@@ -42,11 +44,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
         
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         
     }
 

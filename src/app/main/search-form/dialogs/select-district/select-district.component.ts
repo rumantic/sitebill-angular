@@ -10,6 +10,7 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import {Model} from 'app/model';
 import {currentUser} from 'app/_models/currentuser';
 import { SitebillEntity } from 'app/_models';
+import { ModelService } from 'app/_services/model.service';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<SelectDistrictDialogComponent>,
         private _httpClient: HttpClient,
+        private modelSerivce: ModelService,
         private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any
@@ -66,11 +68,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         this.declineFormErrors = {
             comment: {}
         };
@@ -80,6 +78,7 @@ export class SelectDistrictDialogComponent implements OnInit {
         this.declineProcessing = false;
 
         this.description = '123';
+        this.entity = new SitebillEntity;
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';

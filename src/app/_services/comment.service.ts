@@ -31,11 +31,7 @@ export class CommentService implements Resolve<any>
         @Inject(APP_CONFIG) private config: AppConfig
     )
     {
-        if (isDevMode()) {
-            this.api_url = this.config.apiEndpoint;
-        } else {
-            this.api_url = '';
-        }
+        this.api_url = this.modelSerivce.get_api_url();
         
         // Set the defaults
         this.timelineOnChanged = new BehaviorSubject({});
