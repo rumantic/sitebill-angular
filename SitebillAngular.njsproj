@@ -44,6 +44,8 @@
     <Content Include="src\app\main\apps\chat\chat-start\chat-start.component.scss" />
     <Content Include="src\app\main\apps\chat\chat-view\chat-view.component.scss" />
     <Content Include="src\app\main\apps\chat\chat.component.scss" />
+    <Content Include="src\app\main\collections\collections.component.css" />
+    <Content Include="src\app\main\collections\collections.component.html" />
     <Content Include="src\app\main\gallery\gallery.component.scss">
       <SubType>Code</SubType>
     </Content>
@@ -87,6 +89,7 @@
     <Content Include="src\app\main\grid\timeline\timeline.component.scss" />
     <Content Include="src\app\main\grid\view-modal\view-modal.component.css" />
     <Content Include="src\app\main\grid\view-modal\view-modal.component.html" />
+    <Content Include="src\app\main\sample\sample.component.scss" />
     <Content Include="src\app\main\snackbar\snackbar.component.html">
       <SubType>Code</SubType>
     </Content>
@@ -116,6 +119,7 @@
     <TypeScriptCompile Include="src\app\dialogs\confirm\confirm.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\main\collections\collections.component.ts" />
     <TypeScriptCompile Include="src\app\main\gallery\gallery.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -628,6 +632,7 @@
     <Folder Include="src\@fuse\utils" />
     <Folder Include="src\app" />
     <Folder Include="src\app\dialogs\confirm\" />
+    <Folder Include="src\app\main\collections\" />
     <Folder Include="src\app\main\gallery\modal\" />
     <Folder Include="src\app\main\grid\" />
     <Folder Include="src\app\main\grid\data\" />
