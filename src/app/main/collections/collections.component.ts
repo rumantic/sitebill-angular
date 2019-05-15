@@ -10,6 +10,7 @@ import {Model} from 'app/model';
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 
 @Component({
@@ -45,6 +46,9 @@ export class CollectionsComponent implements OnInit {
     loadingIndicator: boolean;
     
     @Output() submitEvent = new EventEmitter<string>();
+
+    bitrix24_access_token: string;
+    bitrix24_domain: string;
     
     
     
@@ -53,6 +57,7 @@ export class CollectionsComponent implements OnInit {
         private fb: FormBuilder,
         private route: ActivatedRoute,
         private http: HttpClient,
+        @Inject(DOCUMENT) private document: any,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseConfigService: FuseConfigService,
         protected modelSerivce: ModelService,
@@ -112,14 +117,17 @@ export class CollectionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.test_bitrix24();
+        //this.test_bitrix24();
+        this.init_input_parameters();
+        console.log(this.bitrix24_access_token);
+        console.log(this.bitrix24_domain);
     }
 
     get_client() {
         console.log('get client');
-        const url = `https://sitebill.bitrix24.ru/rest/crm.contact.get.json`;
+        const url = `https://${this.bitrix24_domain}/rest/crm.contact.get.json`;
 
-        const login_request = { id: 51, auth: '4aa4db5c003c0c920012cb6b0000000140380302af9a24976261bcfb545d7189756814' };
+        const login_request = { id: 51, auth: this.bitrix24_access_token };
 
         return this.http.post<any>(url, login_request)
             .subscribe((response: any) => {
@@ -140,6 +148,26 @@ export class CollectionsComponent implements OnInit {
             });
 
     }
+
+    init_input_parameters() {
+        let app_root_element;
+        let elements = [];
+        if (this.document.getElementById('angular_search')) {
+            app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('angular_search_ankonsul')) {
+            app_root_element = this.document.getElementById('angular_search_ankonsul');
+        } else if (this.document.getElementById('app_root')) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+        if (app_root_element.getAttribute('bitrix24_access_token')) {
+            this.bitrix24_access_token = app_root_element.getAttribute('bitrix24_access_token');
+        }
+        if (app_root_element.getAttribute('bitrix24_domain')) {
+            this.bitrix24_domain = app_root_element.getAttribute('bitrix24_domain');
+        }
+
+    }
+
     
     load_item ( model_name, key_value ) {
         //const body = { action: 'model', do: 'load_data', model_name: this.model_name, key_value: this.key_value, session_key: this.modelSerivce.get_session_key()};
