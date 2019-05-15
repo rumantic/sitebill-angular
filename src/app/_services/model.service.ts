@@ -35,6 +35,8 @@ export class ModelService {
         if (isDevMode() && this.api_url == '') {
             //console.log('dev url');
             return this.config.apiEndpoint;
+        } else if (this.api_url == null) {
+            return '';
         } else {
             //console.log('prod url');
             return this.api_url;
