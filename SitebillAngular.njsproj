@@ -119,6 +119,10 @@
     <TypeScriptCompile Include="src\app\dialogs\confirm\confirm.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\integrations\bitrix24\bitrix24.ts" />
+    <TypeScriptCompile Include="src\app\integrations\bitrix24\bitrix24router.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\collections\collections.component.ts" />
     <TypeScriptCompile Include="src\app\main\gallery\gallery.component.ts">
       <SubType>Code</SubType>
@@ -188,6 +192,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\_guards\public.guard.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\_models\bitrix24.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\_models\sitebillentity.ts">
@@ -632,6 +639,7 @@
     <Folder Include="src\@fuse\utils" />
     <Folder Include="src\app" />
     <Folder Include="src\app\dialogs\confirm\" />
+    <Folder Include="src\app\integrations\bitrix24\" />
     <Folder Include="src\app\main\collections\" />
     <Folder Include="src\app\main\gallery\modal\" />
     <Folder Include="src\app\main\grid\" />
@@ -661,6 +669,7 @@
     <Folder Include="src\app\main\gallery\" />
     <Folder Include="src\app\main\snackbar\" />
     <Folder Include="src\app\main\uploader\" />
+    <Folder Include="src\app\integrations\" />
     <Folder Include="src\app\_directives" />
     <Folder Include="src\app\_guards" />
     <Folder Include="src\app\_models" />
