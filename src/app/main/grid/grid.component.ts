@@ -121,7 +121,7 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("enable_collections")
     enable_collections: boolean;
 
-    
+
     /**
      * Constructor
      *
@@ -257,7 +257,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
 
-    
+
     init_input_parameters () {
         let app_root_element;
         if (this.document.getElementById('calculator_mini_root')) {
@@ -294,7 +294,13 @@ export class GridComponent implements OnInit, OnDestroy
                         }
                     }
                     this.load_grid_data(this.entity.get_app_name(), result.data['grid_fields'], params);
-                });
+                },
+                err => {
+                  console.log(err);
+                  this.router.navigate(['/login']);
+                  return false;
+                }
+              );
         }
     }
 
@@ -710,7 +716,7 @@ export class GridComponent implements OnInit, OnDestroy
         //this.resizeObservable.next(0);
         this.resizeSubject.complete();
     }
-    
+
 
 
     init_selected_rows(rows, selected) {
