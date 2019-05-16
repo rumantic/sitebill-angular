@@ -11,6 +11,7 @@ import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { Bitrix24PlacementOptions } from 'app/_models/bitrix24';
 
 
 @Component({
@@ -49,6 +50,9 @@ export class CollectionsComponent implements OnInit {
 
     bitrix24_access_token: string;
     bitrix24_domain: string;
+    bitrix24_placement_options: Bitrix24PlacementOptions;
+    bitrix24_placement: string;
+    response: any;
     
     
     
@@ -63,6 +67,7 @@ export class CollectionsComponent implements OnInit {
         protected modelSerivce: ModelService,
         ) {
         this.loadingIndicator = true;
+        this.bitrix24_placement_options = new Bitrix24PlacementOptions;
         
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -121,16 +126,20 @@ export class CollectionsComponent implements OnInit {
         this.init_input_parameters();
         console.log(this.bitrix24_access_token);
         console.log(this.bitrix24_domain);
+        console.log(this.bitrix24_placement);
+        console.log(this.bitrix24_placement_options);
+        this.get_client();
     }
 
     get_client() {
         console.log('get client');
         const url = `https://${this.bitrix24_domain}/rest/crm.contact.get.json`;
 
-        const login_request = { id: 51, auth: this.bitrix24_access_token };
+        const login_request = { id: this.bitrix24_placement_options.getId(), auth: this.bitrix24_access_token };
 
         return this.http.post<any>(url, login_request)
             .subscribe((response: any) => {
+                this.response = response;
                 console.log(response);
             });
 
@@ -164,6 +173,20 @@ export class CollectionsComponent implements OnInit {
         }
         if (app_root_element.getAttribute('bitrix24_domain')) {
             this.bitrix24_domain = app_root_element.getAttribute('bitrix24_domain');
+        }
+        if (app_root_element.getAttribute('bitrix24_placement')) {
+            this.bitrix24_placement = app_root_element.getAttribute('bitrix24_placement');
+        }
+        if (app_root_element.getAttribute('bitrix24_placement_options')) {
+            try {
+                let placement_options = app_root_element.getAttribute('bitrix24_placement_options').replace(/\'/g, '"');
+                console.log(placement_options);
+                if (placement_options != null) {
+                    let placement_options_parsed = JSON.parse(placement_options);
+                    this.bitrix24_placement_options.setId(placement_options_parsed.ID);
+                }
+            } catch {
+            }
         }
 
     }
