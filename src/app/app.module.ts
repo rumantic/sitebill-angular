@@ -48,7 +48,6 @@ import {LoginComponent} from './login/index';
 import {FakeDbService} from 'app/fake-db/fake-db.service';
 import {AppStoreModule} from 'app/store/store.module';
 import {ControlElementsComponent} from 'app/main/control-elements/control-elements.component';
-import { CollectionsComponent } from 'app/main/collections/collections.component';
 import {SliderComponent} from 'app/main/slider/slider.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {NguCarouselModule} from '@ngu/carousel';
@@ -83,11 +82,6 @@ const appRoutes: Routes = [
     {
         path: 'control/:model_name/:id/:control_name',
         component: ControlElementsComponent,
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'collections',
-        component: CollectionsComponent,
         canActivate: [AuthGuard]
     },
     {
@@ -186,7 +180,6 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         ControlElementsComponent,
-        CollectionsComponent,
         SliderComponent,
         CarouselComponent,
         LoginComponent,

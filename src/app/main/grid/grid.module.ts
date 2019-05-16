@@ -50,7 +50,6 @@ import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/se
 import { CommonTemplateComponent } from 'app/main/grid/common-template/common-template.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ModelService } from 'app/_services/model.service';
 import { QuillModule } from 'ngx-quill';
 
 import { NgxUploaderModule } from 'ngx-uploader';
@@ -73,6 +72,7 @@ import { PageComponent } from './entity/page/page.component';
 import { MenuComponent } from './entity/menu/menu.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { CollectionsComponent } from '../collections/collections.component';
 
 
 const routes = [
@@ -197,6 +197,13 @@ const routes = [
         },
     },
     {
+        path: 'collections',
+        component: CollectionsComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
         path: 'lead',
         component: LeadComponent,
         resolve: {
@@ -246,6 +253,7 @@ const routes = [
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
+        CollectionsComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),

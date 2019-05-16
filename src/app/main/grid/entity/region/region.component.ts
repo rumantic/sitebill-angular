@@ -3,7 +3,7 @@ import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-    selector: 'data-grid',
+    selector: 'region-grid',
     templateUrl: '../../grid.component.html',
     styleUrls: ['../../grid.component.scss'],
     animations: fuseAnimations

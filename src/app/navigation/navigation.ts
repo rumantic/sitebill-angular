@@ -36,7 +36,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Подборки',
         type: 'item',
         icon: 'playlist_add',
-        url: 'collections',
+        url: 'grid/collections',
         /*
         badge    : {
             title    : '25',
