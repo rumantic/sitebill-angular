@@ -2,7 +2,27 @@
     <button mat-raised-button type="button" color="warn" (click)="get_client()">
         Получить клиента
     </button>
+    <!-- Widget 2 -->
+    <div class="widget" *ngIf="response != null">
+        <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+            <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+                <div class="pr-16">
+                    <div class="h3 secondary-text">Подборки</div>
+                    <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                        {{response.result.NAME}}
+                    </div>
+                </div>
+                <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="row" fxLayoutAlign="start center" class="green-fg">
+                    </div>
+                    <div fxFlex="row" fxLayoutAlign="start center" class="red-fg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Widget 2 -->
+    <data-grid [enable_collections]="true"></data-grid>
     {{response|json}}
-    <data-grid></data-grid>
 
 </div>

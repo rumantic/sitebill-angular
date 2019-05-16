@@ -1,4 +1,4 @@
-import {Component, isDevMode, ElementRef, Inject, TemplateRef, ViewChild, OnInit, OnDestroy} from '@angular/core';
+import {Component, isDevMode, ElementRef, Inject, TemplateRef, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {currentUser} from 'app/_models/currentuser';
@@ -117,6 +117,10 @@ export class GridComponent implements OnInit, OnDestroy
 
     @ViewChild(CommonTemplateComponent)
     public commonTemplate: CommonTemplateComponent;
+
+    @Input("enable_collections")
+    enable_collections: boolean;
+
     
     /**
      * Constructor
@@ -166,6 +170,9 @@ export class GridComponent implements OnInit, OnDestroy
     }
     ngOnInit() {
         this.setup_apps();
+        if (this.enable_collections) {
+            this.entity.set_enable_collections();
+        }
         this.rows = [];
         this.rows_my = [];
         //console.log('init');

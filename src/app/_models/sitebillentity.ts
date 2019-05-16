@@ -7,12 +7,14 @@ export class SitebillEntity {
     columns_index: any[];
     default_columns_list: string[];
     model: SitebillModelItem[];
+    private enable_collections: boolean;
 
     constructor() {
         this.columns = [];
         this.model = [];
         this.columns_index = [];
         this.default_columns_list = [];
+        this.enable_collections = false;
     }
 
     get_app_name() {
@@ -37,6 +39,18 @@ export class SitebillEntity {
 
     get_key_value() {
         return this.key_value;
+    }
+
+    set_enable_collections() {
+        this.enable_collections = true;
+    }
+
+    set_disable_collections() {
+        this.enable_collections = false;
+    }
+
+    is_enable_collections() {
+        return this.enable_collections;
     }
 
     set_key_value(key_value: any) {
