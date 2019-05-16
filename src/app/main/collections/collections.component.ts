@@ -11,7 +11,7 @@ import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Bitrix24PlacementOptions } from 'app/_models/bitrix24';
+import { Bitrix24PlacementOptions } from 'app/integrations/bitrix24/bitrix24';
 
 
 @Component({
@@ -76,19 +76,6 @@ export class CollectionsComponent implements OnInit {
         this.declineFormErrors = {
             comment: {}
         };
-        this._fuseConfigService.config = {
-            layout: {
-                navbar: {
-                    hidden: false
-                },
-                toolbar: {
-                    hidden: false
-                },
-                footer: {
-                    hidden: true
-                }
-            }
-        };
         
         this.model_name = this.route.snapshot.paramMap.get('model_name');
         this.control_name = this.route.snapshot.paramMap.get('control_name');
@@ -100,6 +87,22 @@ export class CollectionsComponent implements OnInit {
 
         this.description = '123';
 
+    }
+
+    disable_menu() {
+        this._fuseConfigService.config = {
+            layout: {
+                navbar: {
+                    hidden: true
+                },
+                toolbar: {
+                    hidden: true
+                },
+                footer: {
+                    hidden: true
+                }
+            }
+        };
     }
     
     toggle_active () {
@@ -123,6 +126,7 @@ export class CollectionsComponent implements OnInit {
 
     ngOnInit() {
         //this.test_bitrix24();
+        this.disable_menu();
         this.init_input_parameters();
         console.log(this.bitrix24_access_token);
         console.log(this.bitrix24_domain);

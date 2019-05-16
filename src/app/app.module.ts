@@ -72,6 +72,7 @@ import { Error500Component } from 'app/main/pages/errors/500/error-500.component
 import { ModelService } from 'app/_services/model.service';
 import { SnackService } from './_services/snack.service';
 import { SnackBarComponent } from './main/snackbar/snackbar.component';
+import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
 
 
 const appRoutes: Routes = [
@@ -199,6 +200,7 @@ const appRoutes: Routes = [
         AnkonsulSearchFormComponent,
         HighlightPipe,
         SnackBarComponent,
+        Bitrix24Router,
         EscapeHtmlPipe
     ],
     imports: [
@@ -273,7 +275,8 @@ const appRoutes: Routes = [
         AlertService,
         AuthenticationService,
         FilterService,
-        SnackService
+        SnackService,
+        Bitrix24Router
         // provider used to create fake backend
         //fakeBackendProvider
     ],

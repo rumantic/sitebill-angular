@@ -18,6 +18,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
+import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
 
 @Component({
     selector   : 'app',
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private router: Router,
+        private bitrix24Router: Bitrix24Router,
         private _platform: Platform
     )
     {
@@ -205,6 +207,10 @@ export class AppComponent implements OnInit, OnDestroy
             }
         } else {
             this.fuseConfig.colorTheme = 'theme-default';
+        }
+
+        if (app_root_element.getAttribute('bitrix24_placement')) {
+            this.bitrix24Router.route(app_root_element.getAttribute('bitrix24_placement'));
         }
         this.document.body.classList.add(this.fuseConfig.colorTheme);
 
