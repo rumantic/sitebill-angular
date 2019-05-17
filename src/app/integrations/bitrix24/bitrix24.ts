@@ -14,11 +14,14 @@ export class Bitrix24Entity {
 
 export class Bitrix24PlacementOptions {
     private ID: number;
+    constructor() {
+        this.set_id(null);
+    }
 
-    setId( id: number) {
+    set_id( id: number) {
         this.ID = id;
     }
-    getId() {
+    get_id() {
         return this.ID;
     }
 }

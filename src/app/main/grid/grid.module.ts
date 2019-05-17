@@ -73,6 +73,7 @@ import { MenuComponent } from './entity/menu/menu.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CollectionsComponent } from '../collections/collections.component';
+import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 
 
 const routes = [
@@ -313,6 +314,7 @@ const routes = [
         ChatService,
         CommonTemplateComponent,
         SnackService,
+        Bitrix24Service,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, CommonTemplateComponent]

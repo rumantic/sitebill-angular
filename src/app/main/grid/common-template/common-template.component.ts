@@ -38,6 +38,7 @@ export class CommonTemplateComponent {
     @Output() deleteEvent = new EventEmitter<number>();
     @Output() toggle_activeEvent = new EventEmitter<any>();
     @Output() view_galleryEvent = new EventEmitter<any>();
+    @Output() toggle_collectionEvent = new EventEmitter<any>();
 
 
     constructor(
@@ -54,6 +55,11 @@ export class CommonTemplateComponent {
     toggle_active(row, value) {
         const event = {row:row, value:value};
         this.toggle_activeEvent.next(event);
+    }
+
+    toggle_collection(row, value) {
+        const event = { row: row, value: value };
+        this.toggle_collectionEvent.next(event);
     }
 
     view_gallery(row, column, images) {

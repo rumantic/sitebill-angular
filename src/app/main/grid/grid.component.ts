@@ -31,6 +31,7 @@ import { throttleTime } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CommonTemplateComponent } from './common-template/common-template.component';
 import { Router } from '@angular/router';
+import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -121,6 +122,8 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("enable_collections")
     enable_collections: boolean;
 
+    @Input("disable_menu")
+    disable_menu: boolean;
 
     /**
      * Constructor
@@ -133,6 +136,7 @@ export class GridComponent implements OnInit, OnDestroy
         protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         protected modelSerivce: ModelService,
+        protected bitrix24Serivce: Bitrix24Service,
         protected _snackService: SnackService,
         private router: Router,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -153,22 +157,26 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.api_url = this.modelSerivce.get_api_url();
 
-        this._fuseConfigService.config = {
-            layout: {
-                navbar: {
-                    hidden: false
-                },
-                toolbar: {
-                    hidden: false
-                },
-                footer: {
-                    hidden: true
-                }
-            }
-        };
-
     }
     ngOnInit() {
+        if (this.disable_menu) {
+            //console.log(this.disable_menu);
+        } else {
+            this._fuseConfigService.config = {
+                layout: {
+                    navbar: {
+                        hidden: false
+                    },
+                    toolbar: {
+                        hidden: false
+                    },
+                    footer: {
+                        hidden: true
+                    }
+                }
+            };
+        }
+
         this.setup_apps();
         if (this.enable_collections) {
             this.entity.set_enable_collections();
@@ -674,6 +682,28 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
+    toggle_collection(event) {
+        console.log(event);
+        console.log('get_placement_options_id = ' + this.bitrix24Serivce.get_placement_options_id());
+        let row = event.row;
+        let value = event.value;
+        let ql_items = {};
+        if (row.active.value == 0) {
+            ql_items['active'] = 1;
+        } else {
+            ql_items['active'] = null;
+        }
+        /*
+        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
+            .subscribe((response: any) => {
+                if (response.state == 'error') {
+                    this._snackService.message(response.message);
+                } else {
+                    this.refresh();
+                }
+            });
+            */
+    }
 
 
 
@@ -747,6 +777,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     onActivate() {
     }
+
 
 
     onSelect({ selected }) {
