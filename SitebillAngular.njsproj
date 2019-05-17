@@ -119,6 +119,9 @@
     <TypeScriptCompile Include="src\app\dialogs\confirm\confirm.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\app\integrations\bitrix24\bitrix24.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\integrations\bitrix24\bitrix24.ts" />
     <TypeScriptCompile Include="src\app\integrations\bitrix24\bitrix24router.ts">
       <SubType>Code</SubType>
@@ -192,9 +195,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\_guards\public.guard.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="src\app\_models\bitrix24.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\_models\sitebillentity.ts">
