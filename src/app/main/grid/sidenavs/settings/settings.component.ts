@@ -89,6 +89,9 @@ export class GridSettingsSidenavComponent implements OnInit
 
         //массив активных колонок
         grid_items.forEach((item, index) => {
+            if (this.entity.columns_index[item] == null) {
+                return;
+            }
             this.active_columns.push(this.entity.model[this.entity.columns_index[item]]);
         });
 

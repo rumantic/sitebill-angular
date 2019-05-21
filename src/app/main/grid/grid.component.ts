@@ -1,7 +1,6 @@
-import {Component, isDevMode, ElementRef, Inject, TemplateRef, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {currentUser} from 'app/_models/currentuser';
 import {DOCUMENT} from '@angular/platform-browser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
@@ -14,7 +13,6 @@ import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
-import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
@@ -456,8 +454,9 @@ export class GridComponent implements OnInit, OnDestroy
         this.data_columns.push(this.get_control_column());
 
         columns_list.forEach((row, index) => {
-            //console.log(model);
-            //console.log(model[this.columns_index[row]].name);
+            if (this.columns_index[row] == null) {
+                return;
+            }
             this.entity.add_column(model[this.columns_index[row]].name);
             let cellTemplate = null;
             let prop = '';
