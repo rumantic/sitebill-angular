@@ -692,16 +692,15 @@ export class GridComponent implements OnInit, OnDestroy
         } else {
             ql_items['active'] = null;
         }
-        /*
-        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
+        this.modelSerivce.toggle_collections()
             .subscribe((response: any) => {
+                console.log(response);
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
-                    this.refresh();
+                    //this.refresh();
                 }
             });
-            */
     }
 
 

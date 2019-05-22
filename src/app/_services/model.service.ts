@@ -169,6 +169,12 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    toggle_collections() {
+        let body = {};
+        body = { action: 'memorylist', do: 'toggle', session_key: this.currentUser.session_key };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
     get_cms_session() {
         let body = {};
         body = { layer: 'native_ajax', get_cms_session: '1'};
