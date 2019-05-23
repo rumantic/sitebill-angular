@@ -56,6 +56,10 @@ export class Bitrix24Service {
         return this.placement_options.get_id();
     }
 
+    get_deal_id() {
+        return this.placement_options.get_id();
+    }
+
     init_input_parameters() {
         let app_root_element;
         let elements = [];

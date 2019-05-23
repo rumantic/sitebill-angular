@@ -682,17 +682,11 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     toggle_collection(event) {
-        console.log(event);
-        console.log('get_placement_options_id = ' + this.bitrix24Serivce.get_placement_options_id());
-        let row = event.row;
-        let value = event.value;
-        let ql_items = {};
-        if (row.active.value == 0) {
-            ql_items['active'] = 1;
-        } else {
-            ql_items['active'] = null;
-        }
-        this.modelSerivce.toggle_collections()
+        //console.log(event);
+        //console.log('get_placement_options_id = ' + this.bitrix24Serivce.get_placement_options_id());
+        let data_id = event.value;
+        let title = 'bitrix deal ' + this.bitrix24Serivce.get_deal_id();
+        this.modelSerivce.toggle_collections(this.bitrix24Serivce.get_domain(), this.bitrix24Serivce.get_deal_id(), title, data_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
