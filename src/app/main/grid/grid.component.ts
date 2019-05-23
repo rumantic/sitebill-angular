@@ -365,6 +365,9 @@ export class GridComponent implements OnInit, OnDestroy
         if (params != null) {
             Object.assign(filter_params_json, params);
         }
+        filter_params_json['load_collections'] = true;
+        filter_params_json['collections_domain'] = this.bitrix24Serivce.get_domain();
+        filter_params_json['collections_deal_id'] = this.bitrix24Serivce.get_deal_id();
 
         let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
@@ -372,7 +375,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //console.log(result_f1);
+                console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
@@ -692,7 +695,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
-                    //this.refresh();
+                    this.refresh();
                 }
             });
     }
@@ -754,7 +757,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
 
-    getRowClass = (row) => {
+    getRowClass(row): string {
         try {
             if (row.active.value != 1) {
                 return 'red-100-bg';

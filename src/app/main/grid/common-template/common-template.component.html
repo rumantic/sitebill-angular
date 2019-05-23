@@ -2,7 +2,10 @@
     <!--mat-checkbox class="form-checkbox"></mat-checkbox-->
     <div class="control_hover">
         <button mat-icon-button *ngIf="entity.is_enable_collections()">
-            <mat-icon (click)="toggle_collection(row, value)" aria-label="Добавить в подборку" matTooltip="Добавить в подборку">playlist_add</mat-icon>
+            <mat-icon *ngIf="row[entity.get_primary_key()].collections > 0" (click)="toggle_collection(row, value)" aria-label="Удалить из подборки" matTooltip="Удалить из подборки">
+                remove_circle
+            </mat-icon>
+            <mat-icon *ngIf="row[entity.get_primary_key()].collections == null" (click)="toggle_collection(row, value)" aria-label="Добавить в подборку" matTooltip="Добавить в подборку">playlist_add</mat-icon>
         </button>
 
         <button mat-icon-button>
