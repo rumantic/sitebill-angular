@@ -1,7 +1,14 @@
 <div id="ngx-datatable" class="page-layout simple fullwidth">
     <div class="content" layout="row" fusePerfectScrollbar>
         <mat-tab-group dynamicHeight>
-            <mat-tab label="Подборки ()">
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div matBadge="{{collections_total_counter}}" matBadgeColor="accent" matBadgeOverlap="false">
+                        Подборки
+                    </div>
+                </ng-template>
+
+
                 <!-- WIDGET GROUP -->
                 <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                      [@animateStagger]="{value:'50'}">
@@ -10,7 +17,7 @@
                                  fxFlex="100">
                         <!-- Front -->
                         <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                          <data-grid [enable_collections]="true" [disable_menu]="true"></data-grid>
+                            <data-grid [enable_collections]="true" [only_collections]="true" [disable_menu]="true" (total_counterEvent)="set_total_counter_collections($event)"></data-grid>
                         </div>
                         <!-- / Front -->
                     </fuse-widget>
@@ -18,7 +25,7 @@
                 </div>
                 <!-- / WIDGET GROUP -->
             </mat-tab>
-            <mat-tab label="Мои ()">
+            <mat-tab label="Все объекты">
                 <!-- WIDGET GROUP -->
                 <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                      [@animateStagger]="{value:'50'}">
@@ -27,7 +34,7 @@
                                  fxFlex="100">
                         <!-- Front -->
                         <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                          <data-grid [enable_collections]="true" [disable_menu]="true"></data-grid>
+                            <data-grid [enable_collections]="true" [disable_menu]="true" (total_counterEvent)="set_total_counter_data($event)"></data-grid>
                         </div>
                         <!-- / Front -->
                     </fuse-widget>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {DOCUMENT} from '@angular/platform-browser';
@@ -120,8 +120,15 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("enable_collections")
     enable_collections: boolean;
 
+    @Input("only_collections")
+    only_collections: boolean;
+
     @Input("disable_menu")
     disable_menu: boolean;
+
+    @Output() total_counterEvent = new EventEmitter<number>();
+
+
 
     /**
      * Constructor
@@ -365,9 +372,14 @@ export class GridComponent implements OnInit, OnDestroy
         if (params != null) {
             Object.assign(filter_params_json, params);
         }
-        filter_params_json['load_collections'] = true;
-        filter_params_json['collections_domain'] = this.bitrix24Serivce.get_domain();
-        filter_params_json['collections_deal_id'] = this.bitrix24Serivce.get_deal_id();
+        if (this.enable_collections) {
+            filter_params_json['load_collections'] = true;
+            filter_params_json['collections_domain'] = this.bitrix24Serivce.get_domain();
+            filter_params_json['collections_deal_id'] = this.bitrix24Serivce.get_deal_id();
+            if (this.only_collections) {
+                filter_params_json['only_collections'] = true;
+            }
+        }
 
         let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
@@ -375,7 +387,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelSerivce.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                console.log(result_f1);
+                //console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
@@ -389,6 +401,7 @@ export class GridComponent implements OnInit, OnDestroy
                     //console.log(this.item_model);
                     this.loadGridComplete = true;
                     this.page.totalElements = result_f1.total_count;
+                    this.set_total_counter(result_f1.total_count);
                     this.filterService.share_counter(this.entity, 'total_count', result_f1.total_count);
                     this.page.size = result_f1.per_page;
 
@@ -416,6 +429,11 @@ export class GridComponent implements OnInit, OnDestroy
             });
 
     }
+
+    set_total_counter(counter: number) {
+        this.total_counterEvent.next(counter);
+    }
+
 
     rise_error(message: string) {
         this.error = true;
@@ -594,6 +612,9 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.autoFocus = true;
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
+        if (this.only_collections) {
+            this.entity.set_hook('add_to_collections');
+        }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
@@ -602,7 +623,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     view(item_id: any) {
-        console.log('view');
+        //console.log('view');
         //console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 

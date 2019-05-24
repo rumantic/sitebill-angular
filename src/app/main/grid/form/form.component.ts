@@ -12,6 +12,7 @@ import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { FilterService } from 'app/_services/filter.service';
 import { SnackService } from 'app/_services/snack.service';
 import * as moment from 'moment';
+import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -150,6 +151,7 @@ export class FormComponent implements OnInit {
         private _snackService: SnackService,
         public _matDialog: MatDialog,
         private filterService: FilterService,
+        protected bitrix24Serivce: Bitrix24Service,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
         ) {
@@ -483,8 +485,12 @@ export class FormComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись создана успешно');
-                        this.filterService.empty_share(this._data);
-                        this.close();
+                        if (this._data.get_hook() == 'add_to_collections') {
+                            this.add_to_collections(response.data['new_record_id']);
+                        } else {
+                            this.filterService.empty_share(this._data);
+                            this.close();
+                        }
                     }
                 });
         } else {
@@ -505,6 +511,20 @@ export class FormComponent implements OnInit {
 
 
     }
+
+    add_to_collections(data_id) {
+        let title = 'bitrix deal ' + this.bitrix24Serivce.get_deal_id();
+        this.modelSerivce.toggle_collections(this.bitrix24Serivce.get_domain(), this.bitrix24Serivce.get_deal_id(), title, data_id)
+            .subscribe((response: any) => {
+                if (response.state == 'error') {
+                    this._snackService.message(response.message);
+                } else {
+                    this.filterService.empty_share(this._data);
+                    this.close();
+                }
+            });
+    }
+
 
     mapClick(event) {
         //console.log('map click');

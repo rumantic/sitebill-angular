@@ -8,6 +8,7 @@ export class SitebillEntity {
     default_columns_list: string[];
     model: SitebillModelItem[];
     private enable_collections: boolean;
+    private hook: string;
 
     constructor() {
         this.columns = [];
@@ -15,6 +16,7 @@ export class SitebillEntity {
         this.columns_index = [];
         this.default_columns_list = [];
         this.enable_collections = false;
+        this.hook = null;
     }
 
     get_app_name() {
@@ -61,6 +63,13 @@ export class SitebillEntity {
         this.key_value = key_value;
     }
 
+    get_hook() {
+        return this.hook;
+    }
+
+    set_hook(hook: string) {
+        this.hook = hook;
+    }
 }
 export class SitebillModelItem {
     action: string;

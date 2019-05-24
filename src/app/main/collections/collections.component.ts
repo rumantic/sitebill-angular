@@ -17,6 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 export class CollectionsComponent implements OnInit {
     @Output() submitEvent = new EventEmitter<string>();
     protected _unsubscribeAll: Subject<any>;
+    private collections_total_counter: number;
+    private data_total_counter: number;
 
     response: any;
     
@@ -47,7 +49,14 @@ export class CollectionsComponent implements OnInit {
             }
         };
     }
+
+    set_total_counter_collections(event) {
+        this.collections_total_counter = event;
+    }
     
+    set_total_counter_data(event) {
+        this.data_total_counter = event;
+    }
 
     ngOnInit() {
         //this.test_bitrix24();

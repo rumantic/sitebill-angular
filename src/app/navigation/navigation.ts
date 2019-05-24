@@ -31,22 +31,15 @@ export const navigation: FuseNavigation[] = [
         }
         */
     },
+    /*
     {
         id: 'bitrix24collections',
         title: 'Подборки',
         type: 'item',
         icon: 'playlist_add',
         url: 'grid/collections',
-        /*
-        badge    : {
-            title    : '25',
-            translate: 'NAV.SAMPLE.BADGE',
-            bg       : '#F44336',
-            fg       : '#FFFFFF'
-        }
-        */
     },
-
+    */
     {
         id: 'dictionaries',
         title: 'Справочники',
