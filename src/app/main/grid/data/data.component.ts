@@ -18,6 +18,13 @@ export class DataComponent extends GridComponent {
     }
     getRowClass(row): string {
         try {
+            if (row['id'].collections != null) {
+                return 'green-100-bg';
+            }
+        } catch {
+        }
+
+        try {
             if (row.active.value != 1) {
                 return 'red-100-bg';
             }
@@ -27,12 +34,6 @@ export class DataComponent extends GridComponent {
         } catch {
         }
 
-        try {
-            if (row['id'].collections != null) {
-                return 'green-100-bg';
-            }
-        } catch {
-        }
 
     }
 
