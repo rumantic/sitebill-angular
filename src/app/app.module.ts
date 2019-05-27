@@ -72,12 +72,14 @@ import { ModelService } from 'app/_services/model.service';
 import { SnackService } from './_services/snack.service';
 import { SnackBarComponent } from './main/snackbar/snackbar.component';
 import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
+import {RegisterComponent} from './register/index';
 
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
     {path: '', redirectTo: 'grid/data', pathMatch: 'full', canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegisterComponent},
     {path: 'logout', component: LoginComponent},
     {
         path: 'control/:model_name/:id/:control_name',
@@ -183,6 +185,7 @@ const appRoutes: Routes = [
         SliderComponent,
         CarouselComponent,
         LoginComponent,
+        RegisterComponent,
         AlertComponent,
         SelectDistrictDialogComponent,
         MortgageCalculatorComponent,

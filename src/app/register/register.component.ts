@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 @Component({
     selector: 'register',
     templateUrl: 'register.component.html',
-    styleUrls: ['./register.component.scss'],
+    styleUrls: ['register.component.scss'],
     animations: fuseAnimations
 })
 
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
     hide_domain: boolean = true;
     returnUrl: string;
 
-    loginForm: FormGroup;
+    registerForm: FormGroup;
     loginFormErrors: any;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -83,8 +83,12 @@ export class RegisterComponent implements OnInit {
         });
         */
 
-        this.loginForm = this._formBuilder.group({
+        this.registerForm = this._formBuilder.group({
             domain: [''],
+            name: [''],
+            email: [''],
+            passwordConfirm: [''],
+            terms: [''],
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
@@ -125,59 +129,6 @@ export class RegisterComponent implements OnInit {
     }
 
 
-    login() {
-        this.disable_menu();
-        this.loading = true;
-        if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
-            this.modelSerivce.set_api_url(this.loginForm.value.domain);
-        } else {
-            this.modelSerivce.set_api_url('');
-        }
-
-        //console.log(this.loginForm.value.domain);
-        //return;
-
-        this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
-            .subscribe(
-                data => {
-                    //console.log(data);
-
-                    if (data.state == 'error') {
-                        this.alertService.error(data.error);
-                        this.loading = false;
-                        this.snackBar.open(data.error, 'ok', {
-                            duration: 2000,
-                            horizontalPosition: this.horizontalPosition,
-                            verticalPosition: this.verticalPosition,
-                        });
-
-                    } else {
-                        if (data.admin_panel_login == 1) {
-
-                            this._fuseNavigationService.unregister('main');
-                            this._fuseNavigationService.register('main', navigation);
-                            this._fuseNavigationService.setCurrentNavigation('main');
-
-                            this.router.navigate([this.returnUrl]);
-                        } else if (data.success == 1) {
-                            this.router.navigate(['/public/lead/']);
-                        } else {
-                            let error = 'Доступ запрещен';
-                            this.alertService.error(error);
-                            this.loading = false;
-                            this.snackBar.open(error, 'ok', {
-                                duration: 2000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                            });
-                        }
-                    }
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
 
     init_input_parameters() {
         let app_root_element;
