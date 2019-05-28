@@ -5,7 +5,7 @@
 
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
 
-            <div class="logo">
+            <div class="logo" *ngIf="hide_domain">
                 <img src="https://www.sitebill.ru/storage/icons/dragon.png">
             </div>
 
@@ -31,15 +31,15 @@
                         укажите ваш пароль
                     </mat-error>
                 </mat-form-field>
-                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                <!--div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
                      fxLayoutAlign="space-between center">
                     <mat-checkbox class="remember-me" aria-label="Remember Me">
                         Запомпнить меня
                     </mat-checkbox>
-                    <!--a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
+                    <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
         Забыли пароль?
-        </a-->
-                </div>
+        </a>
+                </div-->
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">
                     <mat-icon *ngIf="!loading">
