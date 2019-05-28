@@ -52,11 +52,18 @@
 
             </form>
 
-            <!--div class="separator">
-                <span class="text">OR</span>
-            </div>
+            <ng-container *ngIf="!hide_domain">
+                <div class="separator">
+                    <span class="text">или</span>
+                </div>
+                <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                    <span class="text">Еще нет аккаунта?</span>
+                    <a class="link" href="https://www.sitebill.ru/client/aff.php?aff=352&tariff=1" target="_blank">Создать сайт</a>
+                </div>
+            </ng-container>
 
-            <button mat-raised-button class="google">
+
+            <!--button mat-raised-button class="google">
                 Log in with Google
             </button>
 

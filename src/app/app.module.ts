@@ -79,7 +79,7 @@ const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
     {path: '', redirectTo: 'grid/data', pathMatch: 'full', canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent},
+    //{path: 'register', component: RegisterComponent},
     {path: 'logout', component: LoginComponent},
     {
         path: 'control/:model_name/:id/:control_name',

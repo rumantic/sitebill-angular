@@ -9,6 +9,7 @@
 
         #register-intro {
             padding: 128px;
+            color: white;
 
             @include media-breakpoint('sm') {
                 padding: 128px 64px;

@@ -7,12 +7,11 @@
         </div>
 
         <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
-            Welcome to the FUSE!
+            Добро пожаловать в Sitebill
         </div>
 
         <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat,
-            vel convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis viverra.
+            конструктор сайтов недвижимости
         </div>
 
     </div>
@@ -75,9 +74,9 @@
 
                 <div class="terms" fxLayout="row" fxLayoutAlign="center center">
                     <mat-checkbox name="terms" aria-label="Accept" required>
-                        <span>Accept</span>
+                        <span>Соглашаюсь с</span>
                     </mat-checkbox>
-                    <a href="#">terms and conditions</a>
+                    <a href="https://www.sitebill.ru/privacypolicy" target="_blank">правила сервиса</a>
                 </div>
 
                 <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
@@ -88,8 +87,8 @@
             </form>
 
             <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                <span class="text">Already have an account?</span>
-                <a class="link" [routerLink]="'/login/'">Login</a>
+                <span class="text">Уже есть аккаунт?</span>
+                <a class="link" [routerLink]="'/login/'">Войти</a>
             </div>
         </div>
     </div>

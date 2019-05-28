@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.hide_domain = true;
-        this.init_input_parameters();
 
         // reset login status
         this.logout();
@@ -88,6 +87,7 @@ export class LoginComponent implements OnInit {
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
+        this.init_input_parameters();
     }
 
     disable_menu() {
@@ -124,12 +124,25 @@ export class LoginComponent implements OnInit {
             });
     }
 
+    convert_to_https_domain(data:string) {
+        let hostname;
+        if ( data.match(/http/i) ) {
+            let a = this.document.createElement('a');
+            a.href = data;
+            hostname =  'https://' + a.hostname;
+        } else {
+            hostname =  'https://' + data;
+        }
+
+        return hostname;
+    }
+
 
     login() {
         this.disable_menu();
         this.loading = true;
         if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
-            this.modelSerivce.set_api_url(this.loginForm.value.domain);
+            this.modelSerivce.set_api_url(this.convert_to_https_domain(this.loginForm.value.domain));
         } else {
             this.modelSerivce.set_api_url('');
         }
@@ -191,6 +204,7 @@ export class LoginComponent implements OnInit {
         }
         if (app_root_element.getAttribute('enable_domain_auth')) {
             if (app_root_element.getAttribute('enable_domain_auth') == 'true' ) {
+                this.loginForm.controls['domain'].setValidators([Validators.required]);
                 this.hide_domain = false;
             }
         }
