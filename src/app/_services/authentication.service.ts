@@ -1,4 +1,4 @@
-import {Injectable, isDevMode, Inject} from '@angular/core';
+import {Injectable, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/map'
 import {currentUser} from 'app/_models/currentuser';
