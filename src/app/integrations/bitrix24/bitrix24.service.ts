@@ -11,11 +11,13 @@ export class Bitrix24Service {
     private access_token: string;
     private domain: string;
     private placement: string;
+    private collections_count: number;
 
     constructor(
         private http: HttpClient,
         @Inject(DOCUMENT) private document: any,
     ) {
+        this.collections_count = 0;
         this.entity = new Bitrix24Entity;
         this.placement_options = new Bitrix24PlacementOptions;
     }
@@ -56,6 +58,14 @@ export class Bitrix24Service {
         return this.placement_options.get_id();
     }
 
+    get_collections_count() {
+        return this.collections_count;
+    }
+
+    set_collections_count( count:number ) {
+        this.collections_count = count;
+    }
+
     get_deal_id() {
         return this.placement_options.get_id();
     }
@@ -91,10 +101,10 @@ export class Bitrix24Service {
             }
         }
 
-        console.log(this.access_token);
-        console.log(this.domain);
-        console.log(this.placement);
-        console.log(this.placement_options);
+        //console.log(this.access_token);
+        //console.log(this.domain);
+        //console.log(this.placement);
+        //console.log(this.placement_options);
 
 
     }

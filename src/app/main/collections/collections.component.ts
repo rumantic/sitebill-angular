@@ -6,6 +6,8 @@ import { ModelService } from 'app/_services/model.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import { takeUntil } from 'rxjs/operators';
+import {SitebillEntity} from '../../_models';
+import {FilterService} from '../../_services/filter.service';
 
 
 @Component({
@@ -28,7 +30,8 @@ export class CollectionsComponent implements OnInit {
     constructor(
         private _fuseConfigService: FuseConfigService,
         protected modelSerivce: ModelService,
-        protected bitrix24Serivce: Bitrix24Service,
+        protected bitrix24Service: Bitrix24Service,
+        private filterService: FilterService
         ) {
         this._unsubscribeAll = new Subject();
 
@@ -52,6 +55,7 @@ export class CollectionsComponent implements OnInit {
 
     set_total_counter_collections(event) {
         this.collections_total_counter = event;
+        this.bitrix24Service.set_collections_count(event);
     }
     
     set_total_counter_data(event) {
@@ -61,18 +65,25 @@ export class CollectionsComponent implements OnInit {
     ngOnInit() {
         //this.test_bitrix24();
         this.disable_menu();
-        this.bitrix24Serivce.init_input_parameters();
+        this.bitrix24Service.init_input_parameters();
+        this.bitrix24Service.set_collections_count(this.collections_total_counter);
 
-        this.bitrix24Serivce.get_client()
+        this.bitrix24Service.get_client()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
+                //console.log(result);
             },
                 err => {
                     console.log(err);
                     return false;
                 }
             );
+        this.filterService.share.subscribe((entity: SitebillEntity) => {
+            this.set_total_counter_collections(this.bitrix24Service.get_collections_count());
+            //console.log('subscribe collections');
+            //console.log(this.collections_total_counter);
+        });
+
 
     }
 

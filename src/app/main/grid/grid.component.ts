@@ -141,7 +141,7 @@ export class GridComponent implements OnInit, OnDestroy
         protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         protected modelSerivce: ModelService,
-        protected bitrix24Serivce: Bitrix24Service,
+        protected bitrix24Service: Bitrix24Service,
         protected _snackService: SnackService,
         private router: Router,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -374,8 +374,8 @@ export class GridComponent implements OnInit, OnDestroy
         }
         if (this.enable_collections) {
             filter_params_json['load_collections'] = true;
-            filter_params_json['collections_domain'] = this.bitrix24Serivce.get_domain();
-            filter_params_json['collections_deal_id'] = this.bitrix24Serivce.get_deal_id();
+            filter_params_json['collections_domain'] = this.bitrix24Service.get_domain();
+            filter_params_json['collections_deal_id'] = this.bitrix24Service.get_deal_id();
             if (this.only_collections) {
                 filter_params_json['only_collections'] = true;
             }
@@ -632,7 +632,7 @@ export class GridComponent implements OnInit, OnDestroy
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
         dialogConfig.data = this.entity;
-        console.log(dialogConfig.data);
+        //console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
@@ -707,15 +707,25 @@ export class GridComponent implements OnInit, OnDestroy
 
     toggle_collection(event) {
         //console.log(event);
-        //console.log('get_placement_options_id = ' + this.bitrix24Serivce.get_placement_options_id());
+        //console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
         let data_id = event.value;
-        let title = 'bitrix deal ' + this.bitrix24Serivce.get_deal_id();
-        this.modelSerivce.toggle_collections(this.bitrix24Serivce.get_domain(), this.bitrix24Serivce.get_deal_id(), title, data_id)
+        let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
+        this.modelSerivce.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
+                    let collections_count = this.bitrix24Service.get_collections_count();
+                    if ( response.data.operation == 'add' ) {
+                        collections_count++;
+                    } else {
+                        collections_count--;
+                    }
+                    this.bitrix24Service.set_collections_count(collections_count);
+
+
+                    this.filterService.empty_share(this.entity);
                     this.refresh();
                 }
             });
