@@ -8,6 +8,7 @@ import { ModelService } from 'app/_services/model.service';
 import { SitebillEntity, SitebillModelItem } from 'app/_models';
 import { FilterService } from 'app/_services/filter.service';
 import { Page } from '../../page';
+import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.service';
 
 @Component({
     selector     : 'grid-settings',
@@ -37,11 +38,13 @@ export class GridSettingsSidenavComponent implements OnInit
     not_active_columns: SitebillModelItem[];
     protected _unsubscribeAll: Subject<any>;
     init_columns_complete: boolean = false;
+    private show_logout_button: boolean = false;
 
 
 
     constructor(
         private modelSerivce: ModelService,
+        protected bitrix24Service: Bitrix24Service,
         private filterService: FilterService
     )
     {
@@ -64,6 +67,10 @@ export class GridSettingsSidenavComponent implements OnInit
         this.per_page = this.page.size;
         this.init_grid();
         this.drop(null);
+        if ( this.bitrix24Service.get_domain() ) {
+            this.show_logout_button = true;
+
+        }
     }
 
 

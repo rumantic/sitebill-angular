@@ -1,16 +1,26 @@
 <div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
         <div fxLayout="row" fxLayoutAlign="start">
-            <div fxFlex="100">
+            <div fxFlex="50">
                 <div class="content p-8">
                     <mat-form-field>
-                        <mat-select [ngStyle]="{ 'width': '150px'}" selected="per_page" (selectionChange)="per_page_change($event)" panelClass="pageselector" placeholder="Строк в таблице" [(ngModel)]="per_page">
+                        <mat-select [ngStyle]="{ 'width': '150px'}" selected="per_page"
+                                    (selectionChange)="per_page_change($event)" panelClass="pageselector"
+                                    placeholder="Строк в таблице" [(ngModel)]="per_page">
                             <mat-option *ngFor="let page_value of page_options" [value]="page_value">
                                 {{page_value}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
+                </div>
+            </div>
+            <div fxFlex="50">
+                <div class="content p-8">
+                    <button mat-raised-button [routerLink]="['/login']" color="fuse-red" matTooltip="Выйти" *ngIf="show_logout_button">
+                        <mat-icon>exit_to_app</mat-icon>
+                        Выйти
+                    </button>
                 </div>
             </div>
         </div>
@@ -29,7 +39,9 @@
                          [cdkDropListData]="active_columns"
                          [cdkDropListConnectedTo]="[not_active_columns_list]"
                          (cdkDropListDropped)="drop($event)">
-                        <div class="example-box green-500-bg" *ngFor="let item of active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
+                        <div class="example-box green-500-bg" *ngFor="let item of active_columns" cdkDrag>{{item.title}}
+                            ({{item.name}})
+                        </div>
                     </div>
                 </div>
                 <!-- / SIDENAV CONTENT -->
@@ -47,7 +59,9 @@
                          [cdkDropListData]="not_active_columns"
                          [cdkDropListConnectedTo]="[active_columns_list]"
                          (cdkDropListDropped)="drop($event)">
-                        <div class="example-box primary-200-bg" *ngFor="let item of not_active_columns" cdkDrag>{{item.title}} ({{item.name}})</div>
+                        <div class="example-box primary-200-bg" *ngFor="let item of not_active_columns"
+                             cdkDrag>{{item.title}} ({{item.name}})
+                        </div>
                     </div>
                 </div>
                 <!-- / SIDENAV CONTENT -->
@@ -55,4 +69,4 @@
         </div>
 
     </div>
-    </div>
+</div>
