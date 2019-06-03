@@ -74,6 +74,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CollectionsComponent } from '../collections/collections.component';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
+import {MemoryListComponent} from '../collections/memorylist.component';
 
 
 const routes = [
@@ -255,6 +256,7 @@ const routes = [
         ReplacePipe,
         CommonTemplateComponent,
         CollectionsComponent,
+        MemoryListComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
