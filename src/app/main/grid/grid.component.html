@@ -95,7 +95,8 @@
                                        [rowClass]="getRowClass"
                                        (activate)="onActivate($event)"
                                        (resize)="onResize($event)"
-                                       (page)='setPage($event)'>
+                                       (page)='setPage($event)'
+                                       [messages]="{emptyMessage:'Ничего не найдено',totalMessage :'всего записей',selectedMessage :'выбрано'}">
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->

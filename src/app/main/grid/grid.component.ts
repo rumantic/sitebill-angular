@@ -382,7 +382,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
 
         let page_number = this.page.pageNumber + 1;
-        console.log(filter_params_json);
+        //console.log(filter_params_json);
 
         this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
