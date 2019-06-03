@@ -140,7 +140,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(DOCUMENT) private document: any,
         protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
-        protected modelSerivce: ModelService,
+        protected modelService: ModelService,
         protected bitrix24Service: Bitrix24Service,
         protected _snackService: SnackService,
         private router: Router,
@@ -160,7 +160,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.searchInput = new FormControl('');
 
 
-        this.api_url = this.modelSerivce.get_api_url();
+        this.api_url = this.modelService.get_api_url();
 
     }
     ngOnInit() {
@@ -293,7 +293,7 @@ export class GridComponent implements OnInit, OnDestroy
         if (predefined_grid_fields != null) {
             this.load_grid_data(this.entity.get_app_name(), predefined_grid_fields, params);
         } else {
-            this.modelSerivce.load_grid_columns(this.entity)
+            this.modelService.load_grid_columns(this.entity)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     //console.log(result);
@@ -382,9 +382,9 @@ export class GridComponent implements OnInit, OnDestroy
         }
 
         let page_number = this.page.pageNumber + 1;
-        //console.log(filter_params_json);
+        console.log(filter_params_json);
 
-        this.modelSerivce.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
+        this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 //console.log(result_f1);
@@ -588,7 +588,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.delete(this.entity.get_table_name(), this.entity.primary_key, item_id)
+                this.modelService.delete(this.entity.get_table_name(), this.entity.primary_key, item_id)
                     .subscribe((response: any) => {
                         console.log(response);
 
@@ -694,7 +694,7 @@ export class GridComponent implements OnInit, OnDestroy
             ql_items['active'] = null;
         }
 
-        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
+        this.modelService.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
@@ -710,7 +710,7 @@ export class GridComponent implements OnInit, OnDestroy
         //console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
         let data_id = event.value;
         let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
-        this.modelSerivce.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
+        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
@@ -753,7 +753,7 @@ export class GridComponent implements OnInit, OnDestroy
         const params = { width: event.newValue };
         //console.log(event);
 
-        this.modelSerivce.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
+        this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
             .subscribe((response: any) => {
                 //console.log(response);
             });

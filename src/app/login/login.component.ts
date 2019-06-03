@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit {
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('api_url');
                 localStorage.clear();
-
+                this.router.navigate(['/login/']);
             },
             error => {
                 this.alertService.error(error);
@@ -141,6 +141,7 @@ export class LoginComponent implements OnInit {
     login() {
         this.disable_menu();
         this.loading = true;
+
         if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
             this.modelSerivce.set_api_url(this.convert_to_https_domain(this.loginForm.value.domain));
         } else {
@@ -153,7 +154,6 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
                 data => {
-                    //console.log(data);
 
                     if (data.state == 'error') {
                         this.alertService.error(data.error);

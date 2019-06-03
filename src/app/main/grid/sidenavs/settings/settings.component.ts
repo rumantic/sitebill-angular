@@ -43,7 +43,7 @@ export class GridSettingsSidenavComponent implements OnInit
 
 
     constructor(
-        private modelSerivce: ModelService,
+        private modelService: ModelService,
         protected bitrix24Service: Bitrix24Service,
         private filterService: FilterService
     )
@@ -142,7 +142,7 @@ export class GridSettingsSidenavComponent implements OnInit
             new_grid_items.push(item.name);
         });
 
-        this.modelSerivce.format_grid(this.entity, new_grid_items, this.per_page)
+        this.modelService.format_grid(this.entity, new_grid_items, this.per_page)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 if ( event != null ) {
@@ -155,11 +155,15 @@ export class GridSettingsSidenavComponent implements OnInit
     per_page_change(event) {
         const params = event.value;
 
-        this.modelSerivce.update_column_meta(this.entity.get_table_name(), null, 'per_page', params)
+        this.modelService.update_column_meta(this.entity.get_table_name(), null, 'per_page', params)
             .subscribe((response: any) => {
                 this.filterService.empty_share(this.entity);
             });
 
+    }
+
+    logout () {
+        this.modelService.logout();
     }
 
     /**

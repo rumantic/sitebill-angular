@@ -38,13 +38,18 @@ export class AuthenticationService {
         return this.http.post<any>(url, login_request)
             .map(user => {
                 //console.log('authentication');
-                //console.log(user);
                 // login successful if there's a jwt token in the response
                 if (user && user.session_key) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    localStorage.setItem('api_url', this.modelSerivce.get_api_url());
+                    try {
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        localStorage.setItem('api_url', this.modelSerivce.get_api_url());
+                    } catch (e) {
+                        console.log(e);
+                    }
                     this.modelSerivce.reinit_currentUser();
+                } else {
+                    console.log('not user');
                 }
                 return user;
             });

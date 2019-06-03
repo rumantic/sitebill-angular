@@ -24,7 +24,7 @@ export class MyClientComponent extends GridComponent {
         this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };
-        this.define_grid_params({ user_id: this.modelSerivce.get_user_id() });
+        this.define_grid_params({ user_id: this.modelService.get_user_id() });
 
         //let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
         let grid_fields = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
@@ -66,9 +66,9 @@ export class MyClientComponent extends GridComponent {
         let value = event[this.entity.primary_key].value;
         let ql_items = {};
 
-        ql_items['user_id'] = this.modelSerivce.get_user_id();
+        ql_items['user_id'] = this.modelService.get_user_id();
 
-        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
+        this.modelService.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);

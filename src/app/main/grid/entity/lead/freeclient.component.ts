@@ -1,8 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
-import { Page } from '../../page';
-import { currentUser } from 'app/_models/currentuser';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
 import { MatDialogConfig } from '@angular/material';
 
@@ -65,9 +63,9 @@ export class FreeClientComponent extends GridComponent {
         let value = event[this.entity.primary_key].value;
         let ql_items = {};
 
-        ql_items['user_id'] = this.modelSerivce.get_user_id();
+        ql_items['user_id'] = this.modelService.get_user_id();
 
-        this.modelSerivce.update_only_ql(this.entity.get_table_name(), value, ql_items)
+        this.modelService.update_only_ql(this.entity.get_table_name(), value, ql_items)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);

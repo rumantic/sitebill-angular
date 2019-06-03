@@ -4,21 +4,20 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/ro
 import { FuseNavigationService } from "@fuse/components/navigation/navigation.service";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { ModelService } from "app/_services/model.service";
-import { takeUntil } from "rxjs/operators";
 import { SnackService } from "app/_services/snack.service";
 
 @Injectable()
 export class PublicGuard extends AuthGuard {
     constructor(
         router: Router,
-        protected modelSerivce: ModelService,
+        protected modelService: ModelService,
         _fuseNavigationService: FuseNavigationService,
         _fuseConfigService: FuseConfigService,
         protected _snackService: SnackService,
     ) {
         super(
             router,
-            modelSerivce,
+            modelService,
             _fuseNavigationService,
             _fuseConfigService,
             _snackService
@@ -38,18 +37,16 @@ export class PublicGuard extends AuthGuard {
 
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
-        let storage = JSON.parse(localStorage.getItem('currentUser')) || []
+        let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
 
         if (storage['structure'] == null) {
-            this.disable_menu();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            this.modelService.logout();
             return false;
         }
 
         if (storage['structure']['group_name'] == null) {
-            this.disable_menu();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            this.modelService.logout();
             return false;
         }
 

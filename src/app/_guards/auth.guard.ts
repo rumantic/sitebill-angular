@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
 
     constructor(
         protected router: Router,
-        protected modelSerivce: ModelService,
+        protected modelService: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
         protected _fuseConfigService: FuseConfigService,
         protected _snackService: SnackService,
@@ -37,14 +37,13 @@ export class AuthGuard implements CanActivate {
             return this.check_permissions(route, state);
         } else {
             //Попробуем получить данные от cms sitebill для текущей сессии
-            console.log('try get cms session');
-            this.modelSerivce.get_cms_session()
+            //console.log('try get cms session');
+            this.modelService.get_cms_session()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     console.log(result);
                     if (result.state == 'error') {
-                        this.disable_menu();
-                        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                        this.modelService.logout();
                         return false;
                     }
                     try {
@@ -62,23 +61,19 @@ export class AuthGuard implements CanActivate {
                                 return true;
                             }
                         } else {
-                            this.disable_menu();
-                            // not logged in so redirect to login page with the return url
-                            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
-                            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                            this.modelService.logout();
                             return false;
                         }
                     } catch (e) {
                         console.log(e);
-                        this.disable_menu();
+                        this.modelService.disable_menu();
                         this._snackService.message('Ошибка подключения к API');
                         return false;
                     }
                 }, error => {
                     console.log(error);
-                    this.disable_menu();
                     this._snackService.message('Невозможно подключиться к серверу');
-                    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+                    this.modelService.logout();
                     return false;
                 });
         }
@@ -104,6 +99,12 @@ export class AuthGuard implements CanActivate {
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
         let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        //console.log(storage);
+        if (storage['structure'] == null) {
+            this.modelService.logout();
+            return false;
+        }
+
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
 
         //console.log(storage);
@@ -114,19 +115,16 @@ export class AuthGuard implements CanActivate {
             return false;
         } else if (storage.admin_panel_login != 1) {
             console.log('access denied');
-            this.disable_menu();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            this.modelService.logout();
             return false;
         }
         if (storage['structure'] == null) {
-            this.disable_menu();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            this.modelService.logout();
             return false;
         }
 
         if (storage['structure']['group_name'] == null) {
-            this.disable_menu();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            this.modelService.logout();
             return false;
         }
 
@@ -167,22 +165,6 @@ export class AuthGuard implements CanActivate {
         });
         return remove_counter;
 
-    }
-    disable_menu() {
-        //console.log('disable menu');
-        this._fuseConfigService.config = {
-            layout: {
-                navbar: {
-                    hidden: true
-                },
-                toolbar: {
-                    hidden: true
-                },
-                footer: {
-                    hidden: true
-                }
-            }
-        };
     }
 
 }
