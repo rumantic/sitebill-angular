@@ -122,6 +122,14 @@ export class GalleryComponent implements OnInit {
                 preview: false
             }
         ];
+
+        if ( this.entity.get_readonly() ) {
+            try {
+                delete (this.galleryOptions[0].thumbnailActions);
+            } catch (e) {
+
+            }
+        }
     }
 
     deleteImage(event, index) {

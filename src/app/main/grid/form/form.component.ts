@@ -48,8 +48,8 @@ export class FormComponent implements OnInit {
     lat_center: any;
     lng_center: any;
 
-    
-    private _unsubscribeAll: Subject<any>;
+
+    protected _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
@@ -145,21 +145,21 @@ export class FormComponent implements OnInit {
     
 
     constructor(
-        private dialogRef: MatDialogRef<FormComponent>,
-        private modelSerivce: ModelService,
-        private _formBuilder: FormBuilder,
-        private _snackService: SnackService,
+        protected dialogRef: MatDialogRef<FormComponent>,
+        protected modelService: ModelService,
+        protected _formBuilder: FormBuilder,
+        protected _snackService: SnackService,
         public _matDialog: MatDialog,
-        private filterService: FilterService,
-        protected bitrix24Serivce: Bitrix24Service,
-        @Inject(APP_CONFIG) private config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) private _data: SitebillEntity
+        protected filterService: FilterService,
+        protected bitrix24Service: Bitrix24Service,
+        @Inject(APP_CONFIG) protected config: AppConfig,
+        @Inject(MAT_DIALOG_DATA) protected _data: SitebillEntity
         ) {
         this.loadingIndicator = true;
         
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.api_url = this.modelSerivce.get_api_url();
+        this.api_url = this.modelService.get_api_url();
         this.lat_center = 55.76;
         this.lng_center = 37.64;
     }
@@ -168,6 +168,7 @@ export class FormComponent implements OnInit {
         // Reactive Form
         this.form = this._formBuilder.group({
         });
+        this._data.set_readonly(false);
         this.getModel();
 
     }
@@ -296,6 +297,8 @@ export class FormComponent implements OnInit {
             }
         }
 
+        console.log(this.records);
+
         this.apply_topic_activity();
         this.form_inited = true;
 
@@ -368,7 +371,7 @@ export class FormComponent implements OnInit {
 
 
     init_select_by_query_options(columnName) {
-        this.modelSerivce.load_dictionary_model_all(this._data.get_table_name(), columnName)
+        this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
@@ -384,14 +387,14 @@ export class FormComponent implements OnInit {
         const primary_key = this._data.primary_key;
         const key_value = this._data.get_key_value();
         const model_name = this._data.get_table_name();
-        //console.log(this.modelSerivce.entity);
-        this.modelSerivce.entity.set_app_name(this._data.get_app_name());
-        this.modelSerivce.entity.set_table_name(this._data.get_table_name());
-        this.modelSerivce.entity.primary_key = primary_key;
-        this.modelSerivce.entity.key_value = key_value;
+        //console.log(this.modelService.entity);
+        this.modelService.entity.set_app_name(this._data.get_app_name());
+        this.modelService.entity.set_table_name(this._data.get_table_name());
+        this.modelService.entity.primary_key = primary_key;
+        this.modelService.entity.key_value = key_value;
         
 
-        this.modelSerivce.loadById(model_name, primary_key, key_value)
+        this.modelService.loadById(model_name, primary_key, key_value)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
@@ -424,7 +427,7 @@ export class FormComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.delete(this._data.get_table_name(), this._data.primary_key, this._data.key_value)
+                this.modelService.delete(this._data.get_table_name(), this._data.primary_key, this._data.key_value)
                     .subscribe((response: any) => {
                         console.log(response);
 
@@ -458,7 +461,7 @@ export class FormComponent implements OnInit {
             } else if (this.records[this.rows[i]].type == 'geodata') {
                 this.form.controls[this.rows[i]].patchValue({ lat: this.lat, lng: this.lng });
             } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {
-                this.form.controls[this.rows[i]].patchValue(this.modelSerivce.entity.key_value);
+                this.form.controls[this.rows[i]].patchValue(this.modelService.entity.key_value);
             }
 
             ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
@@ -476,7 +479,7 @@ export class FormComponent implements OnInit {
         //return;
 
         if (this._data.key_value == null) {
-            this.modelSerivce.native_insert(this._data.get_table_name(), ql_items)
+            this.modelService.native_insert(this._data.get_table_name(), ql_items)
                 .subscribe((response: any) => {
                     //console.log(response);
 
@@ -494,7 +497,7 @@ export class FormComponent implements OnInit {
                     }
                 });
         } else {
-            this.modelSerivce.native_update(this._data.get_table_name(), this._data.key_value, ql_items)
+            this.modelService.native_update(this._data.get_table_name(), this._data.key_value, ql_items)
                 .subscribe((response: any) => {
                     //console.log(response);
 
@@ -513,8 +516,8 @@ export class FormComponent implements OnInit {
     }
 
     add_to_collections(data_id) {
-        let title = 'bitrix deal ' + this.bitrix24Serivce.get_deal_id();
-        this.modelSerivce.toggle_collections(this.bitrix24Serivce.get_domain(), this.bitrix24Serivce.get_deal_id(), title, data_id)
+        let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
+        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);

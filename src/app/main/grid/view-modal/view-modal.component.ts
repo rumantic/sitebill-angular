@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, isDevMode, ViewEncapsulation, Input }  from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
@@ -8,6 +8,11 @@ import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import {FormComponent} from '../form/form.component';
+import {SnackService} from '../../../_services/snack.service';
+import {FilterService} from '../../../_services/filter.service';
+import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
+import {SitebillEntity} from '../../../_models';
 
 
 @Component({
@@ -15,7 +20,7 @@ import { ModelService } from 'app/_services/model.service';
     templateUrl: './view-modal.component.html',
     styleUrls: ['./view-modal.component.css']
 })
-export class ViewModalComponent implements OnInit {
+export class ViewModalComponent extends FormComponent implements OnInit {
 
     form: FormGroup;
     rows: any[];
@@ -23,26 +28,41 @@ export class ViewModalComponent implements OnInit {
     api_url: string;
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
-    
-    private _unsubscribeAll: Subject<any>;
+
     loadingIndicator: boolean;
     
     
 
     constructor(
-        private fb: FormBuilder,
-        private dialogRef: MatDialogRef<ViewModalComponent>,
-        private _httpClient: HttpClient,
-        private modelSerivce: ModelService,
-        private _chatService: ChatService,
-        @Inject(APP_CONFIG) private config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) private _data: any
+        protected _chatService: ChatService,
+        protected dialogRef: MatDialogRef<FormComponent>,
+        protected modelService: ModelService,
+        protected _formBuilder: FormBuilder,
+        protected _snackService: SnackService,
+        public _matDialog: MatDialog,
+        protected filterService: FilterService,
+        protected bitrix24Service: Bitrix24Service,
+        @Inject(APP_CONFIG) protected config: AppConfig,
+        @Inject(MAT_DIALOG_DATA) protected _data: SitebillEntity
         ) {
+
+        super(
+            dialogRef,
+            modelService,
+            _formBuilder,
+            _snackService,
+            _matDialog,
+            filterService,
+            bitrix24Service,
+            config,
+            _data
+        );
+
         this.loadingIndicator = true;
-        
+
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.api_url = this.modelSerivce.get_api_url();
+        this.api_url = this.modelService.get_api_url();
 
     }
 
@@ -51,34 +71,22 @@ export class ViewModalComponent implements OnInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
             });
-        
+        this.form = this._formBuilder.group({
+        });
+        this._data.set_readonly(true);
         this.getModel();
+        this._chatService.getChat(this._data.get_table_name(), this._data.primary_key, this._data.key_value);
+
     }
 
-    getModel(): void {
-        const primary_key = this._data.primary_key;
-        const key_value = this._data.key_value;
-        const model_name = this._data.get_table_name();
-        
-        this._chatService.getChat(model_name, primary_key, key_value);
-        
-
-        this.modelSerivce.loadById(model_name, primary_key, key_value)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                if (result) {
-                    this.records = result.data;
-                    this.rows = Object.keys(result.data);
-                }
-
-            });
-    }
 
     save() {
+        this._data.set_readonly(false);
         this.dialogRef.close(this.form.value);
     }
 
     close() {
+        this._data.set_readonly(false);
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this.dialogRef.close();
