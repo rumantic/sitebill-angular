@@ -305,7 +305,7 @@ const routes = [
         ConfirmDialogModule,
         DragDropModule,
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAIujOA0HllbFQKc7rXEoAXbsAQ-2whqzQ'
+            apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
         })
     ],
     exports: [

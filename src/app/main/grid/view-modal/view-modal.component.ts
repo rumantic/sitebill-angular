@@ -79,8 +79,15 @@ export class ViewModalComponent extends FormComponent implements OnInit {
 
     }
 
-    getYoutubeCode ( video_id: string ) {
+    get_youtube_code ( video_id: string ) {
         return '<iframe width="100%" height="100" src="https://www.youtube.com/embed/'+video_id+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><strong>';
+    }
+
+    get_colspan ( type: string, name: string ) {
+        if ( type == 'geodata' || type == 'uploads' || name == 'youtube' ) {
+            return 2;
+        }
+        return 1;
     }
 
 
