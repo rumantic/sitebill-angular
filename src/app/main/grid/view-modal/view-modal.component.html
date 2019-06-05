@@ -37,10 +37,12 @@
 
                                                 <ng-container *ngSwitchCase="'uploads'">
                                                     <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
-
                                                 </ng-container>
 
                                                 <ng-container *ngSwitchDefault>
+                                                    <ng-container  *ngIf="records[x].name == 'youtube'">
+                                                        <div [innerHTML]="getYoutubeCode(records[x].value)|safehtml"></div>
+                                                    </ng-container>
                                                     {{records[x].value}}
                                                 </ng-container>
                                             </ng-container>

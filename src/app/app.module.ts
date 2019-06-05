@@ -51,6 +51,7 @@ import {ControlElementsComponent} from 'app/main/control-elements/control-elemen
 import {SliderComponent} from 'app/main/slider/slider.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {NguCarouselModule} from '@ngu/carousel';
+import { SitebillPipesModule } from 'app/pipes/sitebillpipes.module';
 
 import {CarouselComponent} from 'app/main/carousel/carousel.component';
 
@@ -62,8 +63,6 @@ import {MortgageCalculatorComponent} from 'app/main/mortgage-calculator/mortgage
 import {CalculatorMiniComponent} from 'app/main/calculator-mini/calculator-mini.component';
 import {SearchFormComponent} from 'app/main/search-form/search-form.component';
 import {AnkonsulSearchFormComponent} from 'app/main/search-form/ankonsul/ankonsul.search-form.component';
-import { HighlightPipe } from 'app/pipes/highlight-pipe';
-import { EscapeHtmlPipe } from 'app/pipes/keep-html.pipe';
 import {Ng5SliderModule} from 'ng5-slider';
 
 import {Error404Component} from 'app/main/pages/errors/404/error-404.component';
@@ -194,10 +193,8 @@ const appRoutes: Routes = [
         Error500Component,
         SearchFormComponent,
         AnkonsulSearchFormComponent,
-        HighlightPipe,
         SnackBarComponent,
         Bitrix24Router,
-        EscapeHtmlPipe
     ],
     imports: [
         BrowserModule,
@@ -260,7 +257,8 @@ const appRoutes: Routes = [
         NgSelectModule,
         AppStoreModule,
         Ng5SliderModule,
-        AppConfigModule
+        AppConfigModule,
+        SitebillPipesModule
     ],
     exports: [RouterModule, MatSnackBarModule],
     providers: [

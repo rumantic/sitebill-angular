@@ -1,5 +1,4 @@
-import {Component, Inject, OnInit, isDevMode, ViewEncapsulation, Input }  from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Component, Inject, OnInit }  from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -13,6 +12,7 @@ import {SnackService} from '../../../_services/snack.service';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {SitebillEntity} from '../../../_models';
+
 
 
 @Component({
@@ -77,6 +77,10 @@ export class ViewModalComponent extends FormComponent implements OnInit {
         this.getModel();
         this._chatService.getChat(this._data.get_table_name(), this._data.primary_key, this._data.key_value);
 
+    }
+
+    getYoutubeCode ( video_id: string ) {
+        return '<iframe width="100%" height="100" src="https://www.youtube.com/embed/'+video_id+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><strong>';
     }
 
 

@@ -256,7 +256,7 @@ const routes = [
         ReplacePipe,
         CommonTemplateComponent,
         CollectionsComponent,
-        MemoryListComponent
+        MemoryListComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
