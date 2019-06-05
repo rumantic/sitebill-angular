@@ -6,6 +6,7 @@ import { SitebillEntity } from 'app/_models';
 import { Options, ChangeContext } from 'ng5-slider';
 import { ModelService } from 'app/_services/model.service';
 import { Moment } from 'moment';
+import {NgSelectConfig} from '@ng-select/ng-select';
 
 @Component({
     selector: 'filter-comp',
@@ -53,10 +54,12 @@ export class FilterComponent {
      */
     constructor(
         private modelSerivce: ModelService,
-        private filterService: FilterService
+        private filterService: FilterService,
+        private config: NgSelectConfig
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this.config.notFoundText = 'Загружаем данные';
     }
 
     ngOnInit(): void {
