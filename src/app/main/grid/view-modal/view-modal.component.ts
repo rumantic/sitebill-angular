@@ -80,6 +80,9 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     }
 
     get_youtube_code ( video_id: string ) {
+        if ( video_id == '' ) {
+            return '';
+        }
         return '<iframe width="100%" height="100" src="https://www.youtube.com/embed/'+video_id+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><strong>';
     }
 
