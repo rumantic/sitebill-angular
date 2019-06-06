@@ -1,6 +1,10 @@
 /deep/ .ng-dropdown-panel.select_options {
     width: auto !important;
 }
+/deep/ .ng-select.ng-select-container {
+    width: auto !important;
+}
+
 ::ng-deep .gold_bg {
     /*background-color: rgb(218,165,32);*/
 }

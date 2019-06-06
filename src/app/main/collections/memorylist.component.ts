@@ -13,5 +13,6 @@ export class MemoryListComponent extends GridComponent {
         this.entity.set_app_name('memorylist');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
+        this.enable_date_range('date_added');
     }
 }

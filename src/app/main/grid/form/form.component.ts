@@ -544,6 +544,7 @@ export class FormComponent implements OnInit {
     }
 
     get_title () {
+        //@todo нужно будет сделать генератор заголовков для всхе сущностей (не только data)
         let title_items = ['topic_id', 'city_id', 'district_id', 'street_id', 'number', 'price'];
         let final_title_items = [];
         let final_title = '';

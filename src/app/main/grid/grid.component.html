@@ -27,7 +27,7 @@
                     <div class="search-wrapper mt-16 mt-sm-0">
                         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon color="primary">search</mat-icon>
-                            <input [formControl]="searchInput" placeholder="Поиск по слову">
+                            <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
                             <button mat-icon-button (click)="clear_search_text()" *ngIf="searchInput.value != ''">
                                 <mat-icon color="primary" matSuffix>close</mat-icon>
                             </button>
@@ -43,7 +43,7 @@
                     </button>
 
                     <mat-form-field class="pt-12 pr-8" *ngIf="date_range_enable">
-                        <input autocomplete="off" matInput type="text" ngxDaterangepickerMd [ranges]="ranges" opens="left" [locale]="date_range_locale" (change)="date_range_change($event, date_range_key)" alwaysShowCalendars="true" [(ngModel)]="selected_date_filter" class="date-range-control" />
+                        <input autocomplete="off" matTooltip="Выбрать период времени для отображения записей" matInput type="text" ngxDaterangepickerMd [ranges]="ranges" opens="left" [locale]="date_range_locale" (change)="date_range_change($event, date_range_key)" alwaysShowCalendars="true" [(ngModel)]="selected_date_filter" class="date-range-control" />
                         <mat-icon matSuffix>calendar_today</mat-icon>
                     </mat-form-field>
 
