@@ -47,6 +47,7 @@ export class FormComponent implements OnInit {
     lng: any;
     lat_center: any;
     lng_center: any;
+    protected form_title: string;
 
 
     protected _unsubscribeAll: Subject<any>;
@@ -297,10 +298,11 @@ export class FormComponent implements OnInit {
             }
         }
 
-        console.log(this.records);
+        //console.log(this.records);
 
         this.apply_topic_activity();
         this.form_inited = true;
+        this.after_form_inted();
 
     }
 
@@ -539,6 +541,34 @@ export class FormComponent implements OnInit {
             this.lat = event.lat;
             this.lng = event.lng;
         }
+    }
+
+    get_title () {
+        let title_items = ['topic_id', 'city_id', 'district_id', 'street_id', 'number', 'price'];
+        let final_title_items = [];
+        let final_title = '';
+        let title_length = 60;
+        title_items.forEach((row, index) => {
+            if ( this.records[row] != null ) {
+                if ( this.records[row].value_string != '' && this.records[row].value_string != null  ) {
+                    final_title_items.push(this.records[row].value_string);
+                } else {
+                    final_title_items.push(this.records[row].value);
+                }
+            }
+        });
+        //console.log(final_title_items);
+        final_title = final_title_items.join(', ');
+        if ( final_title.length > title_length ) {
+            final_title = final_title.substr(0, title_length) + '...';
+        }
+
+
+        return final_title;
+    }
+
+    after_form_inted () {
+        this.form_title = this.get_title();
     }
 
 

@@ -1,7 +1,7 @@
 <div id="course-dialog" class="dialog-content-wrapper">
     <mat-toolbar>
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title"></span>
+            <span class="title dialog-title">{{form_title}}</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
                 <mat-icon>close</mat-icon>
             </button>
@@ -27,8 +27,8 @@
                                 <tr *ngFor="let x of tabs[tab]">
                                     <td class="primary-50-bg" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</td>
                                     <td class="text-right" [attr.colspan]="get_colspan(records[x].type, records[x].name)">
-                                        <ng-container *ngIf="records[x].value_string != ''">{{records[x].value_string}}</ng-container>
-                                        <ng-container *ngIf="records[x].value_string == ''">
+                                        <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
+                                        <ng-container *ngIf="records[x].value_string == '' || records[x].value_string == null">
                                             <ng-container [ngSwitch]="records[x].type">
                                                 <ng-container *ngSwitchCase="'checkbox'">
                                                     <mat-icon *ngIf="records[x].value == 1" class="active-icon green-600 s-16">check</mat-icon>

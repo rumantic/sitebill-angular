@@ -94,6 +94,7 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     }
 
 
+
     save() {
         this._data.set_readonly(false);
         this.dialogRef.close(this.form.value);
