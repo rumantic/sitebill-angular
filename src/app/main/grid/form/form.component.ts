@@ -200,6 +200,11 @@ export class FormComponent implements OnInit {
                         }
                     }
                 }
+                if ( this.records[this.rows[i]].parameters != null ) {
+                    if ( this.records[this.rows[i]].parameters.dadata == 1 ) {
+                        this.hide_dadata(this.rows[i]);
+                    }
+                }
             }
         }
     }
@@ -296,14 +301,26 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
+
+            if ( this.records[this.rows[i]].parameters != null ) {
+                if ( this.records[this.rows[i]].parameters.dadata == 1 ) {
+                    this.hide_dadata(this.rows[i]);
+                }
+
+            }
         }
 
-        //console.log(this.records);
 
         this.apply_topic_activity();
         this.form_inited = true;
         this.after_form_inted();
+        //console.log(this.records);
 
+    }
+
+    hide_dadata ( row ) {
+        this.records[row].hidden = true;
+        this.records[row].type = 'hidden';
     }
 
     init_geodata(columnName) {
