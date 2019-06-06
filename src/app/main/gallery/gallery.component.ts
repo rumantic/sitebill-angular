@@ -125,6 +125,7 @@ export class GalleryComponent implements OnInit {
 
         if ( this.entity.get_readonly() ) {
             try {
+                this.galleryOptions[0].preview = false;
                 delete (this.galleryOptions[0].thumbnailActions);
             } catch (e) {
 
