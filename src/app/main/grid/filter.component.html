@@ -86,27 +86,6 @@
     </ng-template>
 </ng-select>
 
-<ng-select *ngIf="checkbox_filter_enable1"
-           [(ngModel)]="selectedFilter"
-           appendTo="body"
-           [items]="options_checkbox"
-           [clearOnBackspace]="false"
-           class="select_options"
-           [searchable]="false"
-           [multiple]="false"
-           [hideSelected]="false"
-           [closeOnSelect]="false"
-           (ngModelChange)="selectItem($event)"
-           placeholder="{{columnObject.title}}">
-    <ng-template ng-label-tmp let-item="item" let-index="index">
-        <ng-container *ngIf="item == 1"> Да</ng-container><ng-container *ngIf="item == 0"> Нет</ng-container>
-    </ng-template>
-
-    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> <ng-container *ngIf="item == 1"> Да</ng-container><ng-container *ngIf="item == 0"> Нет</ng-container>
-    </ng-template>
-</ng-select>
-
 <ng-select *ngIf="price_filter_enable"
            [(ngModel)]="price_selector"
            bindValue="id"
