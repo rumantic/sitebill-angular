@@ -47,7 +47,7 @@ export class FormComponent implements OnInit {
     lng: any;
     lat_center: any;
     lng_center: any;
-    protected form_title: string;
+    form_title: string;
 
 
     protected _unsubscribeAll: Subject<any>;
