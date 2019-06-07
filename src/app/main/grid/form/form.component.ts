@@ -566,16 +566,16 @@ export class FormComponent implements OnInit {
         let final_title_items = [];
         let final_title = '';
         let title_length = 60;
+
         title_items.forEach((row, index) => {
             if ( this.records[row] != null ) {
                 if ( this.records[row].value_string != '' && this.records[row].value_string != null  ) {
                     final_title_items.push(this.records[row].value_string);
-                } else {
+                } else if (this.records[row].value != 0) {
                     final_title_items.push(this.records[row].value);
                 }
             }
         });
-        //console.log(final_title_items);
         final_title = final_title_items.join(', ');
         if ( final_title.length > title_length ) {
             final_title = final_title.substr(0, title_length) + '...';
