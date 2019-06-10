@@ -165,6 +165,7 @@ export class CarouselComponent implements OnInit {
     }
 
     load_grid_data(app_name, params: any, grid_item) {
+        //console.log(this.currentUser.session_key);
         const body = {action: 'model', anonymous: true, do: 'get_data', model_name: app_name, params: params, session_key: this.currentUser.session_key, grid_item: grid_item};
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
             .subscribe((result: any) => {

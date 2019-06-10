@@ -161,6 +161,7 @@ export class FilterComponent {
     }
 
     selectItem(value) {
+        //console.log(value);
         //console.log(this.selectedFilter);
         if (this.columnObject.type == 'checkbox') {
             if (value == null) {
