@@ -224,7 +224,7 @@
                 </button>
 
             </div>
-            <button mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
+            <button *ngIf="_data.key_value != null" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
