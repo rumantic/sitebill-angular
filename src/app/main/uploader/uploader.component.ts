@@ -8,6 +8,7 @@ import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
+import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
 
 export class UploadResult {
     state: string;
@@ -52,6 +53,8 @@ export class UploaderComponent {
         private modelSerivce: ModelService,
         public _matDialog: MatDialog,
         private _snackService: SnackService,
+        protected bitrix24Service: Bitrix24Service,
+        protected modelService: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
@@ -66,6 +69,7 @@ export class UploaderComponent {
             this.max_uploads = 100;
         }
         this.options = { concurrency: 1, maxUploads: this.max_uploads };
+        //console.log(this.entity);
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
@@ -106,6 +110,10 @@ export class UploaderComponent {
                                 this.entity.key_value = result.message[this.entity.primary_key]['value'];
                                 this.modelSerivce.entity.key_value = this.entity.key_value;
                                 //console.log(result.message);
+                                if (this.entity.get_hook() == 'add_to_collections') {
+                                    this.add_to_collections(this.entity.key_value);
+                                }
+
 
                                 for (var prop in result.message[this.image_field]['value']) {
 
@@ -148,6 +156,14 @@ export class UploaderComponent {
 
         this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
     }
+
+    add_to_collections(data_id) {
+        let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
+        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
+            .subscribe((response: any) => {
+            });
+    }
+
 
     uppend_uploads() {
         this.modelSerivce.uppend_uploads(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
