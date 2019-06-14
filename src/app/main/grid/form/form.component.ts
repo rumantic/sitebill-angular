@@ -154,7 +154,7 @@ export class FormComponent implements OnInit {
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) protected _data: SitebillEntity
+        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
         ) {
         this.loadingIndicator = true;
         
