@@ -149,15 +149,18 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     reply(): void
     {
-        // Update the server
-        this._chatService.updateDialog(this.selectedChat.chatId, this.replyForm.form.value.message).then(response => {
-            console.log(response);
-            if ( response.status == 'ok' ) {
-                this.dialog.push(response.comment_data);
-            }
-            //this.dialog.push(message);
-            
-            this.readyToReply();
-        });
+        //console.log(this.replyForm.form.value.message);
+        if ( this.replyForm.form.value.message != null ) {
+            // Update the server
+            this._chatService.updateDialog(this.selectedChat.chatId, this.replyForm.form.value.message).then(response => {
+                //console.log(response);
+                if ( response.status == 'ok' ) {
+                    this.dialog.push(response.comment_data);
+                }
+                //this.dialog.push(message);
+
+                this.readyToReply();
+            });
+        }
     }
 }
