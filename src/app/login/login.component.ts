@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
@@ -10,7 +10,8 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { navigation } from 'app/navigation/navigation';
 import { ModelService } from 'app/_services/model.service';
 import { DOCUMENT } from '@angular/platform-browser';
-
+import {SnackService} from '../_services/snack.service';
+import {toASCII, decode} from 'punycode';
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     hide_domain: boolean = true;
     returnUrl: string;
+    valid_domain_through_email: FormGroup;
 
     loginForm: FormGroup;
     loginFormErrors: any;
@@ -37,6 +39,7 @@ export class LoginComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
         public snackBar: MatSnackBar,
+        protected _snackService: SnackService,
         private modelSerivce: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
         @Inject(DOCUMENT) private document: any,
@@ -87,6 +90,10 @@ export class LoginComponent implements OnInit {
             username: ['', [Validators.required]],
             password: ['', Validators.required]
         });
+        this.valid_domain_through_email = this._formBuilder.group({
+            domain_checker: ['', [Validators.required, Validators.email]],
+        });
+
         this.init_input_parameters();
     }
 
@@ -142,8 +149,24 @@ export class LoginComponent implements OnInit {
         this.disable_menu();
         this.loading = true;
 
+
         if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
-            this.modelSerivce.set_api_url(this.convert_to_https_domain(this.loginForm.value.domain));
+            let domain = toASCII(this.loginForm.value.domain);
+
+            if (!/\./.test(domain)) {
+                this._snackService.message('Сайт указан неверно');
+                this.loading = false;
+                return false;
+            }
+            this.valid_domain_through_email.controls['domain_checker'].patchValue('test@'+domain);
+            this.valid_domain_through_email.controls['domain_checker'].updateValueAndValidity();
+            if (!this.valid_domain_through_email.controls['domain_checker'].valid) {
+                this._snackService.message('Сайт указан неверно');
+                this.loading = false;
+                return false;
+            }
+
+            this.modelSerivce.set_api_url(this.convert_to_https_domain(domain));
         } else {
             this.modelSerivce.set_api_url('');
         }
@@ -151,19 +174,14 @@ export class LoginComponent implements OnInit {
         //console.log(this.loginForm.value.domain);
         //return;
 
+
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
                 data => {
-
                     if (data.state == 'error') {
-                        this.alertService.error(data.error);
+                        //this.alertService.error(data.error);
                         this.loading = false;
-                        this.snackBar.open(data.error, 'ok', {
-                            duration: 2000,
-                            horizontalPosition: this.horizontalPosition,
-                            verticalPosition: this.verticalPosition,
-                        });
-
+                        this._snackService.message('Логин или пароль указаны неверно');
                     } else {
                         if (data.admin_panel_login == 1) {
 
@@ -187,7 +205,7 @@ export class LoginComponent implements OnInit {
                     }
                 },
                 error => {
-                    this.alertService.error(error);
+                    this._snackService.message('Ошибка подключения к сайту');
                     this.loading = false;
                 });
     }

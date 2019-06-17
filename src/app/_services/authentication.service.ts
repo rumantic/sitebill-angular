@@ -4,6 +4,11 @@ import 'rxjs/add/operator/map'
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from './model.service';
+import 'rxjs/add/operator/catch';
+import 'rxjs-compat/add/operator/catch';
+import 'rxjs-compat/add/observable/of';
+import 'rxjs-compat/add/observable/empty';
+import {throwError} from 'rxjs';
 
 
 
@@ -45,14 +50,15 @@ export class AuthenticationService {
                         localStorage.setItem('currentUser', JSON.stringify(user));
                         localStorage.setItem('api_url', this.modelSerivce.get_api_url());
                     } catch (e) {
-                        console.log(e);
+                        //console.log(e);
                     }
                     this.modelSerivce.reinit_currentUser();
                 } else {
-                    console.log('not user');
+                    //console.log('not user');
                 }
                 return user;
-            });
+            })
+            .catch(e => { return throwError('site error'); });
     }
 
     logout() {

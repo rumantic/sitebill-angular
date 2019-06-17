@@ -65,13 +65,13 @@ export class AuthGuard implements CanActivate {
                             return false;
                         }
                     } catch (e) {
-                        console.log(e);
+                        //console.log(e);
                         this.modelService.disable_menu();
                         this._snackService.message('Ошибка подключения к API');
                         return false;
                     }
                 }, error => {
-                    console.log(error);
+                    //console.log(error);
                     this._snackService.message('Невозможно подключиться к серверу');
                     this.modelService.logout();
                     return false;
