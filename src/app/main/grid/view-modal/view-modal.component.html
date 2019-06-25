@@ -39,6 +39,10 @@
                                                     {{records[x].title}}
                                                     <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
                                                 </ng-container>
+                                                <ng-container *ngSwitchCase="'textarea_editor'">
+                                                    {{records[x].title}}
+                                                    <div [innerHTML]="records[x].value|safehtml"></div>
+                                                </ng-container>
                                                 <ng-container *ngSwitchCase="'geodata'">
                                                     {{records[x].title}} {{lat}},{{lng}}
                                                     <agm-map [latitude]="lat_center" [longitude]="lng_center">
