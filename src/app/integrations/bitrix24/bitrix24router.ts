@@ -19,7 +19,7 @@ export class Bitrix24Router {
             return false;
         }
 
-        if (placement == 'CRM_CONTACT_DETAIL_TAB' || placement == 'CRM_CONTACT_LIST_MENU' || placement == 'CRM_DEAL_LIST_MENU' || placement == 'CRM_DEAL_DETAIL_TAB') {
+        if (placement == 'CRM_CONTACT_DETAIL_TAB' || placement == 'CRM_CONTACT_LIST_MENU' || placement == 'CRM_DEAL_LIST_MENU' || placement == 'CRM_DEAL_DETAIL_TAB' || placement == 'CRM_LEAD_LIST_MENU' || placement == 'CRM_LEAD_DETAIL_TAB') {
 
             this.router.navigate(['/grid/collections/']);
         }
