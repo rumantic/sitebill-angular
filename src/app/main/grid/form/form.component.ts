@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit, isDevMode }  from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE} from "@angular/material";
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators} from "@angular/forms";
+import { Component, Inject, OnInit, isDevMode } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE } from '@angular/material';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
@@ -13,10 +13,11 @@ import { FilterService } from 'app/_services/filter.service';
 import { SnackService } from 'app/_services/snack.service';
 import * as moment from 'moment';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
+import { Moment } from 'moment';
 
 export function forbiddenNullValue(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        return control.value == null || control.value == 0 ? { 'forbiddenNullValue': { value: control.value } } : null;
+    return (control: AbstractControl): {[key: string]: any} | null => {
+        return control.value == null || control.value == 0 ? {'forbiddenNullValue': {value: control.value}} : null;
     };
 }
 
@@ -37,9 +38,9 @@ export class FormComponent implements OnInit {
     tabs_keys: any[];
     records: any[];
     api_url: string;
-    render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
-    render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
-    square_options: any[] = [{ id: 1, value: 'range', actual: 1 }];
+    render_value_string_array = ['empty', 'select_box', 'select_by_query', 'select_box_structure', 'date'];
+    render_value_array = ['empty', 'textarea_editor', 'safe_string', 'textarea', 'primary_key'];
+    square_options: any[] = [{id: 1, value: 'range', actual: 1}];
     galleryImages = {};
     latitude: any;
     longitude: any;
@@ -57,28 +58,28 @@ export class FormComponent implements OnInit {
 
     quillConfig = {
         toolbar: {
-    container:
-    [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
+            container:
+                [
+                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                    ['blockquote', 'code-block'],
 
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
+                    [{'header': 1}, {'header': 2}],               // custom button values
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+                    [{'direction': 'rtl'}],                         // text direction
 
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
 
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
+                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+                    [{'font': []}],
+                    [{'align': []}],
 
-        ['clean']                                    // remove formatting button
+                    ['clean']                                    // remove formatting button
 
-    ],
-},
+                ],
+        },
         // toolbar: {
         //   container: [
         //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -111,28 +112,28 @@ export class FormComponent implements OnInit {
             toolbar: {
                 container:
                     [
-                        [{ 'placeholder': ['[GuestName]', '[HotelName]'] }], // my custom dropdown
+                        [{'placeholder': ['[GuestName]', '[HotelName]']}], // my custom dropdown
                         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
                         ['blockquote', 'code-block'],
 
-                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-                        [{ 'direction': 'rtl' }],                         // text direction
+                        [{'header': 1}, {'header': 2}],               // custom button values
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+                        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+                        [{'direction': 'rtl'}],                         // text direction
 
-                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
 
-                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                        [{ 'font': [] }],
-                        [{ 'align': [] }],
+                        [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+                        [{'font': []}],
+                        [{'align': []}],
 
                         ['clean']                                    // remove formatting button
 
                     ],
                 handlers: {
-                    "placeholder": function (value) {
+                    'placeholder': function (value) {
                         if (value) {
                             const cursorPosition = this.quill.getSelection().index;
                             this.quill.insertText(cursorPosition, value);
@@ -142,8 +143,8 @@ export class FormComponent implements OnInit {
                 }
             }
         }
-    };    
-    
+    };
+
 
     constructor(
         protected dialogRef: MatDialogRef<FormComponent>,
@@ -155,9 +156,9 @@ export class FormComponent implements OnInit {
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
         @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
-        ) {
+    ) {
         this.loadingIndicator = true;
-        
+
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.api_url = this.modelService.get_api_url();
@@ -167,8 +168,7 @@ export class FormComponent implements OnInit {
 
     ngOnInit() {
         // Reactive Form
-        this.form = this._formBuilder.group({
-        });
+        this.form = this._formBuilder.group({});
         this._data.set_readonly(false);
         this.getModel();
 
@@ -200,8 +200,8 @@ export class FormComponent implements OnInit {
                         }
                     }
                 }
-                if ( this.records[this.rows[i]].parameters != null ) {
-                    if ( this.records[this.rows[i]].parameters.dadata == 1 ) {
+                if (this.records[this.rows[i]].parameters != null) {
+                    if (this.records[this.rows[i]].parameters.dadata == 1) {
                         this.hide_dadata(this.rows[i]);
                     }
                 }
@@ -239,11 +239,11 @@ export class FormComponent implements OnInit {
             //console.log(form_control_item);
 
             this.form.addControl(this.rows[i], form_control_item);
-            if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == "now") {
+
+            if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == 'now') {
                 this.form.controls[this.rows[i]].patchValue(moment());
             }
 
-            
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
@@ -264,7 +264,7 @@ export class FormComponent implements OnInit {
                 //this.form.controls[this.rows[i]].patchValue();
                 //console.log(this.records[this.rows[i]]);
                 if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
-                    this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, "DD.MM.YYYY"));
+                    this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, 'DD.MM.YYYY'));
                 } else {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
@@ -302,8 +302,8 @@ export class FormComponent implements OnInit {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
-            if ( this.records[this.rows[i]].parameters != null ) {
-                if ( this.records[this.rows[i]].parameters.dadata == 1 ) {
+            if (this.records[this.rows[i]].parameters != null) {
+                if (this.records[this.rows[i]].parameters.dadata == 1) {
                     this.hide_dadata(this.rows[i]);
                 }
 
@@ -318,7 +318,7 @@ export class FormComponent implements OnInit {
 
     }
 
-    hide_dadata ( row ) {
+    hide_dadata(row) {
         this.records[row].hidden = true;
         this.records[row].type = 'hidden';
     }
@@ -340,7 +340,7 @@ export class FormComponent implements OnInit {
             }
         } catch {
         }
-        
+
     }
 
     init_photo_image(field_name, image) {
@@ -411,7 +411,7 @@ export class FormComponent implements OnInit {
         this.modelService.entity.set_table_name(this._data.get_table_name());
         this.modelService.entity.primary_key = primary_key;
         this.modelService.entity.key_value = key_value;
-        
+
 
         this.modelService.loadById(model_name, primary_key, key_value)
             .pipe(takeUntil(this._unsubscribeAll))
@@ -470,26 +470,31 @@ export class FormComponent implements OnInit {
         const ql_items = {};
 
         for (var i = 0; i < this.rows.length; i++) {
+            const type = this.records[this.rows[i]].type;
+            const control = this.form.controls[this.rows[i]];
             //ql_items.push({ '123': 'test'});
             if (this.text_area_editor_storage[this.rows[i]]) {
-                this.form.controls[this.rows[i]].patchValue(this.text_area_editor_storage[this.rows[i]]);
-            } else if (this.records[this.rows[i]].type == 'checkbox' && this.form.controls[this.rows[i]].value == '') {
-                this.form.controls[this.rows[i]].patchValue(null);
-            } else if (this.records[this.rows[i]].type == 'dtdate') {
-                console.log(this.form.controls[this.rows[i]].value);
-            } else if (this.records[this.rows[i]].type == 'geodata') {
-                this.form.controls[this.rows[i]].patchValue({ lat: this.lat, lng: this.lng });
-            } else if (this.records[this.rows[i]].type == 'primary_key' && this.form.controls[this.rows[i]].value == 0) {
-                this.form.controls[this.rows[i]].patchValue(this.modelService.entity.key_value);
+                control.patchValue(this.text_area_editor_storage[this.rows[i]]);
+            } else if (type === 'checkbox' && control.value === '') {
+                control.patchValue(null);
+            } else if (type === 'dtdate') {
+                console.log(control.value);
+            } else if (type === 'geodata') {
+                control.patchValue({lat: this.lat, lng: this.lng});
+            } else if (type === 'primary_key' && control.value === 0) {
+                control.patchValue(this.modelService.entity.key_value);
             }
 
-            ql_items[this.rows[i]] = this.form.controls[this.rows[i]].value;
+            if (type === 'date' && moment.isMoment(control.value)) {
+                ql_items[this.rows[i]] = control.value.format('DD.MM.YYYY');
+            } else {
+                ql_items[this.rows[i]] = control.value;
+            }
         }
         this.form_submitted = true;
         //console.log(this._data.key_value);
 
         if (!this.form.valid) {
-
             this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
             return null;
         }
@@ -560,7 +565,7 @@ export class FormComponent implements OnInit {
         }
     }
 
-    get_title () {
+    get_title() {
         //@todo нужно будет сделать генератор заголовков для всхе сущностей (не только data)
         let title_items = ['topic_id', 'city_id', 'district_id', 'street_id', 'number', 'price'];
         let final_title_items = [];
@@ -568,8 +573,8 @@ export class FormComponent implements OnInit {
         let title_length = 60;
 
         title_items.forEach((row, index) => {
-            if ( this.records[row] != null ) {
-                if ( this.records[row].value_string != '' && this.records[row].value_string != null  ) {
+            if (this.records[row] != null) {
+                if (this.records[row].value_string != '' && this.records[row].value_string != null) {
                     final_title_items.push(this.records[row].value_string);
                 } else if (this.records[row].value != 0) {
                     final_title_items.push(this.records[row].value);
@@ -577,7 +582,7 @@ export class FormComponent implements OnInit {
             }
         });
         final_title = final_title_items.join(', ');
-        if ( final_title.length > title_length ) {
+        if (final_title.length > title_length) {
             final_title = final_title.substr(0, title_length) + '...';
         }
 
@@ -585,7 +590,7 @@ export class FormComponent implements OnInit {
         return final_title;
     }
 
-    after_form_inted () {
+    after_form_inted() {
         this.form_title = this.get_title();
     }
 
