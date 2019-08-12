@@ -469,7 +469,7 @@ export class FormComponent implements OnInit {
 
         if (!this.form.valid) {
             this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
-            return null;
+            return;
         }
 
         const ql_items = {};
