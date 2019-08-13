@@ -1,22 +1,22 @@
-import { Component, Inject, OnInit, isDevMode } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE } from '@angular/material';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
+import {Component, Inject, OnInit, isDevMode} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE} from '@angular/material';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators} from '@angular/forms';
 
-import { APP_CONFIG, AppConfig } from 'app/app.config.module';
-import { ModelService } from 'app/_services/model.service';
-import { SitebillEntity } from 'app/_models';
+import {APP_CONFIG, AppConfig} from 'app/app.config.module';
+import {ModelService} from 'app/_services/model.service';
+import {SitebillEntity} from 'app/_models';
 
-import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
-import { FilterService } from 'app/_services/filter.service';
-import { SnackService } from 'app/_services/snack.service';
+import {ConfirmComponent} from 'app/dialogs/confirm/confirm.component';
+import {FilterService} from 'app/_services/filter.service';
+import {SnackService} from 'app/_services/snack.service';
 import * as moment from 'moment';
-import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
-import { Moment } from 'moment';
+import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
+import {Moment} from 'moment';
 
 export function forbiddenNullValue(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
         return control.value == null || control.value == 0 ? {'forbiddenNullValue': {value: control.value}} : null;
     };
 }
@@ -436,7 +436,6 @@ export class FormComponent implements OnInit {
             });
     }
 
-
     delete() {
         this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
             disableClose: false
@@ -466,53 +465,45 @@ export class FormComponent implements OnInit {
 
 
     save() {
-        //console.log(this.form.controls);
-        const ql_items = {};
-
-        for (var i = 0; i < this.rows.length; i++) {
-            const type = this.records[this.rows[i]].type;
-            const control = this.form.controls[this.rows[i]];
-            //ql_items.push({ '123': 'test'});
-            if (this.text_area_editor_storage[this.rows[i]]) {
-                control.patchValue(this.text_area_editor_storage[this.rows[i]]);
-            } else if (type === 'checkbox' && control.value === '') {
-                control.patchValue(null);
-            } else if (type === 'dtdate') {
-                console.log(control.value);
-            } else if (type === 'geodata') {
-                control.patchValue({lat: this.lat, lng: this.lng});
-            } else if (type === 'primary_key' && control.value === 0) {
-                control.patchValue(this.modelService.entity.key_value);
-            }
-
-            if (type === 'date' && moment.isMoment(control.value)) {
-                ql_items[this.rows[i]] = control.value.format('DD.MM.YYYY');
-            } else {
-                ql_items[this.rows[i]] = control.value;
-            }
-        }
         this.form_submitted = true;
-        //console.log(this._data.key_value);
 
         if (!this.form.valid) {
             this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
-            return null;
+            return;
         }
 
-        //console.log(ql_items);
-        //return;
+        const ql_items = {};
+
+        this.rows.forEach((row) => {
+            const type = this.records[row].type;
+            const control = this.form.controls[row];
+
+            if (this.text_area_editor_storage[row]) {
+                ql_items[row] = this.text_area_editor_storage[row];
+            } else if (type === 'checkbox' && control.value === '') {
+                ql_items[row] = null;
+            } else if (type === 'date' && moment.isMoment(control.value)) {
+                ql_items[row] = control.value.format('DD.MM.YYYY');
+            } else if (type === 'dtdate') {
+                console.log(control.value);
+            } else if (type === 'geodata') {
+                ql_items[row] = {lat: this.lat, lng: this.lng};
+            } else if (type === 'primary_key' && control.value === 0) {
+                ql_items[row] = this.modelService.entity.key_value;
+            } else {
+                ql_items[row] = control.value;
+            }
+        });
 
         if (this._data.key_value == null) {
             this.modelService.native_insert(this._data.get_table_name(), ql_items)
                 .subscribe((response: any) => {
-                    //console.log(response);
-
-                    if (response.state == 'error') {
+                    if (response.state === 'error') {
                         this._snackService.message(response.message);
                         return null;
                     } else {
                         this._snackService.message('Запись создана успешно');
-                        if (this._data.get_hook() == 'add_to_collections') {
+                        if (this._data.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id']);
                         } else {
                             this.filterService.empty_share(this._data);
@@ -523,9 +514,7 @@ export class FormComponent implements OnInit {
         } else {
             this.modelService.native_update(this._data.get_table_name(), this._data.key_value, ql_items)
                 .subscribe((response: any) => {
-                    //console.log(response);
-
-                    if (response.state == 'error') {
+                    if (response.state === 'error') {
                         this._snackService.message(response.message);
                         return null;
                     } else {
@@ -535,8 +524,6 @@ export class FormComponent implements OnInit {
                     }
                 });
         }
-
-
     }
 
     add_to_collections(data_id) {
