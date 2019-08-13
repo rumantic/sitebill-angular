@@ -13,7 +13,6 @@ import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import * as moment from 'moment';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
-import {Moment} from 'moment';
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -484,6 +483,8 @@ export class FormComponent implements OnInit {
                 ql_items[row] = null;
             } else if (type === 'date' && moment.isMoment(control.value)) {
                 ql_items[row] = control.value.format('DD.MM.YYYY');
+            } else if (type === 'dtdatetime' && moment.isMoment(control.value)) {
+                ql_items[row] = control.value.toISOString(true);
             } else if (type === 'dtdate') {
                 console.log(control.value);
             } else if (type === 'geodata') {
