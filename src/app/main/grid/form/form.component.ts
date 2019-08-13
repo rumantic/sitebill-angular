@@ -1,22 +1,22 @@
-import { Component, Inject, OnInit, isDevMode } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE } from '@angular/material';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
+import {Component, Inject, OnInit, isDevMode} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MAT_DATE_LOCALE} from '@angular/material';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup, FormControl, ValidatorFn, AbstractControl, Validators} from '@angular/forms';
 
-import { APP_CONFIG, AppConfig } from 'app/app.config.module';
-import { ModelService } from 'app/_services/model.service';
-import { SitebillEntity } from 'app/_models';
+import {APP_CONFIG, AppConfig} from 'app/app.config.module';
+import {ModelService} from 'app/_services/model.service';
+import {SitebillEntity} from 'app/_models';
 
-import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
-import { FilterService } from 'app/_services/filter.service';
-import { SnackService } from 'app/_services/snack.service';
+import {ConfirmComponent} from 'app/dialogs/confirm/confirm.component';
+import {FilterService} from 'app/_services/filter.service';
+import {SnackService} from 'app/_services/snack.service';
 import * as moment from 'moment';
-import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
-import { Moment } from 'moment';
+import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
+import {Moment} from 'moment';
 
 export function forbiddenNullValue(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
         return control.value == null || control.value == 0 ? {'forbiddenNullValue': {value: control.value}} : null;
     };
 }
