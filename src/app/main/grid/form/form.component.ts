@@ -472,6 +472,7 @@ export class FormComponent implements OnInit {
         }
 
         const ql_items = {};
+        const now = moment();
 
         this.rows.forEach((row) => {
             const type = this.records[row].type;
@@ -484,7 +485,11 @@ export class FormComponent implements OnInit {
             } else if (type === 'date' && moment.isMoment(control.value)) {
                 ql_items[row] = control.value.format('DD.MM.YYYY');
             } else if (type === 'dtdatetime' && moment.isMoment(control.value)) {
-                ql_items[row] = control.value.toISOString(true);
+                ql_items[row] = control.value.set({
+                    hour: now.get('hour'),
+                    minute: now.get('minute'),
+                    second: now.get('second'),
+                }).toISOString(true);
             } else if (type === 'dtdate') {
                 console.log(control.value);
             } else if (type === 'geodata') {
