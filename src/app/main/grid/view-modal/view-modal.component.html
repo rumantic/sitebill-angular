@@ -10,13 +10,13 @@
 
     <!--h2 mat-dialog-title>Объект</h2-->
     <div mat-dialog-content class="p-24 m-0 modal-content">
-        <div class="modal-content__data" fusePerfectScrollbar>
-            <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
-                <ng-template #loggedOut>
-                    <mat-spinner></mat-spinner>
-                </ng-template>
+        <ng-template #loggedOut>
+            <mat-spinner></mat-spinner>
+        </ng-template>
 
-                <div *ngIf="rows; else loggedOut">
+        <ng-container *ngIf="rows; else loggedOut">
+            <div class="modal-content__data" fusePerfectScrollbar>
+                <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
                     <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
 
                         <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
@@ -73,33 +73,32 @@
                         </mat-tab>
 
                     </mat-tab-group>
+                </form>
+            </div>
+            <div class="modal-content__comments">
+                <mat-accordion>
+                    <mat-expansion-panel
+                        (opened)="isCommentsBlockOpened = true"
+                        (closed)="isCommentsBlockOpened = false"
+                        hideToggle
+                    >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <mat-icon>comment</mat-icon>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                {{ isCommentsBlockOpened ? 'Скрыть' : 'Показать' }} комментарии
+                            </mat-panel-description>
+                            <mat-icon>{{ isCommentsBlockOpened ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
+                        </mat-expansion-panel-header>
 
-                </div>
+                        <profile-timeline></profile-timeline>
 
-            </form>
-        </div>
-        <div class="modal-content__comments">
-            <mat-accordion>
-                <mat-expansion-panel
-                    (opened)="isCommentsBlockOpened = true"
-                    (closed)="isCommentsBlockOpened = false"
-                    hideToggle
-                >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon>comment</mat-icon>
-                        </mat-panel-title>
-                        <mat-panel-description>
-                            {{ isCommentsBlockOpened ? 'Скрыть' : 'Показать' }} комментарии
-                        </mat-panel-description>
-                        <mat-icon>{{ isCommentsBlockOpened ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
-                    </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
 
-                    <profile-timeline></profile-timeline>
-
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
+        </ng-container>
     </div>
 
 </div>

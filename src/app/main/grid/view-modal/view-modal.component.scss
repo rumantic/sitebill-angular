@@ -54,6 +54,10 @@ textarea {
     flex-direction: column;
     position: relative;
 
+    mat-spinner {
+        align-self: center;
+    }
+
     &__comments {
         margin-top: 16px;
 
