@@ -18,7 +18,7 @@ import {SitebillEntity} from '../../../_models';
 @Component({
     selector: 'view-modal',
     templateUrl: './view-modal.component.html',
-    styleUrls: ['./view-modal.component.css']
+    styleUrls: ['./view-modal.component.scss']
 })
 export class ViewModalComponent extends FormComponent implements OnInit {
 
