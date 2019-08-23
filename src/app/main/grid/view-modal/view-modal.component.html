@@ -22,11 +22,10 @@
 
                         <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
 
-                            <table class="simple clickable data-table">
-                                <tbody>
-                                <tr *ngFor="let x of tabs[tab]">
-                                    <td class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</td>
-                                    <td class="text-right data-table__cell data-table__cell_value" [attr.colspan]="get_colspan(records[x].type, records[x].name)">
+                            <div class="simple clickable data-table">
+                                <div class="data-table__row" *ngFor="let x of tabs[tab]">
+                                    <div class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</div>
+                                    <div class="data-table__cell" [ngClass]="{'data-table__cell_fullwidth': get_colspan(records[x].type, records[x].name) > 1, 'text-right': get_colspan(records[x].type, records[x].name) === 1}">
                                         <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
                                         <ng-container *ngIf="records[x].value_string == '' || records[x].value_string == null">
                                             <ng-container [ngSwitch]="records[x].type">
@@ -39,12 +38,14 @@
                                                     {{records[x].title}}
                                                     <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
                                                 </ng-container>
+
                                                 <ng-container *ngSwitchCase="'textarea_editor'">
-                                                    <div class="text-left">
+                                                    <div class="data-table__cell-value data-table__cell-value_overflow text-left">
                                                         {{records[x].title}}
                                                         <div [innerHTML]="records[x].value|safehtml"></div>
                                                     </div>
                                                 </ng-container>
+
                                                 <ng-container *ngSwitchCase="'geodata'">
                                                     {{records[x].title}} {{lat}},{{lng}}
                                                     <agm-map [latitude]="lat_center" [longitude]="lng_center">
@@ -66,13 +67,10 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </ng-container>
-
-
                                         </ng-container>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </div>
+                                </div>
+                            </div>
                         </mat-tab>
 
                     </mat-tab-group>

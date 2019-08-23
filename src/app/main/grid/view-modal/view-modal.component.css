@@ -16,9 +16,23 @@ textarea {
     height: 300px;
 }
 
+.data-table {
+    width: 100%;
+}
 .data-table__cell {
-    word-break: break-word;
+    flex: 1;
+    max-width: 60%;
+}
+.data-table__cell_fullwidth {
+    max-width: 100%;
+    width: 100%;
 }
 .data-table__cell_label {
-    width: 40%;
+    flex: 1;
+    max-width: 40%;
+}
+.data-table__cell-value_overflow {
+    max-width: 100%;
+    padding-bottom: 16px;
+    overflow-x: auto;
 }
