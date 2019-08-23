@@ -30,7 +30,7 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
 
     loadingIndicator: boolean;
-    
+    isCommentsBlockOpened = false;
     
 
     constructor(

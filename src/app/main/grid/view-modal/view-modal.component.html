@@ -9,9 +9,8 @@
     </mat-toolbar>
 
     <!--h2 mat-dialog-title>Объект</h2-->
-    <div mat-dialog-content class="p-24 m-0">
-
-        <div fxFlex="50" fusePerfectScrollbar>
+    <div mat-dialog-content class="p-24 m-0 modal-content">
+        <div class="modal-content__data" fusePerfectScrollbar>
             <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
                 <ng-template #loggedOut>
                     <mat-spinner></mat-spinner>
@@ -79,8 +78,27 @@
 
             </form>
         </div>
-        <div fxFlex="50">
-            <profile-timeline></profile-timeline>
+        <div class="modal-content__comments">
+            <mat-accordion>
+                <mat-expansion-panel
+                    (opened)="isCommentsBlockOpened = true"
+                    (closed)="isCommentsBlockOpened = false"
+                    hideToggle
+                >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Комментарии
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{ isCommentsBlockOpened ? 'Скрыть' : 'Показать' }}
+                        </mat-panel-description>
+                        <mat-icon>{{ isCommentsBlockOpened ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
+                    </mat-expansion-panel-header>
+
+                    <profile-timeline></profile-timeline>
+
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </div>
 

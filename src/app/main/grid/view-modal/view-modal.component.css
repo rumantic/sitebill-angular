@@ -41,3 +41,15 @@ textarea {
     top: auto !important;
     bottom: 0;
 }
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.modal-content__comments {
+    margin-top: 16px;
+}
+.modal-content__comments ::ng-deep .mat-expansion-panel-body,
+.modal-content__comments ::ng-deep .page-layout.carded.fullwidth > .center {
+    padding: 0;
+}
