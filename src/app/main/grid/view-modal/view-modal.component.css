@@ -49,6 +49,9 @@ textarea {
 .modal-content__comments {
     margin-top: 16px;
 }
+.modal-content__comments ::ng-deep .mat-expansion-panel-header-description {
+    flex-grow: 1;
+}
 .modal-content__comments ::ng-deep .mat-expansion-panel-body,
 .modal-content__comments ::ng-deep .page-layout.carded.fullwidth > .center {
     padding: 0;
