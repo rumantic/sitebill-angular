@@ -22,11 +22,11 @@
 
                         <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
 
-                            <table class="simple clickable">
+                            <table class="simple clickable data-table">
                                 <tbody>
                                 <tr *ngFor="let x of tabs[tab]">
-                                    <td class="primary-50-bg" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</td>
-                                    <td class="text-right" [attr.colspan]="get_colspan(records[x].type, records[x].name)">
+                                    <td class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</td>
+                                    <td class="text-right data-table__cell data-table__cell_value" [attr.colspan]="get_colspan(records[x].type, records[x].name)">
                                         <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
                                         <ng-container *ngIf="records[x].value_string == '' || records[x].value_string == null">
                                             <ng-container [ngSwitch]="records[x].type">
@@ -40,8 +40,10 @@
                                                     <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="'textarea_editor'">
-                                                    {{records[x].title}}
-                                                    <div [innerHTML]="records[x].value|safehtml"></div>
+                                                    <div class="text-left">
+                                                        {{records[x].title}}
+                                                        <div [innerHTML]="records[x].value|safehtml"></div>
+                                                    </div>
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="'geodata'">
                                                     {{records[x].title}} {{lat}},{{lng}}

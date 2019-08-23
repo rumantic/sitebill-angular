@@ -15,3 +15,10 @@ textarea {
 :host /deep/ agm-map {
     height: 300px;
 }
+
+.data-table__cell {
+    word-break: break-word;
+}
+.data-table__cell_label {
+    width: 40%;
+}
