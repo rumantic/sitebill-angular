@@ -11,7 +11,7 @@
     <!--h2 mat-dialog-title>Объект</h2-->
     <div mat-dialog-content class="p-24 m-0">
 
-        <div fxFlex="50"  fusePerfectScrollbar>
+        <div fxFlex="50" fusePerfectScrollbar>
             <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
                 <ng-template #loggedOut>
                     <mat-spinner></mat-spinner>
@@ -40,7 +40,7 @@
                                                 </ng-container>
 
                                                 <ng-container *ngSwitchCase="'textarea_editor'">
-                                                    <div class="data-table__cell-value data-table__cell-value_overflow text-left">
+                                                    <div class="data-table__cell-value data-table__cell-value_overflow text-left" fusePerfectScrollbar>
                                                         {{records[x].title}}
                                                         <div [innerHTML]="records[x].value|safehtml"></div>
                                                     </div>

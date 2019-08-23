@@ -32,7 +32,12 @@ textarea {
     max-width: 40%;
 }
 .data-table__cell-value_overflow {
+    position: relative;
     max-width: 100%;
     padding-bottom: 16px;
     overflow-x: auto;
+}
+.data-table__cell-value_overflow ::ng-deep > .ps__rail-x {
+    top: auto !important;
+    bottom: 0;
 }
