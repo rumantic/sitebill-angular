@@ -1,3 +1,8 @@
+@import "../variables";
+
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
 .data-table {
     $parent-class: &;
 
@@ -49,6 +54,24 @@
 
         &:last-child {
             padding-right: 24px;
+        }
+    }
+
+    &.simple {
+        #{$parent-class}__cell {
+            border-bottom: 1px solid map-get($foreground, divider);
+
+            &_header {
+                color: map-get($foreground, secondary-text);
+            }
+        }
+    }
+
+    &.simple.clickable {
+        #{$parent-class}__row {
+            &:hover {
+                background-color: map-get($background, hover);
+            }
         }
     }
 }
