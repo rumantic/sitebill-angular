@@ -159,27 +159,6 @@
             }
         }
     }
-
-    .data-table {
-        $parent-class: '.data-table';
-
-        &.simple {
-            #{$parent-class}__cell {
-                border-bottom: 1px solid map-get($foreground, divider);
-
-                &_header {
-                    color: map-get($foreground, secondary-text);
-                }
-            }
-        }
-        &.simple.clickable {
-            #{$parent-class}__row {
-                &:hover {
-                    background-color: map-get($background, hover);
-                }
-            }
-        }
-    }
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -552,59 +531,30 @@ mat-icon.status {
     }
 }
 
-@mixin table() {
-    width: 100%;
-    border: none;
-    border-spacing: 0;
-    text-align: left;
-}
-@mixin table-row($cell-selector) {
-    &:last-child {
-
-        #{$cell-selector} {
-            border-bottom: none;
-        }
-    }
-}
-@mixin table-cell() {
-    padding: 16px 8px;
-
-    &:first-child {
-        padding-left: 24px;
-    }
-
-    &:last-child {
-        padding-right: 24px;
-    }
-}
-@mixin table-cell-header() {
-    padding: 16px 8px;
-    font-weight: 600;
-    white-space: nowrap;
-
-    &:first-child {
-        padding-left: 24px;
-    }
-
-    &:last-child {
-        padding-right: 24px;
-    }
-}
-@mixin table-row-clickable() {
-    cursor: pointer;
-}
-
 table {
 
     &.simple {
-        @include table();
+        width: 100%;
+        border: none;
+        border-spacing: 0;
+        text-align: left;
 
         thead {
 
             tr {
 
                 th {
-                    @include table-cell-header();
+                    padding: 16px 8px;
+                    font-weight: 600;
+                    white-space: nowrap;
+
+                    &:first-child {
+                        padding-left: 24px;
+                    }
+
+                    &:last-child {
+                        padding-right: 24px;
+                    }
                 }
             }
         }
@@ -614,10 +564,23 @@ table {
             tr {
 
                 td {
-                    @include table-cell();
+                    padding: 16px 8px;
+
+                    &:first-child {
+                        padding-left: 24px;
+                    }
+
+                    &:last-child {
+                        padding-right: 24px;
+                    }
                 }
 
-                @include table-row('td');
+                &:last-child {
+
+                    td {
+                        border-bottom: none;
+                    }
+                }
             }
         }
 
@@ -626,35 +589,9 @@ table {
             tbody {
 
                 tr {
-                    @include table-row-clickable();
+                    cursor: pointer;
                 }
             }
         }
-    }
-}
-
-.data-table {
-    $parent-class: &;
-
-    @include table;
-    display: flex;
-    flex-direction: column;
-
-    &__row {
-        @include table-row('#{$parent-class}__cell');
-        display: flex;
-        flex-direction: row;
-
-        #{$parent-class}.clickable & {
-            @include table-row-clickable;
-        }
-    }
-    &__cell {
-        @include table-cell;
-        flex: 1 0 auto;
-    }
-    &__cell_header {
-        @include table-cell-header;
-        flex: 1 0 auto;
     }
 }
