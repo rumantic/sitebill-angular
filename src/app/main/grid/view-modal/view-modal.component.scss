@@ -61,14 +61,42 @@ textarea {
     &__comments {
         margin-top: 16px;
 
+        & ::ng-deep .mat-expansion-panel-header-title {
+            align-items: center;
+
+            .mat-icon {
+                transform: translateY(2px);
+            }
+        }
+
         & ::ng-deep .mat-expansion-panel-header-description {
-            flex-grow: 1;
+            flex-grow: 2;
+            align-items: center;
+            flex-wrap: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         & ::ng-deep .mat-expansion-panel-body,
         & ::ng-deep .page-layout.carded.fullwidth > .center {
             padding: 0;
         }
+
+        & ::ng-deep .chat #chat-content {
+            min-height: 210px;
+        }
     }
 }
 
+.comments {
+    &__total {
+        margin-left: 8px;
+    }
+    &__message-preview {
+        max-width: 300px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 4px;
+        overflow: hidden;
+    }
+}
