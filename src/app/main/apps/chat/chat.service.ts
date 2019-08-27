@@ -263,10 +263,13 @@ export class ChatService implements Resolve<any>
 
             const body = { action: 'comment', do: 'add', model_name: this.model_name, primary_key: this.primary_key, key_value: this.key_value, comment_text: comment_text, session_key: this.modelSerivce.get_session_key()};
 
-
             this._httpClient.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, body)
-                .subscribe(updatedChat => {
-                    //console.log(updatedChat);
+                .subscribe((updatedChat: any) => {
+                    const currentChat = this.onChatSelected.getValue();
+                    if (currentChat.chatId === chatId && currentChat.dialog && updatedChat.comment_data) {
+                        currentChat.dialog.push(updatedChat.comment_data);
+                        this.onChatSelected.next(currentChat);
+                    }
                     resolve(updatedChat);
                 }, reject);
         });
