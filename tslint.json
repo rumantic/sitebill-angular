@@ -93,7 +93,6 @@
         ],
         "typedef": [
             true,
-            "call-signature",
             "property-declaration"
         ],
         "typedef-whitespace": [
