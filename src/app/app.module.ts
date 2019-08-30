@@ -76,7 +76,7 @@ import {RegisterComponent} from './register/index';
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
-    {path: '', redirectTo: 'grid/data', pathMatch: 'full', canActivate: [AuthGuard]},
+    {path: '', redirectTo: 'grid/data', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
     //{path: 'register', component: RegisterComponent},
     {path: 'logout', component: LoginComponent},
@@ -121,7 +121,8 @@ const appRoutes: Routes = [
     {
         path: 'public',
         loadChildren: 'app/main/grid/grid.module#GridModule',
-        canActivate: [PublicGuard]
+        canActivate: [PublicGuard],
+        runGuardsAndResolvers: 'always'
     },
     {
         path: 'facebook',
@@ -200,7 +201,7 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes, {useHash: true}),
+        RouterModule.forRoot(appRoutes, {useHash: true, onSameUrlNavigation: 'reload'}),
         //RouterModule.forRoot(appRoutes),
         CommonModule,
 

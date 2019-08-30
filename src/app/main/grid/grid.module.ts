@@ -211,6 +211,13 @@ const routes = [
         resolve: {
             chat: ChatService
         },
+    },
+    {
+        path: 'leadr',
+        component: LeadComponent,
+        resolve: {
+            chat: ChatService
+        },
     }
 
 ];

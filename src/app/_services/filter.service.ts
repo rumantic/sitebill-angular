@@ -58,4 +58,9 @@ export class FilterService {
         }
         return null;
     }
+
+    broadcast_refresh () {
+        //console.log('broadcast_refresh');
+        //console.log(this.share_array);
+    }
 }

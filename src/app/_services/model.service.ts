@@ -5,6 +5,7 @@ import { currentUser } from 'app/_models/currentuser';
 import { SitebillEntity } from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
+import {FilterService} from './filter.service';
 
 
 @Injectable()
@@ -12,14 +13,18 @@ export class ModelService {
     private api_url: string = '';
     protected currentUser: currentUser;
     public entity: SitebillEntity;
+    private need_reload: boolean = false;
+    private session_key_validated: boolean = false;
 
 
     constructor(
         private http: HttpClient,
         private router: Router,
         protected _fuseConfigService: FuseConfigService,
+        private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
+        //console.log('ModelService constructor');
         this.entity = new SitebillEntity;
         this.entity.set_app_name(null);
         this.entity.set_table_name(null);
@@ -46,15 +51,57 @@ export class ModelService {
         }
     }
 
+    enable_need_reload () {
+        //console.log('enable_need_reload');
+        this.need_reload = true;
+    }
+
+    disable_need_reload () {
+        //console.log('disable_need_reload');
+        this.need_reload = false;
+        this.session_key_validate();
+    }
+
+    is_need_reload () {
+        //console.log('is_need_reload');
+        //console.log(this.need_reload);
+        return this.need_reload;
+    }
+
+    session_key_validate () {
+        //console.log('session_key_validate');
+        this.session_key_validated = true;
+    }
+
+    is_validated_session_key () {
+        //console.log('is_validated_session_key');
+        return this.session_key_validated;
+    }
+
     get_session_key() {
-        if ( this.currentUser == null ) {
+        //console.log('|get_session_key');
+        //console.log(this.currentUser);
+        //console.log('get_session_key|');
+        if ( this.currentUser === null ) {
             return null;
         }
         return this.currentUser.session_key;
     }
 
     get_session_key_safe () {
-        let session_key = this.get_session_key();
+        const session_key = this.get_session_key();
+        if ( !this.is_validated_session_key() ) {
+            this.validateKey(session_key).subscribe((result: any) => {
+                if ( result.error === 'check_session_key_failed' ) {
+                    this.reset_local_user_storage();
+                    let refresh_url = this.router.url;
+                    this.enable_need_reload();
+                    this.router.navigate([refresh_url]);
+                } else {
+                    this.session_key_validate();
+                }
+            });
+        }
         if ( session_key == null ) {
             this.logout();
         }
@@ -69,6 +116,7 @@ export class ModelService {
     }
 
     reset_local_user_storage () {
+        //console.log('reset_local_user_storage');
         localStorage.removeItem('currentUser');
         if ( this.currentUser != null ) {
             this.currentUser.session_key = null;
@@ -77,6 +125,7 @@ export class ModelService {
     }
 
     logout () {
+        //console.log('run logout');
         this.disable_menu();
         this.reset_local_user_storage();
         this.router.navigate(['/logout']);
@@ -101,6 +150,10 @@ export class ModelService {
 
     reinit_currentUser() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        //console.log('reinit current user');
+        //console.log(localStorage.getItem('currentUser'));
+        //console.log(this.currentUser);
+        //console.log('reinit complete');
     }
 
     load(model_name, grid_item, filter_params_json, owner, page, per_page) {
@@ -134,6 +187,14 @@ export class ModelService {
 
     loadById(model_name, primary_key, key_value) {
         const load_data_request = { action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.get_session_key_safe() };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+    validateKey(session_key) {
+        const model_name = 'data';
+        const primary_key = 'id';
+        const key_value = 1;
+        const load_data_request = { action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: session_key };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 

@@ -22,18 +22,25 @@ export class AuthGuard implements CanActivate {
         protected _snackService: SnackService,
     ) {
         this._unsubscribeAll = new Subject();
-
+        //console.log('AuthGuard constructor');
         //this._fuseNavigationService.removeNavigationItem('page');
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        //console.log('|can activate');
+        //console.log(route);
+        //console.log(state);
+        //console.log('can active |');
         return this.check_session(route, state,'/grid/data/');
     }
 
     check_session(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, success_redirect: string) {
         //console.log(localStorage.getItem('currentUser'));
 
-        if (localStorage.getItem('currentUser')) {
+        if (localStorage.getItem('currentUser') && !this.modelService.is_need_reload()) {
+            //console.log('!check session and locaStorage not null');
+            //console.log(localStorage.getItem('currentUser'));
+            //console.log('check session and locaStorage not null!');
             return this.check_permissions(route, state);
         } else {
             //Попробуем получить данные от cms sitebill для текущей сессии
@@ -41,26 +48,32 @@ export class AuthGuard implements CanActivate {
             this.modelService.get_cms_session()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
-                    console.log(result);
+                    //console.log(result);
                     if (result.state == 'error') {
                         this.modelService.logout();
                         return false;
                     }
                     try {
                         let storage = JSON.parse(result) || [];
-                        console.log(storage);
+                        //console.log(storage);
 
                         if (storage.user_id > 0) {
                             localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.modelService.disable_need_reload();
                             if (this.check_permissions(route, state)) {
+                                //console.log('success_redirect start');
+                                this.modelService.reinit_currentUser();
                                 this.router.navigate([success_redirect]);
                                 return true;
                             } else {
                                 this.set_public_menu();
+                                //console.log('public redirect start');
+                                this.modelService.reinit_currentUser();
                                 this.router.navigate(['/public/'], { queryParams: { returnUrl: state.url } });
                                 return true;
                             }
                         } else {
+                            console.log('failed get cms session, logout');
                             this.modelService.logout();
                             return false;
                         }
@@ -87,7 +100,6 @@ export class AuthGuard implements CanActivate {
     }
 
     check_permissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        //@todo: Нужно проверять текущую сессию на пригодность
         //console.log('Activate result = ');
         //console.log('check_permissions');
         //console.log(navigation);
@@ -101,32 +113,36 @@ export class AuthGuard implements CanActivate {
         let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
         //console.log(storage);
         if (storage['structure'] == null) {
+            //console.log('structure null - logout');
             this.modelService.logout();
             return false;
         }
 
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
 
-        //console.log(storage);
+        //console.log('structure check start');
         if (storage.admin_panel_login == 0) {
             //console.log('got to /public/lead/');
             this.set_public_menu();
             this.router.navigate(['/public/lead/']);
             return false;
         } else if (storage.admin_panel_login != 1) {
-            console.log('access denied');
+            //console.log('access denied');
             this.modelService.logout();
             return false;
         }
         if (storage['structure'] == null) {
+            //console.log('structure null - logout');
             this.modelService.logout();
             return false;
         }
 
         if (storage['structure']['group_name'] == null) {
+            //console.log('group name null - logout');
             this.modelService.logout();
             return false;
         }
+        //console.log('check true');
 
         return true;
     }

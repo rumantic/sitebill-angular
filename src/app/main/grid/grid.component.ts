@@ -289,6 +289,8 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     init_grid(params) {
+        //console.log('init grid');
+        //console.log(params);
         let predefined_grid_fields = this.get_predefined_grid_fiels();
         if (predefined_grid_fields != null) {
             this.load_grid_data(this.entity.get_app_name(), predefined_grid_fields, params);
