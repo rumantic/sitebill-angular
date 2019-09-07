@@ -97,7 +97,6 @@ mat-sidenav-container {
 }
 
 #ngx-datatable {
-
     .header {
 
         .search-wrapper {
@@ -124,6 +123,68 @@ mat-sidenav-container {
                     border: none;
                     outline: none;
                 }
+
+                &__clear {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .toolbar {
+            &__daterange {
+                width: 220px;
+            }
+            &__daterange-clear {
+                cursor: pointer;
+            }
+        }
+
+        @include media-breakpoint('lt-md') {
+            position: relative;
+            flex-direction: column;
+
+            &__search-row {
+                padding-left: 16px;
+            }
+
+            .search {
+                height: 40px !important;
+                line-height: 40px !important;
+                padding: 0 12px !important;
+
+                input {
+                    height: 40px !important;
+                    min-height: 40px !important;
+                    max-height: 40px !important;
+                }
+            }
+
+            ::ng-deep .md-drppicker {
+                width: 290px !important;
+                position: fixed;
+                left: 50% !important;
+                top: 50% !important;
+                max-height: 98vh;
+                overflow: auto;
+                margin: 0;
+
+                &.shown {
+                    transform: translate(-50%, -50%);
+                }
+
+                .ranges {
+                    overflow-x: auto;
+                    ul {
+                        white-space: nowrap;
+                    }
+                    li {
+                        display: inline-block;
+                    }
+                }
+            }
+
+            .toolbar {
+                margin: 0 0 0 auto;
             }
         }
     }

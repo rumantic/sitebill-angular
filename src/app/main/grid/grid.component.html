@@ -1,12 +1,12 @@
-<common-template 
-                 [entity]="entity" 
-                 (viewEvent)="view($event)" 
-                 (edit_formEvent)="edit_form($event)" 
-                 (deleteEvent)="delete($event)" 
-                 (view_galleryEvent)="view_gallery($event)" 
-                 (toggle_activeEvent)="toggle_active($event)"
-                 (toggle_collectionEvent)="toggle_collection($event)"
-                 >
+<common-template
+    [entity]="entity"
+    (viewEvent)="view($event)"
+    (edit_formEvent)="edit_form($event)"
+    (deleteEvent)="delete($event)"
+    (view_galleryEvent)="view_gallery($event)"
+    (toggle_activeEvent)="toggle_active($event)"
+    (toggle_collectionEvent)="toggle_collection($event)"
+>
 
 </common-template>
 
@@ -18,34 +18,49 @@
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись</button>
-
+                    <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись
+                    </button>
+                    <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">
+                        <mat-icon>add</mat-icon>
+                    </button>
                 </div>
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->
-                <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-                    <div class="search-wrapper mt-16 mt-sm-0">
+                <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+                    <div class="search-wrapper mt-sm-0">
                         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon color="primary">search</mat-icon>
                             <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
-                            <button mat-icon-button (click)="clear_search_text()" *ngIf="searchInput.value != ''">
-                                <mat-icon color="primary" matSuffix>close</mat-icon>
-                            </button>
+                            <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                         </div>
-
                     </div>
                 </div>
                 <!-- / SEARCH -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
-                    <button mat-icon-button matTooltip="Очистить фильтр по дате" (click)="clear_selected_date_filter(date_range_key)" *ngIf="selected_date_filter_has_values">
-                        <mat-icon color="white" matSuffix>close</mat-icon>
-                    </button>
-
-                    <mat-form-field class="pt-12 pr-8" *ngIf="date_range_enable">
-                        <input autocomplete="off" matTooltip="Выбрать период времени для отображения записей" matInput type="text" ngxDaterangepickerMd [ranges]="ranges" opens="left" [locale]="date_range_locale" (change)="date_range_change($event, date_range_key)" alwaysShowCalendars="true" [(ngModel)]="selected_date_filter" class="date-range-control" />
-                        <mat-icon matSuffix>calendar_today</mat-icon>
+                    <mat-form-field class="pt-12 pr-8 toolbar__daterange" *ngIf="date_range_enable">
+                        <input autocomplete="off"
+                               matTooltip="Выбрать период времени для отображения записей"
+                               matInput
+                               type="text"
+                               ngxDaterangepickerMd
+                               [ranges]="ranges"
+                               opens="left"
+                               [locale]="date_range_locale"
+                               (change)="date_range_change($event, date_range_key)"
+                               alwaysShowCalendars="true"
+                               [(ngModel)]="selected_date_filter"
+                               class="date-range-control"/>
+                        <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>calendar_today</mat-icon>
+                        <ng-template #clearDatepicker>
+                            <mat-icon class="toolbar__daterange-clear" color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close
+                            </mat-icon>
+                        </ng-template>
                     </mat-form-field>
+                    <!--                    <button *ngIf="selected_date_filter_has_values" mat-icon-button matTooltip="Очистить фильтр по дате"-->
+                    <!--                            (click)="clear_selected_date_filter(date_range_key)">-->
+                    <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
+                    <!--                    </button>-->
 
                     <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
                         <mat-icon>autorenew</mat-icon>
@@ -56,7 +71,6 @@
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
-
                     <!-- / SETTINGS BUTTON -->
                 </div>
                 <!-- / TOOLBAR -->
@@ -105,8 +119,6 @@
             </div>
             <!-- / WIDGET GROUP -->
         </div>
-
-
 
 
     </div>
