@@ -1,58 +1,52 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation, Input } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {Component, OnDestroy, OnInit, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
-import { fuseAnimations } from '@fuse/animations';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ModelService } from 'app/_services/model.service';
-import { SitebillEntity, SitebillModelItem } from 'app/_models';
-import { FilterService } from 'app/_services/filter.service';
-import { Page } from '../../page';
+import {fuseAnimations} from '@fuse/animations';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {ModelService} from 'app/_services/model.service';
+import {SitebillEntity, SitebillModelItem} from 'app/_models';
+import {FilterService} from 'app/_services/filter.service';
+import {Page} from '../../page';
 import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.service';
 
 @Component({
-    selector     : 'grid-settings',
-    templateUrl  : './settings.component.html',
-    styleUrls    : ['./settings.component.scss'],
+    selector: 'grid-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class GridSettingsSidenavComponent implements OnInit
-{
+export class GridSettingsSidenavComponent implements OnInit {
     board: any;
     view: string;
 
-    @Input("entity")
-    entity: SitebillEntity;
+    @Input() entity: SitebillEntity;
+    @Input() grid_items: any[];
+    @Input() page: Page;
 
-    @Input("grid_items")
-    grid_items: any[];
-
-    @Input("page")
-    page: Page;
+    @Output() close = new EventEmitter();
 
     page_options: number[];
     per_page: number;
 
     active_columns: SitebillModelItem[];
     not_active_columns: SitebillModelItem[];
-    protected _unsubscribeAll: Subject<any>;
     init_columns_complete: boolean = false;
+
+    protected _unsubscribeAll: Subject<any>;
     private show_logout_button: boolean = false;
-
-
 
     constructor(
         private modelService: ModelService,
         protected bitrix24Service: Bitrix24Service,
         private filterService: FilterService
-    )
-    {
+    ) {
         this._unsubscribeAll = new Subject();
 
         // Set the defaults
         this.view = 'main';
-        this.page_options = [5,10,20,30,40,50,60,70,80,90,100];
+        this.page_options = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -62,17 +56,15 @@ export class GridSettingsSidenavComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.per_page = this.page.size;
         this.init_grid();
         this.drop(null);
-        if ( this.bitrix24Service.get_domain() ) {
+        if (this.bitrix24Service.get_domain()) {
             this.show_logout_button = true;
 
         }
     }
-
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -103,7 +95,7 @@ export class GridSettingsSidenavComponent implements OnInit
         });
 
         this.entity.model.forEach((item, index) => {
-            if (grid_items.indexOf(item.name) == -1 ) {
+            if (grid_items.indexOf(item.name) == -1) {
                 //console.log(item.name);
                 this.not_active_columns.push(item);
             }
@@ -126,7 +118,7 @@ export class GridSettingsSidenavComponent implements OnInit
     drop(event: CdkDragDrop<string[]>) {
         //console.log('drop');
 
-        if ( event != null ) {
+        if (event != null) {
             if (event.previousContainer === event.container) {
                 moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
             } else {
@@ -145,7 +137,7 @@ export class GridSettingsSidenavComponent implements OnInit
         this.modelService.format_grid(this.entity, new_grid_items, this.per_page)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                if ( event != null ) {
+                if (event != null) {
                     this.filterService.empty_share(this.entity);
                 }
             });
@@ -162,23 +154,22 @@ export class GridSettingsSidenavComponent implements OnInit
 
     }
 
-    logout () {
+    logout() {
         this.modelService.logout();
     }
 
     /**
      * Toggle card cover
      */
-    toggleCardCover(): void
-    {
+    toggleCardCover(): void {
     }
 
     /**
      * Toggle subscription
      */
-    toggleSubscription(): void
-    {
+    toggleSubscription(): void {
     }
+
     /**
      * On destroy
      */
@@ -188,4 +179,7 @@ export class GridSettingsSidenavComponent implements OnInit
         this._unsubscribeAll.complete();
     }
 
+    onCloseClick() {
+        this.close.emit();
+    }
 }

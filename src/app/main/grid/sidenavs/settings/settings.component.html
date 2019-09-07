@@ -16,16 +16,20 @@
                 </div>
             </div>
             <div fxFlex="50">
-                <div class="content p-8">
-                    <button mat-raised-button (click)="logout()" color="fuse-red" matTooltip="Выйти" *ngIf="show_logout_button">
+                <div class="content p-8 pr-48">
+                    <button mat-raised-button (click)="logout()" color="fuse-red" matTooltip="Выйти" *ngIf="1 || show_logout_button">
                         <mat-icon>exit_to_app</mat-icon>
                         Выйти
+                    </button>
+
+                    <button mat-icon-button class="view__close" (click)="onCloseClick()">
+                        <mat-icon class="s-24 secondary-text">close</mat-icon>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="start">
+        <div class="view__content" fxLayout="row" fxLayoutAlign="start">
             <div fxFlex="50">
                 <!-- SIDENAV HEADER -->
                 <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
