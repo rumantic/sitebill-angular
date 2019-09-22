@@ -8,6 +8,14 @@ mat-sidenav-container {
         width: 320px !important;
         min-width: 320px !important;
         max-width: 320px !important;
+
+        @include media-breakpoint('lt-sm') {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
     }
 
 }
