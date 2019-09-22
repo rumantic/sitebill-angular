@@ -11,7 +11,7 @@ mat-sidenav-container {
 
         @include media-breakpoint('lt-sm') {
             position: fixed;
-            left: 0;
+            left: auto;
             top: 0;
             right: 0;
             bottom: 0;
