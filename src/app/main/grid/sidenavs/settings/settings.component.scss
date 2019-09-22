@@ -72,6 +72,7 @@ grid-settings {
 }
 
 .example-box {
+    position: relative;
     padding: 10px 5px;
     border-bottom: solid 1px #ccc;
     color: white;
@@ -82,7 +83,38 @@ grid-settings {
     box-sizing: border-box;
     cursor: move;
     font-size: 14px;
+    touch-action: auto !important;
+    -webkit-user-drag: auto !important;
+}
 
+.example-box__title {
+    flex: 0 1 auto;
+    word-break: break-word;
+}
+
+.example-box__handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    @include media-breakpoint('lt-sm') {
+        flex: 0 0 24px;
+        position: relative;
+        left: auto;
+        top: auto;
+        right: auto;
+        bottom: auto;
+    }
+}
+
+.example-box__handle-icon {
+    display: none;
+
+    @include media-breakpoint('lt-sm') {
+        display: block;
+    }
 }
 
 .cdk-drag-preview {
