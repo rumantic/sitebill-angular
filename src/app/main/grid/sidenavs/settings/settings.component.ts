@@ -17,7 +17,7 @@ import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.servic
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class GridSettingsSidenavComponent implements OnInit {
+export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
     board: any;
     view: string;
 
