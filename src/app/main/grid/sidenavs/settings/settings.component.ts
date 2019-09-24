@@ -62,7 +62,6 @@ export class GridSettingsSidenavComponent implements OnInit {
         this.drop(null);
         if (this.bitrix24Service.get_domain()) {
             this.show_logout_button = true;
-
         }
     }
 
@@ -86,7 +85,6 @@ export class GridSettingsSidenavComponent implements OnInit {
         //console.log(this.entity.columns_index);
         //console.log(this.not_active_columns);
 
-        //массив активных колонок
         grid_items.forEach((item, index) => {
             if (this.entity.columns_index[item] == null) {
                 return;
@@ -96,12 +94,8 @@ export class GridSettingsSidenavComponent implements OnInit {
 
         this.entity.model.forEach((item, index) => {
             if (grid_items.indexOf(item.name) == -1) {
-                //console.log(item.name);
                 this.not_active_columns.push(item);
             }
-            //if (this.entity.columns_index[item.name]  != ) {
-            //}
-
         });
 
 
@@ -118,21 +112,31 @@ export class GridSettingsSidenavComponent implements OnInit {
     drop(event: CdkDragDrop<string[]>) {
         //console.log('drop');
 
-        if (event != null) {
+        if (event !== null) {
             if (event.previousContainer === event.container) {
                 moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
             } else {
-                transferArrayItem(event.previousContainer.data,
+                transferArrayItem(
+                    event.previousContainer.data,
                     event.container.data,
                     event.previousIndex,
-                    event.currentIndex);
+                    event.currentIndex
+                );
             }
         }
-        //moveItemInArray(this.grid_items, event.previousIndex, event.currentIndex);
-        let new_grid_items = [];
+
+        const new_grid_items = [];
+        let isNewGridEquals = true;
         this.active_columns.forEach((item, index) => {
+            if (! (isNewGridEquals && this.grid_items.indexOf(item.name) === index)) {
+                isNewGridEquals = false;
+            }
             new_grid_items.push(item.name);
         });
+
+        if (isNewGridEquals && this.grid_items.length === new_grid_items.length) {
+            return;
+        }
 
         this.modelService.format_grid(this.entity, new_grid_items, this.per_page)
             .pipe(takeUntil(this._unsubscribeAll))
