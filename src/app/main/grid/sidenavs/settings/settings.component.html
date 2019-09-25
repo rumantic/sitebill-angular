@@ -37,14 +37,17 @@
                 </div>
                 <!-- / SIDENAV HEADER -->
                 <!-- SIDENAV CONTENT -->
-                <div class="column-height content p-8" fusePerfectScrollbar>
+                <div class="column-height content p-8">
                     <div cdkDropList class="example-list"
                          #active_columns_list="cdkDropList"
                          [cdkDropListData]="active_columns"
                          [cdkDropListConnectedTo]="[not_active_columns_list]"
                          (cdkDropListDropped)="drop($event)">
-                        <div class="example-box green-500-bg" *ngFor="let item of active_columns" cdkDrag>{{item.title}}
-                            ({{item.name}})
+                        <div class="example-box green-500-bg" *ngFor="let item of active_columns" cdkDrag>
+                            <div class="example-box__title">{{item.title}} ({{item.name}})</div>
+                            <div class="example-box__handle" cdkDragHandle>
+                                <mat-icon class="example-box__handle-icon">drag_indicator</mat-icon>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,14 +60,17 @@
                 </div>
                 <!-- / SIDENAV HEADER -->
                 <!-- SIDENAV CONTENT -->
-                <div class="content p-8 column-height" fusePerfectScrollbar>
+                <div class="content p-8 column-height">
                     <div cdkDropList class="example-list"
                          #not_active_columns_list="cdkDropList"
                          [cdkDropListData]="not_active_columns"
                          [cdkDropListConnectedTo]="[active_columns_list]"
                          (cdkDropListDropped)="drop($event)">
-                        <div class="example-box primary-200-bg" *ngFor="let item of not_active_columns"
-                             cdkDrag>{{item.title}} ({{item.name}})
+                        <div class="example-box primary-200-bg" *ngFor="let item of not_active_columns" cdkDrag>
+                            <div class="example-box__title">{{item.title}} ({{item.name}})</div>
+                            <div class="example-box__handle" cdkDragHandle>
+                                <mat-icon class="example-box__handle-icon">drag_indicator</mat-icon>
+                            </div>
                         </div>
                     </div>
                 </div>
