@@ -5,47 +5,6 @@
 
         <div class="header-content" fxLayout="column" fxLayoutAlign="space-between">
 
-            <div class="header-top" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column">
-
-                <div class="logo mb-16 mb-sm-0" fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                        today
-                    </mat-icon>
-                    <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        Calendar
-                    </span>
-                </div>
-
-                <!-- TOOLBAR -->
-                <div class="toolbar" fxLayout="row" fxLayoutAlign="start center">
-
-                    <button mat-icon-button aria-label="Search" matTooltip="Search">
-                        <mat-icon>search</mat-icon>
-                    </button>
-
-                    <button mat-icon-button
-                            mwlCalendarToday
-                            [(viewDate)]="viewDate"
-                            (viewDateChange)="selectedDay = {date:$event}"
-                            aria-label="Today" matTooltip="Today">
-                        <mat-icon>today</mat-icon>
-                    </button>
-
-                    <button mat-icon-button (click)="view='day'" aria-label="Day" matTooltip="Day">
-                        <mat-icon>view_day</mat-icon>
-                    </button>
-
-                    <button mat-icon-button (click)="view='week'" aria-label="Week" matTooltip="Week">
-                        <mat-icon>view_week</mat-icon>
-                    </button>
-
-                    <button mat-icon-button (click)="view='month'" aria-label="Month" matTooltip="Month">
-                        <mat-icon>view_module</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <!-- / TOOLBAR -->
-
             <!-- HEADER BOTTOM -->
             <div class="header-bottom" fxLayout="row" fxLayoutAlign="center center"
                  [@animate]="{value:'*',params:{delay:'150ms'}}">
