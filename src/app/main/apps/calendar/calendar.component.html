@@ -84,39 +84,47 @@
     </div>
     <!-- / HEADER -->
 
+    <ng-template #customCellTemplate let-day="day" let-locale="locale">
+        <div class="cal-cell-row">
+            <h1>3000</h1>
+        </div>
+        <!--small style="margin: 5px">There are {{ day.events.length }} events on this day</small-->
+    </ng-template>
+
     <!-- CONTENT -->
     <div class="content" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
         <div [ngSwitch]="view">
             <mwl-calendar-month-view
-                *ngSwitchCase="'month'"
-                [viewDate]="viewDate"
-                [events]="events"
-                [refresh]="refresh"
-                [activeDayIsOpen]="activeDayIsOpen"
-                (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)"
-                (beforeViewRender)="beforeMonthViewRender($event)">
+                    *ngSwitchCase="'month'"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh"
+                    [activeDayIsOpen]="activeDayIsOpen"
+                    (dayClicked)="dayClicked($event.day)"
+                    (eventClicked)="editEvent('edit', $event.event)"
+                    (eventTimesChanged)="eventTimesChanged($event)"
+                    [cellTemplate]="customCellTemplate"
+                    (beforeViewRender)="beforeMonthViewRender($event)">
             </mwl-calendar-month-view>
             <mwl-calendar-week-view
-                *ngSwitchCase="'week'"
-                [viewDate]="viewDate"
-                (viewDateChange)="selectedDay = {date:$event}"
-                [events]="events"
-                [refresh]="refresh"
-                (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)">
+                    *ngSwitchCase="'week'"
+                    [viewDate]="viewDate"
+                    (viewDateChange)="selectedDay = {date:$event}"
+                    [events]="events"
+                    [refresh]="refresh"
+                    (dayClicked)="dayClicked($event.day)"
+                    (eventClicked)="editEvent('edit', $event.event)"
+                    (eventTimesChanged)="eventTimesChanged($event)">
             </mwl-calendar-week-view>
             <mwl-calendar-day-view
-                *ngSwitchCase="'day'"
-                [viewDate]="viewDate"
-                (viewDateChange)="selectedDay = {date:$event}"
-                [events]="events"
-                [refresh]="refresh"
-                (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)">
+                    *ngSwitchCase="'day'"
+                    [viewDate]="viewDate"
+                    (viewDateChange)="selectedDay = {date:$event}"
+                    [events]="events"
+                    [refresh]="refresh"
+                    (dayClicked)="dayClicked($event.day)"
+                    (eventClicked)="editEvent('edit', $event.event)"
+                    (eventTimesChanged)="eventTimesChanged($event)">
             </mwl-calendar-day-view>
         </div>
     </div>
