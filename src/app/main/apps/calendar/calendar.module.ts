@@ -13,12 +13,14 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 import { CalendarComponent } from 'app/main/apps/calendar/calendar.component';
 import { CalendarService } from 'app/main/apps/calendar/calendar.service';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/calendar/event-form/event-form.component';
+import {AuthGuard} from '../../../_guards';
 
 const routes: Routes = [
     {
         path     : '**',
         component: CalendarComponent,
         children : [],
+        canActivate: [AuthGuard],
         resolve  : {
             chat: CalendarService
         }

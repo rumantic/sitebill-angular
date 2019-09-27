@@ -115,7 +115,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'calendar',
-        loadChildren: 'app/main/apps/calendar/calendar.module#CalendarModule'
+        loadChildren: 'app/main/apps/calendar/calendar.module#CalendarModule',
+        canActivate: [AuthGuard]
     },
     {
         path: 'grid',

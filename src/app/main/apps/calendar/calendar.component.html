@@ -44,8 +44,12 @@
     <!-- / HEADER -->
 
     <ng-template #customCellTemplate let-day="day" let-locale="locale">
+        <div class="cal-cell-top">
+            {{day.date}}
+        </div>
         <div class="cal-cell-row">
-            <h1>3000</h1>
+            <p>Сезонна: 3000</p>
+            <p>Выходные: 3000</p>
         </div>
         <!--small style="margin: 5px">There are {{ day.events.length }} events on this day</small-->
     </ng-template>
