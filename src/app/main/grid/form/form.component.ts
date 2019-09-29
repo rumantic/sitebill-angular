@@ -480,7 +480,7 @@ export class FormComponent implements OnInit {
 
             if (this.text_area_editor_storage[row]) {
                 ql_items[row] = this.text_area_editor_storage[row];
-            } else if (type === 'checkbox' && control.value === '') {
+            } else if (type === 'checkbox' && !control.value) {
                 ql_items[row] = null;
             } else if (type === 'date' && moment.isMoment(control.value)) {
                 ql_items[row] = control.value.format('DD.MM.YYYY');
