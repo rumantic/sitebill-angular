@@ -11,7 +11,7 @@ import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
 import {SnackService} from '../../_services/snack.service';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {toASCII} from "punycode";
@@ -29,7 +29,11 @@ export class RegisterComponent
     loginFormErrors: any;
     valid_domain_through_email: FormGroup;
     loading = false;
+    register_success = false;
     hide_domain: boolean = false;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
 
 
     /**
@@ -84,7 +88,7 @@ export class RegisterComponent
     }
 
     whmcs_create(fullname, lastname, email, password) {
-        const request = { action: 'addclient', fullname: 'angular', lastname: '', email: email, password: password };
+        const request = { action: 'addclient', fullname: fullname, lastname: '', email: email, password: password };
         return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1.php`, request);
     }
 
@@ -94,7 +98,17 @@ export class RegisterComponent
         this.whmcs_create(this.loginForm.value.name, '', this.loginForm.value.email, this.loginForm.value.password)
             .subscribe(
                 data => {
+                    this.loading = false;
                     console.log(data);
+                    if ( data.RESULT == 'error' ) {
+                        this.snackBar.open(data.MESSAGE, 'ok', {
+                            duration: 2000,
+                            horizontalPosition: this.horizontalPosition,
+                            verticalPosition: this.verticalPosition,
+                        });
+                    } else {
+                        this.register_success = true;
+                    }
                 }
             );
 

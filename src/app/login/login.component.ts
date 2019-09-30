@@ -152,6 +152,10 @@ export class LoginComponent implements OnInit {
 
         if (this.loginForm.value.domain != '' && this.loginForm.value.domain != null) {
             let domain = toASCII(this.loginForm.value.domain);
+            let https_replace = 'https://';
+            let http_replace = 'http://';
+            domain = domain.replace(https_replace, '');
+            domain = domain.replace(http_replace, '');
 
             if (!/\./.test(domain)) {
                 this._snackService.message('Сайт указан неверно');
