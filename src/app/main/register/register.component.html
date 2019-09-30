@@ -5,7 +5,7 @@
 
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="register_success">
             <div class="title">Регистрация успешна!</div>
-            <div class="title">Через некоторое время на вашу почту будет отправлен адрес созданного сайта и вы <a class="link" [routerLink]="'/login/'">сможете войти</a>.</div>
+            <div class="title">Через некоторое время на вашу почту будет отправлен адрес созданного сайта. Затем вам нужно подождать пока будет установлен SSL-сертификат для него (минут 10) и вы <a class="link" [routerLink]="'/login/'">сможете войти</a>.</div>
         </div>
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="!register_success">
 

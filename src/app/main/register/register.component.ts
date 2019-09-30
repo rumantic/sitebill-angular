@@ -97,9 +97,9 @@ export class RegisterComponent
         this.loading = true;
         this.whmcs_create(this.loginForm.value.name, '', this.loginForm.value.email, this.loginForm.value.password)
             .subscribe(
-                data => {
+                (data: any) => {
                     this.loading = false;
-                    console.log(data);
+                    //console.log(data);
                     if ( data.RESULT == 'error' ) {
                         this.snackBar.open(data.MESSAGE, 'ok', {
                             duration: 2000,

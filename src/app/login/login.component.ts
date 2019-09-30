@@ -181,7 +181,7 @@ export class LoginComponent implements OnInit {
 
         this.authenticationService.login(this.loginForm.value.domain, this.loginForm.value.username, this.loginForm.value.password)
             .subscribe(
-                data => {
+                (data: any) => {
                     if (data.state == 'error') {
                         //this.alertService.error(data.error);
                         this.loading = false;
