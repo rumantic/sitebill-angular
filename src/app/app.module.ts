@@ -132,6 +132,10 @@ const appRoutes: Routes = [
         path: 'vk',
         loadChildren: 'app/main/vk/vk.module#VkModule'
     },
+    {
+        path: 'register',
+        loadChildren: 'app/main/register/register.module#RegisterModule'
+    },
     /*
     {
         path: 'client/my',

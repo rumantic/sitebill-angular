@@ -1,28 +1,31 @@
 <div id="login" fxLayout="column">
 
-    
+
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
-        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="register_success">
+            <div class="title">Регистрация успешна!</div>
+            <div class="title">Через некоторое время на вашу почту будет отправлен адрес созданного сайта и вы <a class="link" [routerLink]="'/login/'">сможете войти</a>.</div>
+        </div>
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="!register_success">
 
             <div class="logo" *ngIf="hide_domain">
                 <img src="https://www.sitebill.ru/storage/icons/dragon.png">
             </div>
 
-            <div class="title">Авторизация</div>
+            <div class="title">Регистрация</div>
 
-            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-                <mat-form-field *ngIf="!hide_domain">
-                    <input matInput placeholder="Сайт" formControlName="domain" name="domain" >
-                    <mat-error *ngIf="loginFormErrors.domain.required">
-                        укажите ваш сайт
+            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="register()" novalidate>
+                <mat-form-field>
+                    <input matInput placeholder="Имя" formControlName="name" name="name">
+                    <mat-error *ngIf="loginFormErrors.name.required">
+                        укажите ваше имя
                     </mat-error>
                 </mat-form-field>
-
                 <mat-form-field>
-                    <input matInput placeholder="Логин" formControlName="username" name="username">
-                    <mat-error *ngIf="loginFormErrors.username.required">
-                        укажите ваш логин
+                    <input matInput placeholder="Email" formControlName="email" name="email">
+                    <mat-error *ngIf="loginFormErrors.email.required">
+                        укажите ваш email
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field>
@@ -31,23 +34,13 @@
                         укажите ваш пароль
                     </mat-error>
                 </mat-form-field>
-                <!--div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
-                     fxLayoutAlign="space-between center">
-                    <mat-checkbox class="remember-me" aria-label="Remember Me">
-                        Запомпнить меня
-                    </mat-checkbox>
-                    <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-        Забыли пароль?
-        </a>
-                </div-->
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">
                     <mat-icon *ngIf="!loading">
                         vpn_key
                     </mat-icon>
                     <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
-
-                    Вход
+                    Создать сайт
                 </button>
 
             </form>
@@ -57,8 +50,8 @@
                     <span class="text">или</span>
                 </div>
                 <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <span class="text">Еще нет аккаунта?</span>
-                    <a class="link" [routerLink]="'/register/'">Создать сайт</a>
+                    <span class="text">Войти в существующий сайт</span>
+                    <a class="link" [routerLink]="'/login/'">Войти</a>
                 </div>
             </ng-container>
 
