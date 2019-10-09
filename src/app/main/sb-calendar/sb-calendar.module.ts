@@ -17,7 +17,7 @@ const bundle = [
             provide: DateAdapter,
             useFactory: adapterFactory,
         }),
-        SbCalendarRoutesModule,
+        // SbCalendarRoutesModule,
     ],
     declarations: [...bundle],
     exports: [...bundle],

@@ -27,6 +27,7 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "src/assets/scss/angular-calendar.scss",
                             "src/styles.scss"
                         ],
                         "scripts": [],

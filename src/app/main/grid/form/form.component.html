@@ -207,6 +207,10 @@
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 </mat-form-field>
 
+                                <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
+                                    <sb-booking></sb-booking>
+                                </div>
+
                                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchDefault>
                                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>

@@ -134,10 +134,10 @@ const appRoutes: Routes = [
         path: 'register',
         loadChildren: 'app/main/register/register.module#RegisterModule'
     },
-    {
-        path: 'calendar',
-        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModule',
-    },
+    // {
+    //     path: 'calendar',
+    //     loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModule',
+    // },
     /*
     {
         path: 'client/my',

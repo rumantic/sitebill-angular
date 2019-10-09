@@ -76,6 +76,7 @@ import { CollectionsComponent } from '../collections/collections.component';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {MemoryListComponent} from '../collections/memorylist.component';
 
+import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
 
 const routes = [
     {
@@ -313,7 +314,9 @@ const routes = [
         DragDropModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
-        })
+        }),
+
+        SbCalendarModule,
     ],
     exports: [
         NgxUploaderModule
