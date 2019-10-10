@@ -6,6 +6,7 @@ import {SitebillEntity} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
+import {of} from 'rxjs';
 
 
 @Injectable()
@@ -389,4 +390,140 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    get_booking_reservations(start_date, end_date) {
+        // const body = {action: 'reservation', do: 'calender_data', id: this.entity.key_value, start: start_date, end: end_date, session_key: this.get_session_key_safe()};
+        // return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+
+        return of({
+            'data': {
+                'rates': {
+                    '2019-10-10': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': '30',
+                            'amount': 11
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-11': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-12': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-13': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-14': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-15': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-16': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-17': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-18': [
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ],
+                    '2019-10-19': [
+                        {
+                            'rate_type': '80',
+                            'amount': 25
+                        },
+                        {
+                            'rate_type': '70',
+                            'amount': 40
+                        },
+                        {
+                            'rate_type': 0,
+                            'amount': 35
+                        }
+                    ]
+                },
+                'reservations': [
+                    {
+                        'reservation_id': '47',
+                        'checkin': '2019-10-07',
+                        'checkout': '2019-10-11',
+                        'is_validated': '1',
+                        'allow_pay': '0'
+                    },
+                    {
+                        'reservation_id': '48',
+                        'checkin': '2019-10-14',
+                        'checkout': '2019-10-16',
+                        'is_validated': '1',
+                        'allow_pay': '0'
+                    }
+                ],
+                'avialability': []
+            }
+        });
+    }
 }
