@@ -23,25 +23,31 @@ export class SbCalendarHelper {
                     title: 'Бронирование ' + reservation.reservation_id,
                     meta: {
                         type: 'booking',
-                        reservation_id: reservation.reservation_id,
+                        reservation: reservation,
                     },
                 });
             });
         }
 
         if (booking.data.rates) {
-            const ratesList = Object.keys(booking.data.rates);
+            const calendarRatesList = Object.keys(booking.data.rates);
 
-            ratesList.forEach((rateDate) => {
-                const rate = booking.data.rates[rateDate][0];
-                result.push({
-                    start: moment(rateDate, DATE_FORMAT).toDate(),
-                    allDay: true,
-                    title: `${rate.amount}`,
-                    meta: {
-                        type: 'rate',
-                        rate_type: rate.type,
-                    },
+            calendarRatesList.forEach((rateDate) => {
+                const dayRatesList = booking.data.rates[rateDate];
+                if (! dayRatesList.length) {
+                    return;
+                }
+                dayRatesList.forEach((rate, index) => {
+                    result.push({
+                        start: moment(rateDate, DATE_FORMAT).toDate(),
+                        allDay: true,
+                        title: `${rate.amount}`,
+                        meta: {
+                            type: 'rate',
+                            isMain: index === 0,
+                            rate: rate,
+                        },
+                    });
                 });
             });
         }

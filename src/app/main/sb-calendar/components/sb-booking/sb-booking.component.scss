@@ -1,4 +1,31 @@
+@import "src/@fuse/scss/fuse";
+
 :host {
     display: flex;
     flex-direction: column;
+}
+
+.events {
+    flex: 1;
+    align-items: flex-end;
+    padding: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+
+    &__item {
+        &_booking {
+            position: absolute;
+            left: 0;
+            top: -5px;
+            right: 0;
+            height: 5px;
+            background: #b94a48;
+            color: #fff;
+        }
+        &_rate {
+            font-size: 14px;
+            line-height: 14px;
+        }
+    }
 }
