@@ -75,6 +75,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CollectionsComponent } from '../collections/collections.component';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {MemoryListComponent} from '../collections/memorylist.component';
+import {FrontComponent} from './entity/front/front.component';
+import {SaleComponent} from './entity/front/sale.component';
 
 
 const routes = [
@@ -218,6 +220,13 @@ const routes = [
         resolve: {
             chat: ChatService
         },
+    },
+    {
+        path: 'front',
+        component: FrontComponent,
+        resolve: {
+            chat: ChatService
+        },
     }
 
 ];
@@ -264,6 +273,8 @@ const routes = [
         CommonTemplateComponent,
         CollectionsComponent,
         MemoryListComponent,
+        FrontComponent,
+        SaleComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
