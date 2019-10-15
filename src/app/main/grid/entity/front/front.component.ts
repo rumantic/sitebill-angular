@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
-import { MyClientComponent } from './myclient.component';
 import {ModelService} from '../../../../_services/model.service';
 
 @Component({
