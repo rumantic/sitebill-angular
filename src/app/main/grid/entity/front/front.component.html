@@ -1,7 +1,7 @@
     <div id="ngx-datatable" class="page-layout simple fullwidth" *ngIf="after_validated_key()">
         <div class="content" layout="row" fusePerfectScrollbar>
             <mat-tab-group dynamicHeight>
-                <mat-tab label="Все ({{getFreeClientCounter()}})">
+                <mat-tab label="Продам">
                     <!-- WIDGET GROUP -->
                     <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                          [@animateStagger]="{value:'50'}">
@@ -10,7 +10,7 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid></sale-grid>
+                                <sale-grid [disable_menu]="true"></sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
@@ -18,7 +18,7 @@
                     </div>
                     <!-- / WIDGET GROUP -->
                 </mat-tab>
-                <mat-tab label="Мои ({{getMyClientCounter()}})">
+                <mat-tab label="Сдам">
                     <!-- WIDGET GROUP -->
                     <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                          [@animateStagger]="{value:'50'}">
@@ -27,8 +27,58 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-
-                                sfsdf
+                                <sale-grid [disable_menu]="true"></sale-grid>
+                            </div>
+                            <!-- / Front -->
+                        </fuse-widget>
+                        <!-- / WIDGET 11 -->
+                    </div>
+                    <!-- / WIDGET GROUP -->
+                </mat-tab>
+                <mat-tab label="Посуточно">
+                    <!-- WIDGET GROUP -->
+                    <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                         [@animateStagger]="{value:'50'}">
+                        <!-- WIDGET 11 -->
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                     fxFlex="100">
+                            <!-- Front -->
+                            <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                                <sale-grid [disable_menu]="true"></sale-grid>
+                            </div>
+                            <!-- / Front -->
+                        </fuse-widget>
+                        <!-- / WIDGET 11 -->
+                    </div>
+                    <!-- / WIDGET GROUP -->
+                </mat-tab>
+                <mat-tab label="Куплю">
+                    <!-- WIDGET GROUP -->
+                    <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                         [@animateStagger]="{value:'50'}">
+                        <!-- WIDGET 11 -->
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                     fxFlex="100">
+                            <!-- Front -->
+                            <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                                <sale-grid [disable_menu]="true"></sale-grid>
+                            </div>
+                            <!-- / Front -->
+                        </fuse-widget>
+                        <!-- / WIDGET 11 -->
+                    </div>
+                    <!-- / WIDGET GROUP -->
+                </mat-tab>
+                <mat-tab label="Сниму">
+                    <!-- WIDGET GROUP -->
+                    <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                         [@animateStagger]="{value:'50'}">
+                        <!-- WIDGET 11 -->
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                     fxFlex="100">
+                            <!-- Front -->
+                            <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                                <sale-grid [disable_menu]="true"></sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
