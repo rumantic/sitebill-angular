@@ -136,6 +136,10 @@ const appRoutes: Routes = [
         path: 'register',
         loadChildren: 'app/main/register/register.module#RegisterModule'
     },
+    {
+        path: 'frontend',
+        loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
+    },
     /*
     {
         path: 'client/my',
