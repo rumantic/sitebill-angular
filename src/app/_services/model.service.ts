@@ -15,6 +15,7 @@ export class ModelService {
     public entity: SitebillEntity;
     private need_reload: boolean = false;
     private session_key_validated: boolean = false;
+    private nobody_mode: boolean = false;
 
 
     constructor(
@@ -40,8 +41,7 @@ export class ModelService {
     }
 
     get_api_url() {
-        if (isDevMode() && this.api_url == '') {
-            //console.log('dev url');
+        if (isDevMode() && (this.api_url == '' || this.api_url === null)) {
             return this.config.apiEndpoint;
         } else if (this.api_url == null) {
             return '';
@@ -49,6 +49,16 @@ export class ModelService {
             //console.log('prod url');
             return this.api_url;
         }
+    }
+
+    get_nobody_mode () {
+        return this.nobody_mode;
+    }
+    enable_nobody_mode () {
+        this.nobody_mode = true;
+    }
+    disable_nobody_mode () {
+        this.nobody_mode = false;
     }
 
     enable_need_reload () {
@@ -113,6 +123,23 @@ export class ModelService {
             return null;
         }
         return this.currentUser.user_id;
+    }
+
+    init_nobody_user_storage () {
+        this.reset_local_user_storage();
+
+        this.init_nobody_session().subscribe((result: any) => {
+            if ( result.error === 'check_session_key_failed' ) {
+                this.reset_local_user_storage();
+                let refresh_url = this.router.url;
+                this.enable_need_reload();
+                this.router.navigate([refresh_url]);
+            } else {
+                this.currentUser = result;
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.enable_nobody_mode();
+            }
+        });
     }
 
     reset_local_user_storage () {
@@ -286,6 +313,12 @@ export class ModelService {
     get_cms_session() {
         let body = {};
         body = { layer: 'native_ajax', get_cms_session: '1'};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+    init_nobody_session () {
+        let body = {};
+        body = { action: 'init_nobody_session', session_key: 'nobody'};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
