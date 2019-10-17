@@ -17,6 +17,7 @@ import {
     MatSelectModule, MatSidenavModule, MatSliderModule, MatSnackBarModule,
     MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
 } from '@angular/material';
+import {GridModule} from '../grid/grid.module';
 
 const routes = [
     {
@@ -57,7 +58,7 @@ const routes = [
         MatSnackBarModule,
         MatButtonToggleModule,
         MatExpansionModule,
-
+        GridModule,
         FuseSharedModule
     ]
 })
