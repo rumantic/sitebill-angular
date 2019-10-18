@@ -141,6 +141,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("disable_activation_button")
     disable_activation_button: boolean;
 
+    @Input("disable_gallery_controls")
+    disable_gallery_controls: boolean;
+
 
     @Output() total_counterEvent = new EventEmitter<number>();
 
@@ -660,6 +663,7 @@ export class GridComponent implements OnInit, OnDestroy
         let row = event.row;
         let column = event.column;
         let images = event.images;
+        let disable_gallery_controls = event.disable_gallery_controls;
         if (column.type == 'photo' && !Array.isArray(images) && images != '') {
             let tmp_images = [];
 
@@ -695,7 +699,7 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { entity: this.entity, galleryImages: galleryImages, image_field: image_field };
+        dialogConfig.data = { entity: this.entity, galleryImages: galleryImages, image_field: image_field, disable_gallery_controls: disable_gallery_controls };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(GalleryModalComponent, dialogConfig);

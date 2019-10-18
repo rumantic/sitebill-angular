@@ -38,22 +38,22 @@
 
 
 <ng-template #imageTmpl let-column="column" let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(row, column, value)">
+    <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
         <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
             <img width="50"
                  src="{{api_url}}/img/data/{{value[0].preview}}" />
         </div>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0">image_search</mat-icon>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
     </button>
 </ng-template>
 
 <ng-template #photoTmpl let-column="column" let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(row, column, value)">
+    <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
         <ng-container *ngIf="value != ''">
             <img width="50"
                  src="{{api_url}}/img/data/user/{{value}}" />
         </ng-container>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0">image_search</mat-icon>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
     </button>
 </ng-template>
 
