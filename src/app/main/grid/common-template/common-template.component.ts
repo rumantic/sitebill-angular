@@ -33,6 +33,19 @@ export class CommonTemplateComponent {
     template_loaded: boolean;
     @Input() entity: SitebillEntity;
 
+    @Input("disable_view_button")
+    disable_view_button: boolean;
+
+    @Input("disable_edit_button")
+    disable_edit_button: boolean;
+
+    @Input("disable_delete_button")
+    disable_delete_button: boolean;
+
+    @Input("disable_activation_button")
+    disable_activation_button: boolean;
+
+
     @Output() viewEvent = new EventEmitter<number>();
     @Output() edit_formEvent = new EventEmitter<number>();
     @Output() deleteEvent = new EventEmitter<number>();

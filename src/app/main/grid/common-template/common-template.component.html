@@ -8,10 +8,10 @@
             <mat-icon *ngIf="row[entity.get_primary_key()].collections == null" (click)="toggle_collection(row, value)" aria-label="Добавить в подборку" matTooltip="Добавить в подборку">playlist_add</mat-icon>
         </button>
 
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_view_button">
             <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
         </button>
-        <span *ngIf="row.active">
+        <span *ngIf="row.active && !disable_activation_button">
             <button mat-icon-button *ngIf="row.active.value == '0'" color="accent">
                 <mat-icon (click)="toggle_active(row, value)" aria-label="Включить" matTooltip="Включить">power_settings_new</mat-icon>
             </button>
@@ -20,11 +20,11 @@
             </button>
         </span>
 
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_edit_button">
             <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn">
+        <button mat-icon-button color="warn" *ngIf="!disable_delete_button">
             <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
         </button>
     </div>

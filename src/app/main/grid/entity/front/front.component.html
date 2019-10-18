@@ -1,5 +1,17 @@
-    <div id="ngx-datatable" class="page-layout simple fullwidth" *ngIf="after_validated_key()">
-        <div class="content" layout="row" fusePerfectScrollbar>
+    <div id="ngx-datatable" class="page-layout simple fullwidth">
+        <!-- HEADER -->
+        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="center center">
+
+            <div class="hero-text">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    База объектов недвижимости
+                </h1>
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+
+        <div class="content" layout="row" fusePerfectScrollbar *ngIf="modelService.get_nobody_mode()">
             <mat-tab-group dynamicHeight>
                 <mat-tab label="Продам">
                     <!-- WIDGET GROUP -->
@@ -10,7 +22,14 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid [disable_menu]="true"></sale-grid>
+                                <sale-grid
+                                        [disable_menu]="true"
+                                        [disable_add_button]="disable_add_button"
+                                        [disable_edit_button]="disable_edit_button"
+                                        [disable_view_button]="disable_view_button"
+                                        [disable_delete_button]="disable_delete_button"
+                                        [disable_activation_button]="disable_activation_button">
+                                </sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
@@ -27,7 +46,14 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid [disable_menu]="true"></sale-grid>
+                                <sale-grid
+                                        [disable_menu]="true"
+                                        [disable_add_button]="disable_add_button"
+                                        [disable_edit_button]="disable_edit_button"
+                                        [disable_view_button]="disable_view_button"
+                                        [disable_delete_button]="disable_delete_button"
+                                        [disable_activation_button]="disable_activation_button">
+                                </sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
@@ -44,7 +70,14 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid [disable_menu]="true"></sale-grid>
+                                <sale-grid
+                                        [disable_menu]="true"
+                                        [disable_add_button]="disable_add_button"
+                                        [disable_edit_button]="disable_edit_button"
+                                        [disable_view_button]="disable_view_button"
+                                        [disable_delete_button]="disable_delete_button"
+                                        [disable_activation_button]="disable_activation_button">
+                                </sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
@@ -61,7 +94,14 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid [disable_menu]="true"></sale-grid>
+                                <sale-grid
+                                        [disable_menu]="true"
+                                        [disable_add_button]="disable_add_button"
+                                        [disable_edit_button]="disable_edit_button"
+                                        [disable_view_button]="disable_view_button"
+                                        [disable_delete_button]="disable_delete_button"
+                                        [disable_activation_button]="disable_activation_button">
+                                </sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>
@@ -78,7 +118,14 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid [disable_menu]="true"></sale-grid>
+                                <sale-grid
+                                        [disable_menu]="true"
+                                        [disable_add_button]="disable_add_button"
+                                        [disable_edit_button]="disable_edit_button"
+                                        [disable_view_button]="disable_view_button"
+                                        [disable_delete_button]="disable_delete_button"
+                                        [disable_activation_button]="disable_activation_button">
+                                </sale-grid>
                             </div>
                             <!-- / Front -->
                         </fuse-widget>

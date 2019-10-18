@@ -22,6 +22,7 @@ export class SaleComponent extends GridComponent {
 
         //this.table_index_params[0] = { user_id: 0 };
         //this.define_grid_params({ user_id: this.modelService.get_user_id() });
+        //this.define_grid_params({ active: 1 });
 
         //let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
         //let grid_fields = ['id', 'user_id', 'date', 'topic_id', 'street_id'];

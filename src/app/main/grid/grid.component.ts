@@ -126,6 +126,22 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("disable_menu")
     disable_menu: boolean;
 
+    @Input("disable_add_button")
+    disable_add_button: boolean;
+
+    @Input("disable_view_button")
+    disable_view_button: boolean;
+
+    @Input("disable_edit_button")
+    disable_edit_button: boolean;
+
+    @Input("disable_delete_button")
+    disable_delete_button: boolean;
+
+    @Input("disable_activation_button")
+    disable_activation_button: boolean;
+
+
     @Output() total_counterEvent = new EventEmitter<number>();
 
 
