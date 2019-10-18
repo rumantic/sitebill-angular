@@ -20,6 +20,7 @@ export class FrontComponent {
     private disable_gallery_controls: boolean = false;
     private disable_view_button: boolean = false;
     private sale_entity: SitebillEntity;
+    private rent_entity: SitebillEntity;
     constructor(
         private filterService: FilterService,
         private _fuseConfigService: FuseConfigService,
@@ -37,6 +38,16 @@ export class FrontComponent {
         this.sale_entity.set_table_name('street');
         this.sale_entity.set_primary_key('street_id');
         this.sale_entity.set_disable_comment();
+        this.sale_entity.set_default_params({ city_id: 3 });
+
+
+        this.rent_entity = new SitebillEntity();
+        this.rent_entity.set_app_name('rent');
+        this.rent_entity.set_table_name('data');
+        this.rent_entity.set_primary_key('id');
+        this.rent_entity.set_disable_comment();
+        this.rent_entity.set_default_params({ topic_id: 6122 });
+
 
     }
 

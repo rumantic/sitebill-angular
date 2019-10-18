@@ -6,6 +6,7 @@ export class SitebillEntity {
     columns: string[];
     columns_index: any[];
     default_columns_list: string[];
+    default_params: string[];
     model: SitebillModelItem[];
     private enable_collections: boolean;
     private hook: string;
@@ -17,6 +18,7 @@ export class SitebillEntity {
         this.model = [];
         this.columns_index = [];
         this.default_columns_list = [];
+        this.default_params = [];
         this.enable_collections = false;
         this.hook = null;
         this.readonly = false;
@@ -29,6 +31,14 @@ export class SitebillEntity {
 
     set_app_name(app_name: string) {
         this.app_name = app_name;
+    }
+
+    get_default_params() {
+        return this.default_params;
+    }
+
+    set_default_params(default_params) {
+        this.default_params = default_params;
     }
 
     get_table_name() {

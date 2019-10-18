@@ -766,11 +766,13 @@ export class GridComponent implements OnInit, OnDestroy
        * @param page The page to select
        */
     setPage(pageInfo) {
-        //console.log('setPage');
         this.page.pageNumber = pageInfo.offset;
         //const params = { owner: true };
         let params = {};
-        if (this.get_predefined_grid_params() != null) {
+
+        if (this.entity.get_default_params()) {
+            params = this.entity.get_default_params();
+        } else if (this.get_predefined_grid_params() != null) {
             params = this.get_predefined_grid_params();
         }
 
