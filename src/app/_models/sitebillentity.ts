@@ -10,6 +10,7 @@ export class SitebillEntity {
     private enable_collections: boolean;
     private hook: string;
     private readonly: boolean;
+    private enable_comment: boolean;
 
     constructor() {
         this.columns = [];
@@ -19,6 +20,7 @@ export class SitebillEntity {
         this.enable_collections = false;
         this.hook = null;
         this.readonly = false;
+        this.enable_comment = true;
     }
 
     get_app_name() {
@@ -51,6 +53,16 @@ export class SitebillEntity {
 
     set_primary_key(name: string) {
         this.primary_key = name;
+    }
+
+    set_enable_comment () {
+        this.enable_comment = true;
+    }
+    set_disable_comment () {
+        this.enable_comment = false;
+    }
+    is_enable_comment () {
+        return this.enable_comment;
     }
 
 

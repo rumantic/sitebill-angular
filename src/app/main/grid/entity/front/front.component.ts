@@ -36,6 +36,7 @@ export class FrontComponent {
         this.sale_entity.set_app_name('street');
         this.sale_entity.set_table_name('street');
         this.sale_entity.set_primary_key('street_id');
+        this.sale_entity.set_disable_comment();
 
     }
 

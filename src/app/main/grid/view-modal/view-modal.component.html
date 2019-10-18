@@ -75,7 +75,7 @@
                     </mat-tab-group>
                 </form>
             </div>
-            <div class="modal-content__comments">
+            <div class="modal-content__comments" *ngIf="_data.is_enable_comment()">
                 <mat-accordion>
                     <mat-expansion-panel
                         class="comments"
