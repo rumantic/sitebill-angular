@@ -3,6 +3,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
 import {ModelService} from '../../../../_services/model.service';
 import {FuseConfigService} from '../../../../../@fuse/services/config.service';
+import {SitebillEntity} from '../../../../_models';
 
 @Component({
     selector: 'front-component',
@@ -12,18 +13,54 @@ import {FuseConfigService} from '../../../../../@fuse/services/config.service';
 })
 export class FrontComponent {
     public allow_load_grid = false;
+    private disable_add_button: boolean = false;
+    private disable_edit_button: boolean = false;
+    private disable_delete_button: boolean = false;
+    private disable_activation_button: boolean = false;
+    private disable_gallery_controls: boolean = false;
+    private disable_view_button: boolean = false;
+    private sale_entity: SitebillEntity;
     constructor(
         private filterService: FilterService,
         private _fuseConfigService: FuseConfigService,
-        protected modelService: ModelService
+        public modelService: ModelService
     ) {
         this.disable_menu();
-        //console.log('lead constructor');
+        // console.log('lead constructor');
     }
 
     ngOnInit() {
-        this.modelService.get_session_key_safe();
+        this.enable_guest_mode();
+
+        this.sale_entity = new SitebillEntity();
+        this.sale_entity.set_app_name('street');
+        this.sale_entity.set_table_name('street');
+        this.sale_entity.set_primary_key('street_id');
+
     }
+
+    enable_guest_mode () {
+        this.switch_off_grid_controls();
+        
+        if ( this.modelService.get_session_key() === null ) {
+            this.modelService.init_nobody_user_storage();
+        } else if ( this.modelService.get_session_key() === 'nobody' ) {
+            this.modelService.enable_nobody_mode();
+        } else if ( this.modelService.get_session_key() === undefined ) {
+            this.modelService.init_nobody_user_storage();
+        }
+    }
+    
+    switch_off_grid_controls () {
+        this.disable_add_button = true;
+        this.disable_edit_button = true;
+        this.disable_delete_button = true;
+        this.disable_activation_button = true;
+        this.disable_gallery_controls = true;
+        this.disable_view_button = false;
+
+    }
+
     disable_menu() {
         this._fuseConfigService.config = {
             layout: {
