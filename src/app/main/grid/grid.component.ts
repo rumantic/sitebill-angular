@@ -144,6 +144,8 @@ export class GridComponent implements OnInit, OnDestroy
     @Input("disable_gallery_controls")
     disable_gallery_controls: boolean;
 
+    @Input("input_entity")
+    input_entity: SitebillEntity;
 
     @Output() total_counterEvent = new EventEmitter<number>();
 
@@ -302,9 +304,13 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     setup_apps() {
-        this.entity.set_app_name('client');
-        this.entity.set_table_name('client');
-        this.entity.primary_key = 'client_id';
+        if ( this.input_entity ) {
+            this.entity = this.input_entity;
+        } else {
+            this.entity.set_app_name('client');
+            this.entity.set_table_name('client');
+            this.entity.primary_key = 'client_id';
+        }
     }
 
     init_grid(params) {

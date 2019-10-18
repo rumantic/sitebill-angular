@@ -49,6 +49,11 @@ export class SitebillEntity {
         return this.primary_key;
     }
 
+    set_primary_key(name: string) {
+        this.primary_key = name;
+    }
+
+
     set_enable_collections() {
         this.enable_collections = true;
     }

@@ -15,10 +15,15 @@ import { MatDialogConfig } from '@angular/material';
 export class SaleComponent extends GridComponent {
 
     setup_apps() {
-        this.entity.set_app_name('sale');
-        this.entity.set_table_name('data');
-        this.entity.primary_key = 'id';
-        this.enable_date_range('date');
+        if ( this.input_entity ) {
+            this.entity = this.input_entity;
+        } else {
+            this.entity.set_app_name('sale');
+            this.entity.set_table_name('data');
+            this.entity.set_primary_key('id');
+            this.enable_date_range('date');
+        }
+
 
         //this.table_index_params[0] = { user_id: 0 };
         //this.define_grid_params({ user_id: this.modelService.get_user_id() });
