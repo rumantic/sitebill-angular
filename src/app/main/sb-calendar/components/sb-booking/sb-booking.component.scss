@@ -5,6 +5,46 @@
     flex-direction: column;
 }
 
+$color-booking: #b94a48;
+
+.controls {
+    display: flex;
+    margin: 24px 0 32px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.events-preview {
+    display: flex;
+    flex-direction: row;
+
+    &__rates-title {
+        margin-top: 0;
+    }
+
+    &__booking {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        padding: 4px 0 8px;
+        margin-bottom: 16px;
+        border-bottom: solid 1px #ccc;
+
+        &:before {
+            display: inline-block;
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: $color-booking;
+            margin-right: 8px;
+        }
+    }
+    &__rates-list-item {
+        list-style: disc;
+    }
+}
+
 .events {
     flex: 1;
     align-items: flex-end;
@@ -20,7 +60,7 @@
             top: -5px;
             right: 0;
             height: 5px;
-            background: #b94a48;
+            background: $color-booking;
             color: #fff;
         }
         &_rate {
@@ -28,4 +68,10 @@
             line-height: 14px;
         }
     }
+}
+
+::ng-deep .rates-edit-dialog .mat-dialog-container {
+    width: 600px;
+    max-height: 85vh;
+    padding: 0;
 }

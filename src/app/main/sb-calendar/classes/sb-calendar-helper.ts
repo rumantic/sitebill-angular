@@ -1,11 +1,10 @@
 import {CalendarEvent} from 'angular-calendar';
 import * as moment from 'moment';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
+import {SB_DATE_FORMAT} from './sb-calendar.constants';
 
 export class SbCalendarHelper {
 
-    static dateFormat = DATE_FORMAT;
+    static dateFormat = SB_DATE_FORMAT;
 
     static parseEventsFromBooking(booking): CalendarEvent[] {
         const result: CalendarEvent[] = [];
@@ -17,8 +16,8 @@ export class SbCalendarHelper {
         if (booking.data.reservations && booking.data.reservations.length) {
             booking.data.reservations.forEach((reservation) => {
                 result.push({
-                    start: moment(reservation.checkin, DATE_FORMAT).toDate(),
-                    end: moment(reservation.checkout, DATE_FORMAT).toDate(),
+                    start: moment(reservation.checkin, SB_DATE_FORMAT).toDate(),
+                    end: moment(reservation.checkout, SB_DATE_FORMAT).toDate(),
                     allDay: true,
                     title: 'Бронирование ' + reservation.reservation_id,
                     meta: {
@@ -39,7 +38,7 @@ export class SbCalendarHelper {
                 }
                 dayRatesList.forEach((rate, index) => {
                     result.push({
-                        start: moment(rateDate, DATE_FORMAT).toDate(),
+                        start: moment(rateDate, SB_DATE_FORMAT).toDate(),
                         allDay: true,
                         title: `${rate.amount}`,
                         meta: {
@@ -53,5 +52,7 @@ export class SbCalendarHelper {
         }
 
         return result;
-    };
+    }
+
+
 }

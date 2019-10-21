@@ -1,0 +1,55 @@
+@import "src/@fuse/scss/fuse";
+
+mat-card {
+    margin-bottom: 10px;
+}
+
+.list {
+    $parent-class: &;
+    width: 100%;
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px 4px;
+        transition: background-color 250ms;
+
+        &:hover {
+            background: #e0e0e0;
+
+            #{$parent-class}__item-icon {
+                opacity: 1;
+            }
+        }
+    }
+    &__item-title {
+        flex: 1 0;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+    &__item-icon {
+        margin-left: 10px;
+        opacity: 0;
+        transition: opacity 250ms;
+    }
+    &__item-value {
+        margin-left: 10px;
+        text-align: right;
+    }
+}
+
+.form {
+    width: 100%;
+
+    &__title {
+        font-size: 14px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+    }
+}

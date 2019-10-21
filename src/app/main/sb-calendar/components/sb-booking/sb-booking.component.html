@@ -1,40 +1,34 @@
-{{ viewDate }}
-
-<div class="row text-center">
-    <div class="col-md-4">
-        <div class="btn-group">
-            <div
-                class="btn btn-primary"
-                mwlCalendarPreviousView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-            >
-                Previous
-            </div>
-            <div
-                class="btn btn-outline-secondary"
-                mwlCalendarToday
-                [(viewDate)]="viewDate"
-            >
-                Today
-            </div>
-            <div
-                class="btn btn-primary"
-                mwlCalendarNextView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-            >
-                Next
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ru' }}</h3>
-    </div>
+<div class="controls">
+    <button
+        type="button"
+        mat-raised-button
+        class="controls__btn"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+    ><mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button
+        type="button"
+        mat-raised-button
+        class="controls__btn"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+    >Сегодня
+    </button>
+    <button
+        type="button"
+        mat-raised-button
+        class="controls__btn"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+    >keyboard_arrow_right
+    </button>
 </div>
-<br/>
+
 <div [ngSwitch]="view">
     <mwl-calendar-month-view
         *ngSwitchCase="CalendarView.Month"
@@ -43,8 +37,8 @@
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
         [cellTemplate]="calendarCell"
+        [openDayEventsTemplate]="calendarOpenDayEvents"
         (dayClicked)="dayClicked($event.day)"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
         locale="ru"
         weekStartsOn="1"
@@ -87,5 +81,49 @@
                 {{ event.meta.rate.amount | price }} руб.
             </div>
         </ng-container>
+    </div>
+</ng-template>
+
+<ng-template
+    #calendarOpenDayEvents
+    let-events="events"
+    let-eventClicked="eventClicked"
+    let-isOpen="isOpen"
+    let-trackByEventId="trackByEventId"
+    let-validateDrag="validateDrag"
+>
+    <div class="cal-open-day-events" *ngIf="isOpen">
+        <div class="events-preview">
+            <div class="events-preview__list">
+                <div
+                    *ngIf="events.length && events[0].meta.type === 'booking'"
+                    class="events-preview__booking">
+                    Бронирование на текущий день: {{events[0].title}}
+                    с {{events[0].meta.reservation.checkin}} по {{events[0].meta.reservation.checkout}}
+                </div>
+                <ng-container *ngIf="events.length > 1 && events[0].meta.type === 'booking' || events.length && events[0].meta.type === 'rate'; else emptyRates">
+                    <h4 class="events-preview__rates-title">Действующие цены:</h4>
+
+                    <ul class="events-preview__rates-list">
+                        <ng-container
+                            *ngFor="let event of events; trackBy: trackByEventId"
+                        >
+                            <li *ngIf="event.meta?.type === 'rate'" class="events-preview__rates-list-item">
+                                {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
+                                {{event.meta?.rate.amount | price}} руб.
+                            </li>
+                        </ng-container>
+                    </ul>
+                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate)">
+                        Изменить
+                    </button>
+                </ng-container>
+                <ng-template #emptyRates>
+                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate)">
+                        Установить цены
+                    </button>
+                </ng-template>
+            </div>
+        </div>
     </div>
 </ng-template>

@@ -4,6 +4,8 @@ import {format, endOfMonth, isSameDay, isSameMonth, startOfMonth} from 'date-fns
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
 import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
+import {MatDialog} from '@angular/material';
+import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
 
 @Component({
     selector: 'sb-booking',
@@ -27,22 +29,6 @@ export class SbBookingComponent implements OnInit {
         event: CalendarEvent;
     };
 
-    actions: CalendarEventAction[] = [
-        {
-            label: '<i class="fa fa-fw fa-pencil"></i>',
-            onClick: ({event}: { event: CalendarEvent }): void => {
-                this.handleEvent('Edited', event);
-            }
-        },
-        {
-            label: '<i class="fa fa-fw fa-times"></i>',
-            onClick: ({event}: { event: CalendarEvent }): void => {
-                this.events = this.events.filter(iEvent => iEvent !== event);
-                this.handleEvent('Deleted', event);
-            }
-        }
-    ];
-
     refresh: Subject<any> = new Subject();
 
     events: CalendarEvent[] = [];
@@ -51,6 +37,7 @@ export class SbBookingComponent implements OnInit {
 
     constructor(
         protected modelService: ModelService,
+        public editRatesDialog: MatDialog,
     ) {
     }
 
@@ -100,15 +87,24 @@ export class SbBookingComponent implements OnInit {
             }
             return iEvent;
         });
-        this.handleEvent('Dropped or resized', event);
-    }
-
-    handleEvent(action: string, event: CalendarEvent): void {
-        console.log(event, action);
-        this.modalData = {event, action};
     }
 
     closeOpenMonthViewDay() {
         this.activeDayIsOpen = false;
+    }
+
+    onEditRatesClick(eventsList, viewDate) {
+        const data = {
+            eventsList,
+            date: viewDate,
+        }
+        const dialogRef = this.editRatesDialog.open(SbRatesEditDialogComponent, {
+            data,
+            panelClass: 'rates-edit-dialog',
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log(result);
+        });
     }
 }
