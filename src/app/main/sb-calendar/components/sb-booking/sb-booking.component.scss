@@ -10,6 +10,7 @@ $color-booking: #b94a48;
 .controls {
     display: flex;
     margin: 24px 0 32px;
+    padding: 0 4px;
     flex-direction: row;
     justify-content: space-between;
 }
@@ -70,8 +71,14 @@ $color-booking: #b94a48;
     }
 }
 
-::ng-deep .rates-edit-dialog .mat-dialog-container {
-    width: 600px;
-    max-height: 85vh;
-    padding: 0;
+::ng-deep {
+    .rates-edit-dialog .mat-dialog-container {
+        width: 600px;
+        max-height: 85vh;
+        padding: 0;
+    }
+    .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
 }

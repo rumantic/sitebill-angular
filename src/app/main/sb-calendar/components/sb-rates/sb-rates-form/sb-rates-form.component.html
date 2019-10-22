@@ -1,6 +1,11 @@
 <div class="list">
-    <ng-container *ngFor="let rate of ratesList">
-        <div *ngIf="! currentRateEdit || currentRateEdit.rateType !== rate.rateType; else editForm" class="list__item" (click)="onEditRateClick(rate)">
+    <ng-container *ngFor="let rate of ratesList; let index = index">
+        <div
+            *ngIf="! currentRateEdit || currentRateEdit.rateType !== rate.rateType; else editForm"
+            class="list__item"
+            [ngClass]="rate.isMain ? 'list__item_main' : ''"
+            (click)="onEditRateClick(rate)"
+        >
             <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
             <div class="list__item-value">{{ rate.amount | price }}</div>
         </div>

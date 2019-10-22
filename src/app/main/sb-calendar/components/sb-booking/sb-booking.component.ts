@@ -6,6 +6,7 @@ import {ModelService} from '../../../../_services/model.service';
 import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
 import {MatDialog} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
+import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 
 @Component({
     selector: 'sb-booking',
@@ -30,6 +31,8 @@ export class SbBookingComponent implements OnInit {
     };
 
     refresh: Subject<any> = new Subject();
+
+    rateTypes = SB_RATE_TYPES;
 
     events: CalendarEvent[] = [];
 

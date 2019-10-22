@@ -11,6 +11,5 @@ export class SbRatesEditDialogComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) {
-        console.log(this.data);
     }
 }

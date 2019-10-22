@@ -23,6 +23,14 @@ mat-card {
                 opacity: 1;
             }
         }
+
+        &_main {
+            border: solid 1px #4CAF50;
+            
+            &:hover {
+                background: #eff8ef;
+            }
+        }
     }
     &__item-title {
         flex: 1 0;
