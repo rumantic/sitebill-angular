@@ -7,6 +7,7 @@ import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
 import {MatDialog} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
 import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
+import {SbCalendarService} from '../../services/sb-calendar.service';
 
 @Component({
     selector: 'sb-booking',
@@ -25,40 +26,33 @@ export class SbBookingComponent implements OnInit {
 
     viewDate: Date = new Date();
 
-    modalData: {
-        action: string;
-        event: CalendarEvent;
-    };
-
     refresh: Subject<any> = new Subject();
 
     rateTypes = SB_RATE_TYPES;
 
     events: CalendarEvent[] = [];
 
-    activeDayIsOpen: boolean = true;
+    activeDayIsOpen = true;
 
     constructor(
         protected modelService: ModelService,
         public editRatesDialog: MatDialog,
+        private calendarService: SbCalendarService,
     ) {
     }
 
     ngOnInit(): void {
         this.initEventsList();
+        this.initEventsSubscription();
     }
 
     initEventsList() {
-        let start = '';
-        let end = '';
-        switch (this.view) {
-            case CalendarView.Month:
-                start = format(startOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                break;
-        }
-        this.modelService.get_booking_reservations(start, end).subscribe((result) => {
-            this.events = SbCalendarHelper.parseEventsFromBooking(result);
+        this.fetchEvents();
+    }
+
+    initEventsSubscription() {
+        this.calendarService.updateEvents$.subscribe(() => {
+            this.fetchEvents();
         });
     }
 
@@ -100,7 +94,8 @@ export class SbBookingComponent implements OnInit {
         const data = {
             eventsList,
             date: viewDate,
-        }
+        };
+
         const dialogRef = this.editRatesDialog.open(SbRatesEditDialogComponent, {
             data,
             panelClass: 'rates-edit-dialog',
@@ -108,6 +103,20 @@ export class SbBookingComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log(result);
+        });
+    }
+
+    private fetchEvents() {
+        let start = '';
+        let end = '';
+        switch (this.view) {
+            case CalendarView.Month:
+                start = format(startOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
+                end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
+                break;
+        }
+        this.modelService.get_booking_reservations(start, end).subscribe((result) => {
+            this.events = SbCalendarHelper.parseEventsFromBooking(result);
         });
     }
 }

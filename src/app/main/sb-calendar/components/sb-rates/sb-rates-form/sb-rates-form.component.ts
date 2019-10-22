@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
 import {ModelService} from '../../../../../_services/model.service';
 import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
 import {SbRateModel} from '../../../models/sb-rate.model';
+import {of} from 'rxjs';
+import {SbCalendarService} from '../../../services/sb-calendar.service';
 
 class RatesListItem extends SbRateModel {
     isMain = false;
@@ -33,10 +35,10 @@ export class SbRatesFormComponent implements OnInit {
     ratesList: RatesListItem[] = [];
 
     @Input() data: any;
-    @Output() updateRates = new EventEmitter();
 
     constructor(
-        modelService: ModelService,
+        private modelService: ModelService,
+        private calendarService: SbCalendarService,
     ) {
     }
 
@@ -54,6 +56,17 @@ export class SbRatesFormComponent implements OnInit {
 
     onSaveRateClick() {
         // TODO save here this.currentRateEdit
+
+        of(this.data.eventsList.map((e) => {
+            if (e && e.meta && e.meta.type === 'rate') {
+                Object.assign(e.meta.rate, {}, this.currentRateEdit);
+                this.currentRateEdit = null;
+            }
+            return e;
+        })).subscribe((result) => {
+            console.log(result);
+            this.calendarService.updateEvents$.emit();
+        });
     }
 
     initRatesViewList() {
@@ -84,5 +97,9 @@ export class SbRatesFormComponent implements OnInit {
         if (mainRateIndex >= 0) {
             this.ratesList[mainRateIndex].isMain = true;
         }
+    }
+
+    initRateForm() {
+
     }
 }
