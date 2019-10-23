@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ModelService} from '../../../../../_services/model.service';
 import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
 import {SbRateModel} from '../../../models/sb-rate.model';
-import {of} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {SbCalendarService} from '../../../services/sb-calendar.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 class RatesListItem extends SbRateModel {
     isMain = false;
@@ -11,6 +12,12 @@ class RatesListItem extends SbRateModel {
     constructor(data) {
         super(data);
     }
+}
+
+class RateFormModel {
+    group: FormGroup;
+    subscription$: Subscription;
+    options: { [name: string]: any };
 }
 
 @Component({
@@ -22,11 +29,13 @@ class RatesListItem extends SbRateModel {
 })
 export class SbRatesFormComponent implements OnInit {
 
-    form = {
+    formModel: RateFormModel = {
+        group: null,
+        subscription$: null,
         options: {
             months: SB_MONTHS,
             weekdays: SB_WEEKDAYS,
-            days: Array(31).map((day) => day + 1),
+            days: Array(31).map((value, day) => day + 1),
         },
     };
     currentRateEdit: SbRateModel;
@@ -37,6 +46,7 @@ export class SbRatesFormComponent implements OnInit {
     @Input() data: any;
 
     constructor(
+        private fb: FormBuilder,
         private modelService: ModelService,
         private calendarService: SbCalendarService,
     ) {
@@ -48,6 +58,7 @@ export class SbRatesFormComponent implements OnInit {
 
     onEditRateClick(rate: SbRateModel) {
         this.currentRateEdit = Object.assign({}, rate);
+        this.buildRateForm(this.currentRateEdit);
     }
 
     onCancelEditRateClick() {
@@ -55,17 +66,20 @@ export class SbRatesFormComponent implements OnInit {
     }
 
     onSaveRateClick() {
-        // TODO save here this.currentRateEdit
+        if (!this.formModel.group || this.formModel.group.invalid) {
+            Object.keys(this.formModel.group.controls).forEach((key) => {
+                this.formModel.group.controls[key].markAsTouched();
+                this.formModel.group.controls[key].markAsDirty();
+            });
+            return;
+        }
 
-        of(this.data.eventsList.map((e) => {
-            if (e && e.meta && e.meta.type === 'rate') {
-                Object.assign(e.meta.rate, {}, this.currentRateEdit);
-                this.currentRateEdit = null;
-            }
-            return e;
-        })).subscribe((result) => {
-            console.log(result);
+        const model = new SbRateModel(Object.assign({}, this.currentRateEdit, this.formModel.group.value));
+        this.saveRate(model).subscribe((result) => {
+            this.data.eventsList = result;
+            this.currentRateEdit = null;
             this.calendarService.updateEvents$.emit();
+            this.initRatesViewList();
         });
     }
 
@@ -99,7 +113,73 @@ export class SbRatesFormComponent implements OnInit {
         }
     }
 
-    initRateForm() {
+    private buildRateForm(rate: SbRateModel) {
+        const config: { [name: string]: any } = {
+            id: [rate.id, []],
+            amount: [rate.amount.toString(), [Validators.required, Validators.min(0)]],
+            active: [rate.active, []],
+        };
+        if (rate.meta.hasFieldSeason) {
+            config.season_start = [rate.season_start ? rate.season_start.valueOf() : null, [Validators.required]];
+            config.season_end = [rate.season_end ? rate.season_end.valueOf() : null, [Validators.required]];
+        }
+        if (rate.meta.hasFieldPeriod) {
+            config.period_start_m = [rate.period_start_m, [Validators.required]];
+            config.period_start_d = [rate.period_start_d, [Validators.required]];
+            config.period_end_m = [rate.period_end_m, [Validators.required]];
+            config.period_end_d = [rate.period_end_d, [Validators.required]];
+        }
+        if (rate.meta.hasFieldMonth) {
+            config.month_number = [rate.month_number, [Validators.required]];
+        }
+        if (rate.meta.hasFieldWeekday) {
+            config.day_number = [rate.day_number, [Validators.required]];
+        }
+        this.formModel.group = this.fb.group(config);
+        // this.initRateFormSubscription(rate);
+    }
 
+    private initRateFormSubscription(rate: SbRateModel) {
+        if (!this.formModel.group) {
+            return;
+        }
+
+        if (this.formModel.subscription$ instanceof Subscription) {
+            this.formModel.subscription$.unsubscribe();
+        }
+
+        this.formModel.subscription$ = this.formModel.group.valueChanges.subscribe((value) => {
+            if (rate.meta.hasFieldSeason) {
+                if (!value || !value.season_start) {
+                    this.formModel.group.controls['season_end'].disable();
+                } else {
+                    this.formModel.group.controls['season_end'].enable();
+                    this.formModel.group.controls['season_end'].setValidators([Validators.required, Validators.min(value.season_start)]);
+                }
+            }
+            if (rate.meta.hasFieldPeriod) {
+                if (!value || !value.period_start_m || !value.period_start_d) {
+                    this.formModel.group.controls['period_end_m'].disable();
+                    this.formModel.group.controls['period_end_d'].disable();
+                } else {
+                    this.formModel.group.controls['period_end_m'].enable();
+                    this.formModel.group.controls['period_end_d'].enable();
+                    this.formModel.group.controls['period_end_m'].setValidators([Validators.required, Validators.min(value.period_start_m)]);
+                    if (value.period_start_m === value.period_end_m) {
+                        this.formModel.group.controls['period_end_d'].setValidators([Validators.required, Validators.min(value.period_start_d)]);
+                    } else {
+                        this.formModel.group.controls['period_end_d'].setValidators([Validators.required]);
+                    }
+                }
+            }
+        });
+    }
+
+    private saveRate(model: SbRateModel): Observable<any> {
+        // TODO save rate here, return events list for current day
+
+        const result = [...this.data.eventsList];
+
+        return of(result);
     }
 }

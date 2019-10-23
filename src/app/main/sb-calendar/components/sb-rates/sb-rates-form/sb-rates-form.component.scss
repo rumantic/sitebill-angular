@@ -60,4 +60,10 @@ mat-card {
         display: flex;
         justify-content: space-between;
     }
+
+    &__select {
+        &_narrow {
+            width: 40px;
+        }
+    }
 }

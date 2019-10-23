@@ -36,6 +36,14 @@ export class SbRateModel {
         return this.seasonEnd;
     }
 
+    set rate_type(value) {
+        this.rateType = value;
+    }
+
+    get rate_type() {
+        return this.rateType;
+    }
+
     meta = {
         hasFieldMonth: false,
         hasFieldWeekday: false,
@@ -63,7 +71,7 @@ export class SbRateModel {
             this.meta.hasFieldPeriod = true;
         } else if (this.rateType === 'RMONTH' || this.rateType === 'SMONTH') {
             this.meta.hasFieldMonth = true;
-        } else if (this.rateType === 'RWEEKEND' || this.rateType === 'SWEEKEND') {
+        } else if (this.rateType === 'RWEEKDAY' || this.rateType === 'SWEEKDAY') {
             this.meta.hasFieldWeekday = true;
         }
 

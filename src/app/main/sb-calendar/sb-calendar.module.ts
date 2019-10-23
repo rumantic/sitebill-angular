@@ -20,7 +20,7 @@ import {
 } from '@angular/material';
 import {SbRatesFormComponent} from './components/sb-rates/sb-rates-form/sb-rates-form.component';
 import {SbRatesEditDialogComponent} from './components/sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SbCalendarService} from './services/sb-calendar.service';
 
 const bundle = [
@@ -37,6 +37,7 @@ const bundle = [
             useFactory: adapterFactory,
         }),
         FormsModule,
+        ReactiveFormsModule,
         SitebillPipesModule,
         MatToolbarModule,
         MatFormFieldModule,

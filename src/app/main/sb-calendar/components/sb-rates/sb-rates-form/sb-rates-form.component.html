@@ -15,27 +15,23 @@
 <ng-template #editForm>
     <mat-card class="form">
         <mat-card-title class="form__title">{{ currentRateEdit.title }}</mat-card-title>
-        <mat-card-content>
+        <mat-card-content [formGroup]="formModel.group">
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldSeason">
                 <mat-form-field>
                     <input matInput
                            type="text"
-                           required
                            [matDatepicker]="startDatepicker"
-                           [(ngModel)]="currentRateEdit.season_start"
+                           formControlName="season_start"
                            placeholder="Начало сезона"/>
                     <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
                     <mat-datepicker #startDatepicker></mat-datepicker>
                 </mat-form-field>
-                &mdash;
+                &nbsp;&mdash;&nbsp;
                 <mat-form-field>
                     <input matInput
                            type="text"
-                           required
                            [matDatepicker]="endDatepicker"
-                           [(ngModel)]="currentRateEdit.season_end"
-                           [disabled]="!currentRateEdit.season_start"
-                           [min]="currentRateEdit.season_start"
+                           formControlName="season_end"
                            placeholder="Конец сезона"/>
                     <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
                     <mat-datepicker #endDatepicker></mat-datepicker>
@@ -43,44 +39,50 @@
             </div>
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldPeriod">
                 <mat-form-field>
-                    <select [(ngModel)]="currentRateEdit.period_start_m" matNativeControl required>
-                        <option *ngFor="let month of form.options.months" [value]="month.id">{{month.title}}</option>
-                    </select>
-                    <select [(ngModel)]="currentRateEdit.period_start_d" matNativeControl required>
-                        <option *ngFor="let day of form.options.days" [value]="day">{{day}}</option>
+                    <select formControlName="period_start_m" matNativeControl placeholder="Месяц">
+                        <option *ngFor="let month of formModel.options.months" [value]="month.id">{{month.title}}</option>
                     </select>
                 </mat-form-field>
-                &mdash;
-                <mat-form-field>
-                    <select [(ngModel)]="currentRateEdit.period_end_m" matNativeControl required>
-                        <option *ngFor="let month of form.options.months" [value]="month.id">{{month.title}}</option>
+                &nbsp;
+                <mat-form-field class="form__select form__select_narrow">
+                    <select formControlName="period_start_d" matNativeControl placeholder="Число">
+                        <option *ngFor="let day of formModel.options.days" [value]="day">{{day}}</option>
                     </select>
-                    <select [(ngModel)]="currentRateEdit.period_end_d" matNativeControl required>
-                        <option *ngFor="let day of form.options.days" [value]="day">{{day}}</option>
+                </mat-form-field>
+                &nbsp;&mdash;&nbsp;
+                <mat-form-field>
+                    <select formControlName="period_end_m" matNativeControl placeholder="Месяц">
+                        <option *ngFor="let month of formModel.options.months" [value]="month.id">{{month.title}}</option>
+                    </select>
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field class="form__select form__select_narrow">
+                    <select formControlName="period_end_d" matNativeControl placeholder="Число">
+                        <option *ngFor="let day of formModel.options.days" [value]="day">{{day}}</option>
                     </select>
                 </mat-form-field>
             </div>
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldMonth">
                 <mat-form-field>
-                    <select [(ngModel)]="currentRateEdit.month_number" matNativeControl required>
-                        <option *ngFor="let month of form.options.months" [value]="month.id">{{month.title}}</option>
+                    <select formControlName="month_number" matNativeControl>
+                        <option *ngFor="let month of formModel.options.months" [value]="month.id">{{month.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldWeekday">
                 <mat-form-field>
-                    <select [(ngModel)]="currentRateEdit.day_number" matNativeControl required>
-                        <option *ngFor="let weekday of form.options.weekdays" [value]="weekday.id">{{weekday.title}}</option>
+                    <select formControlName="day_number" matNativeControl>
+                        <option *ngFor="let weekday of formModel.options.weekdays" [value]="weekday.id">{{weekday.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
             <div class="form__row">
                 <mat-form-field>
-                    <input matInput type="text" [(ngModel)]="currentRateEdit.amount" placeholder="Стоимость">
+                    <input matInput type="text" formControlName="amount" placeholder="Стоимость">
                 </mat-form-field>
             </div>
             <div class="form__row">
-                <mat-checkbox [(ngModel)]="currentRateEdit.active">Активная</mat-checkbox>
+                <mat-checkbox formControlName="active">Активная</mat-checkbox>
             </div>
         </mat-card-content>
         <mat-card-actions class="form__actions">
