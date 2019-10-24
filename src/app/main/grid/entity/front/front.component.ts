@@ -26,6 +26,8 @@ export class FrontComponent {
     selectedRegion: any;
     regions: any;
 
+    private dictiony_loaded: boolean = false;
+
     constructor(
         private filterService: FilterService,
         private _fuseConfigService: FuseConfigService,
@@ -52,29 +54,24 @@ export class FrontComponent {
         this.rent_entity.set_primary_key('id');
         this.rent_entity.set_disable_comment();
         this.rent_entity.set_default_params({ topic_id: 6122 });
-
-        this.load_topics();
-        this.load_regions();
-
-
     }
 
     enable_guest_mode () {
         this.switch_off_grid_controls();
-        
         if ( this.modelService.get_session_key() === null ) {
             this.modelService.init_nobody_user_storage();
         } else if ( this.modelService.get_session_key() === 'nobody' ) {
             this.modelService.enable_nobody_mode();
         } else if ( this.modelService.get_session_key() === undefined ) {
             this.modelService.init_nobody_user_storage();
+        } else {
+            this.modelService.enable_nobody_mode();
         }
     }
 
     load_topics () {
         this.modelService.load_dictionary_model_all('data', 'topic_id')
             .subscribe((response: any) => {
-                console.log(response);
                 this.topics = response.data;
             });
     }
@@ -82,9 +79,16 @@ export class FrontComponent {
     load_regions () {
         this.modelService.load_dictionary_model_all('data', 'region_id')
             .subscribe((response: any) => {
-                console.log(response);
                 this.regions = response.data;
             });
+    }
+
+    ngAfterViewChecked () {
+        if ( this.modelService.get_nobody_mode() && !this.dictiony_loaded) {
+            this.load_regions();
+            this.load_topics();
+            this.dictiony_loaded = true;
+        }
     }
 
     switch_off_grid_controls () {
