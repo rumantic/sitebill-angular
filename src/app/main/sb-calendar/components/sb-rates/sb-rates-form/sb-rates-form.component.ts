@@ -35,7 +35,7 @@ export class SbRatesFormComponent implements OnInit {
         options: {
             months: SB_MONTHS,
             weekdays: SB_WEEKDAYS,
-            days: Array(31).map((value, day) => day + 1),
+            days: Array(31).fill(0).map((value, index) => index + 1),
         },
     };
     currentRateEdit: SbRateModel;
