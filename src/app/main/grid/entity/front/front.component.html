@@ -1,12 +1,34 @@
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="center center">
+        <div class="p-16 p-sm-24" fxLayout="row" fxLayoutAlign="center center">
 
-            <div class="hero-text">
-                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
-                    База объектов недвижимости
-                </h1>
+            <div class="fuse-card">
+
+                <div class="p-16 pt-8">
+                    <mat-label>База объектов</mat-label>
+                    <mat-select [(ngModel)]="selectedTopic" name="food">
+                        <mat-option *ngFor="let topic of topics" [value]="topic.id">
+                            {{topic.name}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+
             </div>
+
+            <div class="fuse-card">
+
+                <div class="p-16 pt-8">
+                    <mat-label>В регионе</mat-label>
+                    <mat-select [(ngModel)]="selectedRegion" name="food">
+                        <mat-option *ngFor="let region of regions" [value]="region.id">
+                            {{region.value}}
+                        </mat-option>
+                    </mat-select>
+
+                </div>
+
+            </div>
+
 
         </div>
         <!-- / HEADER -->

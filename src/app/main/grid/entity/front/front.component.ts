@@ -21,6 +21,11 @@ export class FrontComponent {
     private disable_view_button: boolean = false;
     private sale_entity: SitebillEntity;
     private rent_entity: SitebillEntity;
+    selectedTopic: any;
+    topics: any;
+    selectedRegion: any;
+    regions: any;
+
     constructor(
         private filterService: FilterService,
         private _fuseConfigService: FuseConfigService,
@@ -48,6 +53,9 @@ export class FrontComponent {
         this.rent_entity.set_disable_comment();
         this.rent_entity.set_default_params({ topic_id: 6122 });
 
+        this.load_topics();
+        this.load_regions();
+
 
     }
 
@@ -62,7 +70,23 @@ export class FrontComponent {
             this.modelService.init_nobody_user_storage();
         }
     }
-    
+
+    load_topics () {
+        this.modelService.load_dictionary_model_all('data', 'topic_id')
+            .subscribe((response: any) => {
+                console.log(response);
+                this.topics = response.data;
+            });
+    }
+
+    load_regions () {
+        this.modelService.load_dictionary_model_all('data', 'region_id')
+            .subscribe((response: any) => {
+                console.log(response);
+                this.regions = response.data;
+            });
+    }
+
     switch_off_grid_controls () {
         this.disable_add_button = true;
         this.disable_edit_button = true;
@@ -80,7 +104,7 @@ export class FrontComponent {
                     hidden: true
                 },
                 toolbar: {
-                    hidden: true
+                    hidden: false
                 },
                 footer: {
                     hidden: true
