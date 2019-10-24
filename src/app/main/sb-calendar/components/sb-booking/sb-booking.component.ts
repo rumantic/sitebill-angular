@@ -1,5 +1,5 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
 import {format, endOfMonth, isSameDay, isSameMonth, startOfMonth} from 'date-fns';
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
@@ -18,7 +18,17 @@ import {SbCalendarService} from '../../services/sb-calendar.service';
     ],
 })
 export class SbBookingComponent implements OnInit {
+    @Input('keyValue') set setKeyValue(value) {
+        if (!value) {
+            return;
+        }
+        this.keyValue = value;
+        this.initEventsList();
+    }
+
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
+
+    keyValue: string;
 
     view: CalendarView = CalendarView.Month;
 
@@ -42,7 +52,6 @@ export class SbBookingComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initEventsList();
         this.initEventsSubscription();
     }
 
@@ -115,7 +124,7 @@ export class SbBookingComponent implements OnInit {
                 end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
                 break;
         }
-        this.modelService.get_booking_reservations(start, end).subscribe((result) => {
+        this.modelService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
             this.events = SbCalendarHelper.parseEventsFromBooking(result);
         });
     }

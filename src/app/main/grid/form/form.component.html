@@ -208,7 +208,7 @@
                                     </mat-form-field>
 
                                     <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
-                                        <sb-booking></sb-booking>
+                                        <sb-booking [keyValue]="_data.key_value"></sb-booking>
                                     </div>
 
                                     <mat-form-field [hidden]="records[x].hidden" *ngSwitchDefault>

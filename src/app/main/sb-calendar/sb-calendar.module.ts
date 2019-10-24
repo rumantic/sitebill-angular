@@ -22,15 +22,19 @@ import {SbRatesFormComponent} from './components/sb-rates/sb-rates-form/sb-rates
 import {SbRatesEditDialogComponent} from './components/sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SbCalendarService} from './services/sb-calendar.service';
+import {SbCalendarRoutesModule} from './sb-calendar-routes.module';
+import {SbBookingPageComponent} from './components/sb-booking-page/sb-booking-page.component';
 
 const bundle = [
     SbBookingComponent,
+    SbBookingPageComponent,
     SbRatesFormComponent,
     SbRatesEditDialogComponent,
 ];
 
 @NgModule({
     imports: [
+        SbCalendarRoutesModule,
         CommonModule,
         CalendarModule.forRoot({
             provide: DateAdapter,

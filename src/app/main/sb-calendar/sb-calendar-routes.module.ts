@@ -1,21 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {SbBookingComponent} from './components/sb-booking/sb-booking.component';
+import {SbBookingPageComponent} from './components/sb-booking-page/sb-booking-page.component';
 
-const routes: Routes = [
+const calendarRoutes: Routes = [
     {
-        path: 'booking',
-        component: SbBookingComponent,
+        path: 'booking/:keyValue',
+        component: SbBookingPageComponent,
     },
-    {
-        path: '**',
-        redirectTo: 'booking',
-    }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [RouterModule.forChild(calendarRoutes)],
     exports: [RouterModule],
 })
 export class SbCalendarRoutesModule {

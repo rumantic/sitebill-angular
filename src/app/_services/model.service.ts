@@ -390,8 +390,8 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    get_booking_reservations(start_date, end_date) {
-        // const body = {action: 'reservation', do: 'calender_data', id: this.entity.key_value, start: start_date, end: end_date, session_key: this.get_session_key_safe()};
+    get_booking_reservations(key_value, start_date, end_date) {
+        // const body = {action: 'reservation', do: 'calender_data', id: key_value, start: start_date, end: end_date, session_key: this.get_session_key_safe()};
         // return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
 
         return of({
