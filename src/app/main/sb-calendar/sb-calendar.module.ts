@@ -34,7 +34,6 @@ const bundle = [
 
 @NgModule({
     imports: [
-        SbCalendarRoutesModule,
         CommonModule,
         CalendarModule.forRoot({
             provide: DateAdapter,
@@ -64,5 +63,28 @@ const bundle = [
         SbRatesEditDialogComponent,
     ],
 })
+class CalendarPrivateModule {
+}
+
+@NgModule({
+    imports: [
+        CalendarPrivateModule,
+    ],
+    exports: [
+        ...bundle,
+    ],
+})
 export class SbCalendarModule {
+}
+
+@NgModule({
+    imports: [
+        CalendarPrivateModule,
+        SbCalendarRoutesModule,
+    ],
+    exports: [
+        ...bundle,
+    ]
+})
+export class SbCalendarModuleWithRoutes {
 }

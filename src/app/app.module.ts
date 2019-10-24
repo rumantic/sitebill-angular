@@ -136,7 +136,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'calendar',
-        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModule',
+        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModuleWithRoutes',
     },
     /*
     {
