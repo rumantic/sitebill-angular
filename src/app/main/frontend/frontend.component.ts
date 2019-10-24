@@ -58,7 +58,7 @@ export class FrontendComponent
                     hidden: true
                 },
                 toolbar: {
-                    hidden: true
+                    hidden: false
                 },
                 footer: {
                     hidden: true

@@ -18,17 +18,23 @@ import {
     MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {GridModule} from '../grid/grid.module';
+import {PriceComponent} from './price.component';
 
 const routes = [
     {
+        path     : 'prices',
+        component: PriceComponent
+    },
+    {
         path     : '**',
         component: FrontendComponent
-    }
+    },
 ];
 
 @NgModule({
     declarations: [
-        FrontendComponent
+        FrontendComponent,
+        PriceComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
