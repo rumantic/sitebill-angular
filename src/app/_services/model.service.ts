@@ -55,6 +55,7 @@ export class ModelService {
         return this.nobody_mode;
     }
     enable_nobody_mode () {
+        this.session_key_validated = true;
         this.nobody_mode = true;
     }
     disable_nobody_mode () {
