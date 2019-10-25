@@ -1,5 +1,47 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
-    <h2>Cart {{'SAMPLE.HELLO' | translate}}</h2>
+    <h2>{{'CART.TITLE' | translate}}</h2>
+    <ng-container *ngIf="step == 'buy'">
+        <div class="customer mb-32">
+            <table class="simple">
+                <thead>
+                <tr>
+                    <th>{{'CART.COLUMN_NAME' | translate}}</th>
+                    <th>{{'CART.COLUMN_PRICE' | translate}}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        Тариф Начальный
+                    </td>
+                    <td>
+                        59
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button color="accent" (click)="complete_order()">
+                {{'CART.COMPLETE_ORDER' | translate}}
+            </button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="step == 'pay'">
+        pay
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button color="accent" (click)="pay()">
+                {{'CART.PAY_BUTTON' | translate}}
+            </button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="step == 'complete'">
+        Complete!
+    </ng-container>
 
 </div>

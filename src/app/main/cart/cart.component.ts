@@ -1,7 +1,6 @@
-import {Component, isDevMode, ElementRef, Inject} from '@angular/core';
+import {Component, ElementRef, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {currentUser} from 'app/_models/currentuser';
 import {DOCUMENT} from '@angular/platform-browser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
@@ -10,6 +9,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector   : 'cart',
@@ -18,6 +18,9 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class CartComponent
 {
+    items_list_step: boolean = false;
+    public step: string;
+    public item_id: string;
     /**
      * Constructor
      *
@@ -25,6 +28,7 @@ export class CartComponent
     constructor(
         private _httpClient: HttpClient,
         private elRef: ElementRef,
+        private route: ActivatedRoute,
         private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
@@ -46,6 +50,12 @@ export class CartComponent
                 }
             }
         };
+
+        this.step = this.route.snapshot.paramMap.get('step');
+        this.item_id = this.route.snapshot.paramMap.get('item_id');
+        console.log(this.step);
+        console.log(this.item_id);
+
     }
     ngOnInit() {
     }
@@ -58,6 +68,13 @@ export class CartComponent
             app_root_element = this.document.getElementById('app_root');
         }
     }
-    
-    
+
+
+    complete_order() {
+        this.step = 'pay';
+    }
+
+    pay() {
+        this.step = 'complete';
+    }
 }
