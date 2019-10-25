@@ -19,6 +19,7 @@ import {
 } from '@angular/material';
 import {GridModule} from '../grid/grid.module';
 import {PriceComponent} from './price.component';
+import {CartService} from '../../_services/cart.service';
 
 const routes = [
     {
@@ -66,6 +67,9 @@ const routes = [
         MatExpansionModule,
         GridModule,
         FuseSharedModule
+    ],
+    providers: [
+        CartService
     ]
 })
 

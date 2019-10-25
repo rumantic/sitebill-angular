@@ -4,6 +4,7 @@ import {FuseConfigService} from '../../../@fuse/services/config.service';
 import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-loader.service';
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
+import {CartService} from '../../_services/cart.service';
 
 @Component({
     selector   : 'price',
@@ -19,7 +20,8 @@ export class PriceComponent
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _fuseTranslationLoaderService: FuseTranslationLoaderService
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private cartSerivce: CartService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -37,6 +39,13 @@ export class PriceComponent
             }
         };
 
+    }
+    ngOnInit() {
+        this.cartSerivce.get_products().subscribe(
+            (products: any) => {
+                console.log(products);
+            }
+        );
     }
 
 }
