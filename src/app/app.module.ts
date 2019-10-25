@@ -140,6 +140,10 @@ const appRoutes: Routes = [
         path: 'frontend',
         loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
     },
+    {
+        path: 'cart',
+        loadChildren: 'app/main/cart/cart.module#CartModule'
+    },
     /*
     {
         path: 'client/my',
