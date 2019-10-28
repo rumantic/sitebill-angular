@@ -5,6 +5,8 @@ import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
 import {CartService} from '../../_services/cart.service';
+import {FilterService} from '../../_services/filter.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector   : 'price',
@@ -24,6 +26,8 @@ export class PriceComponent
         private _fuseConfigService: FuseConfigService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private cartSerivce: CartService,
+        protected router: Router,
+        private filterService: FilterService
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -55,8 +59,9 @@ export class PriceComponent
     }
 
 
-    add_to_cart(product_id) {
-        console.log(product_id);
-
+    add_to_cart(product) {
+        localStorage.setItem('cart_items', JSON.stringify(product));
+        console.log(product);
+        this.router.navigate(['/cart/buy/']);
     }
 }

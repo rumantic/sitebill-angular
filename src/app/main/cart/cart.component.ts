@@ -10,6 +10,7 @@ import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute} from '@angular/router';
+import {FilterService} from '../../_services/filter.service';
 
 @Component({
     selector   : 'cart',
@@ -21,6 +22,9 @@ export class CartComponent
     items_list_step: boolean = false;
     public step: string;
     public item_id: string;
+    public product;
+    public currency_id: number = 1;
+
     /**
      * Constructor
      *
@@ -58,6 +62,9 @@ export class CartComponent
 
     }
     ngOnInit() {
+        console.log('cart_items');
+        this.product = JSON.parse(localStorage.getItem('cart_items'));
+        console.log(this.product);
     }
     
     init_input_parameters () {
