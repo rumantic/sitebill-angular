@@ -14,6 +14,8 @@ import {CartService} from '../../_services/cart.service';
 })
 export class PriceComponent
 {
+    public products: any;
+    public currency_id: number = 1;
     /**
      * Constructor
      *
@@ -44,8 +46,17 @@ export class PriceComponent
         this.cartSerivce.get_products().subscribe(
             (products: any) => {
                 console.log(products);
+                const mapped = Object.keys(products.records).map(key => ({type: key, value: products.records[key]}));
+
+                this.products = mapped;
+                console.log(mapped);
             }
         );
     }
 
+
+    add_to_cart(product_id) {
+        console.log(product_id);
+
+    }
 }

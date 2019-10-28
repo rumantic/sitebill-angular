@@ -21,17 +21,17 @@
         <!-- PRICE TABLES -->
         <div class="price-tables" fxLayout="row wrap" fxLayoutAlign="center center">
 
-            <div class="price-table style-3 mat-elevation-z4" fxLayout="column">
+            <div class="price-table style-3 mat-elevation-z4" fxLayout="column"  *ngFor="let product of products">
 
                 <div class="package-type">
-                    <div class="title">Начальный</div>
-                    <div class="subtitle">Для небольших команд</div>
+                    <div class="title">{{product.value.name.value}}</div>
+                    <div class="subtitle">{{product.value.description.value}}</div>
                 </div>
 
                 <div class="price primary-300" fxLayout="row" fxLayoutAlign="center start">
-                    <div class="currency">$</div>
+                    <div class="currency">руб.</div>
                     <div fxLayout="row" fxLayoutAlign="center end">
-                        <div class="value">29</div>
+                        <div class="value">{{product.value.pricing[currency_id].monthly}}</div>
                         <div class="period">в месяц</div>
                     </div>
                 </div>
@@ -44,69 +44,10 @@
                     <div class="term">Сниму</div>
                 </div>
 
-                <button mat-raised-button class="cta-button" color="accent" [routerLink]="'/cart/buy/10'">Купить</button>
+                <button mat-raised-button class="cta-button" color="accent" (click)="add_to_cart(product.value.product_id.value)">Купить</button>
 
 
             </div>
-
-            <div class="price-table style-3 mat-elevation-z12" fxLayout="column">
-
-                <div class="package-type">
-                    <div class="title">Про</div>
-                    <div class="subtitle">Для больших команд</div>
-                </div>
-
-                <div class="price primary" fxLayout="row" fxLayoutAlign="center start">
-                    <div class="currency">$</div>
-                    <div fxLayout="row" fxLayoutAlign="center end">
-                        <div class="value">59</div>
-                        <div class="period">в месяц</div>
-                    </div>
-                </div>
-
-                <div class="terms" fxLayout="column" fxLayoutAlign="start center">
-                    <div class="term">Аренда</div>
-                    <div class="term">Продажа</div>
-                    <div class="term mat-warn-fg">Посуточно</div>
-                    <div class="term mat-warn-fg">Куплю</div>
-                    <div class="term mat-warn-fg">Сниму</div>
-                    <div class="term">Заявки</div>
-                    <div class="term">Уведомления</div>
-                </div>
-
-                <button mat-raised-button class="cta-button" color="accent" [routerLink]="'/cart/buy/20'">Купить</button>
-
-
-            </div>
-
-            <div class="price-table style-3 mat-elevation-z4" fxLayout="column">
-
-                <div class="package-type">
-                    <div class="title">VIP</div>
-                    <div class="subtitle">Для корпораций</div>
-                </div>
-
-                <div class="price primary-300" fxLayout="row" fxLayoutAlign="center start">
-                    <div class="currency">$</div>
-                    <div fxLayout="row" fxLayoutAlign="center end">
-                        <div class="value">99</div>
-                        <div class="period">в месяц</div>
-                    </div>
-                </div>
-
-                <div class="terms" fxLayout="column" fxLayoutAlign="start center">
-                    <div class="term">Аренда</div>
-                    <div class="term">Продажа</div>
-                    <div class="term">Посуточно</div>
-                    <div class="term">Куплю</div>
-                    <div class="term">Сниму</div>
-                </div>
-
-                <button mat-raised-button class="cta-button" color="accent" [routerLink]="'/cart/buy/30'">Купить</button>
-
-
-            </div>
-
         </div>
         <!-- / PRICE TABLES -->
 
