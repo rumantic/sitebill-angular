@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ModelService} from '../../../../../_services/model.service';
 import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
 import {SbRateModel} from '../../../models/sb-rate.model';
 import {Observable, of, Subscription} from 'rxjs';
@@ -47,7 +46,6 @@ export class SbRatesFormComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private modelService: ModelService,
         private calendarService: SbCalendarService,
     ) {
     }
@@ -73,9 +71,10 @@ export class SbRatesFormComponent implements OnInit {
             });
             return;
         }
-
+        
         const model = new SbRateModel(Object.assign({}, this.currentRateEdit, this.formModel.group.value));
-        this.saveRate(model).subscribe((result) => {
+        
+        this.saveRate(this.data.keyValue, model).subscribe((result) => {
             this.data.eventsList = result;
             this.currentRateEdit = null;
             this.calendarService.updateEvents$.emit();
@@ -91,12 +90,16 @@ export class SbRatesFormComponent implements OnInit {
                 rateTypeValue: this.rateTypes[type].rateTypeValue,
                 title: this.rateTypes[type].title,
                 amount: 0,
+                id: 0
             });
 
             if (this.data && this.data.eventsList) {
                 this.data.eventsList.some((e) => {
                     if (e && e.meta && e.meta.type === 'rate' && e.meta.rate && e.meta.rate.rate_type === this.rateTypes[type].rateTypeValue) {
                         result.amount = e.meta.rate.amount;
+                        result.id = e.meta.rate.id;
+                        result.day_number = e.meta.rate.day_number;
+                        result.month_number = e.meta.rate.month_number;
                     }
                 });
 
@@ -107,13 +110,14 @@ export class SbRatesFormComponent implements OnInit {
 
             return result;
         });
-
+console.log(this.ratesList);
         if (mainRateIndex >= 0) {
             this.ratesList[mainRateIndex].isMain = true;
         }
     }
 
     private buildRateForm(rate: SbRateModel) {
+        
         const config: { [name: string]: any } = {
             id: [rate.id, []],
             amount: [rate.amount.toString(), [Validators.required, Validators.min(0)]],
@@ -175,9 +179,14 @@ export class SbRatesFormComponent implements OnInit {
         });
     }
 
-    private saveRate(model: SbRateModel): Observable<any> {
+    private saveRate(keyValue, model: SbRateModel): Observable<any> {
+        
+        this.calendarService.edit_rate(keyValue, model);
+        
+        //const body = {action: 'reservation', do: 'calender_data', id: this.data.keyValue, session_key: this.get_session_key_safe()};
+        //return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+        
         // TODO save rate here, return events list for current day
-
         const result = [...this.data.eventsList];
 
         return of(result);

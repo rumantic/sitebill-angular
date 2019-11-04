@@ -24,6 +24,7 @@ export class SbBookingComponent implements OnInit {
         }
         this.keyValue = value;
         this.initEventsList();
+        
     }
 
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
@@ -83,6 +84,7 @@ export class SbBookingComponent implements OnInit {
             newEnd
         }: CalendarEventTimesChangedEvent
     ): void {
+    
         this.events = this.events.map(iEvent => {
             if (iEvent === event) {
                 return {
@@ -95,14 +97,16 @@ export class SbBookingComponent implements OnInit {
         });
     }
 
-    closeOpenMonthViewDay() {
+    closeOpenMonthViewDay(event, newStart, newEnd) {
         this.activeDayIsOpen = false;
+        this.fetchEvents();
     }
 
-    onEditRatesClick(eventsList, viewDate) {
+    onEditRatesClick(eventsList, viewDate, keyValue) {
         const data = {
             eventsList,
             date: viewDate,
+            keyValue: keyValue
         };
 
         const dialogRef = this.editRatesDialog.open(SbRatesEditDialogComponent, {
@@ -124,7 +128,8 @@ export class SbBookingComponent implements OnInit {
                 end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
                 break;
         }
-        this.modelService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
+        this.calendarService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
+            
             this.events = SbCalendarHelper.parseEventsFromBooking(result);
         });
     }

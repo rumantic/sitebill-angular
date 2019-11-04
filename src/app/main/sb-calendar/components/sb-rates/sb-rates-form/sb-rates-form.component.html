@@ -8,6 +8,7 @@
         >
             <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
             <div class="list__item-value">{{ rate.amount | price }}</div>
+            
         </div>
     </ng-container>
 </div>
@@ -65,14 +66,14 @@
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldMonth">
                 <mat-form-field>
                     <select formControlName="month_number" matNativeControl>
-                        <option *ngFor="let month of formModel.options.months" [value]="month.id">{{month.title}}</option>
+                        <option *ngFor="let month of formModel.options.months" [value]="month.id" [selected]="month.id == currentRateEdit.month_number">{{month.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
             <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldWeekday">
                 <mat-form-field>
                     <select formControlName="day_number" matNativeControl>
-                        <option *ngFor="let weekday of formModel.options.weekdays" [value]="weekday.id">{{weekday.title}}</option>
+                        <option *ngFor="let weekday of formModel.options.weekdays" [value]="weekday.id" [selected]="weekday.id == currentRateEdit.day_number" >{{weekday.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
@@ -81,6 +82,7 @@
                     <input matInput type="text" formControlName="amount" placeholder="Стоимость">
                 </mat-form-field>
             </div>
+            <input type="hidden" formControlName="id" placeholder="ID" value="{{currentRateEdit.id}}">
             <div class="form__row">
                 <mat-checkbox formControlName="active">Активная</mat-checkbox>
             </div>

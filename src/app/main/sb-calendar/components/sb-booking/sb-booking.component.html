@@ -116,12 +116,12 @@
                             </li>
                         </ng-container>
                     </ul>
-                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate)">
+                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate, keyValue)">
                         Изменить
                     </button>
                 </ng-container>
                 <ng-template #emptyRates>
-                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate)">
+                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate, keyValue)">
                         Установить цены
                     </button>
                 </ng-template>

@@ -27,7 +27,7 @@ export const SB_RATE_TYPES = {
         rateTypeValue: '50',
     },
     '60': {
-        title: 'Регулярная цена за месяц',
+        title: 'Сезонная цена за месяц',
         rateType: 'SMONTH',
         rateTypeValue: '60',
     },
