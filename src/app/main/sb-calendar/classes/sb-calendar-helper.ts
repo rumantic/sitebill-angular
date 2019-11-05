@@ -37,6 +37,20 @@ export class SbCalendarHelper {
                     return;
                 }
                 dayRatesList.forEach((rate, index) => {
+                    if(typeof rate.period_start != 'undefined' && rate.period_start != ''){
+                        var se = rate.period_start.split('-');
+                        if(se.length == 2){
+                            rate.period_start_m = se[0].replace(/^(0)/, '');
+                            rate.period_start_d = se[1].replace(/^(0)/, '');
+                        }
+                    }
+                    if(typeof rate.period_end != 'undefined' && rate.period_end != ''){
+                        var se = rate.period_end.split('-');
+                        if(se.length == 2){
+                            rate.period_end_m = se[0].replace(/^(0)/, '');
+                            rate.period_end_d = se[1].replace(/^(0)/, '');
+                        }
+                    }
                     result.push({
                         start: moment(rateDate, SB_DATE_FORMAT).toDate(),
                         allDay: true,

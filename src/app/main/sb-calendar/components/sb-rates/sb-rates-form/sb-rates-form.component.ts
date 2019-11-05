@@ -41,6 +41,7 @@ export class SbRatesFormComponent implements OnInit {
 
     rateTypes = SB_RATE_TYPES;
     ratesList: RatesListItem[] = [];
+    existingRatesList: RatesListItem[] = [];
 
     @Input() data: any;
 
@@ -83,6 +84,22 @@ export class SbRatesFormComponent implements OnInit {
     }
 
     initRatesViewList() {
+        
+        if (this.data && this.data.eventsList) {
+            
+            for(var i in this.data.eventsList){
+                const r = this.data.eventsList[i].meta.rate;
+                if(typeof this.rateTypes[r.rate_type] != 'undefined'){
+                    r.title = this.rateTypes[r.rate_type].title;
+                    r.rateType = this.rateTypes[r.rate_type].rateType;
+                    r.rateTypeValue = this.rateTypes[r.rate_type].rateTypeValue;
+                }
+                this.existingRatesList[i] = new RatesListItem(r);
+            }
+        }
+        
+        
+        
         let mainRateIndex = -1;
         this.ratesList = Object.keys(this.rateTypes).map((type, rateIndex) => {
             const result = new RatesListItem({
@@ -93,27 +110,13 @@ export class SbRatesFormComponent implements OnInit {
                 id: 0
             });
 
-            if (this.data && this.data.eventsList) {
-                this.data.eventsList.some((e) => {
-                    if (e && e.meta && e.meta.type === 'rate' && e.meta.rate && e.meta.rate.rate_type === this.rateTypes[type].rateTypeValue) {
-                        result.amount = e.meta.rate.amount;
-                        result.id = e.meta.rate.id;
-                        result.day_number = e.meta.rate.day_number;
-                        result.month_number = e.meta.rate.month_number;
-                    }
-                });
-
-                if (result.amount > 0) {
-                    mainRateIndex = rateIndex;
-                }
-            }
-
             return result;
         });
-console.log(this.ratesList);
+
         if (mainRateIndex >= 0) {
             this.ratesList[mainRateIndex].isMain = true;
         }
+        
     }
 
     private buildRateForm(rate: SbRateModel) {
@@ -182,11 +185,6 @@ console.log(this.ratesList);
     private saveRate(keyValue, model: SbRateModel): Observable<any> {
         
         this.calendarService.edit_rate(keyValue, model);
-        
-        //const body = {action: 'reservation', do: 'calender_data', id: this.data.keyValue, session_key: this.get_session_key_safe()};
-        //return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
-        
-        // TODO save rate here, return events list for current day
         const result = [...this.data.eventsList];
 
         return of(result);
