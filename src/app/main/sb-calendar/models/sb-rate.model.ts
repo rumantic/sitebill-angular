@@ -16,6 +16,8 @@ export class SbRateModel {
     period_start_d?: string | number;
     period_end_m?: string | number;
     period_end_d?: string | number;
+    //season_start?: string | number;
+    //season_end_d?: string | number;
 
     private seasonStart: Moment;
     private seasonEnd: Moment;

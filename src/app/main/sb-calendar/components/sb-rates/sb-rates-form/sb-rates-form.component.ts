@@ -126,6 +126,7 @@ export class SbRatesFormComponent implements OnInit {
             amount: [rate.amount.toString(), [Validators.required, Validators.min(0)]],
             active: [rate.active, []],
         };
+        
         if (rate.meta.hasFieldSeason) {
             config.season_start = [rate.season_start ? rate.season_start.valueOf() : null, [Validators.required]];
             config.season_end = [rate.season_end ? rate.season_end.valueOf() : null, [Validators.required]];
@@ -183,8 +184,12 @@ export class SbRatesFormComponent implements OnInit {
     }
 
     private saveRate(keyValue, model: SbRateModel): Observable<any> {
+        if(model.id && Number(model.id) != 0){
+            this.calendarService.edit_rate(keyValue, model.id, model);
+        }else{
+            this.calendarService.create_rate(keyValue, model);
+        }
         
-        this.calendarService.edit_rate(keyValue, model);
         const result = [...this.data.eventsList];
 
         return of(result);
