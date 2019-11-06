@@ -26,6 +26,7 @@ export class CartComponent
     public product;
     public currency_id: number = 1;
     public gateways: [];
+    private order: [];
 
     /**
      * Constructor
@@ -92,6 +93,7 @@ export class CartComponent
                  */
 
                 this.gateways = order.gateways;
+                this.order = order.order;
                 console.log(order);
             }
         );
@@ -103,6 +105,10 @@ export class CartComponent
     }
 
     pay_interkassa() {
-
+        let params_array = [];
+        for (let [key, value] of Object.entries(this.gateways.interkassa.params)) {
+            params_array.push(`${key}=${value}`);
+        }
+        window.open(this.gateways.interkassa.submit.url + '?' + params_array.join('&'), "_blank");
     }
 }

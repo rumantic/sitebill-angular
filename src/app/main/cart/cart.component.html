@@ -32,16 +32,14 @@
         </div>
     </ng-container>
     <ng-container *ngIf="step == 'pay'">
-        pay
-        <div fxLayout="row" fxLayoutAlign="end center">
-            <button mat-raised-button color="accent" (click)="pay_interkassa()" *ngIf="gateways">
-                {{gateways.interkassa.submit.title}}
-            </button>
-
-            <button mat-raised-button color="accent" (click)="pay()">
-                {{'CART.PAY_BUTTON' | translate}}
-            </button>
-        </div>
+        <ng-container *ngIf="gateways">
+            Сумма оплаты {{order.amount.value}}
+            <div fxLayout="row" fxLayoutAlign="end center">
+                <button mat-raised-button color="accent" (click)="pay_interkassa()" >
+                    {{gateways.interkassa.submit.title}}
+                </button>
+            </div>
+        </ng-container>
     </ng-container>
 
     <ng-container *ngIf="step == 'complete'">
