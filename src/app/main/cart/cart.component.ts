@@ -25,8 +25,8 @@ export class CartComponent
     public item_id: string;
     public product;
     public currency_id: number = 1;
-    public gateways: [];
-    private order: [];
+    public gateways: any;
+    private order: any;
 
     /**
      * Constructor
