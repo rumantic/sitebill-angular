@@ -26,7 +26,7 @@
             </table>
         </div>
         <div fxLayout="row" fxLayoutAlign="end center">
-            <button mat-raised-button color="accent" (click)="complete_order()">
+            <button mat-raised-button color="accent" (click)="add_order()">
                 {{'CART.COMPLETE_ORDER' | translate}}
             </button>
         </div>
@@ -34,6 +34,10 @@
     <ng-container *ngIf="step == 'pay'">
         pay
         <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button color="accent" (click)="pay_interkassa()" *ngIf="gateways">
+                {{gateways.interkassa.submit.title}}
+            </button>
+
             <button mat-raised-button color="accent" (click)="pay()">
                 {{'CART.PAY_BUTTON' | translate}}
             </button>

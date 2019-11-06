@@ -11,6 +11,7 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
+import {CartService} from '../../_services/cart.service';
 
 @Component({
     selector   : 'cart',
@@ -24,6 +25,7 @@ export class CartComponent
     public item_id: string;
     public product;
     public currency_id: number = 1;
+    public gateways: [];
 
     /**
      * Constructor
@@ -36,6 +38,7 @@ export class CartComponent
         private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
+        private cartSerivce: CartService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
@@ -77,11 +80,29 @@ export class CartComponent
     }
 
 
-    complete_order() {
+    add_order() {
+        console.log('complete_order');
+        this.cartSerivce.add_order(this.product).subscribe(
+            (order: any) => {
+                /*
+                order.gateways.forEach((row, index) => {
+                    this.gateways.push(row);
+                });
+
+                 */
+
+                this.gateways = order.gateways;
+                console.log(order);
+            }
+        );
         this.step = 'pay';
     }
 
     pay() {
         this.step = 'complete';
+    }
+
+    pay_interkassa() {
+
     }
 }
