@@ -6,6 +6,9 @@ export const locale = {
             'COLUMN_NAME': 'Название',
             'COLUMN_PRICE': 'Цена',
             'COMPLETE_ORDER': 'Завершить и оплатить',
+            'WAITING_PAYMENT': 'Ожидание оплаты',
+            'PAYMENT_SUCCESS': 'Оплата успешна!',
+            'OK': 'Ok',
         }
     }
 };

@@ -9,7 +9,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
 import {CartService} from '../../_services/cart.service';
 
@@ -27,6 +27,7 @@ export class CartComponent
     public currency_id: number = 1;
     public gateways: any;
     private order: any;
+    public waiting_payment: boolean = false;
 
     /**
      * Constructor
@@ -36,6 +37,7 @@ export class CartComponent
         private _httpClient: HttpClient,
         private elRef: ElementRef,
         private route: ActivatedRoute,
+        private router: Router,
         private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
@@ -69,6 +71,9 @@ export class CartComponent
         console.log('cart_items');
         this.product = JSON.parse(localStorage.getItem('cart_items'));
         console.log(this.product);
+        if ( this.step === 'success' ) {
+            this.success();
+        }
     }
     
     init_input_parameters () {
@@ -82,7 +87,7 @@ export class CartComponent
 
 
     add_order() {
-        console.log('complete_order');
+        //console.log('complete_order');
         this.cartSerivce.add_order(this.product).subscribe(
             (order: any) => {
                 /*
@@ -94,14 +99,15 @@ export class CartComponent
 
                 this.gateways = order.gateways;
                 this.order = order.order;
-                console.log(order);
+                //console.log(order);
             }
         );
         this.step = 'pay';
     }
 
-    pay() {
-        this.step = 'complete';
+    success() {
+        localStorage.removeItem('cart_items');
+        console.log('success step');
     }
 
     pay_interkassa() {
@@ -109,6 +115,14 @@ export class CartComponent
         for (let [key, value] of Object.entries(this.gateways.interkassa.params)) {
             params_array.push(`${key}=${value}`);
         }
+        this.waiting_payment = true;
+        // @todo: Анализировать оплату и редиректить в базу после оплаты
+        console.log(this.waiting_payment);
+
         window.open(this.gateways.interkassa.submit.url + '?' + params_array.join('&'), "_blank");
+    }
+
+    got_it() {
+        this.router.navigate(['/frontend/front']);
     }
 }

@@ -1,7 +1,7 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
     <h2>{{'CART.TITLE' | translate}}</h2>
-    <ng-container *ngIf="step == 'buy'">
+    <ng-container *ngIf="step == 'buy' && product != null">
         <div class="customer mb-32">
             <table class="simple">
                 <thead>
@@ -35,15 +35,29 @@
         <ng-container *ngIf="gateways">
             Сумма оплаты {{order.amount.value}}
             <div fxLayout="row" fxLayoutAlign="end center">
-                <button mat-raised-button color="accent" (click)="pay_interkassa()" >
+                <button mat-raised-button color="accent" (click)="pay_interkassa()" *ngIf="!waiting_payment">
                     {{gateways.interkassa.submit.title}}
                 </button>
+                <h2 *ngIf="waiting_payment">
+                    {{'CART.WAITING_PAYMENT' | translate}}
+                </h2>
+
             </div>
         </ng-container>
     </ng-container>
 
-    <ng-container *ngIf="step == 'complete'">
-        Complete!
+    <ng-container *ngIf="step == 'success'">
+        <mat-grid-list cols="1" rowHeight="40%">
+            <mat-grid-tile><mat-icon class="icon-success text-center">check_circle</mat-icon></mat-grid-tile>
+            <mat-grid-tile>
+                <button mat-raised-button color="accent" (click)="got_it()">
+                    <span class="mat-display-2 text-center">{{'CART.PAYMENT_SUCCESS' | translate}}</span>
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+        </div>
     </ng-container>
 
 </div>

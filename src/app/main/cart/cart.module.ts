@@ -6,6 +6,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { CartComponent } from './cart.component';
 import {CartService} from '../../_services/cart.service';
+import {MatGridListModule, MatIconModule} from '@angular/material';
 
 const routes = [
     {
@@ -18,12 +19,14 @@ const routes = [
     declarations: [
         CartComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         TranslateModule,
 
-        FuseSharedModule
+        FuseSharedModule,
+        MatIconModule,
+        MatGridListModule,
     ],
     providers: [
         CartService
