@@ -58,15 +58,7 @@ export class FrontComponent {
 
     enable_guest_mode () {
         this.switch_off_grid_controls();
-        if ( this.modelService.get_session_key() === null ) {
-            this.modelService.init_nobody_user_storage();
-        } else if ( this.modelService.get_session_key() === 'nobody' ) {
-            this.modelService.enable_nobody_mode();
-        } else if ( this.modelService.get_session_key() === undefined ) {
-            this.modelService.init_nobody_user_storage();
-        } else {
-            this.modelService.enable_nobody_mode();
-        }
+        this.modelService.enable_guest_mode();
     }
 
     load_topics () {
@@ -84,7 +76,7 @@ export class FrontComponent {
     }
 
     ngAfterViewChecked () {
-        if ( this.modelService.get_nobody_mode() && !this.dictiony_loaded) {
+        if ( this.modelService.all_checks_passes() && !this.dictiony_loaded) {
             this.load_regions();
             this.load_topics();
             this.dictiony_loaded = true;

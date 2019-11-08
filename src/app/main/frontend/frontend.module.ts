@@ -20,6 +20,7 @@ import {
 import {GridModule} from '../grid/grid.module';
 import {PriceComponent} from './price.component';
 import {CartService} from '../../_services/cart.service';
+import {LoginModalComponent} from '../../login/modal/login-modal.component';
 
 const routes = [
     {
@@ -35,7 +36,8 @@ const routes = [
 @NgModule({
     declarations: [
         FrontendComponent,
-        PriceComponent
+        PriceComponent,
+        LoginModalComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -70,7 +72,8 @@ const routes = [
     ],
     providers: [
         CartService
-    ]
+    ],
+    entryComponents: [LoginModalComponent]
 })
 
 export class FrontendModule

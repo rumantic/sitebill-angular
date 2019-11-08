@@ -33,7 +33,7 @@
         </div>
         <!-- / HEADER -->
 
-        <div class="content" layout="row" fusePerfectScrollbar *ngIf="modelService.get_nobody_mode()">
+        <div class="content" layout="row" fusePerfectScrollbar *ngIf="modelService.all_checks_passes()">
             <mat-tab-group dynamicHeight>
                 <mat-tab label="Продам">
                     <!-- WIDGET GROUP -->

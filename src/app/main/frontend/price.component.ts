@@ -7,6 +7,10 @@ import {locale as russian} from './i18n/ru';
 import {CartService} from '../../_services/cart.service';
 import {FilterService} from '../../_services/filter.service';
 import {Router} from '@angular/router';
+import {ViewModalComponent} from '../grid/view-modal/view-modal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {ModelService} from '../../_services/model.service';
 
 @Component({
     selector   : 'price',
@@ -18,6 +22,8 @@ export class PriceComponent
 {
     public products: any;
     public currency_id: number = 1;
+    private products_loaded: boolean;
+    private loading_in_progress: boolean;
     /**
      * Constructor
      *
@@ -27,9 +33,12 @@ export class PriceComponent
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private cartSerivce: CartService,
         protected router: Router,
+        protected dialog: MatDialog,
+        public modelService: ModelService,
         private filterService: FilterService
     )
     {
+        this.loading_in_progress = false;
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._fuseConfigService.config = {
             layout: {
@@ -47,19 +56,37 @@ export class PriceComponent
 
     }
     ngOnInit() {
-        this.cartSerivce.get_products().subscribe(
-            (products: any) => {
-                console.log(products);
-                const mapped = Object.keys(products.records).map(key => ({type: key, value: products.records[key]}));
+        this.modelService.enable_guest_mode();
+    }
 
-                this.products = mapped;
-                console.log(mapped);
+    ngAfterViewChecked () {
+        if ( this.modelService.all_checks_passes() && !this.products_loaded) {
+            if ( !this.loading_in_progress ) {
+                this.cartSerivce.get_products().subscribe(
+                    (products: any) => {
+                        const mapped = Object.keys(products.records).map(key => ({type: key, value: products.records[key]}));
+                        this.products = mapped;
+                        this.products_loaded = true;
+                    }
+                );
+                this.loading_in_progress = true;
             }
-        );
+        }
+    }
+
+
+    login_modal () {
+        const dialogConfig = new MatDialogConfig();
+        this.dialog.open(LoginModalComponent, dialogConfig);
     }
 
 
     add_to_cart(product) {
+        if ( this.modelService.get_nobody_mode() ) {
+            this.login_modal();
+            return;
+        }
+
         localStorage.setItem('cart_items', JSON.stringify(product));
         console.log(product);
         this.router.navigate(['/cart/buy/']);

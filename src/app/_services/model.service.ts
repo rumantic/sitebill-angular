@@ -51,6 +51,13 @@ export class ModelService {
         }
     }
 
+    all_checks_passes () {
+        if ( this.get_nobody_mode() || this.get_user_id() > 0 ) {
+            return true;
+        }
+        return false;
+    }
+
     get_nobody_mode () {
         return this.nobody_mode;
     }
@@ -60,6 +67,21 @@ export class ModelService {
     }
     disable_nobody_mode () {
         this.nobody_mode = false;
+    }
+
+    enable_guest_mode () {
+        if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
+            console.log('need guest mode');
+            if ( this.get_session_key() === null ) {
+                this.init_nobody_user_storage();
+            } else if ( this.get_session_key() === 'nobody' ) {
+                this.enable_nobody_mode();
+            } else if ( this.get_session_key() === undefined ) {
+                this.init_nobody_user_storage();
+            } else {
+                this.enable_nobody_mode();
+            }
+        }
     }
 
     enable_need_reload () {
