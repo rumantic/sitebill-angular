@@ -13,10 +13,17 @@ import { MatDialogConfig } from '@angular/material';
     animations: fuseAnimations
 })
 export class SaleComponent extends GridComponent {
+    private setup_complete: boolean;
 
     setup_apps() {
         if ( this.input_entity ) {
             this.entity = this.input_entity;
+            if ( this.entity.get_default_columns_list().length > 0 && !this.setup_complete ) {
+                this.define_grid_fields(this.entity.get_default_columns_list());
+                this.predefined_grid_fields = this.entity.get_default_columns_list();
+                this.setup_complete = true;
+            }
+
         } else {
             this.entity.set_app_name('sale');
             this.entity.set_table_name('data');

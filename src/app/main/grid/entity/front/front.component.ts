@@ -27,6 +27,11 @@ export class FrontComponent {
     regions: any;
 
     private dictiony_loaded: boolean = false;
+    private flat_entity: SitebillEntity;
+    private house_entity: SitebillEntity;
+    private commerce_entity: SitebillEntity;
+    private land_entity: SitebillEntity;
+    private parking_entity: SitebillEntity;
 
     constructor(
         private filterService: FilterService,
@@ -40,20 +45,51 @@ export class FrontComponent {
     ngOnInit() {
         this.enable_guest_mode();
 
-        this.sale_entity = new SitebillEntity();
-        this.sale_entity.set_app_name('street');
-        this.sale_entity.set_table_name('street');
-        this.sale_entity.set_primary_key('street_id');
-        this.sale_entity.set_disable_comment();
-        this.sale_entity.set_default_params({ city_id: 3 });
+        this.flat_entity = new SitebillEntity();
+        this.flat_entity.set_app_name('sale');
+        this.flat_entity.set_table_name('data');
+        this.flat_entity.set_primary_key('id');
+        this.flat_entity.set_disable_comment();
+        // this.sale_entity.set_default_params({ city_id: 3 });
+        const default_columns_list_flat = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.flat_entity.set_default_columns_list(default_columns_list_flat);
 
 
-        this.rent_entity = new SitebillEntity();
-        this.rent_entity.set_app_name('rent');
-        this.rent_entity.set_table_name('data');
-        this.rent_entity.set_primary_key('id');
-        this.rent_entity.set_disable_comment();
-        this.rent_entity.set_default_params({ topic_id: 6122 });
+
+        this.house_entity = new SitebillEntity();
+        this.house_entity.set_app_name('rent');
+        this.house_entity.set_table_name('data');
+        this.house_entity.set_primary_key('id');
+        this.house_entity.set_disable_comment();
+        const default_columns_list_house = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.house_entity.set_default_columns_list(default_columns_list_house);
+        // this.rent_entity.set_default_params({ topic_id: 6122 });
+
+        this.commerce_entity = new SitebillEntity();
+        this.commerce_entity.set_app_name('rent');
+        this.commerce_entity.set_table_name('data');
+        this.commerce_entity.set_primary_key('id');
+        this.commerce_entity.set_disable_comment();
+        const default_columns_list_commerce = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.commerce_entity.set_default_columns_list(default_columns_list_commerce);
+
+        this.land_entity = new SitebillEntity();
+        this.land_entity.set_app_name('rent');
+        this.land_entity.set_table_name('data');
+        this.land_entity.set_primary_key('id');
+        this.land_entity.set_disable_comment();
+        const default_columns_list_land = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.land_entity.set_default_columns_list(default_columns_list_land);
+
+        this.parking_entity = new SitebillEntity();
+        this.parking_entity.set_app_name('rent');
+        this.parking_entity.set_table_name('data');
+        this.parking_entity.set_primary_key('id');
+        this.parking_entity.set_disable_comment();
+        const default_columns_list_parking = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.parking_entity.set_default_columns_list(default_columns_list_parking);
+        
+
     }
 
     enable_guest_mode () {
