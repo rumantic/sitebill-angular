@@ -117,34 +117,37 @@ export class GridComponent implements OnInit, OnDestroy
     @ViewChild(CommonTemplateComponent)
     public commonTemplate: CommonTemplateComponent;
 
-    @Input("enable_collections")
+    @Input('enable_collections')
     enable_collections: boolean;
 
-    @Input("only_collections")
+    @Input('only_collections')
     only_collections: boolean;
 
-    @Input("disable_menu")
+    @Input('disable_menu')
     disable_menu: boolean;
 
-    @Input("disable_add_button")
+    @Input('disable_add_button')
     disable_add_button: boolean;
 
-    @Input("disable_view_button")
+    @Input('disable_view_button')
     disable_view_button: boolean;
 
-    @Input("disable_edit_button")
+    @Input('disable_edit_button')
     disable_edit_button: boolean;
 
-    @Input("disable_delete_button")
+    @Input('disable_delete_button')
     disable_delete_button: boolean;
 
-    @Input("disable_activation_button")
+    @Input('disable_activation_button')
     disable_activation_button: boolean;
 
-    @Input("disable_gallery_controls")
+    @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
-    @Input("input_entity")
+    @Input('freeze_default_columns_list')
+    freeze_default_columns_list = false;
+
+    @Input('input_entity')
     input_entity: SitebillEntity;
 
     @Output() total_counterEvent = new EventEmitter<number>();
@@ -423,7 +426,9 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.item_model = result.columns;
                     this.columns_index = result_f1.columns_index;
                     this.rows_index = result_f1.rows_index;
-                    this.entity.default_columns_list = result_f1.default_columns_list;
+                    if ( !this.freeze_default_columns_list ) {
+                        this.entity.default_columns_list = result_f1.default_columns_list;
+                    }
                     this.entity.columns_index = result_f1.columns_index;
                     //console.log(this.item_model);
                     this.loadGridComplete = true;
