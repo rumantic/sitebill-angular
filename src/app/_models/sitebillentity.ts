@@ -41,6 +41,14 @@ export class SitebillEntity {
         this.default_params = default_params;
     }
 
+    set_default_columns_list(default_columns_list) {
+        this.default_columns_list = default_columns_list;
+    }
+
+    get_default_columns_list() {
+        return this.default_columns_list;
+    }
+
     get_table_name() {
         return this.table_name;
     }
