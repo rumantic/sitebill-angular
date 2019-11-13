@@ -56,7 +56,8 @@ export class SbRatesFormComponent implements OnInit {
     }
 
     onEditRateClick(rate: SbRateModel) {
-        this.currentRateEdit = Object.assign({}, rate);
+        //this.currentRateEdit = Object.assign({}, rate);
+        this.currentRateEdit = rate;
         this.buildRateForm(this.currentRateEdit);
     }
 
@@ -128,8 +129,8 @@ export class SbRatesFormComponent implements OnInit {
         };
         
         if (rate.meta.hasFieldSeason) {
-            config.season_start = [rate.season_start ? rate.season_start.valueOf() : null, [Validators.required]];
-            config.season_end = [rate.season_end ? rate.season_end.valueOf() : null, [Validators.required]];
+            config.season_start = [rate.season_start ? rate.season_start.toDate() : null, [Validators.required]];
+            config.season_end = [rate.season_end ? rate.season_end.toDate() : null, [Validators.required]];
         }
         if (rate.meta.hasFieldPeriod) {
             config.period_start_m = [rate.period_start_m, [Validators.required]];

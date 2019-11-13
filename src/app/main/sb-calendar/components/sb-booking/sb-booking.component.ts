@@ -129,8 +129,8 @@ export class SbBookingComponent implements OnInit {
                 break;
         }
         this.calendarService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
-            
             this.events = SbCalendarHelper.parseEventsFromBooking(result);
         });
+        
     }
 }

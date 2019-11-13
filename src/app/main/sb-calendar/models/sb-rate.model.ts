@@ -16,14 +16,12 @@ export class SbRateModel {
     period_start_d?: string | number;
     period_end_m?: string | number;
     period_end_d?: string | number;
-    //season_start?: string | number;
-    //season_end_d?: string | number;
 
     private seasonStart: Moment;
     private seasonEnd: Moment;
 
     set season_start(value) {
-        this.parseToMoment(value, this.seasonStart);
+        this.seasonStart = this.parseToMoment(value);
     }
 
     get season_start() {
@@ -31,7 +29,7 @@ export class SbRateModel {
     }
 
     set season_end(value) {
-        this.parseToMoment(value, this.seasonEnd);
+        this.seasonEnd = this.parseToMoment(value);
     }
 
     get season_end() {
@@ -64,7 +62,6 @@ export class SbRateModel {
 
         // TODO put here real object import
         Object.assign(this, data);
-
         this.setMeta();
     }
 
@@ -82,7 +79,8 @@ export class SbRateModel {
         }
     }
 
-    private parseToMoment(value, prop) {
+    private parseToMoment(value) {
+        var prop;
         if (typeof value === 'object') {
             if (moment.isMoment(value)) {
                 prop = value;
@@ -92,7 +90,8 @@ export class SbRateModel {
         } else if (typeof value === 'number') {
             prop = moment(value);
         } else if (typeof value === 'string') {
-            prop = moment(value);
+            prop = moment(value, 'YYYY-MM-DD');
         }
+        return prop;
     }
 }
