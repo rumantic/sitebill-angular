@@ -6,7 +6,7 @@
 
                 <div class="p-16 pt-8">
                     <mat-label>База объектов</mat-label>
-                    <mat-select [(ngModel)]="selectedTopic" name="food">
+                    <mat-select [(ngModel)]="selectedTopic" (selectionChange)="change_columns_list($event)" name="food">
                         <mat-option *ngFor="let topic of topics" [value]="topic.id">
                             {{topic.name}}
                         </mat-option>
@@ -19,7 +19,7 @@
 
                 <div class="p-16 pt-8">
                     <mat-label>В регионе</mat-label>
-                    <mat-select [(ngModel)]="selectedRegion" name="food">
+                    <mat-select [(ngModel)]="selectedRegion" (selectionChange)="change_region_list($event)" name="food">
                         <mat-option *ngFor="let region of regions" [value]="region.id">
                             {{region.value}}
                         </mat-option>
@@ -44,8 +44,8 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid
-                                        [input_entity]="house_entity"
+                                <sale-grid  *ngIf="reload"
+                                        [input_entity]="sale_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
                                         [disable_edit_button]="disable_edit_button"
@@ -71,8 +71,8 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid
-                                        [input_entity]="house_entity"
+                                <sale-grid  *ngIf="reload"
+                                        [input_entity]="rent_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
                                         [disable_edit_button]="disable_edit_button"
@@ -98,8 +98,8 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid
-                                        [input_entity]="commerce_entity"
+                                <sale-grid  *ngIf="reload"
+                                        [input_entity]="dayrent_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
                                         [disable_edit_button]="disable_edit_button"
@@ -125,8 +125,8 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid
-                                        [input_entity]="land_entity"
+                                <sale-grid  *ngIf="reload"
+                                        [input_entity]="buy_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
                                         [disable_edit_button]="disable_edit_button"
@@ -152,8 +152,8 @@
                                      fxFlex="100">
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
-                                <sale-grid
-                                        [input_entity]="parking_entity"
+                                <sale-grid  *ngIf="reload"
+                                        [input_entity]="needrent_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
                                         [disable_edit_button]="disable_edit_button"

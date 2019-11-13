@@ -28,10 +28,13 @@ export class FrontComponent {
 
     private dictiony_loaded: boolean = false;
     private flat_entity: SitebillEntity;
-    private house_entity: SitebillEntity;
     private commerce_entity: SitebillEntity;
-    private land_entity: SitebillEntity;
-    private parking_entity: SitebillEntity;
+    reload: boolean;
+    private dayrent_entity: SitebillEntity;
+    private buy_entity: SitebillEntity;
+    private needrent_entity: SitebillEntity;
+
+    private topic_columns: any[][];
 
     constructor(
         private filterService: FilterService,
@@ -39,57 +42,109 @@ export class FrontComponent {
         public modelService: ModelService
     ) {
         this.disable_menu();
+        this.topic_columns = [];
         // console.log('lead constructor');
     }
 
     ngOnInit() {
         this.enable_guest_mode();
+        this.reload = true;
 
-        this.flat_entity = new SitebillEntity();
-        this.flat_entity.set_app_name('sale');
-        this.flat_entity.set_table_name('data');
-        this.flat_entity.set_primary_key('id');
-        this.flat_entity.set_disable_comment();
-        // this.sale_entity.set_default_params({ city_id: 3 });
-        const default_columns_list_flat = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
-        this.flat_entity.set_default_columns_list(default_columns_list_flat);
+        this.sale_entity = new SitebillEntity();
+        this.sale_entity.set_app_name('sale');
+        this.sale_entity.set_table_name('data');
+        this.sale_entity.set_primary_key('id');
+        this.sale_entity.set_disable_comment();
+        this.sale_entity.set_default_params({ optype: 0 });
+        const default_columns_list_sale = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.sale_entity.set_default_columns_list(default_columns_list_sale);
 
 
 
-        this.house_entity = new SitebillEntity();
-        this.house_entity.set_app_name('rent');
-        this.house_entity.set_table_name('data');
-        this.house_entity.set_primary_key('id');
-        this.house_entity.set_disable_comment();
-        const default_columns_list_house = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
-        this.house_entity.set_default_columns_list(default_columns_list_house);
+
+        this.rent_entity = new SitebillEntity();
+        this.rent_entity.set_app_name('rent');
+        this.rent_entity.set_table_name('data');
+        this.rent_entity.set_primary_key('id');
+        this.rent_entity.set_disable_comment();
+        this.rent_entity.set_default_params({ optype: 1 });
+        const default_columns_list_rent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.rent_entity.set_default_columns_list(default_columns_list_rent);
         // this.rent_entity.set_default_params({ topic_id: 6122 });
 
-        this.commerce_entity = new SitebillEntity();
-        this.commerce_entity.set_app_name('rent');
-        this.commerce_entity.set_table_name('data');
-        this.commerce_entity.set_primary_key('id');
-        this.commerce_entity.set_disable_comment();
-        const default_columns_list_commerce = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
-        this.commerce_entity.set_default_columns_list(default_columns_list_commerce);
+        this.dayrent_entity = new SitebillEntity();
+        this.dayrent_entity.set_app_name('rent');
+        this.dayrent_entity.set_table_name('data');
+        this.dayrent_entity.set_primary_key('id');
+        this.dayrent_entity.set_disable_comment();
+        this.dayrent_entity.set_default_params({ optype: 2 });
+        const default_columns_list_dayrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.dayrent_entity.set_default_columns_list(default_columns_list_dayrent);
 
-        this.land_entity = new SitebillEntity();
-        this.land_entity.set_app_name('rent');
-        this.land_entity.set_table_name('data');
-        this.land_entity.set_primary_key('id');
-        this.land_entity.set_disable_comment();
-        const default_columns_list_land = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
-        this.land_entity.set_default_columns_list(default_columns_list_land);
+        this.buy_entity = new SitebillEntity();
+        this.buy_entity.set_app_name('rent');
+        this.buy_entity.set_table_name('data');
+        this.buy_entity.set_primary_key('id');
+        this.buy_entity.set_disable_comment();
+        this.buy_entity.set_default_params({ optype: 3 });
+        const default_columns_list_buy = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.buy_entity.set_default_columns_list(default_columns_list_buy);
 
-        this.parking_entity = new SitebillEntity();
-        this.parking_entity.set_app_name('rent');
-        this.parking_entity.set_table_name('data');
-        this.parking_entity.set_primary_key('id');
-        this.parking_entity.set_disable_comment();
-        const default_columns_list_parking = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
-        this.parking_entity.set_default_columns_list(default_columns_list_parking);
+        this.needrent_entity = new SitebillEntity();
+        this.needrent_entity.set_app_name('rent');
+        this.needrent_entity.set_table_name('data');
+        this.needrent_entity.set_primary_key('id');
+        this.needrent_entity.set_disable_comment();
+        this.needrent_entity.set_default_params({ optype: 4 });
+        const default_columns_list_needrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        this.needrent_entity.set_default_columns_list(default_columns_list_needrent);
         
 
+    }
+
+    push_reload_event () {
+        this.reload = false;
+        this.modelService.get_cms_session().subscribe((response: any) => {
+            this.reload = true;
+        });
+    }
+
+    change_columns_list (event) {
+        this.push_reload_event();
+        let default_columns_list = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
+        if ( this.topic_columns[event.value].length > 1) {
+            default_columns_list = this.topic_columns[event.value];
+        }
+        this.sale_entity.set_default_columns_list(default_columns_list);
+        this.redefine_default_params(this.sale_entity, 'topic_id', event.value);
+
+        this.rent_entity.set_default_columns_list(default_columns_list);
+        this.redefine_default_params(this.rent_entity, 'topic_id', event.value);
+
+        this.dayrent_entity.set_default_columns_list(default_columns_list);
+        this.redefine_default_params(this.dayrent_entity, 'topic_id', event.value);
+
+        this.buy_entity.set_default_columns_list(default_columns_list);
+        this.redefine_default_params(this.buy_entity, 'topic_id', event.value);
+
+        this.needrent_entity.set_default_columns_list(default_columns_list);
+        this.redefine_default_params(this.needrent_entity, 'topic_id', event.value);
+    }
+
+    redefine_default_params (entity: SitebillEntity, name: string, value: string) {
+        let params = entity.get_default_params();
+        params[name] = value;
+        entity.set_default_params(params);
+    }
+
+    change_region_list ( event ) {
+        this.push_reload_event();
+
+        this.redefine_default_params(this.sale_entity, 'region_id', event.value);
+        this.redefine_default_params(this.rent_entity, 'region_id', event.value);
+        this.redefine_default_params(this.dayrent_entity, 'region_id', event.value);
+        this.redefine_default_params(this.buy_entity, 'region_id', event.value);
+        this.redefine_default_params(this.needrent_entity, 'region_id', event.value);
     }
 
     enable_guest_mode () {
@@ -100,6 +155,9 @@ export class FrontComponent {
     load_topics () {
         this.modelService.load_dictionary_model_all('data', 'topic_id')
             .subscribe((response: any) => {
+                response.data.forEach((row, index) => {
+                    this.topic_columns[row.id] = row.columns_list.split(',');
+                });
                 this.topics = response.data;
             });
     }

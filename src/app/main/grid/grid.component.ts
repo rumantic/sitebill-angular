@@ -836,7 +836,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
 
-    onActivate() {
+    onActivate(event) {
     }
 
 

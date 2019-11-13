@@ -23,12 +23,12 @@ export class SaleComponent extends GridComponent {
                 this.predefined_grid_fields = this.entity.get_default_columns_list();
                 this.setup_complete = true;
             }
+            if (this.entity.get_default_params().length > 0) {
+                console.log('i want to be defined with params');
+                console.log(this.entity.get_default_params());
+                this.define_grid_params(this.entity.get_default_params());
+            }
 
-        } else {
-            this.entity.set_app_name('sale');
-            this.entity.set_table_name('data');
-            this.entity.set_primary_key('id');
-            this.enable_date_range('date');
         }
 
 
