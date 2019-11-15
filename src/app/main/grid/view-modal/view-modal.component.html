@@ -53,6 +53,10 @@
                                                         </ng-container>
                                                     </agm-map>
                                                 </ng-container>
+                                                <ng-container *ngSwitchCase="'price'">
+                                                    {{records[x].value}} <span *ngIf="records[x].currency_id != null">{{records[x].currency_id.value_string}}</span>
+                                                </ng-container>
+
 
                                                 <ng-container *ngSwitchDefault>
                                                     <ng-container [ngSwitch]="records[x].name">

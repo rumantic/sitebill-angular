@@ -558,6 +558,10 @@ export class GridComponent implements OnInit, OnDestroy
                     cellTemplate = this.commonTemplate.photoTmpl;
                     break;
 
+                case 'price':
+                    cellTemplate = this.commonTemplate.priceTmpl;
+                    break;
+
                 case 'uploads':
                     cellTemplate = this.commonTemplate.imageTmpl;
                     break;

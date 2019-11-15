@@ -19,6 +19,7 @@ export class CommonTemplateComponent {
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
+    @ViewChild('priceTmpl') priceTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
     @ViewChild('dtdateTmpl') dtdateTmpl: TemplateRef<any>;

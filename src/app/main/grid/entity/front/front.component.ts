@@ -150,7 +150,6 @@ export class FrontComponent {
 
     change_region_list ( event ) {
         this.push_reload_event();
-        this.set_topic_id_value();
 
         this.redefine_default_params(this.sale_entity, 'region_id', event.value);
         this.redefine_default_params(this.rent_entity, 'region_id', event.value);
