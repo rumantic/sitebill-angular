@@ -4,6 +4,7 @@ import { FilterService } from 'app/_services/filter.service';
 import {ModelService} from '../../../../_services/model.service';
 import {FuseConfigService} from '../../../../../@fuse/services/config.service';
 import {SitebillEntity} from '../../../../_models';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'front-component',
@@ -12,6 +13,8 @@ import {SitebillEntity} from '../../../../_models';
     animations: fuseAnimations
 })
 export class FrontComponent {
+    form: FormGroup;
+
     public allow_load_grid = false;
     private disable_add_button: boolean = false;
     private disable_edit_button: boolean = false;
@@ -21,14 +24,10 @@ export class FrontComponent {
     private disable_view_button: boolean = false;
     private sale_entity: SitebillEntity;
     private rent_entity: SitebillEntity;
-    selectedTopic: any;
     topics: any;
-    selectedRegion: any;
     regions: any;
 
     private dictiony_loaded: boolean = false;
-    private flat_entity: SitebillEntity;
-    private commerce_entity: SitebillEntity;
     reload: boolean;
     private dayrent_entity: SitebillEntity;
     private buy_entity: SitebillEntity;
@@ -38,6 +37,7 @@ export class FrontComponent {
 
     constructor(
         private filterService: FilterService,
+        protected _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
         public modelService: ModelService
     ) {
@@ -47,6 +47,15 @@ export class FrontComponent {
     }
 
     ngOnInit() {
+        this.form = this._formBuilder.group({
+            topic_id: new FormControl('', []),
+            region_id: new FormControl('', []),
+        });
+        this.form.valueChanges.subscribe(query => {
+            this.change_columns_list({value: query.topic_id});
+        });
+
+
         this.enable_guest_mode();
         this.reload = true;
 
@@ -98,7 +107,8 @@ export class FrontComponent {
         this.needrent_entity.set_default_params({ optype: 4 });
         const default_columns_list_needrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added'];
         this.needrent_entity.set_default_columns_list(default_columns_list_needrent);
-        
+
+
 
     }
 
@@ -129,6 +139,7 @@ export class FrontComponent {
 
         this.needrent_entity.set_default_columns_list(default_columns_list);
         this.redefine_default_params(this.needrent_entity, 'topic_id', event.value);
+        //console.log(this.selectedTopic);
     }
 
     redefine_default_params (entity: SitebillEntity, name: string, value: string) {
@@ -139,12 +150,17 @@ export class FrontComponent {
 
     change_region_list ( event ) {
         this.push_reload_event();
+        this.set_topic_id_value();
 
         this.redefine_default_params(this.sale_entity, 'region_id', event.value);
         this.redefine_default_params(this.rent_entity, 'region_id', event.value);
         this.redefine_default_params(this.dayrent_entity, 'region_id', event.value);
         this.redefine_default_params(this.buy_entity, 'region_id', event.value);
         this.redefine_default_params(this.needrent_entity, 'region_id', event.value);
+    }
+
+    set_topic_id_value (value) {
+        this.form.controls['topic_id'].patchValue(value);
     }
 
     enable_guest_mode () {
@@ -159,6 +175,7 @@ export class FrontComponent {
                     this.topic_columns[row.id] = row.columns_list.split(',');
                 });
                 this.topics = response.data;
+                this.set_topic_id_value(this.topics[0].id);
             });
     }
 
