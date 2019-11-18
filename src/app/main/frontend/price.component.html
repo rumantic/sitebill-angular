@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="price primary-300" fxLayout="row" fxLayoutAlign="center start">
-                    <div class="currency">руб.</div>
+                    <div class="currency">{{product.value.pricing[currency_id].currency_info.name}}</div>
                     <div fxLayout="row" fxLayoutAlign="center end">
                         <div class="value">{{product.value.pricing[currency_id].monthly}}</div>
                         <div class="period">в месяц</div>
