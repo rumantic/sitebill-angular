@@ -185,10 +185,17 @@ export class SbRatesFormComponent implements OnInit {
     }
 
     private saveRate(keyValue, model: SbRateModel): Observable<any> {
+        
+        
+        
         if(model.id && Number(model.id) != 0){
-            this.calendarService.edit_rate(keyValue, model.id, model);
+            this.calendarService.edit_rate(keyValue, model.id, model).subscribe((result) => {
+                return of(result);
+            });
         }else{
-            this.calendarService.create_rate(keyValue, model);
+            this.calendarService.create_rate(keyValue, model).subscribe((result) => {
+                return of(result);
+            });
         }
         
         const result = [...this.data.eventsList];
