@@ -204,6 +204,10 @@ export class FormComponent implements OnInit {
                         this.hide_dadata(this.rows[i]);
                     }
                 }
+                if (this.records[this.rows[i]].type === 'compose') {
+                    this.hide_dadata(this.rows[i]);
+                }
+
             }
         }
     }

@@ -6,19 +6,23 @@ export class SitebillEntity {
     columns: string[];
     columns_index: any[];
     default_columns_list: string[];
+    default_params: string[];
     model: SitebillModelItem[];
     private enable_collections: boolean;
     private hook: string;
     private readonly: boolean;
+    private enable_comment: boolean;
 
     constructor() {
         this.columns = [];
         this.model = [];
         this.columns_index = [];
         this.default_columns_list = [];
+        this.default_params = [];
         this.enable_collections = false;
         this.hook = null;
         this.readonly = false;
+        this.enable_comment = true;
     }
 
     get_app_name() {
@@ -27,6 +31,22 @@ export class SitebillEntity {
 
     set_app_name(app_name: string) {
         this.app_name = app_name;
+    }
+
+    get_default_params() {
+        return this.default_params;
+    }
+
+    set_default_params(default_params) {
+        this.default_params = default_params;
+    }
+
+    set_default_columns_list(default_columns_list) {
+        this.default_columns_list = default_columns_list;
+    }
+
+    get_default_columns_list() {
+        return this.default_columns_list;
     }
 
     get_table_name() {
@@ -48,6 +68,21 @@ export class SitebillEntity {
     get_primary_key() {
         return this.primary_key;
     }
+
+    set_primary_key(name: string) {
+        this.primary_key = name;
+    }
+
+    set_enable_comment () {
+        this.enable_comment = true;
+    }
+    set_disable_comment () {
+        this.enable_comment = false;
+    }
+    is_enable_comment () {
+        return this.enable_comment;
+    }
+
 
     set_enable_collections() {
         this.enable_collections = true;

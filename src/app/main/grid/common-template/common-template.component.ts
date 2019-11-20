@@ -19,6 +19,7 @@ export class CommonTemplateComponent {
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
+    @ViewChild('priceTmpl') priceTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
     @ViewChild('dtdateTmpl') dtdateTmpl: TemplateRef<any>;
@@ -32,6 +33,21 @@ export class CommonTemplateComponent {
 
     template_loaded: boolean;
     @Input() entity: SitebillEntity;
+
+    @Input("disable_view_button")
+    disable_view_button: boolean;
+
+    @Input("disable_edit_button")
+    disable_edit_button: boolean;
+
+    @Input("disable_delete_button")
+    disable_delete_button: boolean;
+
+    @Input("disable_activation_button")
+    disable_activation_button: boolean;
+
+    @Input("disable_gallery_controls")
+    disable_gallery_controls: boolean;
 
     @Output() viewEvent = new EventEmitter<number>();
     @Output() edit_formEvent = new EventEmitter<number>();
@@ -62,8 +78,8 @@ export class CommonTemplateComponent {
         this.toggle_collectionEvent.next(event);
     }
 
-    view_gallery(row, column, images) {
-        const event = { row: row, column: column, images: images };
+    view_gallery(row, column, images, disable_gallery_controls) {
+        const event = { row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls };
         this.view_galleryEvent.next(event);
     }
 

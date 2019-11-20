@@ -46,6 +46,10 @@ export class UploaderComponent {
     @Input("max_uploads")
     max_uploads: any;
 
+    @Input("disable_gallery_controls")
+    disable_gallery_controls: boolean;
+
+
 
 
 

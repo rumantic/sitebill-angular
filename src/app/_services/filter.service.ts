@@ -35,6 +35,20 @@ export class FilterService {
         //console.log(this.share_array);
         this.onInnerChange(entity);
     }
+
+    share_any_data (app_name: string, key: string, datas: any) {
+        if (this.params_count[app_name] == null) {
+            this.params_count[app_name] = 0;
+        }
+        this.params_count[app_name]++;
+        if (this.share_array[app_name] == null) {
+            this.share_array[app_name] = [];
+        }
+        this.share_array[app_name][key] = datas;
+        //console.log(this.share_array);
+        this.onInnerChange(app_name);
+
+    }
     unshare_data(entity: SitebillEntity, key: string) {
         if (this.share_array[entity.get_app_name()] != null ) {
             delete (this.share_array[entity.get_app_name()][key]);
@@ -55,6 +69,12 @@ export class FilterService {
     get_counter_value(app_name:string, key: string) {
         if (this.share_counter_array[app_name] != null) {
             return this.share_counter_array[app_name][key];
+        }
+        return null;
+    }
+    get_share_data (app_name:string, key: string) {
+        if (this.share_array[app_name] != null) {
+            return this.share_array[app_name][key];
         }
         return null;
     }

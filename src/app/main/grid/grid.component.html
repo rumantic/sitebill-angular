@@ -1,5 +1,10 @@
 <common-template
     [entity]="entity"
+    [disable_activation_button]="disable_activation_button"
+    [disable_delete_button]="disable_delete_button"
+    [disable_edit_button]="disable_edit_button"
+    [disable_view_button]="disable_view_button"
+    [disable_gallery_controls]="disable_gallery_controls"
     (viewEvent)="view($event)"
     (edit_formEvent)="edit_form($event)"
     (deleteEvent)="delete($event)"
@@ -17,7 +22,7 @@
         <div class="header p-16 p-md-24 accent" fxLayout="column">
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
                     <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись
                     </button>
                     <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">

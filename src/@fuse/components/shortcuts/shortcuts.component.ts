@@ -70,40 +70,43 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         // Get the navigation items and flatten them
         this.filteredNavigationItems = this.navigationItems = this._fuseNavigationService.getFlatNavigation(this.navigation);
 
+        /*
         if ( this._cookieService.check('FUSE2.shortcuts') )
         {
             this.shortcutItems = JSON.parse(this._cookieService.get('FUSE2.shortcuts'));
         }
         else
         {
-            // User's shortcut items
-            this.shortcutItems = [
-                {
-                    'title': 'Calendar',
-                    'type' : 'item',
-                    'icon' : 'today',
-                    'url'  : '/apps/calendar'
-                },
-                {
-                    'title': 'Mail',
-                    'type' : 'item',
-                    'icon' : 'email',
-                    'url'  : '/apps/mail'
-                },
-                {
-                    'title': 'Contacts',
-                    'type' : 'item',
-                    'icon' : 'account_box',
-                    'url'  : '/apps/contacts'
-                },
-                {
-                    'title': 'To-Do',
-                    'type' : 'item',
-                    'icon' : 'check_box',
-                    'url'  : '/apps/todo'
-                }
-            ];
         }
+         */
+
+        // User's shortcut items
+        this.shortcutItems = [
+            {
+                'title': 'База объектов',
+                'type' : 'item',
+                'icon' : 'list',
+                'url'  : '/frontend/front'
+            },
+            {
+                'title': 'Цены',
+                'type' : 'item',
+                'icon' : 'monetization_on',
+                'url'  : '/frontend/prices'
+            },
+            {
+                'title': 'О проекте',
+                'type' : 'item',
+                'icon' : 'textsms',
+                'url'  : '/frontend/about'
+            },
+            {
+                'title': 'Контакты',
+                'type' : 'item',
+                'icon' : 'account_box',
+                'url'  : '/frontend/contacts'
+            },
+        ];
 
         // Subscribe to media changes
         this._fuseMatchMediaService.onMediaChange

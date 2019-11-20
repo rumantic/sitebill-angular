@@ -135,6 +135,18 @@ const appRoutes: Routes = [
         loadChildren: 'app/main/register/register.module#RegisterModule'
     },
     {
+        path: 'frontend',
+        loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
+    },
+    {
+        path: 'cart/:step/:item_id',
+        loadChildren: 'app/main/cart/cart.module#CartModule'
+    },
+    {
+        path: 'cart/:step',
+        loadChildren: 'app/main/cart/cart.module#CartModule'
+    },
+    {
         path: 'calendar',
         loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModuleWithRoutes',
     },

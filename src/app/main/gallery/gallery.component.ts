@@ -35,6 +35,9 @@ export class GalleryComponent implements OnInit {
     @Input("image_field")
     image_field: string;
 
+    @Input("disable_gallery_controls")
+    disable_gallery_controls: boolean;
+
     constructor(
         private differs: IterableDiffers,
         public _matDialog: MatDialog,
@@ -129,6 +132,14 @@ export class GalleryComponent implements OnInit {
                 this.galleryOptions[0].image = true;
                 this.galleryOptions[0].thumbnails = false;
                 this.galleryOptions[0].imageSwipe = true;
+                delete (this.galleryOptions[0].thumbnailActions);
+            } catch (e) {
+
+            }
+        }
+
+        if ( this.disable_gallery_controls  ) {
+            try {
                 delete (this.galleryOptions[0].thumbnailActions);
             } catch (e) {
 

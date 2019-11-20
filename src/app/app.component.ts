@@ -61,19 +61,24 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform
     )
     {
-        if (this.elRef.nativeElement.getAttribute('run') == 'calculator') {
+        if (this.elRef.nativeElement.getAttribute('run') === 'calculator') {
             this.router.navigate(['/calculator']);
         }
-        if (this.elRef.nativeElement.getAttribute('run') == 'carousel') {
+        if (this.elRef.nativeElement.getAttribute('run') === 'carousel') {
             this.router.navigate(['/carousel']);
         }
-        if (this.elRef.nativeElement.getAttribute('run') == 'search') {
+        if (this.elRef.nativeElement.getAttribute('run') === 'search') {
             this.router.navigate(['/search']);
         }
-        if (this.elRef.nativeElement.getAttribute('run') == 'leads') {
+        if (this.elRef.nativeElement.getAttribute('run') === 'leads') {
             this.router.navigate(['/client/my']);
         }
-        
+        if (this.elRef.nativeElement.getAttribute('run') === 'frontend') {
+            if (this.elRef.nativeElement.getAttribute('skip') !== 'true') {
+                this.router.navigate(['/frontend/front']);
+            }
+        }
+
         //console.log((platformLocation as any).location);
         //console.log((platformLocation as any).location.href);
         //console.log((platformLocation as any).location.origin);        

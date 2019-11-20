@@ -23,51 +23,57 @@
 
                             <div class="simple clickable data-table">
                                 <div class="data-table__row" *ngFor="let x of tabs[tab]">
-                                    <div class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</div>
-                                    <div class="data-table__cell" [ngClass]="{'data-table__cell_fullwidth': get_colspan(records[x].type, records[x].name) > 1, 'text-right': get_colspan(records[x].type, records[x].name) === 1}">
-                                        <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
-                                        <ng-container *ngIf="records[x].value_string == '' || records[x].value_string == null">
-                                            <ng-container [ngSwitch]="records[x].type">
-                                                <ng-container *ngSwitchCase="'checkbox'">
-                                                    <mat-icon *ngIf="records[x].value == 1" class="active-icon green-600 s-16">check</mat-icon>
-                                                    <mat-icon *ngIf="records[x].value == 0" class="active-icon red-500 s-16">close</mat-icon>
-                                                </ng-container>
+                                    <ng-container *ngIf="!records[x].hidden">
+                                        <div class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</div>
+                                        <div class="data-table__cell" [ngClass]="{'data-table__cell_fullwidth': get_colspan(records[x].type, records[x].name) > 1, 'text-right': get_colspan(records[x].type, records[x].name) === 1}">
+                                            <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
+                                            <ng-container *ngIf="records[x].value_string == '' || records[x].value_string == null">
+                                                <ng-container [ngSwitch]="records[x].type">
+                                                    <ng-container *ngSwitchCase="'checkbox'">
+                                                        <mat-icon *ngIf="records[x].value == 1" class="active-icon green-600 s-16">check</mat-icon>
+                                                        <mat-icon *ngIf="records[x].value == 0" class="active-icon red-500 s-16">close</mat-icon>
+                                                    </ng-container>
 
-                                                <ng-container *ngSwitchCase="'uploads'">
-                                                    {{records[x].title}}
-                                                    <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
-                                                </ng-container>
-
-                                                <ng-container *ngSwitchCase="'textarea_editor'">
-                                                    <div class="data-table__cell-value data-table__cell-value_overflow text-left" fusePerfectScrollbar>
+                                                    <ng-container *ngSwitchCase="'uploads'">
                                                         {{records[x].title}}
-                                                        <div [innerHTML]="records[x].value|safehtml"></div>
-                                                    </div>
-                                                </ng-container>
+                                                        <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
+                                                    </ng-container>
 
-                                                <ng-container *ngSwitchCase="'geodata'">
-                                                    {{records[x].title}} {{lat}},{{lng}}
-                                                    <agm-map [latitude]="lat_center" [longitude]="lng_center">
-                                                        <ng-container *ngIf="lat != '' && lng != ''">
-                                                            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-                                                        </ng-container>
-                                                    </agm-map>
-                                                </ng-container>
-
-                                                <ng-container *ngSwitchDefault>
-                                                    <ng-container [ngSwitch]="records[x].name">
-                                                        <ng-container  *ngSwitchCase="'youtube'">
+                                                    <ng-container *ngSwitchCase="'textarea_editor'">
+                                                        <div class="data-table__cell-value data-table__cell-value_overflow text-left" fusePerfectScrollbar>
                                                             {{records[x].title}}
-                                                            <div [innerHTML]="get_youtube_code(records[x].value)|safehtml"></div>
-                                                        </ng-container>
-                                                        <ng-container *ngSwitchDefault>
-                                                            {{records[x].value}}
+                                                            <div [innerHTML]="records[x].value|safehtml"></div>
+                                                        </div>
+                                                    </ng-container>
+
+                                                    <ng-container *ngSwitchCase="'geodata'">
+                                                        {{records[x].title}} {{lat}},{{lng}}
+                                                        <agm-map [latitude]="lat_center" [longitude]="lng_center">
+                                                            <ng-container *ngIf="lat != '' && lng != ''">
+                                                                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                                            </ng-container>
+                                                        </agm-map>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'price'">
+                                                        {{records[x].value}} <span *ngIf="records[x].currency_id != null">{{records[x].currency_id.value_string}}</span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngSwitchDefault>
+                                                        <ng-container [ngSwitch]="records[x].name">
+                                                            <ng-container  *ngSwitchCase="'youtube'">
+                                                                {{records[x].title}}
+                                                                <div [innerHTML]="get_youtube_code(records[x].value)|safehtml"></div>
+                                                            </ng-container>
+                                                            <ng-container *ngSwitchDefault>
+                                                                {{records[x].value}}
+                                                            </ng-container>
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
                                             </ng-container>
-                                        </ng-container>
-                                    </div>
+                                        </div>
+
+                                    </ng-container>
                                 </div>
                             </div>
                         </mat-tab>
@@ -75,7 +81,7 @@
                     </mat-tab-group>
                 </form>
             </div>
-            <div class="modal-content__comments">
+            <div class="modal-content__comments" *ngIf="_data.is_enable_comment()">
                 <mat-accordion>
                     <mat-expansion-panel
                         class="comments"

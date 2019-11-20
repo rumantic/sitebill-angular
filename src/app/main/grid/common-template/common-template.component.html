@@ -8,10 +8,10 @@
             <mat-icon *ngIf="row[entity.get_primary_key()].collections == null" (click)="toggle_collection(row, value)" aria-label="Добавить в подборку" matTooltip="Добавить в подборку">playlist_add</mat-icon>
         </button>
 
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_view_button">
             <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
         </button>
-        <span *ngIf="row.active">
+        <span *ngIf="row.active && !disable_activation_button">
             <button mat-icon-button *ngIf="row.active.value == '0'" color="accent">
                 <mat-icon (click)="toggle_active(row, value)" aria-label="Включить" matTooltip="Включить">power_settings_new</mat-icon>
             </button>
@@ -20,11 +20,11 @@
             </button>
         </span>
 
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_edit_button">
             <mat-icon (click)="edit_form(value)" aria-label="Редактировать" matTooltip="Редактировать запись">edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn">
+        <button mat-icon-button color="warn" *ngIf="!disable_delete_button">
             <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
         </button>
     </div>
@@ -38,22 +38,22 @@
 
 
 <ng-template #imageTmpl let-column="column" let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(row, column, value)">
+    <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
         <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
             <img width="50"
                  src="{{api_url}}/img/data/{{value[0].preview}}" />
         </div>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0">image_search</mat-icon>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
     </button>
 </ng-template>
 
 <ng-template #photoTmpl let-column="column" let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(row, column, value)">
+    <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
         <ng-container *ngIf="value != ''">
             <img width="50"
                  src="{{api_url}}/img/data/user/{{value}}" />
         </ng-container>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0">image_search</mat-icon>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
     </button>
 </ng-template>
 
@@ -89,6 +89,10 @@
     <mat-icon *ngIf="value != ''">location_on</mat-icon>
 </ng-template>
 
+<ng-template #priceTmpl let-row="row" let-value="value">
+        {{value}}
+        <span *ngIf="row.price.currency_id != null">{{row.price.currency_id.value_string}}</span>
+</ng-template>
 
 
 <ng-template #clientControlTmpl let-row="row" let-value="value">
