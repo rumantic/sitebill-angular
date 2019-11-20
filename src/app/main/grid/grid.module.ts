@@ -78,6 +78,7 @@ import {MemoryListComponent} from '../collections/memorylist.component';
 import {FrontComponent} from './entity/front/front.component';
 import {SaleComponent} from './entity/front/sale.component';
 
+import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
 
 const routes = [
     {
@@ -324,7 +325,9 @@ const routes = [
         DragDropModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
-        })
+        }),
+
+        SbCalendarModule,
     ],
     exports: [
         NgxUploaderModule
