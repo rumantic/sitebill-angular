@@ -36,7 +36,9 @@ export class SbCalendarHelper {
                 if (! dayRatesList.length) {
                     return;
                 }
+                var mainsetted = false;
                 dayRatesList.forEach((rate, index) => {
+                    var isMain = false;
                     if(typeof rate.period_start != 'undefined' && rate.period_start != ''){
                         var se = rate.period_start.split('-');
                         if(se.length == 2){
@@ -51,13 +53,25 @@ export class SbCalendarHelper {
                             rate.period_end_d = se[1].replace(/^(0)/, '');
                         }
                     }
+                    if(rate.active == 0){
+                        rate.active = false;
+                    }else{
+                        rate.active = true;
+                    }
+                    
+                    if(!mainsetted && rate.active === true){
+                        isMain = true;
+                        mainsetted = true;
+                    }
+                    //isMain = !mainsetted && rate.active === true;
+                    
                     result.push({
                         start: moment(rateDate, SB_DATE_FORMAT).toDate(),
                         allDay: true,
                         title: `${rate.amount}`,
                         meta: {
                             type: 'rate',
-                            isMain: index === 0,
+                            isMain: isMain,
                             rate: rate,
                         },
                     });
