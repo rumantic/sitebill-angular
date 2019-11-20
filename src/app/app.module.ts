@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-import {CommonModule} from "@angular/common";
+import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule, Routes} from '@angular/router';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
@@ -31,8 +31,7 @@ import {FuseWidgetModule} from '@fuse/components/widget/widget.module';
 
 import {fuseConfig} from 'app/fuse-config';
 import {AppConfigModule} from './app.config.module';
-import { FilterService } from 'app/_services/filter.service';
-
+import {FilterService} from 'app/_services/filter.service';
 
 
 import {AppComponent} from 'app/app.component';
@@ -40,7 +39,7 @@ import {LayoutModule} from 'app/layout/layout.module';
 
 import {AlertComponent} from './_directives/index';
 import {AuthGuard} from './_guards/index';
-import { PublicGuard } from './_guards/public.guard';
+import {PublicGuard} from './_guards/public.guard';
 import {AlertService, AuthenticationService} from './_services/index';
 
 import {MessageService} from './message.service';
@@ -51,10 +50,9 @@ import {ControlElementsComponent} from 'app/main/control-elements/control-elemen
 import {SliderComponent} from 'app/main/slider/slider.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {NguCarouselModule} from '@ngu/carousel';
-import { SitebillPipesModule } from 'app/pipes/sitebillpipes.module';
+import {SitebillPipesModule} from 'app/pipes/sitebillpipes.module';
 
 import {CarouselComponent} from 'app/main/carousel/carousel.component';
-
 
 
 import {SelectDistrictDialogComponent} from 'app/main/search-form/dialogs/select-district/select-district.component';
@@ -66,11 +64,11 @@ import {AnkonsulSearchFormComponent} from 'app/main/search-form/ankonsul/ankonsu
 import {Ng5SliderModule} from 'ng5-slider';
 
 import {Error404Component} from 'app/main/pages/errors/404/error-404.component';
-import { Error500Component } from 'app/main/pages/errors/500/error-500.component';
-import { ModelService } from 'app/_services/model.service';
-import { SnackService } from './_services/snack.service';
-import { SnackBarComponent } from './main/snackbar/snackbar.component';
-import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
+import {Error500Component} from 'app/main/pages/errors/500/error-500.component';
+import {ModelService} from 'app/_services/model.service';
+import {SnackService} from './_services/snack.service';
+import {SnackBarComponent} from './main/snackbar/snackbar.component';
+import {Bitrix24Router} from './integrations/bitrix24/bitrix24router';
 import {RegisterComponent} from './register/index';
 
 
@@ -136,6 +134,10 @@ const appRoutes: Routes = [
         path: 'register',
         loadChildren: 'app/main/register/register.module#RegisterModule'
     },
+    {
+        path: 'calendar',
+        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModuleWithRoutes',
+    },
     /*
     {
         path: 'client/my',
@@ -153,6 +155,7 @@ const appRoutes: Routes = [
         component: Error404Component
     }
 ];
+
 /*
 const appRoutes: Routes = [
     //{ path: '', component: CarouselComponent },
