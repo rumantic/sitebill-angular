@@ -51,11 +51,6 @@ export class LoginModalComponent  implements OnInit {
             username: {},
             password: {}
         };
-    }
-
-    ngOnInit() {
-        this.init_input_parameters();
-
         this.loginForm = this._formBuilder.group({
             domain: [''],
             username: ['', [Validators.required]],
@@ -64,6 +59,12 @@ export class LoginModalComponent  implements OnInit {
         this.valid_domain_through_email = this._formBuilder.group({
             domain_checker: ['', [Validators.required, Validators.email]],
         });
+
+    }
+
+    ngOnInit() {
+        this.init_input_parameters();
+
     }
 
     convert_to_https_domain(data:string) {
