@@ -6,7 +6,7 @@
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
+        (viewDateChange)="closeOpenMonthViewDay(null, null, null)"
     >
         <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
@@ -25,7 +25,7 @@
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
+        (viewDateChange)="closeOpenMonthViewDay(null, null, null)"
     >
         <mat-icon>keyboard_arrow_right</mat-icon>
     </button>

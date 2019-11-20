@@ -63,7 +63,7 @@ const bundle = [
         SbRatesEditDialogComponent,
     ],
 })
-class CalendarPrivateModule {
+export class CalendarPrivateModule {
 }
 
 @NgModule({
