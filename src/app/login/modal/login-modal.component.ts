@@ -224,8 +224,12 @@ export class LoginModalComponent  implements OnInit {
                     if (data.result == '0') {
                         this._snackService.message(data.msg);
                     } else {
-                        this._snackService.message('Регистрация успешна!');
-                        this.show_register_complete(data.msg);
+                        let register_complete_message = 'Регистрация успешна!';
+                        this._snackService.message(register_complete_message);
+                        if ( data.msg !== '' ) {
+                            register_complete_message = data.msg;
+                        }
+                        this.show_register_complete(register_complete_message);
                     }
                 },
                 error => {
@@ -237,9 +241,14 @@ export class LoginModalComponent  implements OnInit {
     show_register_complete (message: string) {
         this.show_login = false;
         this.show_register = false;
-
         this.registerMessage = message;
+        this.registerForm.controls['username'].patchValue('');
+        this.registerForm.controls['password'].patchValue('');
+        this.registerForm.controls['password_retype'].patchValue('');
+        this.registerForm.controls['agree'].patchValue(false);
     }
+
+
     hide_register_complete () {
         this.registerMessage = null;
     }
