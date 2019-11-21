@@ -22,11 +22,19 @@ import {AlertService, AuthenticationService} from '../../_services';
 export class LoginModalComponent  implements OnInit {
     loginForm: FormGroup;
     loginFormErrors: any;
+
+    registerForm: FormGroup;
+    registerFormErrors: any;
+    registerMessage: string;
+
     valid_domain_through_email: FormGroup;
     hide_domain: boolean = true;
     loading = false;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
+    allow_register: true;
+    show_register: boolean;
+    show_login: boolean;
 
 
 
@@ -59,7 +67,27 @@ export class LoginModalComponent  implements OnInit {
         this.valid_domain_through_email = this._formBuilder.group({
             domain_checker: ['', [Validators.required, Validators.email]],
         });
+        this.show_login = true;
+        this.init_register_form();
 
+    }
+
+    init_register_form () {
+        // Set the defaults
+        this.registerFormErrors = {
+            domain: {},
+            username: {},
+            password: {},
+            password_retype: {},
+            agree: {},
+        };
+        this.registerForm = this._formBuilder.group({
+            domain: [''],
+            agree: ['', Validators.required],
+            username: ['', [Validators.required]],
+            password: ['', Validators.required],
+            password_retype: ['', Validators.required]
+        });
     }
 
     ngOnInit() {
@@ -157,7 +185,6 @@ export class LoginModalComponent  implements OnInit {
 
     init_input_parameters() {
         let app_root_element;
-        let elements = [];
         if (this.document.getElementById('angular_search')) {
             app_root_element = this.document.getElementById('angular_search');
         } else if (this.document.getElementById('angular_search_ankonsul')) {
@@ -166,7 +193,7 @@ export class LoginModalComponent  implements OnInit {
             app_root_element = this.document.getElementById('app_root');
         }
         if (app_root_element.getAttribute('enable_domain_auth')) {
-            if (app_root_element.getAttribute('enable_domain_auth') == 'true' ) {
+            if (app_root_element.getAttribute('enable_domain_auth') === 'true' ) {
                 this.loginForm.controls['domain'].setValidators([Validators.required]);
                 this.hide_domain = false;
             }
@@ -174,4 +201,46 @@ export class LoginModalComponent  implements OnInit {
 
     }
 
+    show_login_form() {
+        this.show_login = true;
+        this.show_register = false;
+        this.hide_register_complete();
+    }
+
+    show_register_form() {
+        this.show_login = false;
+        this.show_register = true;
+        this.hide_register_complete();
+    }
+
+    register() {
+        this.loading = true;
+        this.hide_register_complete();
+
+        this.authenticationService.register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.password_retype)
+            .subscribe(
+                (data: any) => {
+                    this.loading = false;
+                    if (data.result == '0') {
+                        this._snackService.message(data.msg);
+                    } else {
+                        this._snackService.message('Регистрация успешна!');
+                        this.show_register_complete(data.msg);
+                    }
+                },
+                error => {
+                    this._snackService.message('Ошибка подключения к сайту');
+                    this.loading = false;
+                });
+    }
+
+    show_register_complete (message: string) {
+        this.show_login = false;
+        this.show_register = false;
+
+        this.registerMessage = message;
+    }
+    hide_register_complete () {
+        this.registerMessage = null;
+    }
 }
