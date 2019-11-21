@@ -54,9 +54,6 @@ export class SbCalendarService {
             active: (Number(params.active) == 1 ? 1 : 0),
             amount: params.amount
         };
-        //console.log(r);
-        
-        
         const body = {action: 'reservation', do: 'rate_edit', id: rate_id, data: r, object_id: object_id, session_key: this.modelService.get_session_key_safe()};
         return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
     }

@@ -110,7 +110,7 @@
                         <ng-container
                             *ngFor="let event of events; trackBy: trackByEventId"
                         >
-                            <li *ngIf="event.meta?.type === 'rate'" class="events-preview__rates-list-item events-preview__rates-list-item-{{event.meta?.rate.active ? 'active' : 'notactive'}}">
+                            <li *ngIf="event.meta?.type === 'rate'" class="events-preview__rates-list-item  events-preview__rates-list-item-{{event.meta?.rate.active ? 'active' : 'notactive'}}">
                                 {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
                                 {{event.meta?.rate.amount | price}} руб.
                             </li>

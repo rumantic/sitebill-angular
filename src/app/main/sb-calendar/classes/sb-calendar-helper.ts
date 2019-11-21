@@ -63,8 +63,6 @@ export class SbCalendarHelper {
                         isMain = true;
                         mainsetted = true;
                     }
-                    //isMain = !mainsetted && rate.active === true;
-                    
                     result.push({
                         start: moment(rateDate, SB_DATE_FORMAT).toDate(),
                         allDay: true,
