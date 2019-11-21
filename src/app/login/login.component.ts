@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
     loginFormErrors: any;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
+    show_register: any;
 
 
     constructor(

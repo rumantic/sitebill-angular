@@ -1,0 +1,176 @@
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
+import {FormComponent} from '../../main/grid/form/form.component';
+import {ModelService} from '../../_services/model.service';
+import {SnackService} from '../../_services/snack.service';
+import {APP_CONFIG, AppConfig} from '../../app.config.module';
+import {SitebillEntity} from '../../_models';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {fuseAnimations} from '../../../@fuse/animations';
+import {DOCUMENT} from '@angular/platform-browser';
+import {toASCII} from "punycode";
+import {navigation} from '../../navigation/navigation';
+import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
+import {AlertService, AuthenticationService} from '../../_services';
+
+@Component({
+    selector: 'register-modal',
+    templateUrl: './register-modal.component.html',
+    styleUrls: ['./register-modal.component.scss'],
+    animations: fuseAnimations
+})
+export class RegisterModalComponent  implements OnInit {
+    loginForm: FormGroup;
+    loginFormErrors: any;
+
+    registerForm: FormGroup;
+    registerFormErrors: any;
+    registerMessage: string;
+
+    valid_domain_through_email: FormGroup;
+    hide_domain: boolean = true;
+    loading = false;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+    allow_register: true;
+    show_register: boolean;
+    show_login: boolean;
+
+
+
+    constructor(
+        protected dialogRef: MatDialogRef<FormComponent>,
+        protected modelService: ModelService,
+        protected _snackService: SnackService,
+        public _matDialog: MatDialog,
+        private authenticationService: AuthenticationService,
+        private _formBuilder: FormBuilder,
+        private modelSerivce: ModelService,
+        private alertService: AlertService,
+        public snackBar: MatSnackBar,
+        protected _fuseNavigationService: FuseNavigationService,
+        @Inject(APP_CONFIG) protected config: AppConfig,
+        @Inject(DOCUMENT) private document: any,
+        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
+    ) {
+        this.valid_domain_through_email = this._formBuilder.group({
+            domain_checker: ['', [Validators.required, Validators.email]],
+        });
+        this.show_login = true;
+        this.init_register_form();
+
+    }
+
+    init_register_form () {
+        // Set the defaults
+        this.registerFormErrors = {
+            domain: {},
+            username: {},
+            password: {},
+            password_retype: {},
+            agree: {},
+        };
+        this.registerForm = this._formBuilder.group({
+            domain: [''],
+            agree: ['', Validators.required],
+            username: ['', [Validators.required]],
+            password: ['', Validators.required],
+            password_retype: ['', Validators.required]
+        });
+    }
+
+    ngOnInit() {
+        this.init_input_parameters();
+
+    }
+
+    convert_to_https_domain(data:string) {
+        let hostname;
+        if ( data.match(/http/i) ) {
+            let a = this.document.createElement('a');
+            a.href = data;
+            hostname =  'https://' + a.hostname;
+        } else {
+            hostname =  'https://' + data;
+        }
+
+        return hostname;
+    }
+
+    after_success_login () {
+        this._snackService.message('Авторизация успешна!');
+        this.modelService.disable_nobody_mode();
+        this.dialogRef.close();
+    }
+
+
+    init_input_parameters() {
+        let app_root_element;
+        if (this.document.getElementById('angular_search')) {
+            app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('angular_search_ankonsul')) {
+            app_root_element = this.document.getElementById('angular_search_ankonsul');
+        } else if (this.document.getElementById('app_root')) {
+            app_root_element = this.document.getElementById('app_root');
+        }
+        if (app_root_element.getAttribute('enable_domain_auth')) {
+            if (app_root_element.getAttribute('enable_domain_auth') === 'true' ) {
+                this.loginForm.controls['domain'].setValidators([Validators.required]);
+                this.hide_domain = false;
+            }
+        }
+
+    }
+
+    show_login_form() {
+        this.show_login = true;
+        this.show_register = false;
+        this.hide_register_complete();
+    }
+
+    show_register_form() {
+        this.show_login = false;
+        this.show_register = true;
+        this.hide_register_complete();
+    }
+
+    register() {
+        this.loading = true;
+        this.hide_register_complete();
+
+        this.authenticationService.register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.password_retype)
+            .subscribe(
+                (data: any) => {
+                    this.loading = false;
+                    if (data.result == '0') {
+                        this._snackService.message(data.msg);
+                    } else {
+                        let register_complete_message = 'Регистрация успешна!';
+                        this._snackService.message(register_complete_message);
+                        if ( data.msg !== '' ) {
+                            register_complete_message = data.msg;
+                        }
+                        this.show_register_complete(register_complete_message);
+                    }
+                },
+                error => {
+                    this._snackService.message('Ошибка подключения к сайту');
+                    this.loading = false;
+                });
+    }
+
+    show_register_complete (message: string) {
+        this.show_login = false;
+        this.show_register = false;
+        this.registerMessage = message;
+        this.registerForm.controls['username'].patchValue('');
+        this.registerForm.controls['password'].patchValue('');
+        this.registerForm.controls['password_retype'].patchValue('');
+        this.registerForm.controls['agree'].patchValue(false);
+    }
+
+
+    hide_register_complete () {
+        this.registerMessage = null;
+    }
+}

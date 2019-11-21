@@ -21,6 +21,7 @@ import {GridModule} from '../grid/grid.module';
 import {PriceComponent} from './price.component';
 import {CartService} from '../../_services/cart.service';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {RegisterModalComponent} from '../../login/register-modal/register-modal.component';
 
 const routes = [
     {
@@ -37,7 +38,8 @@ const routes = [
     declarations: [
         FrontendComponent,
         PriceComponent,
-        LoginModalComponent
+        LoginModalComponent,
+        RegisterModalComponent
     ],
     imports     : [
         RouterModule.forChild(routes),

@@ -83,70 +83,17 @@
             </div-->
 
         </div>
+        <register-modal *ngIf="show_register">
 
-        <div id="register-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="show_register">
-            <div class="title">Регистрация</div>
-
-
-            <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
-                <mat-form-field>
-                    <input matInput placeholder="Логин (email)" formControlName="username" name="username">
-                    <mat-error *ngIf="registerFormErrors.username.required">
-                        укажите ваш логин
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput type="password" placeholder="Пароль" name="password" formControlName="password">
-                    <mat-error *ngIf="registerFormErrors.password.required">
-                        укажите ваш пароль
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput type="password" placeholder="Повторите пароль" name="password_retype" formControlName="password_retype">
-                    <mat-error *ngIf="registerFormErrors.password_retype.required">
-                        укажите пароль
-                    </mat-error>
-                </mat-form-field>
-                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
-                     fxLayoutAlign="space-between center">
-                    <mat-checkbox class="remember-me" aria-label="Согласен с правилами" formControlName="agree">
-                        Согласен с правилами
-                    </mat-checkbox>
-                    <!--a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-                        Забыли пароль?
-                    </a-->
-                </div>
-                <button mat-raised-button color="accent" class="submit-button" aria-label="Регистрация"
-                        [disabled]="registerForm.invalid || registerForm.get('agree').value != true">
-                    <mat-icon *ngIf="!loading">
-                        create
-                    </mat-icon>
-                    <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
-
-                    Регистрация
-                </button>
-
-            </form>
-
-            <ng-container>
-                <div class="separator">
-                    <span class="text">или</span>
-                </div>
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
-                </div>
-            </ng-container>
-        </div>
-        <div id="register-complete" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="registerMessage != null">
-            <div class="title"  fxLayout="column" fxLayoutAlign="center center" [innerHTML]="registerMessage|safehtml"></div>
-            <ng-container>
-                <div class="separator">
-                </div>
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <button mat-button color="accent" (click)="show_login_form()">Войти</button>
-                </div>
-            </ng-container>
-        </div>
+        </register-modal>
+        <ng-container *ngIf="show_register">
+            <div class="separator">
+                <span class="text">или</span>
+            </div>
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
+            </div>
+        </ng-container>
 
     </div>
 
