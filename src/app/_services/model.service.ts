@@ -446,4 +446,10 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    getConfigValue ( key: string ) {
+        const config = new Array();
+        config['allow_register_account'] = 1;
+        return config[key];
+    }
+
 }
