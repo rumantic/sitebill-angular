@@ -1,6 +1,11 @@
 @import "src/@fuse/scss/fuse";
 
 :host {
+    #register-module {
+        padding: 32px;
+        background: #FFFFFF;
+        text-align: center;
+    }
 
     #login {
         width: 100%;
@@ -15,7 +20,7 @@
                 padding: 16px;
             }
 
-            #login-form {
+            #login-form, #register-form, #register-complete {
                 width: 384px;
                 max-width: 384px;
                 padding: 32px;
@@ -144,5 +149,7 @@
                 }
             }
         }
+
+
     }
 }

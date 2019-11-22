@@ -70,6 +70,7 @@ import {SnackService} from './_services/snack.service';
 import {SnackBarComponent} from './main/snackbar/snackbar.component';
 import {Bitrix24Router} from './integrations/bitrix24/bitrix24router';
 import {RegisterComponent} from './register/index';
+import {SharedModule} from './shared.module';
 
 
 const appRoutes: Routes = [
@@ -278,7 +279,8 @@ const appRoutes: Routes = [
         AppStoreModule,
         Ng5SliderModule,
         AppConfigModule,
-        SitebillPipesModule
+        SitebillPipesModule,
+        SharedModule
     ],
     exports: [RouterModule, MatSnackBarModule],
     providers: [

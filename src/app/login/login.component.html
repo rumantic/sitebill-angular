@@ -3,7 +3,7 @@
     
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
-        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="show_login">
 
             <div class="logo" *ngIf="hide_domain">
                 <img src="https://www.sitebill.ru/storage/icons/dragon.png">
@@ -62,6 +62,17 @@
                 </div>
             </ng-container>
 
+            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
+                <div class="separator">
+                    <span class="text">или</span>
+                </div>
+                <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                    <span class="text">Еще нет аккаунта?</span>
+                    <button mat-button color="accent" (click)="show_register_form()">Зарегистрироваться</button>
+                </div>
+            </ng-container>
+
+
 
             <!--button mat-raised-button class="google">
                 Log in with Google
@@ -77,9 +88,18 @@
             </div-->
 
         </div>
+        <div *ngIf="show_register" id="register-module">
+            <register-modal *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
 
-
+            </register-modal>
+            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
+                <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                    <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
+                </div>
+            </ng-container>
+        </div>
 
     </div>
 
 </div>
+

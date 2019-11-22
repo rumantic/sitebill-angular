@@ -1,17 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
-import {FormComponent} from '../../main/grid/form/form.component';
+import {Component, OnInit} from '@angular/core';
 import {ModelService} from '../../_services/model.service';
 import {SnackService} from '../../_services/snack.service';
-import {APP_CONFIG, AppConfig} from '../../app.config.module';
-import {SitebillEntity} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
-import {DOCUMENT} from '@angular/platform-browser';
-import {toASCII} from "punycode";
-import {navigation} from '../../navigation/navigation';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
-import {AlertService, AuthenticationService} from '../../_services';
+import {AuthenticationService} from '../../_services';
 
 @Component({
     selector: 'register-modal',
@@ -20,38 +13,23 @@ import {AlertService, AuthenticationService} from '../../_services';
     animations: fuseAnimations
 })
 export class RegisterModalComponent  implements OnInit {
-    loginForm: FormGroup;
-    loginFormErrors: any;
-
     registerForm: FormGroup;
     registerFormErrors: any;
     registerMessage: string;
 
     valid_domain_through_email: FormGroup;
-    hide_domain: boolean = true;
     loading = false;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
-    allow_register: true;
     show_register: boolean;
     show_login: boolean;
 
 
 
     constructor(
-        protected dialogRef: MatDialogRef<FormComponent>,
         protected modelService: ModelService,
         protected _snackService: SnackService,
-        public _matDialog: MatDialog,
         private authenticationService: AuthenticationService,
         private _formBuilder: FormBuilder,
-        private modelSerivce: ModelService,
-        private alertService: AlertService,
-        public snackBar: MatSnackBar,
         protected _fuseNavigationService: FuseNavigationService,
-        @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(DOCUMENT) private document: any,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
     ) {
         this.valid_domain_through_email = this._formBuilder.group({
             domain_checker: ['', [Validators.required, Validators.email]],
@@ -80,58 +58,6 @@ export class RegisterModalComponent  implements OnInit {
     }
 
     ngOnInit() {
-        this.init_input_parameters();
-
-    }
-
-    convert_to_https_domain(data:string) {
-        let hostname;
-        if ( data.match(/http/i) ) {
-            let a = this.document.createElement('a');
-            a.href = data;
-            hostname =  'https://' + a.hostname;
-        } else {
-            hostname =  'https://' + data;
-        }
-
-        return hostname;
-    }
-
-    after_success_login () {
-        this._snackService.message('Авторизация успешна!');
-        this.modelService.disable_nobody_mode();
-        this.dialogRef.close();
-    }
-
-
-    init_input_parameters() {
-        let app_root_element;
-        if (this.document.getElementById('angular_search')) {
-            app_root_element = this.document.getElementById('angular_search');
-        } else if (this.document.getElementById('angular_search_ankonsul')) {
-            app_root_element = this.document.getElementById('angular_search_ankonsul');
-        } else if (this.document.getElementById('app_root')) {
-            app_root_element = this.document.getElementById('app_root');
-        }
-        if (app_root_element.getAttribute('enable_domain_auth')) {
-            if (app_root_element.getAttribute('enable_domain_auth') === 'true' ) {
-                this.loginForm.controls['domain'].setValidators([Validators.required]);
-                this.hide_domain = false;
-            }
-        }
-
-    }
-
-    show_login_form() {
-        this.show_login = true;
-        this.show_register = false;
-        this.hide_register_complete();
-    }
-
-    show_register_form() {
-        this.show_login = false;
-        this.show_register = true;
-        this.hide_register_complete();
     }
 
     register() {

@@ -30,7 +30,9 @@ export class LoginComponent implements OnInit {
     loginFormErrors: any;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
-    show_register: any;
+    show_register: boolean;
+    show_login: boolean;
+    registerMessage: string;
 
 
     constructor(
@@ -67,6 +69,7 @@ export class LoginComponent implements OnInit {
             username: {},
             password: {}
         };
+        this.show_login = true;
 
     }
 
@@ -234,5 +237,20 @@ export class LoginComponent implements OnInit {
 
     }
 
+    show_login_form() {
+        this.show_login = true;
+        this.show_register = false;
+        this.hide_register_complete();
+    }
+
+    show_register_form() {
+        this.show_login = false;
+        this.show_register = true;
+        this.hide_register_complete();
+    }
+
+    hide_register_complete () {
+        this.registerMessage = null;
+    }
 }
 

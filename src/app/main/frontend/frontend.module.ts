@@ -22,6 +22,7 @@ import {PriceComponent} from './price.component';
 import {CartService} from '../../_services/cart.service';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {RegisterModalComponent} from '../../login/register-modal/register-modal.component';
+import {SharedModule} from '../../shared.module';
 
 const routes = [
     {
@@ -39,7 +40,6 @@ const routes = [
         FrontendComponent,
         PriceComponent,
         LoginModalComponent,
-        RegisterModalComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -70,7 +70,8 @@ const routes = [
         MatButtonToggleModule,
         MatExpansionModule,
         GridModule,
-        FuseSharedModule
+        FuseSharedModule,
+        SharedModule
     ],
     providers: [
         CartService
