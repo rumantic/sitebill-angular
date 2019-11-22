@@ -58,7 +58,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="!allow_register">
+            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
                 <div class="separator">
                     <span class="text">или</span>
                 </div>
