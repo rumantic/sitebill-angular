@@ -11,6 +11,9 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
 import {AlertService, AuthenticationService} from '../../../_services/index';
+import {ModelService} from '../../../_services/model.service';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginModalComponent} from '../../../login/modal/login-modal.component';
 
 
 @Component({
@@ -46,6 +49,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _fuseSidebarService: FuseSidebarService,
         private route: ActivatedRoute,
         private _router: Router,
+        public modelSerivce: ModelService,
+        protected dialog: MatDialog,
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService
     )
@@ -158,7 +163,11 @@ export class ToolbarComponent implements OnInit, OnDestroy
         this._router.navigate(['login']);
         
     }
-    
+
+    login_modal () {
+        const dialogConfig = new MatDialogConfig();
+        this.dialog.open(LoginModalComponent, dialogConfig);
+    }
 
     /**
      * Toggle sidebar open
@@ -193,5 +202,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Use the selected language for translations
         this._translateService.use(langId);
+    }
+
+    profile() {
+        this._router.navigate(['profile']);
     }
 }

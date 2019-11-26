@@ -136,6 +136,11 @@ const appRoutes: Routes = [
         loadChildren: 'app/main/register/register.module#RegisterModule'
     },
     {
+        path: 'profile',
+        loadChildren: 'app/main/profile/profile.module#ProfileModule',
+        canActivate: [PublicGuard],
+    },
+    {
         path: 'frontend',
         loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
     },

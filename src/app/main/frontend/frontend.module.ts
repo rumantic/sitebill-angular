@@ -39,7 +39,6 @@ const routes = [
     declarations: [
         FrontendComponent,
         PriceComponent,
-        LoginModalComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -75,8 +74,7 @@ const routes = [
     ],
     providers: [
         CartService
-    ],
-    entryComponents: [LoginModalComponent]
+    ]
 })
 
 export class FrontendModule

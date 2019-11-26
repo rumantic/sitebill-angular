@@ -22,8 +22,12 @@
         </div>
 
         <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-menu-item class="" (click)="login_modal()" *ngIf="!modelSerivce.is_logged_in()">
+                <mat-icon>person</mat-icon>
+                <span>Вход</span>
+            </button>
             <button mat-button [matMenuTriggerFor]="userMenu"
-                    class="user-button">
+                    class="user-button"  *ngIf="modelSerivce.is_logged_in()">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <img class="avatar mr-0 mr-sm-16" src="https://api.sitebill.ru/apps/cloudprovider/assets/images/avatars/profile.jpg">
                     <span class="username mr-12" fxHide fxShow.gt-sm></span>
@@ -31,10 +35,10 @@
                 </div>
             </button>
             <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-                <!--button mat-menu-item>
-            <mat-icon>account_circle</mat-icon>
-            <span>Профиль</span>
-        </button-->
+                <button mat-menu-item (click)="profile()">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Профиль</span>
+                </button>
                 <button mat-menu-item class="" (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>
                     <span>Выход</span>

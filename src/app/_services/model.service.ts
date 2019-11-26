@@ -149,6 +149,13 @@ export class ModelService {
         return this.currentUser.user_id;
     }
 
+    is_logged_in () {
+        if ( this.get_user_id() === null || this.get_user_id() === 0 ) {
+            return false;
+        }
+        return true;
+    }
+
     init_nobody_user_storage () {
         this.reset_local_user_storage();
 
