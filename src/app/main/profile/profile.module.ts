@@ -7,6 +7,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { ProfileComponent } from './profile.component';
 import {CartService} from '../../_services/cart.service';
 import {MatGridListModule, MatIconModule} from '@angular/material';
+import {SharedModule} from '../../shared.module';
 
 const routes = [
     {
@@ -17,7 +18,7 @@ const routes = [
 
 @NgModule({
     declarations: [
-        ProfileComponent
+        ProfileComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -27,6 +28,7 @@ const routes = [
         FuseSharedModule,
         MatIconModule,
         MatGridListModule,
+        SharedModule,
     ],
     providers: [
         CartService

@@ -44,7 +44,6 @@ import { FilterComponent } from 'app/main/grid/filter.component';
 import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
 import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
 import { ViewModalComponent } from './view-modal/view-modal.component';
-import { FormComponent } from './form/form.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/settings.component';
 import { CommonTemplateComponent } from 'app/main/grid/common-template/common-template.component';
@@ -79,6 +78,8 @@ import {FrontComponent} from './entity/front/front.component';
 import {SaleComponent} from './entity/front/sale.component';
 
 import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
+import {SharedModule} from '../../shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const routes = [
     {
@@ -253,22 +254,7 @@ const routes = [
         FunctionComponent,
         UserComponent,
         FilterComponent,
-        CourseDialogComponent,
-        ViewModalComponent,
-        GalleryModalComponent,
-        ProfileTimelineComponent,
         DeclineClientComponent,
-        ChatComponent,
-        ChatViewComponent,
-        ChatStartComponent,
-        ChatChatsSidenavComponent,
-        ChatUserSidenavComponent,
-        ChatLeftSidenavComponent,
-        ChatRightSidenavComponent,
-        ChatContactSidenavComponent,
-        UploaderComponent,
-        GalleryComponent,
-        FormComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
@@ -286,31 +272,37 @@ const routes = [
         NgxDatatableModule,
         FuseWidgetModule,
 
-        // Material
         MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSidenavModule,
+        MatTooltipModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
+        MatSliderModule,
+        MatAutocompleteModule,
+        MatSnackBarModule,
+        MatMenuModule,
+
+
+        // Material
         MatButtonModule,
         MatCheckboxModule,
         MatGridListModule,
         MatDividerModule,
         MatFormFieldModule,
-        MatMenuModule,
         MatSelectModule,
         MatTableModule,
         MatTabsModule,
         MatDialogModule,
         MatDatepickerModule,
         MatProgressSpinnerModule,
-        MatTooltipModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatRadioModule,
-        MatCardModule,
-        MatInputModule,
-        MatSliderModule,
-        MatAutocompleteModule,
-        MatSnackBarModule,
         MatButtonToggleModule,
-        MatExpansionModule,
         MatBadgeModule,
         NgxMaterialTimepickerModule,
         NgxDaterangepickerMd.forRoot(),
@@ -334,13 +326,12 @@ const routes = [
     ],
     providers: [
         FilterService,
-        ChatService,
         CommonTemplateComponent,
         SnackService,
         Bitrix24Service,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [CourseDialogComponent, DeclineClientComponent, ViewModalComponent, GalleryModalComponent, FormComponent, CommonTemplateComponent]
+    entryComponents: [ DeclineClientComponent, CommonTemplateComponent]
 
 })
 

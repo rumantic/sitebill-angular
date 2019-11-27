@@ -2,34 +2,140 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RegisterModalComponent} from './login/register-modal/register-modal.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressSpinnerModule} from '@angular/material';
+import {
+    MatAutocompleteModule, MatBadgeModule,
+    MatButtonModule, MatButtonToggleModule, MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule,
+    MatFormFieldModule, MatGridListModule, MatIconModule,
+    MatInputModule, MatMenuModule,
+    MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSnackBarModule, MatTableModule,
+    MatTabsModule,
+    MatToolbarModule, MatTooltipModule
+} from '@angular/material';
 import {FuseSharedModule} from '../@fuse/shared.module';
 import {LoginModalComponent} from './login/modal/login-modal.component';
 import {RouterModule} from '@angular/router';
+import {FormComponent} from './main/grid/form/form.component';
+import {GalleryModalComponent} from './main/gallery/modal/gallery-modal.component';
+import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {NgxGalleryModule} from 'ngx-gallery';
+import {NgxUploaderModule} from 'ngx-uploader';
+import {UploaderComponent} from './main/uploader/uploader.component';
+import {GalleryComponent} from './main/gallery/gallery.component';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {QuillModule} from 'ngx-quill';
+import {AgmCoreModule} from '@agm/core';
+import {SbCalendarModule} from './main/sb-calendar/sb-calendar.module';
+import {FuseWidgetModule} from '../@fuse/components';
+import {ViewModalComponent} from './main/grid/view-modal/view-modal.component';
+import {ProfileTimelineComponent} from './main/grid/timeline/timeline.component';
+import {ChatComponent} from './main/apps/chat/chat.component';
+import {ChatViewComponent} from './main/apps/chat/chat-view/chat-view.component';
+import {ChatStartComponent} from './main/apps/chat/chat-start/chat-start.component';
+import {ChatChatsSidenavComponent} from './main/apps/chat/sidenavs/left/chats/chats.component';
+import {ChatUserSidenavComponent} from './main/apps/chat/sidenavs/left/user/user.component';
+import {ChatLeftSidenavComponent} from './main/apps/chat/sidenavs/left/left.component';
+import {ChatRightSidenavComponent} from './main/apps/chat/sidenavs/right/right.component';
+import {ChatContactSidenavComponent} from './main/apps/chat/sidenavs/right/contact/contact.component';
+import {ChatService} from './main/apps/chat/chat.service';
+import {TranslateModule} from '@ngx-translate/core';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {Ng5SliderModule} from 'ng5-slider';
+import {ConfirmDialogModule} from './dialogs/confirm/confirm.module';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {CourseDialogComponent} from './course-dialog/course-dialog.component';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        MatFormFieldModule,
         MatInputModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
         MatIconModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatTooltipModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
+        MatSliderModule,
+        MatAutocompleteModule,
+        MatSnackBarModule,
+        MatMenuModule,
+        TranslateModule,
+        // Material moment date module
+        MatMomentDateModule,
+        NgxDatatableModule,
+        FuseWidgetModule,
+
+        // Material
+        MatButtonModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatTableModule,
+        MatDialogModule,
+        MatButtonToggleModule,
+        MatBadgeModule,
+        Ng5SliderModule,
+
+        ConfirmDialogModule,
+        DragDropModule,
+
+
         MatProgressSpinnerModule,
         FuseSharedModule,
         RouterModule,
+        MatToolbarModule,
+        MatTabsModule,
+        MatExpansionModule,
+        MatDatepickerModule,
+        NgxDaterangepickerMd.forRoot(),
+        NgxMaterialTimepickerModule,
+        NgxGalleryModule,
+        NgxUploaderModule,
+        NgSelectModule,
+        QuillModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
+        }),
+        SbCalendarModule,
+        FuseWidgetModule,
     ],
     declarations: [
         RegisterModalComponent,
         LoginModalComponent,
+        FormComponent,
+        UploaderComponent,
+        GalleryComponent,
+        GalleryModalComponent,
+        ViewModalComponent,
+        ProfileTimelineComponent,
+        ChatComponent,
+        ChatViewComponent,
+        ChatStartComponent,
+        ChatChatsSidenavComponent,
+        ChatUserSidenavComponent,
+        ChatLeftSidenavComponent,
+        ChatRightSidenavComponent,
+        ChatContactSidenavComponent,
+        CourseDialogComponent,
+    ],
+    providers: [
+        ChatService,
     ],
     exports: [
-        RegisterModalComponent
+        RegisterModalComponent,
+        NgxUploaderModule,
+        FormComponent,
+        ProfileTimelineComponent,
     ],
     entryComponents: [
-        LoginModalComponent
+        LoginModalComponent, FormComponent, GalleryModalComponent, ViewModalComponent, CourseDialogComponent,
     ]
 
 })
