@@ -39,7 +39,7 @@ export class ViewStaticComponent extends FormConstructorComponent implements OnI
 
     loadingIndicator: boolean;
     commentsBlockMeta: CommentsBlockMeta = {};
-    private disable_toolbar: boolean;
+    public disable_toolbar: boolean;
 
     constructor(
         protected _chatService: ChatService,
