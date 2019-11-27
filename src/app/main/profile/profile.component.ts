@@ -70,4 +70,7 @@ export class ProfileComponent
     edit() {
         this.edit_mode = true;
     }
+    close_edit() {
+        this.edit_mode = false;
+    }
 }

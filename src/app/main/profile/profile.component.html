@@ -5,5 +5,5 @@
         Редактировать
     </button>
 
-    <form-static *ngIf="edit_mode" [entity]="entity" [disable_delete]="true" [disable_form_title_bar]="true"></form-static>
+    <form-static *ngIf="edit_mode" [entity]="entity" [disable_delete]="true" [disable_form_title_bar]="true" (onClose)="close_edit()"></form-static>
 </div>

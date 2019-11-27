@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {FormBuilder} from '@angular/forms';
 
@@ -26,6 +26,9 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
     @Input("disable_form_title_bar")
     disable_form_title_bar: boolean;
 
+    @Output() onClose = new EventEmitter();
+    @Output() save_output = new EventEmitter();
+
     constructor(
         protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
@@ -42,6 +45,10 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
             bitrix24Service,
             _matDialog,
         );
+    }
+    save() {
+        super.save();
+        this.onClose.emit(true);
     }
 }
 
