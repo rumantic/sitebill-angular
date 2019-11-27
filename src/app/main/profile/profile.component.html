@@ -1,5 +1,4 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-    <h2>{{'PROFILE.TITLE' | translate}}</h2>
     <view-static *ngIf="!edit_mode" [entity]="entity"></view-static>
     <button *ngIf="!edit_mode" mat-raised-button type="button" (click)="edit()" aria-label="Редактировать профиль" matTooltip="Редактировать профиль">
         Редактировать
