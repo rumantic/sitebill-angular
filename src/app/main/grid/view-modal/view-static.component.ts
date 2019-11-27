@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -12,6 +12,7 @@ import {SnackService} from '../../../_services/snack.service';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {SitebillEntity} from '../../../_models';
+import {FormConstructorComponent} from '../form/form-constructor.component';
 
 class CommentsBlockMeta {
     isOpened?: boolean = false;
@@ -20,11 +21,14 @@ class CommentsBlockMeta {
 }
 
 @Component({
-    selector: 'view-modal',
+    selector: 'view-static',
     templateUrl: './view-modal.component.html',
     styleUrls: ['./view-modal.component.scss']
 })
-export class ViewModalComponent extends FormComponent implements OnInit {
+export class ViewStaticComponent extends FormConstructorComponent implements OnInit {
+    @Input("entity")
+    _data: SitebillEntity;
+
 
     form: FormGroup;
     rows: any[];
@@ -32,37 +36,32 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     api_url: string;
     render_value_string_array = ['empty', 'select_box', 'select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty', 'textarea_editor', 'safe_string', 'textarea', 'primary_key'];
-    disable_toolbar: boolean;
 
     loadingIndicator: boolean;
     commentsBlockMeta: CommentsBlockMeta = {};
+    private disable_toolbar: boolean;
 
     constructor(
         protected _chatService: ChatService,
-        protected dialogRef: MatDialogRef<FormComponent>,
         protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
     ) {
 
         super(
-            dialogRef,
             modelService,
             _formBuilder,
             _snackService,
-            _matDialog,
             filterService,
             bitrix24Service,
-            config,
-            _data
+            _matDialog,
         );
 
         this.loadingIndicator = true;
+        this.disable_toolbar = true;
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -71,23 +70,10 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._chatService.onChatSelected
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((chatData) => {
-                if (chatData && chatData.dialog) {
-                    this.commentsBlockMeta.commentsTotal = chatData.dialog.length;
-                    const lastCommentData = chatData.dialog[this.commentsBlockMeta.commentsTotal - 1];
-                    if (lastCommentData) {
-                        this.commentsBlockMeta.lastMessage = lastCommentData.comment_text.value;
-                    } else {
-                        this.commentsBlockMeta.lastMessage = '';
-                    }
-                }
-            });
         this.form = this._formBuilder.group({});
         this._data.set_readonly(true);
+        this._data.set_disable_comment();
         this.getModel();
-        this._chatService.getChat(this._data.get_table_name(), this._data.primary_key, this._data.key_value);
     }
 
     get_youtube_code(video_id: string) {
@@ -106,14 +92,12 @@ export class ViewModalComponent extends FormComponent implements OnInit {
 
     save() {
         this._data.set_readonly(false);
-        this.dialogRef.close(this.form.value);
     }
 
     close() {
         this._data.set_readonly(false);
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-        this.dialogRef.close();
         this._chatService.closeChat();
     }
 }

@@ -1,8 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material';
 import {FormBuilder} from '@angular/forms';
 
-import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {ModelService} from 'app/_services/model.service';
 import {SitebillEntity} from 'app/_models';
 
@@ -13,22 +12,27 @@ import {FormConstructorComponent} from './form-constructor.component';
 
 
 @Component({
-    selector: 'form-selector',
+    selector: 'form-static',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css']
 })
-export class FormComponent extends FormConstructorComponent implements OnInit {
+export class FormStaticComponent extends FormConstructorComponent implements OnInit {
+    @Input("entity")
+    _data: SitebillEntity;
+
+    @Input("disable_delete")
+    disable_delete: boolean;
+
+    @Input("disable_form_title_bar")
+    disable_form_title_bar: boolean;
 
     constructor(
-        protected dialogRef: MatDialogRef<FormComponent>,
         protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
     ) {
         super(
             modelService,
@@ -39,13 +43,5 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
             _matDialog,
         );
     }
-
-
-    close() {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-        this.dialogRef.close();
-    }
-
 }
 

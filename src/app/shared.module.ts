@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {RegisterModalComponent} from './login/register-modal/register-modal.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+    MAT_DATE_LOCALE,
     MatAutocompleteModule, MatBadgeModule,
     MatButtonModule, MatButtonToggleModule, MatCardModule,
     MatCheckboxModule,
@@ -47,6 +48,10 @@ import {Ng5SliderModule} from 'ng5-slider';
 import {ConfirmDialogModule} from './dialogs/confirm/confirm.module';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {CourseDialogComponent} from './course-dialog/course-dialog.component';
+import {FormConstructorComponent} from './main/grid/form/form-constructor.component';
+import {FormStaticComponent} from './main/grid/form/form-static.component';
+import {Bitrix24Service} from './integrations/bitrix24/bitrix24.service';
+import {ViewStaticComponent} from './main/grid/view-modal/view-static.component';
 
 @NgModule({
     imports: [
@@ -110,6 +115,9 @@ import {CourseDialogComponent} from './course-dialog/course-dialog.component';
         RegisterModalComponent,
         LoginModalComponent,
         FormComponent,
+        FormConstructorComponent,
+        FormStaticComponent,
+        ViewStaticComponent,
         UploaderComponent,
         GalleryComponent,
         GalleryModalComponent,
@@ -127,15 +135,19 @@ import {CourseDialogComponent} from './course-dialog/course-dialog.component';
     ],
     providers: [
         ChatService,
+        Bitrix24Service,
+        { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
         RegisterModalComponent,
         NgxUploaderModule,
         FormComponent,
+        FormStaticComponent,
+        ViewStaticComponent,
         ProfileTimelineComponent,
     ],
     entryComponents: [
-        LoginModalComponent, FormComponent, GalleryModalComponent, ViewModalComponent, CourseDialogComponent,
+        LoginModalComponent, FormComponent, GalleryModalComponent, ViewModalComponent, CourseDialogComponent, FormStaticComponent, ViewStaticComponent
     ]
 
 })

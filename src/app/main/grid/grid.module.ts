@@ -328,7 +328,6 @@ const routes = [
         FilterService,
         CommonTemplateComponent,
         SnackService,
-        Bitrix24Service,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     entryComponents: [ DeclineClientComponent, CommonTemplateComponent]

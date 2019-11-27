@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css">
 
 <div id="course-dialog" class="dialog-content-wrapper">
-    <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title">Форма</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
@@ -235,7 +235,7 @@
                 </button>
 
             </div>
-            <button *ngIf="_data.key_value != null" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
+            <button *ngIf="_data.key_value != null && !disable_delete" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

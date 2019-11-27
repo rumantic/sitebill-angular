@@ -12,6 +12,7 @@ import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
 import {CartService} from '../../_services/cart.service';
+import {SitebillEntity} from '../../_models';
 
 @Component({
     selector   : 'profile',
@@ -20,6 +21,9 @@ import {CartService} from '../../_services/cart.service';
 })
 export class ProfileComponent
 {
+    entity: SitebillEntity;
+    edit_mode: boolean;
+
     /**
      * Constructor
      *
@@ -51,8 +55,19 @@ export class ProfileComponent
                 }
             }
         };
+        this.entity = new SitebillEntity();
+        this.entity.set_app_name('profile');
+        this.entity.set_table_name('user');
+        this.entity.primary_key = 'user_id';
+        this.entity.set_key_value(this.modelSerivce.get_user_id());
+
     }
+
     ngOnInit() {
+        this.edit_mode = false;
     }
-    
+
+    edit() {
+        this.edit_mode = true;
+    }
 }
