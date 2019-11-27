@@ -165,7 +165,6 @@ export class FormConstructorComponent implements OnInit {
     ngOnInit() {
         // Reactive Form
         this.form = this._formBuilder.group({});
-        console.log(this._data);
         this._data.set_readonly(false);
         this.getModel();
 
@@ -217,7 +216,11 @@ export class FormConstructorComponent implements OnInit {
             let form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
-            this.records[this.rows[i]].hidden = false;
+            if ( this._data.get_hidden_column_edit(this.rows[i]) ) {
+                this.records[this.rows[i]].hidden = true;
+            } else {
+                this.records[this.rows[i]].hidden = false;
+            }
             if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
                 this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
             } else {

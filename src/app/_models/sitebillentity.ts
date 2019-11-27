@@ -7,6 +7,7 @@ export class SitebillEntity {
     columns_index: any[];
     default_columns_list: string[];
     default_params: string[];
+    private hidden_edit_columns: string[];
     model: SitebillModelItem[];
     private enable_collections: boolean;
     private hook: string;
@@ -19,6 +20,7 @@ export class SitebillEntity {
         this.columns_index = [];
         this.default_columns_list = [];
         this.default_params = [];
+        this.hidden_edit_columns = [];
         this.enable_collections = false;
         this.hook = null;
         this.readonly = false;
@@ -114,6 +116,17 @@ export class SitebillEntity {
 
     set_readonly(readonly: boolean) {
         this.readonly = readonly;
+    }
+
+    hide_column_edit(column_name) {
+        this.hidden_edit_columns.push(column_name);
+    }
+
+    get_hidden_column_edit(column_name) {
+        if ( this.hidden_edit_columns.indexOf(column_name) !== -1){
+            return true;
+        }
+        return false;
     }
 
 }
