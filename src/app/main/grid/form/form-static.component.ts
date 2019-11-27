@@ -50,5 +50,9 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         super.save();
         this.onClose.emit(true);
     }
+    close() {
+        super.close();
+        this.onClose.emit(true);
+    }
 }
 
