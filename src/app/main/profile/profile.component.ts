@@ -11,7 +11,7 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
-import {CartService} from '../../_services/cart.service';
+import {BillingService} from '../../_services/billing.service';
 import {SitebillEntity} from '../../_models';
 
 @Component({
@@ -36,7 +36,7 @@ export class ProfileComponent
         private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
-        private cartSerivce: CartService,
+        private billingSerivce: BillingService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )

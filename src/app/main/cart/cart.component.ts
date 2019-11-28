@@ -11,7 +11,7 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
-import {CartService} from '../../_services/cart.service';
+import {BillingService} from '../../_services/billing.service';
 
 @Component({
     selector   : 'cart',
@@ -41,7 +41,7 @@ export class CartComponent
         private modelSerivce: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
-        private cartSerivce: CartService,
+        private billingSerivce: BillingService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
@@ -88,7 +88,7 @@ export class CartComponent
 
     add_order() {
         //console.log('complete_order');
-        this.cartSerivce.add_order(this.product).subscribe(
+        this.billingSerivce.add_order(this.product).subscribe(
             (order: any) => {
                 /*
                 order.gateways.forEach((row, index) => {

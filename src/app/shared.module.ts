@@ -9,7 +9,7 @@ import {
     MatCheckboxModule,
     MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule,
     MatFormFieldModule, MatGridListModule, MatIconModule,
-    MatInputModule, MatMenuModule,
+    MatInputModule, MatMenuModule, MatOptionModule,
     MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSnackBarModule, MatTableModule,
     MatTabsModule,
     MatToolbarModule, MatTooltipModule
@@ -52,6 +52,7 @@ import {FormConstructorComponent} from './main/grid/form/form-constructor.compon
 import {FormStaticComponent} from './main/grid/form/form-static.component';
 import {Bitrix24Service} from './integrations/bitrix24/bitrix24.service';
 import {ViewStaticComponent} from './main/grid/view-modal/view-static.component';
+import {BillingService} from './_services/billing.service';
 
 @NgModule({
     imports: [
@@ -64,6 +65,7 @@ import {ViewStaticComponent} from './main/grid/view-modal/view-static.component'
         MatTooltipModule,
         MatToolbarModule,
         MatRadioModule,
+        MatOptionModule,
         MatCardModule,
         MatSliderModule,
         MatAutocompleteModule,
@@ -136,6 +138,7 @@ import {ViewStaticComponent} from './main/grid/view-modal/view-static.component'
     providers: [
         ChatService,
         Bitrix24Service,
+        BillingService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [

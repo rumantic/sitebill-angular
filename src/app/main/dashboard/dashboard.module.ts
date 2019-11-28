@@ -5,7 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { DashboardComponent } from './dashboard.component';
-import {MatGridListModule, MatIconModule} from '@angular/material';
+import {MatGridListModule, MatIconModule, MatOptionModule, MatSelectModule} from '@angular/material';
+import {SharedModule} from '../../shared.module';
 
 const routes = [
     {
@@ -25,7 +26,10 @@ const routes = [
 
         FuseSharedModule,
         MatIconModule,
+        MatOptionModule,
+        MatSelectModule,
         MatGridListModule,
+        SharedModule
     ],
 })
 

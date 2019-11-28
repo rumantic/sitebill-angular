@@ -4,7 +4,7 @@ import {FuseConfigService} from '../../../@fuse/services/config.service';
 import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-loader.service';
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
-import {CartService} from '../../_services/cart.service';
+import {BillingService} from '../../_services/billing.service';
 import {FilterService} from '../../_services/filter.service';
 import {Router} from '@angular/router';
 import {ViewModalComponent} from '../grid/view-modal/view-modal.component';
@@ -31,7 +31,7 @@ export class PriceComponent
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private cartSerivce: CartService,
+        private billingSerivce: BillingService,
         protected router: Router,
         protected dialog: MatDialog,
         public modelService: ModelService,
@@ -62,7 +62,7 @@ export class PriceComponent
     ngAfterViewChecked () {
         if ( this.modelService.all_checks_passes() && !this.products_loaded) {
             if ( !this.loading_in_progress ) {
-                this.cartSerivce.get_products().subscribe(
+                this.billingSerivce.get_products().subscribe(
                     (products: any) => {
                         const mapped = Object.keys(products.records).map(key => ({type: key, value: products.records[key]}));
                         this.products = mapped;

@@ -10,6 +10,7 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {fuseAnimations} from '../../../@fuse/animations';
+import {BillingService} from '../../_services/billing.service';
 
 @Component({
     selector   : 'dashboard',
@@ -20,6 +21,8 @@ import {fuseAnimations} from '../../../@fuse/animations';
 })
 export class DashboardComponent
 {
+    username: string;
+    invoices: any;
     /**
      * Constructor
      *
@@ -30,6 +33,7 @@ export class DashboardComponent
         private route: ActivatedRoute,
         private router: Router,
         private modelSerivce: ModelService,
+        private billingService: BillingService,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
@@ -53,6 +57,16 @@ export class DashboardComponent
 
     }
     ngOnInit() {
+        this.username = 'test';
+        this.billingService.get_invoices().subscribe(
+            (invoices: any) => {
+                const mapped = Object.keys(invoices).map(key => ({id: key, value: invoices[key]}));
+                this.invoices = mapped;
+
+                console.log(this.invoices.length);
+                console.log(this.invoices);
+            }
+        );
         console.log('Dashboard');
     }
     

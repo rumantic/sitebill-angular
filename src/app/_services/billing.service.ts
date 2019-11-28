@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ModelService} from './model.service';
 
 @Injectable()
-export class CartService {
+export class BillingService {
     /**
      * Constructor
      */
@@ -24,5 +24,11 @@ export class CartService {
         const request = { action: 'cart', do: 'add_order', items: items, session_key: this.modelSerivce.get_session_key_safe() };
         return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
     }
+
+    get_invoices () {
+        const request = { action: 'cart', do: 'get_invoices', session_key: this.modelSerivce.get_session_key_safe() };
+        return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
+    }
+
 
 }

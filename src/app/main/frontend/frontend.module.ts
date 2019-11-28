@@ -19,7 +19,7 @@ import {
 } from '@angular/material';
 import {GridModule} from '../grid/grid.module';
 import {PriceComponent} from './price.component';
-import {CartService} from '../../_services/cart.service';
+import {BillingService} from '../../_services/billing.service';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {RegisterModalComponent} from '../../login/register-modal/register-modal.component';
 import {SharedModule} from '../../shared.module';
@@ -73,7 +73,7 @@ const routes = [
         SharedModule
     ],
     providers: [
-        CartService
+        BillingService
     ]
 })
 

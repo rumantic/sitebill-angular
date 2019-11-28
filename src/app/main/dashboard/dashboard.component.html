@@ -1,7 +1,7 @@
-<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+<div id="dashboard-analytics" class="page-layout blank">
 
     <!-- CENTER -->
-    <div class="center" fusePerfectScrollbar>
+    <div class="main-widget" fusePerfectScrollbar>
 
         <!-- HEADER -->
         <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
@@ -9,10 +9,174 @@
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
                 <span class="mat-display-1 my-0 my-sm-24 welcome-message"
-                      [@animate]="{value:'*',params:{x:'50px'}}">Welcome back, Charlie!
+                      [@animate]="{value:'*',params:{x:'50px'}}">Приветствуем, {{username}}!
                 </span>
             </div>
         </div>
         <!-- / HEADER -->
     </div>
+
+    <div class="content">
+
+        <div class="left mr-lg-32">
+
+            <div fxLayout="column" fxLayoutAlign="start"
+                 fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+
+                <!-- Widget 2 -->
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
+
+                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+
+                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                            <div>
+                                <div class="h3 secondary-text">Личные данные</div>
+                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
+                                    Иванов Иван
+                                </div>
+                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
+                                    8 234 234 33 44
+                                </div>
+                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
+                                    mail@mail.ru
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="h-96 w-100-p">
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / Widget 2 -->
+
+                <!-- Widget 3 -->
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="34">
+
+                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+
+                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                            <div class="pr-16">
+                                <div class="h3 secondary-text">Тариф</div>
+                                <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                                    Агентство
+                                </div>
+                            </div>
+
+                            <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="ml-4 text-nowrap">до 12.12.19</div>
+                            </div>
+
+                        </div>
+
+                        <div class="h-96 w-100-p">
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / Widget 3 -->
+
+                <!-- Widget 4 -->
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
+
+                    <div class="fuse-card auto-width">
+
+                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                            <div class="pr-16">
+                                <div class="h3 secondary-text">Активные услуги</div>
+                                <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                                    3 эксклюзива
+                                </div>
+                            </div>
+
+                            <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="ml-4 text-nowrap">объявления</div>
+                            </div>
+
+                        </div>
+
+                        <div class="h-96 w-100-p">
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / Widget 4 -->
+
+            </div>
+
+            <!-- Widget 5 -->
+            <div class="fuse-card auto-width">
+
+                <div class="position-relative p-24"
+                     fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="column" fxLayoutAlign="start start">
+                        <span class="h2">Счета к оплате</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                    </div>
+                </div>
+
+                <table class="simple clickable">
+                    <thead>
+                    <tr>
+                        <th>Сумма</th>
+                        <th class="text-right">Оплатить до</th>
+                        <th class="text-right"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let invoice of invoices">
+                        <td>{{invoice.value.total.value}}</td>
+                        <td>{{invoice.value.duedate.value}}</td>
+                        <td class="text-right">оплатить</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- / Widget 5 -->
+
+
+        </div>
+
+        <div class="right">
+
+            <div fxLayout="row wrap" fxLayout.gt-md="column">
+
+                <!-- Widget 7 -->
+                <div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
+
+
+                    <div class="fuse-card">
+
+                        <div class="p-16">
+                            <div class="h2 font-weight-300">Мои объявления (10)</div>
+                        </div>
+                        <div class="card-divider mb-0"></div>
+                        <div class="p-16">
+                            <div class="h2 font-weight-300">Мои заявки (5)</div>
+                        </div>
+
+                        <div class="h-200">
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- / Widget 7 -->
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
