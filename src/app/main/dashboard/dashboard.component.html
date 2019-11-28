@@ -110,36 +110,85 @@
 
             </div>
 
-            <!-- Widget 5 -->
-            <div class="fuse-card auto-width">
-
-                <div class="position-relative p-24"
-                     fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxLayout="column" fxLayoutAlign="start start">
-                        <span class="h2">Счета к оплате</span>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                    </div>
-                </div>
-
-                <table class="simple clickable">
-                    <thead>
-                    <tr>
-                        <th>Сумма</th>
-                        <th class="text-right">Оплатить до</th>
-                        <th class="text-right"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let invoice of invoices">
-                        <td>{{invoice.value.total.value}}</td>
-                        <td>{{invoice.value.duedate.value}}</td>
-                        <td class="text-right">оплатить</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="pt-48 pb-24 font-size-18 font-weight-300">
+                <span class="h2">Мои услуги</span>
             </div>
-            <!-- / Widget 5 -->
+
+                <!-- Услуги -->
+                <div class="fuse-card auto-width">
+
+                    <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end"  *ngIf="user_products == null && user_products_loaded">
+
+                        <div class="pr-16">
+                            <div class="h3 secondary-text">Нет активных услуг</div>
+                        </div>
+                        <div class="h-12 w-100-p">
+                        </div>
+
+                    </div>
+
+
+                    <table class="simple clickable" *ngIf="user_products != null && user_products_loaded">
+                        <thead>
+                        <tr>
+                            <th>Наименование</th>
+                            <th>Статус</th>
+                            <th class="text-right">Дата оплаты</th>
+                            <th class="text-right"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let product of user_products" [ngClass]="{'light-green-A700': product.value.status.value == 'active'}">
+                            <td>
+                                <ng-container *ngIf="product.value.product_info != false">{{product.value.product_info.name.value}}</ng-container>
+                            </td>
+                            <td>{{product.value.status.value_string}}</td>
+                            <td>{{product.value.nextduedate.value}}</td>
+                            <td class="text-right">оплатить</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- / Услуги -->
+            <div class="pt-48 pb-24 font-size-18 font-weight-300">
+                <span class="h2">Счета к оплате</span>
+            </div>
+
+                <!-- Счета -->
+                <div class="fuse-card auto-width">
+
+                    <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end"  *ngIf="invoices == null && invoices_loaded">
+
+                        <div class="pr-16">
+                            <div class="h3 secondary-text">Все счета оплачены</div>
+                        </div>
+                        <div class="h-12 w-100-p">
+                        </div>
+
+                    </div>
+
+
+                    <table class="simple clickable" *ngIf="invoices != null && invoices_loaded">
+                        <thead>
+                        <tr>
+                            <th>Сумма</th>
+                            <th class="text-right">Оплатить до</th>
+                            <th class="text-right"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let invoice of invoices">
+                            <td>{{invoice.value.total.value}}</td>
+                            <td>{{invoice.value.duedate.value}}</td>
+                            <td class="text-right">оплатить</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- / Счета -->
+
+
+
 
 
         </div>

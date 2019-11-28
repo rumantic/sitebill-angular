@@ -22,7 +22,10 @@ import {BillingService} from '../../_services/billing.service';
 export class DashboardComponent
 {
     username: string;
-    invoices: any;
+    public invoices:  { id: string; value: any }[];
+    public user_products: { id: string; value: any }[];
+    public user_products_loaded: boolean;
+    public invoices_loaded: boolean;
     /**
      * Constructor
      *
@@ -58,16 +61,33 @@ export class DashboardComponent
     }
     ngOnInit() {
         this.username = 'test';
+        this.load_invoices();
+        this.load_user_products();
+    }
+
+    load_invoices () {
         this.billingService.get_invoices().subscribe(
             (invoices: any) => {
+                console.log(invoices);
+                this.invoices_loaded = true;
                 const mapped = Object.keys(invoices).map(key => ({id: key, value: invoices[key]}));
                 this.invoices = mapped;
 
-                console.log(this.invoices.length);
-                console.log(this.invoices);
+                if ( invoices.length > 0 ) {
+                }
             }
         );
-        console.log('Dashboard');
     }
-    
+
+    load_user_products () {
+        this.billingService.get_user_products().subscribe(
+            (user_products: any) => {
+                this.user_products_loaded = true;
+                if (  user_products != null ) {
+                    const mapped = Object.keys(user_products).map(key => ({id: key, value: user_products[key]}));
+                    this.user_products = mapped;
+                }
+            }
+        );
+    }
 }
