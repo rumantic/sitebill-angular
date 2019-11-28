@@ -207,4 +207,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     profile() {
         this._router.navigate(['profile']);
     }
+
+    dashboard() {
+        this._router.navigate(['dashboard']);
+    }
 }

@@ -145,6 +145,11 @@ const appRoutes: Routes = [
         loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
     },
     {
+        path: 'dashboard',
+        loadChildren: 'app/main/dashboard/dashboard.module#DashboardModule',
+        canActivate: [PublicGuard],
+    },
+    {
         path: 'cart/:step/:item_id',
         loadChildren: 'app/main/cart/cart.module#CartModule'
     },
