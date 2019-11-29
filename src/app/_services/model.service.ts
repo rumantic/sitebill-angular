@@ -192,6 +192,7 @@ export class ModelService {
         //console.log('run logout');
         this.disable_menu();
         this.reset_local_user_storage();
+        this.current_user_profile = new UserProfile();
         this.router.navigate(['/logout']);
     }
 
@@ -478,7 +479,7 @@ export class ModelService {
         return this.current_user_profile;
     }
     get_profile_img_url () {
-        if ( this.current_user_profile.imgfile.value != null ) {
+        if ( this.current_user_profile.imgfile.value != null && this.current_user_profile.imgfile.value !== '') {
             return this.get_api_url() + '/img/data/user/' + this.current_user_profile.imgfile.value;
         }
         return false;

@@ -39,6 +39,11 @@
                                                         <gallery-component *ngIf="galleryImages[records[x].name].length > 0" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></gallery-component>
                                                     </ng-container>
 
+                                                    <ng-container *ngSwitchCase="'photo'">
+                                                        <img *ngIf="records[x].value != null && records[x].value != ''" src="{{modelService.get_api_url() + '/img/data/user/' + records[x].value}}">
+                                                    </ng-container>
+
+
                                                     <ng-container *ngSwitchCase="'textarea_editor'">
                                                         <div class="data-table__cell-value data-table__cell-value_overflow text-left" fusePerfectScrollbar>
                                                             {{records[x].title}}
