@@ -470,7 +470,15 @@ export class ModelService {
         this.loadById('user', 'user_id', this.get_user_id())                
             .subscribe((result: any) => {
             if (result.state === 'success') {
-                this.current_user_profile = result.data;
+                if ( result.data.fio != null ) {
+                    this.current_user_profile.fio.value = result.data.fio.value;
+                }
+                if (result.data.email != null) {
+                    this.current_user_profile.email.value = result.data.email.value;
+                }
+                if ( result.data.imgfile != null ) {
+                    this.current_user_profile.imgfile.value = result.data.imgfile.value;
+                }
             }
         });
     }
