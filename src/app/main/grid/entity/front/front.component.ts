@@ -222,18 +222,4 @@ export class FrontComponent {
             }
         };
     }
-
-
-
-    after_validated_key () {
-        return this.modelService.is_validated_session_key();
-    }
-    
-
-    getMyClientCounter() {
-        return this.filterService.get_counter_value('myclient', 'total_count');
-    }
-    getFreeClientCounter() {
-        return this.filterService.get_counter_value('freeclient', 'total_count');
-    }
 }
