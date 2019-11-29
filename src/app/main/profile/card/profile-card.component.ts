@@ -28,7 +28,7 @@ export class ProfileCardComponent
         private elRef: ElementRef,
         private route: ActivatedRoute,
         private router: Router,
-        private modelService: ModelService,
+        public modelService: ModelService,
         private _fuseConfigService: FuseConfigService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
