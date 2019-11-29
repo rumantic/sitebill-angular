@@ -35,7 +35,7 @@ export class DashboardComponent
         private elRef: ElementRef,
         private route: ActivatedRoute,
         private router: Router,
-        private modelSerivce: ModelService,
+        private modelService: ModelService,
         private billingService: BillingService,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,

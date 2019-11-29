@@ -1,8 +1,8 @@
 import {Injectable, Inject, isDevMode} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
-import {currentUser} from 'app/_models/currentuser';
-import {SitebillEntity} from 'app/_models';
+import {currentUser, UserProfile} from 'app/_models/currentuser';
+import {SitebillEntity, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
@@ -17,6 +17,7 @@ export class ModelService {
     private need_reload: boolean = false;
     private session_key_validated: boolean = false;
     private nobody_mode: boolean = false;
+    private current_user_profile: UserProfile;
 
 
     constructor(
@@ -32,6 +33,8 @@ export class ModelService {
         this.entity.set_table_name(null);
         this.entity.primary_key = null;
         this.entity.key_value = null;
+
+        this.current_user_profile = new UserProfile();
 
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         this.set_api_url(localStorage.getItem('api_url'));
@@ -104,6 +107,9 @@ export class ModelService {
 
     session_key_validate() {
         //console.log('session_key_validate');
+        if ( !this.session_key_validated ) {
+            this.load_current_user_profile();
+        }
         this.session_key_validated = true;
     }
 
@@ -458,5 +464,20 @@ export class ModelService {
         config['allow_register_account'] = 1;
         return config[key];
     }
+    
+    load_current_user_profile () {
+        this.loadById('user', 'user_id', this.get_user_id())                
+            .subscribe((result: any) => {
+            if (result.state === 'success') {
+                console.log('load current user profile');
+                this.current_user_profile = result.data;
+            }
+        });
+    }
+
+    get_current_user_profile () {
+        return this.current_user_profile;
+    }
+    
 
 }

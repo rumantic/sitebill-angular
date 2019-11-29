@@ -9,7 +9,7 @@
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
                 <span class="mat-display-1 my-0 my-sm-24 welcome-message"
-                      [@animate]="{value:'*',params:{x:'50px'}}">Приветствуем, {{username}}!
+                      [@animate]="{value:'*',params:{x:'50px'}}">Приветствуем, {{modelService.get_current_user_profile().fio.value}}!
                 </span>
             </div>
         </div>
@@ -22,35 +22,12 @@
 
             <div fxLayout="column" fxLayoutAlign="start"
                  fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
-
                 <!-- Widget 2 -->
                 <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
-
-                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
-
-                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
-
-                            <div>
-                                <div class="h3 secondary-text">Личные данные</div>
-                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
-                                    Иванов Иван
-                                </div>
-                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
-                                    8 234 234 33 44
-                                </div>
-                                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
-                                    mail@mail.ru
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="h-96 w-100-p">
-                        </div>
-
-                    </div>
-
+                    <profile-card></profile-card>
                 </div>
                 <!-- / Widget 2 -->
+
 
                 <!-- Widget 3 -->
                 <div class="widget" fxFlex="100" fxFlex.gt-sm="34">
