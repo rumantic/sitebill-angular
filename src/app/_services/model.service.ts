@@ -469,7 +469,6 @@ export class ModelService {
         this.loadById('user', 'user_id', this.get_user_id())                
             .subscribe((result: any) => {
             if (result.state === 'success') {
-                console.log('load current user profile');
                 this.current_user_profile = result.data;
             }
         });
@@ -478,6 +477,10 @@ export class ModelService {
     get_current_user_profile () {
         return this.current_user_profile;
     }
-    
-
+    get_profile_img_url () {
+        if ( this.current_user_profile.imgfile.value != null ) {
+            return this.get_api_url() + '/img/data/user/' + this.current_user_profile.imgfile.value;
+        }
+        return false;
+    }
 }

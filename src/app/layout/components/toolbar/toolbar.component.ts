@@ -49,7 +49,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _fuseSidebarService: FuseSidebarService,
         private route: ActivatedRoute,
         private _router: Router,
-        public modelSerivce: ModelService,
+        public modelService: ModelService,
         protected dialog: MatDialog,
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService

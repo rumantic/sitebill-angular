@@ -22,15 +22,16 @@
         </div>
 
         <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
-            <button mat-menu-item class="" (click)="login_modal()" *ngIf="!modelSerivce.is_logged_in()">
+            <button mat-menu-item class="" (click)="login_modal()" *ngIf="!modelService.is_logged_in()">
                 <mat-icon>person</mat-icon>
                 <span>Вход</span>
             </button>
             <button mat-button [matMenuTriggerFor]="userMenu"
-                    class="user-button"  *ngIf="modelSerivce.is_logged_in()">
+                    class="user-button"  *ngIf="modelService.is_logged_in()">
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <img class="avatar mr-0 mr-sm-16" src="https://api.sitebill.ru/apps/cloudprovider/assets/images/avatars/profile.jpg">
-                    <span class="username mr-12" fxHide fxShow.gt-sm></span>
+                    <img *ngIf="modelService.get_profile_img_url()" class="avatar mr-0 mr-sm-16" src="{{modelService.get_profile_img_url()}}">
+                    <img *ngIf="!modelService.get_profile_img_url()" class="avatar mr-0 mr-sm-16" src="https://api.sitebill.ru/apps/cloudprovider/assets/images/avatars/profile.jpg">
+                    <span class="username mr-12" fxHide fxShow.gt-sm>{{modelService.get_current_user_profile().fio.value}}</span>
                     <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                 </div>
             </button>

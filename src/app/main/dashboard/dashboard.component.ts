@@ -68,7 +68,6 @@ export class DashboardComponent
     load_invoices () {
         this.billingService.get_invoices().subscribe(
             (invoices: any) => {
-                console.log(invoices);
                 this.invoices_loaded = true;
                 const mapped = Object.keys(invoices).map(key => ({id: key, value: invoices[key]}));
                 this.invoices = mapped;

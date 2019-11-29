@@ -10,10 +10,12 @@ export class UserProfile {
     fio: ModelItem;
     phone: ModelItem;
     email: ModelItem;
+    imgfile: ModelItem;
     constructor () {
         this.fio = new ModelItem();
         this.phone = new ModelItem();
         this.email = new ModelItem();
+        this.imgfile = new ModelItem();
     }
 }
 
