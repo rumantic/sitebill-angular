@@ -33,21 +33,33 @@
                 <div class="widget" fxFlex="100" fxFlex.gt-sm="34">
 
                     <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
-
-                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+                        <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end"  *ngIf="total_active_products == 0 && user_products_loaded">
 
                             <div class="pr-16">
-                                <div class="h3 secondary-text">Тариф</div>
-                                <div class="font-size-54 font-weight-300 line-height-1 mt-8">
-                                    Агентство
-                                </div>
-                            </div>
-
-                            <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
-                                <div class="ml-4 text-nowrap">до 12.12.19</div>
+                                <div class="h3 secondary-text">Нет активных тарифов</div>
                             </div>
 
                         </div>
+
+                        <table class="simple clickable" *ngIf="total_active_products > 0 && user_products_loaded">
+                            <thead>
+                            <tr>
+                                <th>Тариф</th>
+                                <th class="text-right">Оплачен до</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ng-container *ngFor="let product of user_products">
+                                <tr *ngIf="product.value.status.value == 'active'">
+                                    <td>
+                                        <ng-container *ngIf="product.value.product_info != false">{{product.value.product_info.name.value}}</ng-container>
+                                    </td>
+                                    <td>{{product.value.nextduedate.value}}</td>
+                                </tr>
+                            </ng-container>
+                            </tbody>
+                        </table>
+
 
                         <div class="h-96 w-100-p">
                         </div>
@@ -121,7 +133,11 @@
                             </td>
                             <td>{{product.value.status.value_string}}</td>
                             <td>{{product.value.nextduedate.value}}</td>
-                            <td class="text-right">оплатить</td>
+                            <td class="text-right">
+                                <ng-container *ngIf="product.value.invoice_info != null">
+                                    <button  *ngIf="product.value.invoice_info.status.value == 'unpaid'" mat-button color="accent" (click)="pay_invoice(product.value.invoice_info)">оплатить</button>
+                                </ng-container>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -157,7 +173,9 @@
                         <tr *ngFor="let invoice of invoices">
                             <td>{{invoice.value.total.value}}</td>
                             <td>{{invoice.value.duedate.value}}</td>
-                            <td class="text-right">оплатить</td>
+                            <td class="text-right">
+                                <button mat-button color="accent" (click)="pay_invoice(invoice.value)">оплатить</button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

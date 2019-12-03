@@ -34,6 +34,8 @@ export class BillingService {
         const request = { action: 'cart', do: 'get_user_products', session_key: this.modelSerivce.get_session_key_safe() };
         return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
     }
-
-
+    load_gateways ( invoice_id: number ) {
+        const request = { action: 'cart', do: 'load_gateways', invoice_id: invoice_id, session_key: this.modelSerivce.get_session_key_safe() };
+        return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
+    }
 }

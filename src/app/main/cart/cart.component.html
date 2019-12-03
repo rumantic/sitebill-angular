@@ -31,19 +31,9 @@
             </button>
         </div>
     </ng-container>
-    <ng-container *ngIf="step == 'pay'">
-        <ng-container *ngIf="gateways">
-            Сумма оплаты {{order.amount.value}}
-            <div fxLayout="row" fxLayoutAlign="end center">
-                <button mat-raised-button color="accent" (click)="pay_interkassa()" *ngIf="!waiting_payment">
-                    {{gateways.interkassa.submit.title}}
-                </button>
-                <h2 *ngIf="waiting_payment">
-                    {{'CART.WAITING_PAYMENT' | translate}}
-                </h2>
-
-            </div>
-        </ng-container>
+    <ng-container *ngIf="step == 'pay' && invoice_id != null">
+        Сумма оплаты: {{order.amount.value}}
+        <gateways [invoice_id]="invoice_id"></gateways>
     </ng-container>
 
     <ng-container *ngIf="step == 'success'">

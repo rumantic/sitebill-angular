@@ -11,6 +11,9 @@ import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {BillingService} from '../../_services/billing.service';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {GatewaysModalComponent} from '../gateways/modal/gateways-modal.component';
 
 @Component({
     selector   : 'dashboard',
@@ -26,6 +29,7 @@ export class DashboardComponent
     public user_products: { id: string; value: any }[];
     public user_products_loaded: boolean;
     public invoices_loaded: boolean;
+    public total_active_products: number;
     /**
      * Constructor
      *
@@ -36,6 +40,7 @@ export class DashboardComponent
         private route: ActivatedRoute,
         private router: Router,
         public modelService: ModelService,
+        protected dialog: MatDialog,
         private billingService: BillingService,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -82,11 +87,22 @@ export class DashboardComponent
         this.billingService.get_user_products().subscribe(
             (user_products: any) => {
                 this.user_products_loaded = true;
-                if (  user_products != null ) {
-                    const mapped = Object.keys(user_products).map(key => ({id: key, value: user_products[key]}));
+                if (  user_products.records != null ) {
+                    console.log(user_products);
+                    this.total_active_products = user_products.total_active_products;
+                    const mapped = Object.keys(user_products.records).map(key => ({id: key, value: user_products.records[key]}));
                     this.user_products = mapped;
                 }
             }
         );
+    }
+
+    pay_invoice(invoice: any) {
+        console.log(invoice);
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {invoice: invoice};
+
+        this.dialog.open(GatewaysModalComponent, dialogConfig);
+
     }
 }

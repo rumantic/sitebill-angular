@@ -54,6 +54,8 @@ import {Bitrix24Service} from './integrations/bitrix24/bitrix24.service';
 import {ViewStaticComponent} from './main/grid/view-modal/view-static.component';
 import {BillingService} from './_services/billing.service';
 import {ProfileCardComponent} from './main/profile/card/profile-card.component';
+import {GatewaysComponent} from './main/gateways/gateways.component';
+import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.component';
 
 @NgModule({
     imports: [
@@ -136,6 +138,8 @@ import {ProfileCardComponent} from './main/profile/card/profile-card.component';
         ChatContactSidenavComponent,
         CourseDialogComponent,
         ProfileCardComponent,
+        GatewaysComponent,
+        GatewaysModalComponent,
     ],
     providers: [
         ChatService,
@@ -151,9 +155,19 @@ import {ProfileCardComponent} from './main/profile/card/profile-card.component';
         ViewStaticComponent,
         ProfileTimelineComponent,
         ProfileCardComponent,
+        GatewaysComponent,
     ],
     entryComponents: [
-        LoginModalComponent, FormComponent, GalleryModalComponent, ViewModalComponent, CourseDialogComponent, FormStaticComponent, ViewStaticComponent, ProfileCardComponent,
+        LoginModalComponent,
+        FormComponent,
+        GalleryModalComponent,
+        ViewModalComponent,
+        CourseDialogComponent,
+        FormStaticComponent,
+        ViewStaticComponent,
+        ProfileCardComponent,
+        GatewaysComponent,
+        GatewaysModalComponent,
     ]
 
 })

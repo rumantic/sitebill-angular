@@ -28,6 +28,7 @@ export class CartComponent
     public gateways: any;
     private order: any;
     public waiting_payment: boolean = false;
+    public invoice_id: number;
 
     /**
      * Constructor
@@ -87,7 +88,6 @@ export class CartComponent
 
 
     add_order() {
-        //console.log('complete_order');
         this.billingSerivce.add_order(this.product).subscribe(
             (order: any) => {
                 /*
@@ -99,7 +99,7 @@ export class CartComponent
 
                 this.gateways = order.gateways;
                 this.order = order.order;
-                //console.log(order);
+                this.invoice_id = this.order.invoice_id.value;
             }
         );
         this.step = 'pay';
