@@ -467,9 +467,19 @@ export class ModelService {
     }
     
     load_current_user_profile () {
-        this.loadById('user', 'user_id', this.get_user_id())                
+        this.get_oauth_user_profile()
             .subscribe((result: any) => {
             if (result.state === 'success') {
+                if ( result.data.group_id != null ) {
+                    this.current_user_profile.group_id.value = result.data.group_id.value;
+                    this.current_user_profile.group_id.value_string = result.data.group_id.value_string;
+                }
+
+                if ( result.data.user_id != null ) {
+                    this.current_user_profile.user_id.value = result.data.user_id.value;
+                    this.current_user_profile.user_id.value_string = result.data.user_id.value_string;
+                }
+
                 if ( result.data.fio != null ) {
                     this.current_user_profile.fio.value = result.data.fio.value;
                 }
@@ -482,6 +492,16 @@ export class ModelService {
             }
         });
     }
+
+    get_oauth_user_profile() {
+        const load_data_request = {
+            action: 'oauth',
+            do: 'load_my_profile',
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
 
     get_current_user_profile () {
         return this.current_user_profile;

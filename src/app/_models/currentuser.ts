@@ -7,11 +7,15 @@ export class currentUser {
 }
 
 export class UserProfile {
+    group_id: ModelItem;
+    user_id: ModelItem;
     fio: ModelItem;
     phone: ModelItem;
     email: ModelItem;
     imgfile: ModelItem;
     constructor () {
+        this.user_id = new ModelItem();
+        this.group_id = new ModelItem();
         this.fio = new ModelItem();
         this.phone = new ModelItem();
         this.email = new ModelItem();

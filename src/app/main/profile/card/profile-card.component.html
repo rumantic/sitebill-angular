@@ -5,6 +5,9 @@
             <div>
                 <div class="h3 secondary-text">Личные данные</div>
                 <div class="font-size-16 font-weight-300 line-height-1 mt-8">
+                    Группа: {{modelService.get_current_user_profile().group_id.value_string}}
+                </div>
+                <div class="font-size-16 font-weight-300 line-height-1 mt-8">
                     {{modelService.get_current_user_profile().fio.value}}
                 </div>
                 <div class="font-size-16 font-weight-300 line-height-1 mt-8">
