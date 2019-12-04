@@ -75,7 +75,7 @@ import {SharedModule} from './shared.module';
 
 const appRoutes: Routes = [
     //{path: '', component: CalculatorMiniComponent },
-    {path: '', redirectTo: 'grid/data', pathMatch: 'full'},
+    {path: '', redirectTo: 'frontend', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
     //{path: 'register', component: RegisterComponent},
     {path: 'logout', component: LoginComponent},

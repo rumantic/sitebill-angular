@@ -179,6 +179,7 @@ export class LoginModalComponent  implements OnInit {
     after_success_login () {
         this._snackService.message('Авторизация успешна!');
         this.modelService.disable_nobody_mode();
+        this.modelService.load_current_user_profile();
         this.dialogRef.close();
     }
 

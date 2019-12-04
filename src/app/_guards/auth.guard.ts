@@ -121,6 +121,9 @@ export class AuthGuard implements CanActivate {
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
 
         //console.log('structure check start');
+
+        /*
+        //Авторизуем всех кто авторизуется. Права доступа сами решат что показать авторизованному.
         if (storage.admin_panel_login == 0) {
             //console.log('got to /public/lead/');
             this.set_public_menu();
@@ -131,6 +134,7 @@ export class AuthGuard implements CanActivate {
             this.modelService.logout();
             return false;
         }
+         */
         if (storage['structure'] == null) {
             //console.log('structure null - logout');
             this.modelService.logout();

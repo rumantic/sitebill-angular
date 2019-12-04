@@ -9,7 +9,6 @@ import { ModelService } from 'app/_services/model.service';
     selector: 'common-template',
     templateUrl: './common-template.component.html',
     styleUrls: ['./common-template.component.scss'],
-    animations: fuseAnimations
 })
 export class CommonTemplateComponent {
     api_url: string;
@@ -89,5 +88,14 @@ export class CommonTemplateComponent {
 
     delete(item_id: number) {
         this.deleteEvent.next(item_id);
+    }
+    get_permission ( row, action ) {
+        if ( row[this.entity.get_primary_key()].permissions != null ) {
+            if ( row[this.entity.get_primary_key()].permissions[action] === true ) {
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }

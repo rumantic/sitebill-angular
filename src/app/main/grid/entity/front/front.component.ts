@@ -199,9 +199,9 @@ export class FrontComponent {
 
     switch_off_grid_controls () {
         this.disable_add_button = false;
-        this.disable_edit_button = true;
-        this.disable_delete_button = true;
-        this.disable_activation_button = true;
+        this.disable_edit_button = false;
+        this.disable_delete_button = false;
+        this.disable_activation_button = false;
         this.disable_gallery_controls = true;
         this.disable_view_button = false;
 

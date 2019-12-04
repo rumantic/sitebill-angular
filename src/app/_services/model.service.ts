@@ -118,6 +118,10 @@ export class ModelService {
         return this.session_key_validated;
     }
 
+    disable_session_key_validity () {
+        this.session_key_validated = false;
+    }
+
     get_session_key() {
         //console.log('|get_session_key');
         //console.log(this.currentUser);
@@ -156,7 +160,7 @@ export class ModelService {
     }
 
     is_logged_in () {
-        if ( this.get_user_id() === null || this.get_user_id() === 0 ) {
+        if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined) {
             return false;
         }
         return true;
@@ -189,9 +193,9 @@ export class ModelService {
     }
 
     logout() {
-        //console.log('run logout');
         this.disable_menu();
         this.reset_local_user_storage();
+        this.disable_session_key_validity();
         this.current_user_profile = new UserProfile();
         this.router.navigate(['/logout']);
     }
@@ -463,6 +467,7 @@ export class ModelService {
     getConfigValue ( key: string ) {
         const config = new Array();
         config['allow_register_account'] = 1;
+        config['default_frontend_route'] = '/frontend/front';
         return config[key];
     }
     

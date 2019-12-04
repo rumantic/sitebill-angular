@@ -27,7 +27,7 @@ export class PublicGuard extends AuthGuard {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         //console.log('public canActivate');
-        return this.check_session(route, state, '/public/lead/');
+        return this.check_session(route, state, '/');
     }
     check_permissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         //@todo: Нужно проверять текущую сессию на пригодность

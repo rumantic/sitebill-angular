@@ -71,6 +71,7 @@ export class ProfileComponent
         this.edit_mode = true;
     }
     close_edit() {
+        this.modelSerivce.load_current_user_profile();
         this.edit_mode = false;
     }
 }
