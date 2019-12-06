@@ -208,4 +208,19 @@ export class ToolbarComponent implements OnInit, OnDestroy
     dashboard() {
         this._router.navigate(['dashboard']);
     }
+
+    has_contacts_access() {
+        if ( this.modelService.get_current_user_profile().group_id.value === '1' ||  this.modelService.get_current_user_profile().group_id.value === '3' ) {
+            return true;
+        }
+        return false;
+    }
+
+    show_price() {
+        if ( this.modelService.is_logged_in() ) {
+            this._router.navigate(['dashboard']);
+        } else {
+            this._router.navigate(['/frontend/prices']);
+        }
+    }
 }
