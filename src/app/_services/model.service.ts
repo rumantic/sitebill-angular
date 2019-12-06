@@ -18,6 +18,9 @@ export class ModelService {
     private session_key_validated: boolean = false;
     private nobody_mode: boolean = false;
     private current_user_profile: UserProfile;
+    private sitebill_started: boolean;
+    private config_loaded: boolean;
+    private sitebill_config: any;
 
 
     constructor(
@@ -42,6 +45,14 @@ export class ModelService {
 
     set_api_url(api_url: string) {
         this.api_url = api_url;
+    }
+
+    onSitebillStart () {
+        if ( !this.sitebill_started ) {
+            console.log('Sitebill started');
+            this.init_config();
+            this.sitebill_started = true;
+        }
     }
 
     get_api_url() {
@@ -465,10 +476,31 @@ export class ModelService {
     }
 
     getConfigValue ( key: string ) {
-        const config = new Array();
-        config['allow_register_account'] = 1;
-        config['default_frontend_route'] = '/frontend/front';
-        return config[key];
+        if ( this.is_config_loaded() ) {
+            return this.sitebill_config[key];
+        }
+        return null;
+    }
+
+    load_config () {
+        let body = {};
+        body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+    is_config_loaded () {
+        return this.config_loaded;
+    }
+
+    init_config () {
+        this.load_config()
+            .subscribe((result: any) => {
+                if (result.state === 'success') {
+                    this.sitebill_config = result.data;
+                    this.config_loaded = true;
+                }
+            });
+
     }
     
     load_current_user_profile () {
