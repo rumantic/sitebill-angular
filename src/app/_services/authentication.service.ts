@@ -73,6 +73,19 @@ export class AuthenticationService {
             .catch(e => { return throwError('site error'); });
     }
 
+    remind(username: string) {
+        const url = `${this.modelSerivce.get_api_url()}/apps/api/rest.php`;
+
+        const register_request = {action: 'oauth', do: 'remind', proxysalt: '123', login: username};
+
+        return this.http.post<any>(url, register_request)
+            .map(user => {
+                return user;
+            })
+            .catch(e => { return throwError('site error'); });
+    }
+
+
     logout() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         

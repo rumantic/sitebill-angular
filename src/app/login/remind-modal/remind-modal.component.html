@@ -6,17 +6,17 @@
             <div class="title">Забыли пароль?</div>
 
 
-            <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+            <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="remind()" novalidate>
                 <mat-form-field>
                     <input matInput placeholder="Email" formControlName="username" name="username">
                     <mat-error *ngIf="registerFormErrors.username.required">
                         укажите ваш email
                     </mat-error>
                 </mat-form-field>
-                <button mat-raised-button color="accent" class="submit-button" aria-label="Регистрация"
-                        [disabled]="registerForm.invalid || registerForm.get('agree').value != true">
+                <button mat-raised-button color="accent" class="submit-button" aria-label="Сбросить пароль"
+                        [disabled]="registerForm.invalid">
                     <mat-icon *ngIf="!loading">
-                        create
+                        eject
                     </mat-icon>
                     <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
                     Сбросить пароль

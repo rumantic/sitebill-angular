@@ -32,7 +32,7 @@
                     <!--mat-checkbox class="remember-me" aria-label="Remember Me">
                         Запомпнить меня
                     </mat-checkbox-->
-                    <a mat-button color="accent" (click)="show_remind_form()">Забыли пароль?</a>
+                    <a mat-button color="accent" (click)="show_remind_form()" *ngIf="this.modelSerivce.getConfigValue('allow_remind_password') == 1">Забыли пароль?</a>
                 </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">

@@ -52,23 +52,23 @@ export class RemindModalComponent  implements OnInit {
     ngOnInit() {
     }
 
-    register() {
+    remind() {
         this.loading = true;
         this.hide_register_complete();
 
-        this.authenticationService.register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.password_retype)
+        this.authenticationService.remind(this.registerForm.value.username)
             .subscribe(
                 (data: any) => {
                     this.loading = false;
-                    if (data.result == '0') {
-                        this._snackService.message(data.msg);
+                    if (data.state != 'success') {
+                        this._snackService.message(data.error);
                     } else {
-                        let register_complete_message = 'Регистрация успешна!';
+                        let register_complete_message = data.message;
                         this._snackService.message(register_complete_message);
-                        if ( data.msg !== '' ) {
-                            register_complete_message = data.msg;
+                        if ( data.message !== '' ) {
+                            register_complete_message = data.message;
                         }
-                        this.show_register_complete(register_complete_message);
+                        this.show_remind_complete(register_complete_message);
                     }
                 },
                 error => {
@@ -77,14 +77,11 @@ export class RemindModalComponent  implements OnInit {
                 });
     }
 
-    show_register_complete (message: string) {
+    show_remind_complete (message: string) {
         this.show_login = false;
         this.show_register = false;
         this.registerMessage = message;
         this.registerForm.controls['username'].patchValue('');
-        this.registerForm.controls['password'].patchValue('');
-        this.registerForm.controls['password_retype'].patchValue('');
-        this.registerForm.controls['agree'].patchValue(false);
     }
 
 
