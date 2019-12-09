@@ -56,6 +56,7 @@ import {BillingService} from './_services/billing.service';
 import {ProfileCardComponent} from './main/profile/card/profile-card.component';
 import {GatewaysComponent} from './main/gateways/gateways.component';
 import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.component';
+import {RemindModalComponent} from './login/remind-modal/remind-modal.component';
 
 @NgModule({
     imports: [
@@ -118,6 +119,7 @@ import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.compo
     ],
     declarations: [
         RegisterModalComponent,
+        RemindModalComponent,
         LoginModalComponent,
         FormComponent,
         FormConstructorComponent,
@@ -149,6 +151,7 @@ import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.compo
     ],
     exports: [
         RegisterModalComponent,
+        RemindModalComponent,
         NgxUploaderModule,
         FormComponent,
         FormStaticComponent,

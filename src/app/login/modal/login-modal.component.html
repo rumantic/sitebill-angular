@@ -27,15 +27,13 @@
                         укажите ваш пароль
                     </mat-error>
                 </mat-form-field>
-                <!--div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
                      fxLayoutAlign="space-between center">
-                    <mat-checkbox class="remember-me" aria-label="Remember Me">
+                    <!--mat-checkbox class="remember-me" aria-label="Remember Me">
                         Запомпнить меня
-                    </mat-checkbox>
-                    <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-        Забыли пароль?
-        </a>
-                </div-->
+                    </mat-checkbox-->
+                    <a mat-button color="accent" (click)="show_remind_form()">Забыли пароль?</a>
+                </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">
                     <mat-icon *ngIf="!loading">
@@ -83,10 +81,13 @@
             </div-->
 
         </div>
+        <remind-modal *ngIf="show_remind">
+
+        </remind-modal>
         <register-modal *ngIf="show_register">
 
         </register-modal>
-        <ng-container *ngIf="show_register">
+        <ng-container *ngIf="show_register || show_remind">
             <div class="separator">
                 <span class="text">или</span>
             </div>
