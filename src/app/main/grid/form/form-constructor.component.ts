@@ -228,8 +228,10 @@ export class FormConstructorComponent implements OnInit {
             }
 
             if (this.records[this.rows[i]].required == 'on') {
-                form_control_item.setValidators(forbiddenNullValue());
-                this.records[this.rows[i]].required_boolean = true;
+                if (!this.records[this.rows[i]].hidden) {
+                    form_control_item.setValidators(forbiddenNullValue());
+                    this.records[this.rows[i]].required_boolean = true;
+                }
             }
             if (this.records[this.rows[i]].name == 'email') {
                 form_control_item.setValidators(Validators.email);
