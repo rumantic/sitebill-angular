@@ -23,7 +23,7 @@
 
                             <div class="simple clickable data-table">
                                 <div class="data-table__row" *ngFor="let x of tabs[tab]">
-                                    <ng-container *ngIf="!records[x].hidden && records[x].type != 'password'">
+                                    <ng-container *ngIf="!records[x].hidden && records[x].type != 'password' && records[x].name != 'currency_id'">
                                         <div class="primary-50-bg data-table__cell data-table__cell_label" *ngIf="get_colspan(records[x].type, records[x].name) < 2">{{records[x].title}}</div>
                                         <div class="data-table__cell" [ngClass]="{'data-table__cell_fullwidth': get_colspan(records[x].type, records[x].name) > 1, 'text-right': get_colspan(records[x].type, records[x].name) === 1}">
                                             <ng-container *ngIf="records[x].value_string != '' && records[x].value_string != null">{{records[x].value_string}}</ng-container>
