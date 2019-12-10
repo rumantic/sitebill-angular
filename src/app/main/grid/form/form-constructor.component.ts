@@ -505,7 +505,14 @@ export class FormConstructorComponent implements OnInit {
         this.form_submitted = true;
 
         if (!this.form.valid) {
-            this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно');
+            const required_fields = [];
+            this.rows.forEach((row) => {
+                const control = this.form.controls[row];
+                if ( control.status === 'INVALID' ) {
+                    required_fields.push(this.records[row].title);
+                }
+            });
+            this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно: ' + required_fields.join(', '));
             return;
         }
 
