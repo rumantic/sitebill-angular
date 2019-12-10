@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
     show_register: boolean;
     show_login: boolean;
     registerMessage: string;
+    show_remind: boolean;
 
 
     constructor(
@@ -240,17 +241,26 @@ export class LoginComponent implements OnInit {
     show_login_form() {
         this.show_login = true;
         this.show_register = false;
+        this.show_remind = false;
         this.hide_register_complete();
     }
 
     show_register_form() {
         this.show_login = false;
         this.show_register = true;
+        this.show_remind = false;
         this.hide_register_complete();
     }
 
     hide_register_complete () {
         this.registerMessage = null;
+    }
+
+    show_remind_form() {
+        this.show_login = false;
+        this.show_register = false;
+        this.show_remind = true;
+
     }
 }
 

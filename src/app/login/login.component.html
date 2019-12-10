@@ -31,15 +31,13 @@
                         укажите ваш пароль
                     </mat-error>
                 </mat-form-field>
-                <!--div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
                      fxLayoutAlign="space-between center">
-                    <mat-checkbox class="remember-me" aria-label="Remember Me">
+                    <!--mat-checkbox class="remember-me" aria-label="Remember Me">
                         Запомпнить меня
-                    </mat-checkbox>
-                    <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-        Забыли пароль?
-        </a>
-                </div-->
+                    </mat-checkbox-->
+                    <a mat-button color="accent" (click)="show_remind_form()" *ngIf="this.modelSerivce.getConfigValue('allow_remind_password') == 1">Забыли пароль?</a>
+                </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
                         [disabled]="loginForm.invalid">
                     <mat-icon *ngIf="!loading">
@@ -88,6 +86,17 @@
             </div-->
 
         </div>
+
+
+        <div *ngIf="show_remind" id="register-module">
+            <remind-modal>
+
+            </remind-modal>
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
+            </div>
+        </div>
+
         <div *ngIf="show_register" id="register-module">
             <register-modal *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
 
