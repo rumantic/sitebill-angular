@@ -408,8 +408,14 @@ export class FormConstructorComponent implements OnInit {
     }
 
     apply_topic_activity() {
+        let current_topic_id = 0;
         if (this.form.controls['topic_id'] != null) {
-            let current_topic_id = this.form.controls['topic_id'].value;
+            if ( this.form.controls['topic_id'].value != null ) {
+                current_topic_id = this.form.controls['topic_id'].value;
+            }
+        }
+
+        if (current_topic_id != null) {
             for (var i = 0; i < this.rows.length; i++) {
                 if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
                     if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
