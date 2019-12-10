@@ -15,12 +15,17 @@ import {AuthenticationService} from '../../_services';
 export class RemindModalComponent  implements OnInit {
     registerForm: FormGroup;
     registerFormErrors: any;
+
+    codeForm: FormGroup;
+    codeFormErrors: any;
+
     registerMessage: string;
 
     valid_domain_through_email: FormGroup;
     loading = false;
     show_register: boolean;
     show_login: boolean;
+    show_input_remind_code: boolean;
 
 
 
@@ -44,12 +49,22 @@ export class RemindModalComponent  implements OnInit {
         this.registerFormErrors = {
             username: {},
         };
+        this.codeFormErrors = {
+            code: {},
+        };
+
+
         this.registerForm = this._formBuilder.group({
             username: ['', [Validators.required]],
+        });
+
+        this.codeForm = this._formBuilder.group({
+            code: ['', [Validators.required]],
         });
     }
 
     ngOnInit() {
+        this.show_input_remind_code = false;
     }
 
     remind() {
@@ -67,6 +82,7 @@ export class RemindModalComponent  implements OnInit {
                         this._snackService.message(register_complete_message);
                         if ( data.message !== '' ) {
                             register_complete_message = data.message;
+                            this.show_input_remind_code = true;
                         }
                         this.show_remind_complete(register_complete_message);
                     }
@@ -87,5 +103,31 @@ export class RemindModalComponent  implements OnInit {
 
     hide_register_complete () {
         this.registerMessage = null;
+    }
+
+    validate_code() {
+        this.loading = true;
+        this.hide_register_complete();
+
+        this.authenticationService.remind_validate_code(this.codeForm.value.code)
+            .subscribe(
+                (data: any) => {
+                    this.loading = false;
+                    if (data.state != 'success') {
+                        this._snackService.message(data.error);
+                    } else {
+                        let register_complete_message = data.message;
+                        this._snackService.message(register_complete_message);
+                        if ( data.message !== '' ) {
+                            register_complete_message = data.message;
+                            this.show_input_remind_code = false;
+                        }
+                        this.show_remind_complete(register_complete_message);
+                    }
+                },
+                error => {
+                    this._snackService.message('Ошибка подключения к сайту');
+                    this.loading = false;
+                });
     }
 }
