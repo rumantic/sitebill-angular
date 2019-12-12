@@ -131,6 +131,11 @@
 
     </ng-template>
 </ng-select>
+<div *ngIf="compose_enable">
+    <button mat-button color="accent" (click)="compose_modal(columnObject)">
+        {{columnObject.title}}
+    </button>
+</div>
 
 <div *ngIf="!filter_enable">
     {{columnObject.title}}

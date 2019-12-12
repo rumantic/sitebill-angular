@@ -7,6 +7,9 @@ import { Options, ChangeContext } from 'ng5-slider';
 import { ModelService } from 'app/_services/model.service';
 import { Moment } from 'moment';
 import {NgSelectConfig} from '@ng-select/ng-select';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 
 @Component({
     selector: 'filter-comp',
@@ -44,6 +47,7 @@ export class FilterComponent {
 
     private _unsubscribeAll: Subject<any>;
     subscription: Subscription;
+    private compose_enable: boolean;
 
 
 
@@ -55,6 +59,7 @@ export class FilterComponent {
     constructor(
         private modelSerivce: ModelService,
         private filterService: FilterService,
+        protected dialog: MatDialog,
         private config: NgSelectConfig
     ) {
         // Set the private defaults
@@ -79,7 +84,11 @@ export class FilterComponent {
 
             case "mobilephone": 
             case "primary_key":
-            case "compose":
+            case "compose": {
+                this.compose_enable = true;
+                this.filter_enable = true;
+                break;
+            }
             case "safe_string": {
                 this.string_filter_enable = true;
                 this.filter_enable = true;
@@ -208,4 +217,13 @@ export class FilterComponent {
         this.price_selector = 5;
     }
 
+    compose_modal(column) {
+        console.log('compose modal');
+        console.log(column);
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {column: column, entity: this.entity};
+        this.dialog.open(ComposeModalComponent, dialogConfig);
+
+    }
 }

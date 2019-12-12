@@ -10,7 +10,7 @@ import {
     MatButtonModule, MatCheckboxModule, MatGridListModule,
     MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
     MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
-    MatAutocompleteModule, MatButtonToggleModule, MatExpansionModule, MatBadgeModule, MAT_DATE_LOCALE
+    MatAutocompleteModule, MatButtonToggleModule, MatBadgeModule, MAT_DATE_LOCALE
 } from '@angular/material';
 import {
     MatSnackBarModule
@@ -22,14 +22,6 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { ConfirmDialogModule } from 'app/dialogs/confirm/confirm.module';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { SnackService } from 'app/_services/snack.service';
-import { ChatComponent } from 'app/main/apps/chat/chat.component';
-import { ChatStartComponent } from 'app/main/apps/chat/chat-start/chat-start.component';
-import { ChatViewComponent } from 'app/main/apps/chat/chat-view/chat-view.component';
-import { ChatChatsSidenavComponent } from 'app/main/apps/chat/sidenavs/left/chats/chats.component';
-import { ChatUserSidenavComponent } from 'app/main/apps/chat/sidenavs/left/user/user.component';
-import { ChatLeftSidenavComponent } from 'app/main/apps/chat/sidenavs/left/left.component';
-import { ChatRightSidenavComponent } from 'app/main/apps/chat/sidenavs/right/right.component';
-import { ChatContactSidenavComponent } from 'app/main/apps/chat/sidenavs/right/contact/contact.component';
 
 import { GridComponent } from './grid.component';
 import { DataComponent } from './data/data.component';
@@ -41,9 +33,6 @@ import { LeadComponent } from './entity/lead/lead.component';
 import { RegionComponent } from './entity/region/region.component';
 import { FilterService } from 'app/_services/filter.service';
 import { FilterComponent } from 'app/main/grid/filter.component';
-import { ProfileTimelineComponent } from 'app/main/grid/timeline/timeline.component';
-import { CourseDialogComponent } from 'app/course-dialog/course-dialog.component';
-import { ViewModalComponent } from './view-modal/view-modal.component';
 import { DeclineClientComponent } from 'app/dialogs//decline-client/decline-client.component';
 import { GridSettingsSidenavComponent } from 'app/main/grid/sidenavs/settings/settings.component';
 import { CommonTemplateComponent } from 'app/main/grid/common-template/common-template.component';
@@ -52,9 +41,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 
 import { NgxUploaderModule } from 'ngx-uploader';
-import { UploaderComponent } from 'app/main/uploader/uploader.component';
 import { NgxGalleryModule } from 'ngx-gallery';
-import { GalleryComponent } from 'app/main/gallery/gallery.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
 import { UserComponent } from './user/user.component';
@@ -63,7 +50,6 @@ import { CityComponent } from './entity/city/city.component';
 import { DistrictComponent } from './entity/district/district.component';
 import { MetroComponent } from './entity/metro/metro.component';
 import { StreetComponent } from './entity/street/street.component';
-import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
 import { GroupComponent } from './entity/group/group.component';
 import { ComponentComponent } from './entity/component/component.component';
 import { FunctionComponent } from './entity/function/function.component';
@@ -72,14 +58,13 @@ import { MenuComponent } from './entity/menu/menu.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CollectionsComponent } from '../collections/collections.component';
-import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {MemoryListComponent} from '../collections/memorylist.component';
 import {FrontComponent} from './entity/front/front.component';
 import {SaleComponent} from './entity/front/sale.component';
 
 import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
-import {SharedModule} from '../../shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 
 const routes = [
     {
@@ -261,7 +246,8 @@ const routes = [
         CollectionsComponent,
         MemoryListComponent,
         FrontComponent,
-        SaleComponent
+        SaleComponent,
+        ComposeModalComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -330,7 +316,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent]
+    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent]
 
 })
 

@@ -1,0 +1,61 @@
+<div id="login" fxLayout="column">
+    <!--mat-toolbar>
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Выбор адреса</span>
+            <button mat-icon-button (click)="close()" aria-label="Закрыть">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar-->
+
+    <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="remind()" novalidate>
+        <ng-select *ngIf="options_storage['street_id'] != null"
+                   formControlName="street_id"
+                   appendTo="body"
+                   bindValue="id"
+                   bindLabel="value"
+                   [items]="options_storage['street_id']"
+                   [clearOnBackspace]="false"
+                   class="select_options"
+                   [searchable]="true"
+                   [multiple]="true"
+                   [hideSelected]="false"
+                   [closeOnSelect]="false"
+                   (focus)="onFocus('street_id')"
+                   placeholder="Улица">
+
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
+            </ng-template>
+        </ng-select>
+
+        <ng-select *ngIf="options_storage['city_id'] != null"
+                   formControlName="city_id"
+                   appendTo="body"
+                   bindValue="id"
+                   bindLabel="value"
+                   [items]="options_storage['city_id']"
+                   [clearOnBackspace]="false"
+                   class="select_options"
+                   [searchable]="true"
+                   [multiple]="true"
+                   [hideSelected]="false"
+                   [closeOnSelect]="false"
+                   (focus)="onFocus('city_id')"
+                   placeholder="Город">
+
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
+            </ng-template>
+        </ng-select>
+
+        <button mat-raised-button color="accent" class="submit-button" aria-label="Применить фильтр"
+                [disabled]="registerForm.invalid">
+            <mat-icon *ngIf="!loading">
+                playlist_add_check
+            </mat-icon>
+            <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
+            Применить фильтр
+        </button>
+    </form>
+</div>
