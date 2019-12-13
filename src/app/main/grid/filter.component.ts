@@ -47,7 +47,7 @@ export class FilterComponent {
 
     private _unsubscribeAll: Subject<any>;
     subscription: Subscription;
-    private compose_enable: boolean;
+    public compose_enable: boolean;
 
 
 

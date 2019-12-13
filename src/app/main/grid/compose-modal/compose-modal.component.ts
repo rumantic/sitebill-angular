@@ -20,7 +20,7 @@ export class ComposeModalComponent  implements OnInit {
     private entity: SitebillEntity;
     form_compose_columns: any[];
     private composeForm: FormGroup;
-    private compose_form_complete: boolean;
+    public compose_form_complete: boolean;
     options_storage = {};
     options_storage_titles = [];
 
