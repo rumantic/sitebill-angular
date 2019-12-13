@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
@@ -14,30 +14,20 @@ import {SitebillEntity} from '../../../_models';
     animations: fuseAnimations
 })
 export class ComposeModalComponent  implements OnInit {
-    registerForm: FormGroup;
-    registerFormErrors: any;
-    options_storage = {};
-
-
-    codeForm: FormGroup;
-    codeFormErrors: any;
-
-    registerMessage: string;
-
     valid_domain_through_email: FormGroup;
     loading = false;
-    show_register: boolean;
     show_login: boolean;
-    show_input_remind_code: boolean;
-    street_id_select: any;
-    private focus_complete: boolean;
     private entity: SitebillEntity;
+    form_compose_columns: any[];
+    private composeForm: FormGroup;
+    private compose_form_complete: boolean;
+    options_storage = {};
+    options_storage_titles = [];
 
 
 
     constructor(
         protected modelService: ModelService,
-        protected _snackService: SnackService,
         private _formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
@@ -50,66 +40,89 @@ export class ComposeModalComponent  implements OnInit {
     }
 
     init_register_form () {
-        // Set the defaults
-        this.registerFormErrors = {
-            username: {},
-        };
-        this.codeFormErrors = {
-            code: {},
-        };
-
-
-        this.registerForm = this._formBuilder.group({
-            username: [''],
-            street_id: [''],
-        });
-
-        this.codeForm = this._formBuilder.group({
-            code: ['', [Validators.required]],
-        });
+        this.composeForm = this._formBuilder.group({});
     }
 
     ngOnInit() {
-        console.log(this._data);
+        /*
+        console.log(this._data.column.model_name);
+        console.log(this._data.entity);
+        console.log(this._data.entity.columns_index[this._data.column.model_name]);
+        console.log(this._data.entity.model[this._data.entity.columns_index[this._data.column.model_name]]);
+
+        console.log(this._data.entity.model[this._data.entity.columns_index[this._data.column.model_name]].parameters.columns);
+         */
         this.entity = this._data.entity;
-        this.show_input_remind_code = false;
-        this.load_dictionary('street_id');
-        this.load_dictionary('city_id');
+        this.init_compose_form();
     }
 
-    onFocus(columnName) {
-        console.log(columnName);
-        if (!this.focus_complete) {
-            /*
-            if (this.columnObject.type == 'price') {
-                this.get_max(this.entity, this.columnObject.model_name);
-            } else {
-                this.load_dictionary(this.columnObject.model_name);
+    get_title ( column_name ) {
+        return this._data.entity.model[this._data.entity.columns_index[column_name]].title;
+    }
+
+    column_defined ( column_name ) {
+        if ( this._data.entity.model[this._data.entity.columns_index[column_name]] != null ) {
+            return true;
+        }
+        return false;
+    }
+
+    get_compose_columns () {
+        const compose_string = this._data.entity.model[this._data.entity.columns_index[this._data.column.model_name]].parameters.columns;
+        return compose_string.split(',');
+    }
+
+    init_compose_form () {
+        let compose_columns = [];
+        try {
+            compose_columns = this.get_compose_columns();
+            if ( compose_columns.length > 0 ) {
+                this.form_compose_columns = compose_columns;
+                for (let i = 0; i < compose_columns.length; i++) {
+                    if ( this.column_defined(compose_columns[i]) ) {
+                        const form_control_item = new FormControl(compose_columns[i]);
+                        form_control_item.clearValidators();
+                        this.options_storage[compose_columns[i]] = [];
+                        this.options_storage_titles[compose_columns[i]] = this.get_title(compose_columns[i]);
+                        this.composeForm.addControl(compose_columns[i], form_control_item);
+                    }
+                }
+                this.compose_form_complete = true;
             }
-             */
-            this.load_dictionary(columnName);
-            
-            this.focus_complete = true;
+        } catch (e) {
+            console.log(e);
         }
     }
 
-    load_dictionary(columnName) {
-
-        this.modelService.load_dictionary_model(this.entity.get_table_name(), columnName)
-            .subscribe((result: any) => {
-                //console.log(columnName);
-                console.log(result);
-                /*
-                if (this.filterService.share_array[this.entity.get_app_name()] != undefined) {
-                    this.selectedFilter = this.filterService.share_array[this.entity.get_app_name()][columnName];
-                }
-                 */
-                this.options_storage[columnName] = result.data;
-                console.log(this.options);
-            });
-
+    onFocus(columnName) {
+        this.load_dictionary(columnName);
     }
 
+    load_dictionary(columnName) {
+        this.modelService.load_dictionary_model(this.entity.get_table_name(), columnName)
+            .subscribe((result: any) => {
+                this.options_storage[columnName] = result.data;
+            });
+    }
 
+    apply() {
+        try {
+            const compose_columns = this.get_compose_columns();
+            let compose_result = [];
+            if (compose_columns.length > 0) {
+                for (let i = 0; i < compose_columns.length; i++) {
+                    if ( this.column_defined(compose_columns[i]) ) {
+                        compose_result[compose_columns[i]] = this.composeForm.controls[compose_columns[i]].value;
+                    }
+                    //console.log(compose_columns[i]);
+                    //console.log(this.composeForm.controls[compose_columns[i]].value);
+                }
 
+                console.log(compose_result);
+            }
+        } catch (e) {
+
+        }
+
+    }
 }

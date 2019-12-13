@@ -218,9 +218,6 @@ export class FilterComponent {
     }
 
     compose_modal(column) {
-        console.log('compose modal');
-        console.log(column);
-
         const dialogConfig = new MatDialogConfig();
         dialogConfig.data = {column: column, entity: this.entity};
         this.dialog.open(ComposeModalComponent, dialogConfig);
