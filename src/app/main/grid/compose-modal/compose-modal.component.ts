@@ -6,6 +6,7 @@ import {SnackService} from '../../../_services/snack.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {takeUntil} from 'rxjs/operators';
 import {SitebillEntity} from '../../../_models';
+import {FilterService} from '../../../_services/filter.service';
 
 @Component({
     selector: 'compose-modal',
@@ -29,6 +30,7 @@ export class ComposeModalComponent  implements OnInit {
     constructor(
         protected modelService: ModelService,
         private _formBuilder: FormBuilder,
+        private filterService: FilterService,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
         this.valid_domain_through_email = this._formBuilder.group({
@@ -108,17 +110,23 @@ export class ComposeModalComponent  implements OnInit {
     apply() {
         try {
             const compose_columns = this.get_compose_columns();
-            let compose_result = [];
+            let compose_result = {};
             if (compose_columns.length > 0) {
                 for (let i = 0; i < compose_columns.length; i++) {
                     if ( this.column_defined(compose_columns[i]) ) {
-                        compose_result[compose_columns[i]] = this.composeForm.controls[compose_columns[i]].value;
+                        if ( this.composeForm.controls[compose_columns[i]].value !=  compose_columns[i]) {
+                            //console.log(this.composeForm.controls[compose_columns[i]].value);
+                            compose_result[compose_columns[i]] = this.composeForm.controls[compose_columns[i]].value;
+                        }
                     }
                     //console.log(compose_columns[i]);
-                    //console.log(this.composeForm.controls[compose_columns[i]].value);
                 }
 
-                console.log(compose_result);
+                //console.log(compose_result);
+                //console.log(this.entity);
+                //console.log(this._data.column.model_name);
+                this.filterService.share_data(this.entity, this._data.column.model_name, compose_result);
+
             }
         } catch (e) {
 

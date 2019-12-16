@@ -30,6 +30,7 @@ import * as moment from 'moment';
 import { CommonTemplateComponent } from './common-template/common-template.component';
 import { Router } from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
+import {type} from 'os';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -382,18 +383,24 @@ export class GridComponent implements OnInit, OnDestroy
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
         //console.log('load_grid_data');
-        //console.log(grid_columns);
-        //console.log(params);
         let filter_params_json = {};
 
 
         if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
+            //console.log('grid app name');
+            //console.log(this.entity.get_app_name());
+            //console.log(this.filterService.share_array[this.entity.get_app_name()]);
+
             var obj = this.filterService.share_array[this.entity.get_app_name()];
             var mapped = Object.keys(obj);
             mapped.forEach(function (item, i, arr) {
+                //console.log(obj[item]);
                 //console.log(obj[item].length);
+                //console.log(typeof obj[item]);
                 if (obj[item] != null ) {
                     if (obj[item].length != 0) {
+                        filter_params_json[item] = obj[item];
+                    } else if (typeof obj[item] === 'object') {
                         filter_params_json[item] = obj[item];
                     }
                 }
