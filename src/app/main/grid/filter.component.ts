@@ -223,4 +223,17 @@ export class FilterComponent {
         this.dialog.open(ComposeModalComponent, dialogConfig);
 
     }
+
+    get_compose_params_counter(columnObject: any) {
+        const share_data = this.filterService.get_share_data(this.entity.get_app_name(), columnObject.model_name);
+        if ( share_data != null && share_data !== undefined) {
+            // console.log(share_data);
+            // console.log(typeof share_data);
+
+            if ( typeof share_data === 'object') {
+                return true;
+            }
+        }
+        return false;
+    }
 }

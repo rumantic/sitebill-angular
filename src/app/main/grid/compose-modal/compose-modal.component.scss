@@ -1,6 +1,9 @@
 @import "src/@fuse/scss/fuse";
 
 :host {
+    .button_spacer button {
+        margin-right: 16px;
+    }
     #login {
         width: 100%;
 

@@ -134,6 +134,7 @@
 <div *ngIf="compose_enable">
     <button mat-button color="accent" (click)="compose_modal(columnObject)">
         {{columnObject.title}}
+        <mat-icon *ngIf="get_compose_params_counter(columnObject)">playlist_add_check</mat-icon>
     </button>
 </div>
 

@@ -8,7 +8,7 @@
         </mat-toolbar-row>
     </mat-toolbar-->
 
-    <form name="loginForm" [formGroup]="composeForm" (ngSubmit)="apply()" novalidate *ngIf="compose_form_complete">
+    <form name="loginForm" [formGroup]="composeForm" novalidate *ngIf="compose_form_complete">
         <span *ngFor="let x of form_compose_columns">
         <ng-select *ngIf="options_storage[x] != null"
                    [formControlName]="x"
@@ -16,11 +16,12 @@
                    bindValue="id"
                    bindLabel="value"
                    [items]="options_storage[x]"
+                   (ngModelChange)="enable_clear_button()"
                    [clearOnBackspace]="false"
                    class="select_options"
                    [searchable]="true"
                    [multiple]="true"
-                   [hideSelected]="false"
+                   [hideSelected]="true"
                    [closeOnSelect]="false"
                    (focus)="onFocus(x)"
                    [placeholder]="get_title(x)">
@@ -33,14 +34,24 @@
         </span>
 
 
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="button_spacer">
+            <button mat-raised-button (click)="apply()" color="accent" class="submit-button" aria-label="Применить фильтр"
+                    [disabled]="composeForm.invalid">
+                <mat-icon *ngIf="!loading">
+                    playlist_add_check
+                </mat-icon>
+                <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
+                Применить фильтр
+            </button>
 
-        <button mat-raised-button color="accent" class="submit-button" aria-label="Применить фильтр"
-                [disabled]="composeForm.invalid">
-            <mat-icon *ngIf="!loading">
-                playlist_add_check
-            </mat-icon>
-            <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
-            Применить фильтр
-        </button>
+            <button mat-raised-button (click)="clear()" aria-label="Очистить" *ngIf="clear_enable">
+                <mat-icon *ngIf="!loading">
+                    clear
+                </mat-icon>
+                <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
+                Очистить
+            </button>
+        </div>
+
     </form>
 </div>
