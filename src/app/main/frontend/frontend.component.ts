@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FuseConfigService} from '@fuse/services/config.service';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
     selector   : 'frontend',
     templateUrl: './frontend.component.html',
     styleUrls  : ['./frontend.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class FrontendComponent

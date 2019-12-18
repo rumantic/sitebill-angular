@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -22,7 +22,8 @@ class CommentsBlockMeta {
 @Component({
     selector: 'view-modal',
     templateUrl: './view-modal.component.html',
-    styleUrls: ['./view-modal.component.scss']
+    styleUrls: ['./view-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewModalComponent extends FormComponent implements OnInit {
 
@@ -47,7 +48,8 @@ export class ViewModalComponent extends FormComponent implements OnInit {
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
+        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
+        protected cdr: ChangeDetectorRef
     ) {
 
         super(
@@ -59,7 +61,8 @@ export class ViewModalComponent extends FormComponent implements OnInit {
             filterService,
             bitrix24Service,
             config,
-            _data
+            _data,
+            cdr
         );
 
         this.loadingIndicator = true;

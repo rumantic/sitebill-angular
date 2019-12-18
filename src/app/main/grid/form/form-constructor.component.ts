@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
@@ -152,6 +152,7 @@ export class FormConstructorComponent implements OnInit {
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         public _matDialog: MatDialog,
+        protected cdr: ChangeDetectorRef
     ) {
         this._unsubscribeAll = new Subject();
         this.loadingIndicator = true;
@@ -199,6 +200,7 @@ export class FormConstructorComponent implements OnInit {
                         //console.log(this.tabs);
                         this.init_form();
                     }
+                    this.cdr.markForCheck();
                 }
 
             });
@@ -448,6 +450,7 @@ export class FormConstructorComponent implements OnInit {
     }
     after_form_inted() {
         this.form_title = this.get_title();
+        this.cdr.markForCheck();
     }
 
     get_title() {

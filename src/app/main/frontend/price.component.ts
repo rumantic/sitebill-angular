@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {FuseConfigService} from '../../../@fuse/services/config.service';
 import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-loader.service';
@@ -16,6 +16,7 @@ import {ModelService} from '../../_services/model.service';
     selector   : 'price',
     templateUrl: './price.component.html',
     styleUrls  : ['./price.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class PriceComponent
@@ -35,7 +36,8 @@ export class PriceComponent
         protected router: Router,
         protected dialog: MatDialog,
         public modelService: ModelService,
-        private filterService: FilterService
+        private filterService: FilterService,
+        protected cdr: ChangeDetectorRef
     )
     {
         this.loading_in_progress = false;
@@ -67,6 +69,7 @@ export class PriceComponent
                         const mapped = Object.keys(products.records).map(key => ({type: key, value: products.records[key]}));
                         this.products = mapped;
                         this.products_loaded = true;
+                        this.cdr.markForCheck();
                     }
                 );
                 this.loading_in_progress = true;

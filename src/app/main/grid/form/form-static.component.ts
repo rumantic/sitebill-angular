@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {FormBuilder} from '@angular/forms';
 
@@ -36,6 +36,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
+        protected cdr: ChangeDetectorRef
     ) {
         super(
             modelService,
@@ -44,6 +45,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
             filterService,
             bitrix24Service,
             _matDialog,
+            cdr,
         );
     }
     save() {

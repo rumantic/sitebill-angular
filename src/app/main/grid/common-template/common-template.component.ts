@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, Input, Output, EventEmitter, isDevMode, Inject } from '@angular/core';
+import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, isDevMode, Inject, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
 import { SitebillEntity } from 'app/_models';
@@ -9,6 +9,7 @@ import { ModelService } from 'app/_services/model.service';
     selector: 'common-template',
     templateUrl: './common-template.component.html',
     styleUrls: ['./common-template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommonTemplateComponent {
     api_url: string;
@@ -61,6 +62,9 @@ export class CommonTemplateComponent {
         private modelSerivce: ModelService,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
+    }
+
+    ngOnInit () {
     }
 
     view(item_id: number) {

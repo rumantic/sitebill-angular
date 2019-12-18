@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -20,6 +20,7 @@ import {GatewaysModalComponent} from '../gateways/modal/gateways-modal.component
     templateUrl: './dashboard.component.html',
     styleUrls  : ['./dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations   : fuseAnimations
 })
 export class DashboardComponent
@@ -44,7 +45,8 @@ export class DashboardComponent
         private billingService: BillingService,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        private _fuseTranslationLoaderService: FuseTranslationLoaderService
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        protected cdr: ChangeDetectorRef
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -76,6 +78,7 @@ export class DashboardComponent
                 this.invoices_loaded = true;
                 const mapped = Object.keys(invoices).map(key => ({id: key, value: invoices[key]}));
                 this.invoices = mapped;
+                this.cdr.markForCheck();
 
                 if ( invoices.length > 0 ) {
                 }
@@ -92,6 +95,7 @@ export class DashboardComponent
                     this.total_active_products = user_products.total_active_products;
                     const mapped = Object.keys(user_products.records).map(key => ({id: key, value: user_products.records[key]}));
                     this.user_products = mapped;
+                    this.cdr.markForCheck();
                 }
             }
         );

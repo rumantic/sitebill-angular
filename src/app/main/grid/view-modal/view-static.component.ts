@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -49,6 +49,7 @@ export class ViewStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
+        protected cdr: ChangeDetectorRef
     ) {
 
         super(
@@ -58,6 +59,7 @@ export class ViewStaticComponent extends FormConstructorComponent implements OnI
             filterService,
             bitrix24Service,
             _matDialog,
+            cdr,
         );
 
         this.loadingIndicator = true;

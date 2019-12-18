@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FilterService} from 'app/_services/filter.service';
@@ -60,7 +60,8 @@ export class FilterComponent {
         private modelSerivce: ModelService,
         private filterService: FilterService,
         protected dialog: MatDialog,
-        private config: NgSelectConfig
+        private config: NgSelectConfig,
+        protected cdr: ChangeDetectorRef
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -167,6 +168,7 @@ export class FilterComponent {
                         this.price_selector = 5;
                     }
                 }
+                this.cdr.markForCheck();
             });
     }
 
@@ -194,6 +196,7 @@ export class FilterComponent {
                     this.selectedFilter = this.filterService.share_array[this.entity.get_app_name()][columnName];
                 }
                 this.options = result.data;
+                this.cdr.markForCheck();
             });
 
     }
@@ -204,6 +207,7 @@ export class FilterComponent {
             this.filterService.share_data(this.entity, 'price_min', this.price_min);
             this.filterService.share_data(this.entity, 'price_max', this.price_max);
         }
+        this.cdr.markForCheck();
     }
     onPriceSelectorChange() {
         //console.log(this.price_selector);
@@ -211,10 +215,12 @@ export class FilterComponent {
             this.filterService.unshare_data(this.entity, 'price_min');
             this.filterService.unshare_data(this.entity, 'price_max');
         }
+        this.cdr.markForCheck();
     }
 
     onPriceSliderChange(changeContext: ChangeContext): void {
         this.price_selector = 5;
+        this.cdr.markForCheck();
     }
 
     compose_modal(column) {

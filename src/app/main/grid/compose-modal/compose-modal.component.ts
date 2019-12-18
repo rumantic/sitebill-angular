@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
@@ -34,6 +34,7 @@ export class ComposeModalComponent  implements OnInit {
         private _formBuilder: FormBuilder,
         private filterService: FilterService,
         private dialogRef: MatDialogRef<ComposeModalComponent>,
+        protected cdr: ChangeDetectorRef,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
         this.valid_domain_through_email = this._formBuilder.group({
@@ -49,9 +50,9 @@ export class ComposeModalComponent  implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this._data.entity);
         /*
         console.log(this._data.column.model_name);
-        console.log(this._data.entity);
         console.log(this._data.entity.columns_index[this._data.column.model_name]);
         console.log(this._data.entity.model[this._data.entity.columns_index[this._data.column.model_name]]);
 
@@ -114,6 +115,7 @@ export class ComposeModalComponent  implements OnInit {
         } catch (e) {
             console.log(e);
         }
+        this.cdr.markForCheck();
     }
 
     onFocus(columnName) {
@@ -134,6 +136,7 @@ export class ComposeModalComponent  implements OnInit {
                     this.options_storage[columnName] = result.data;
                 });
             this.dictionary_loaded[columnName] = true;
+            this.cdr.markForCheck();
         }
     }
 
@@ -179,6 +182,7 @@ export class ComposeModalComponent  implements OnInit {
                     }
                 }
                 this.filterService.unshare_data(this.entity, this._data.column.model_name);
+                this.cdr.markForCheck();
             }
         } catch (e) {
             console.log(e);

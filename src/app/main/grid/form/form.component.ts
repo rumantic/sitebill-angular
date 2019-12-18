@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
 import {FormBuilder} from '@angular/forms';
 
@@ -15,7 +15,8 @@ import {FormConstructorComponent} from './form-constructor.component';
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.css']
+    styleUrls: ['./form.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent extends FormConstructorComponent implements OnInit {
 
@@ -28,7 +29,8 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity
+        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
+        protected cdr: ChangeDetectorRef
     ) {
         super(
             modelService,
@@ -37,6 +39,7 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
             filterService,
             bitrix24Service,
             _matDialog,
+            cdr,
         );
     }
 
