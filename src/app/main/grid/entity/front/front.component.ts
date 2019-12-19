@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
 import {ModelService} from '../../../../_services/model.service';
@@ -10,7 +10,6 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
     selector: 'front-component',
     templateUrl: './front.component.html',
     styleUrls: ['./front.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class FrontComponent {
@@ -40,6 +39,7 @@ export class FrontComponent {
         private filterService: FilterService,
         protected _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
+        protected cdr: ChangeDetectorRef,
         public modelService: ModelService
     ) {
         this.disable_menu();
@@ -121,6 +121,7 @@ export class FrontComponent {
         this.reload = false;
         this.modelService.get_cms_session().subscribe((response: any) => {
             this.reload = true;
+            this.cdr.markForCheck();
         });
     }
 
@@ -180,6 +181,7 @@ export class FrontComponent {
                 });
                 this.topics = response.data;
                 this.set_topic_id_value(this.topics[0].id);
+                this.cdr.markForCheck();
             });
     }
 
@@ -187,6 +189,7 @@ export class FrontComponent {
         this.modelService.load_dictionary_model_all('data', 'region_id')
             .subscribe((response: any) => {
                 this.regions = response.data;
+                this.cdr.markForCheck();
             });
     }
 

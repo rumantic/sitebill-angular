@@ -10,7 +10,6 @@ import { MatDialogConfig } from '@angular/material';
     selector: 'sale-grid',
     templateUrl: '../../grid.component.html',
     styleUrls: ['../../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class SaleComponent extends GridComponent {
@@ -29,7 +28,7 @@ export class SaleComponent extends GridComponent {
                 console.log(this.entity.get_default_params());
                 this.define_grid_params(this.entity.get_default_params());
             }
-
+            this.cdr.markForCheck();
         }
 
 
