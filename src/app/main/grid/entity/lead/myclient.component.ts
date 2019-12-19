@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, TemplateRef, ViewChild} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 import { Page } from '../../page';
@@ -10,6 +10,7 @@ import { MatDialogConfig } from '@angular/material';
     selector: 'myclient-grid',
     templateUrl: './myclient.component.html',
     styleUrls: ['../../grid.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class MyClientComponent extends GridComponent {

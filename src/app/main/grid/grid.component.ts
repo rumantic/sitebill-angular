@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {DOCUMENT} from '@angular/platform-browser';
@@ -38,6 +38,7 @@ registerLocaleData(localeRu, 'ru');
     selector   : 'grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class GridComponent implements OnInit, OnDestroy
@@ -152,6 +153,7 @@ export class GridComponent implements OnInit, OnDestroy
     input_entity: SitebillEntity;
 
     @Output() total_counterEvent = new EventEmitter<number>();
+    private after_compose_complete_checked: boolean;
 
 
 
@@ -171,6 +173,7 @@ export class GridComponent implements OnInit, OnDestroy
         private router: Router,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        protected cdr: ChangeDetectorRef,
         private filterService: FilterService
     )
     {
@@ -186,7 +189,9 @@ export class GridComponent implements OnInit, OnDestroy
 
 
         this.api_url = this.modelService.get_api_url();
-
+        this.compose_complete = false;
+        this.after_compose_complete_checked = false;
+        this.loadingIndicator = true;
     }
     ngOnInit() {
         if (this.disable_menu) {
@@ -277,6 +282,20 @@ export class GridComponent implements OnInit, OnDestroy
                 //console.log('search string share');
                 this.filterService.share_data(this.entity, 'concatenate_search', searchText);
             });
+        this.cdr.markForCheck();
+
+    }
+
+
+    ngAfterViewChecked() {
+        if ( this.compose_complete ) {
+            if ( !this.after_compose_complete_checked ) {
+                setTimeout(() => {
+                    this.cdr.markForCheck();
+                }, 100);
+                this.after_compose_complete_checked = true;
+            }
+        }
     }
 
     refresh() {
@@ -400,7 +419,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (obj[item] != null ) {
                     if (obj[item].length != 0) {
                         filter_params_json[item] = obj[item];
-                    } else if (typeof obj[item] === 'object') {
+                    } else if (typeof obj[item] === 'object' && obj[item].length != 0) {
                         filter_params_json[item] = obj[item];
                     }
                 }
@@ -424,6 +443,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
+                //this.loadingIndicator = true;
                 //console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
@@ -462,7 +482,7 @@ export class GridComponent implements OnInit, OnDestroy
                     this.data_all = result_f1.rows.length;
 
                     //this.init_selected_rows(this.rows, selected);
-                    this.loadingIndicator = false;
+                    //this.loadingIndicator = false;
                 }
                 this.refresh_complete = true;
             });
@@ -590,9 +610,14 @@ export class GridComponent implements OnInit, OnDestroy
             }
             this.data_columns.push(column);
         });
-        this.compose_complete = true;
+        this.after_compose();
         //console.log(this.data_columns);
 
+    }
+
+    after_compose () {
+        this.compose_complete = true;
+        this.loadingIndicator = false;
     }
 
     get_header_template() {
@@ -782,6 +807,7 @@ export class GridComponent implements OnInit, OnDestroy
        * @param page The page to select
        */
     setPage(pageInfo) {
+        this.loadingIndicator = true;
         this.page.pageNumber = pageInfo.offset;
         //const params = { owner: true };
         let params = {};
@@ -848,6 +874,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     onActivate(event) {
+        // console.log('onActivate');
     }
 
 

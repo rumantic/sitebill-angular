@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { FilterService } from 'app/_services/filter.service';
 import {ModelService} from '../../../../_services/model.service';
@@ -10,6 +10,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
     selector: 'front-component',
     templateUrl: './front.component.html',
     styleUrls: ['./front.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class FrontComponent {

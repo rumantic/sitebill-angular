@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {FormBuilder} from '@angular/forms';
 
@@ -14,6 +14,7 @@ import {FormConstructorComponent} from './form-constructor.component';
 @Component({
     selector: 'form-static',
     templateUrl: './form.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./form.component.css']
 })
 export class FormStaticComponent extends FormConstructorComponent implements OnInit {

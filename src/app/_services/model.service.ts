@@ -248,7 +248,7 @@ export class ModelService {
             session_key: this.get_session_key_safe(),
             grid_item: grid_item
         };
-        //console.log(body);
+        // console.log(body);
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
