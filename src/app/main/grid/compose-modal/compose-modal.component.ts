@@ -131,7 +131,7 @@ export class ComposeModalComponent  implements OnInit {
 
     load_dictionary(columnName) {
         if ( !this.is_dictionary_loaded(columnName) ) {
-            this.modelService.load_dictionary_model(this.entity.get_table_name(), columnName)
+            this.modelService.load_dictionary_model_with_params(this.entity.get_table_name(), columnName, this.entity.get_default_params())
                 .subscribe((result: any) => {
                     this.options_storage[columnName] = result.data;
                 });
