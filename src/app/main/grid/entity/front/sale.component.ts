@@ -18,6 +18,8 @@ export class SaleComponent extends GridComponent {
     setup_apps() {
         if ( this.input_entity ) {
             this.entity = this.input_entity;
+            this.enable_date_range('date_added');
+
             if ( this.entity.get_default_columns_list().length > 0 && !this.setup_complete ) {
                 this.define_grid_fields(this.entity.get_default_columns_list());
                 this.predefined_grid_fields = this.entity.get_default_columns_list();
@@ -30,6 +32,7 @@ export class SaleComponent extends GridComponent {
             }
             this.cdr.markForCheck();
         }
+        console.log(this.entity);
 
 
         //this.table_index_params[0] = { user_id: 0 };

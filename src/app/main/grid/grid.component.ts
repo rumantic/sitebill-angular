@@ -685,8 +685,11 @@ export class GridComponent implements OnInit, OnDestroy
         }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
+        } else {
+            this.dialog.open(FormComponent, dialogConfig);
+        }
 
-        this.dialog.open(FormComponent, dialogConfig);
     }
 
 

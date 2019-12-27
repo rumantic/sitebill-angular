@@ -30,6 +30,11 @@ export class BillingService {
         return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
     }
 
+    get_user_limit () {
+        const request = { action: 'cart', do: 'get_user_limit', session_key: this.modelSerivce.get_session_key_safe() };
+        return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);
+    }
+
     get_user_products () {
         const request = { action: 'cart', do: 'get_user_products', session_key: this.modelSerivce.get_session_key_safe() };
         return this.http.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, request);

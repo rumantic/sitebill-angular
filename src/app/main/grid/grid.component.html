@@ -72,7 +72,7 @@
                     </button>
 
                     <!-- SETTINGS BUTTON -->
-                    <button mat-icon-button (click)="settingsSidenav.toggle()"
+                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settingsSidenav.toggle()"
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
