@@ -50,7 +50,6 @@ export class ComposeModalComponent  implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this._data.entity);
         /*
         console.log(this._data.column.model_name);
         console.log(this._data.entity.columns_index[this._data.column.model_name]);

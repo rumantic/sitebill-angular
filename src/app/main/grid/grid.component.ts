@@ -768,6 +768,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
+                    this.cdr.markForCheck();
                     this.refresh();
                 }
             });

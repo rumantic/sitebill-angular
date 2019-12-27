@@ -266,7 +266,6 @@ export class ModelService {
 
     load_dictionary_model_with_params(model_name, columnName, params) {
         const request = {action: 'model', do: 'load_dictionary_with_params', columnName: columnName, model_name: model_name, params: params, anonymous: true, session_key: this.get_session_key_safe()};
-        console.log(request);
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
