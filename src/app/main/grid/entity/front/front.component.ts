@@ -64,7 +64,7 @@ export class FrontComponent {
         this.sale_entity.set_app_name('sale');
         this.sale_entity.set_table_name('data');
         this.sale_entity.set_primary_key('id');
-        this.sale_entity.set_disable_comment();
+        // this.sale_entity.set_disable_comment();
         this.sale_entity.set_default_params({ optype: 5 });
         const default_columns_list_sale = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.sale_entity.set_default_columns_list(default_columns_list_sale);
@@ -77,7 +77,7 @@ export class FrontComponent {
         this.rent_entity.set_app_name('rent');
         this.rent_entity.set_table_name('data');
         this.rent_entity.set_primary_key('id');
-        this.rent_entity.set_disable_comment();
+        // this.rent_entity.set_disable_comment();
         this.rent_entity.set_default_params({ optype: 1 });
         const default_columns_list_rent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.rent_entity.set_default_columns_list(default_columns_list_rent);
@@ -87,7 +87,7 @@ export class FrontComponent {
         this.dayrent_entity.set_app_name('rent');
         this.dayrent_entity.set_table_name('data');
         this.dayrent_entity.set_primary_key('id');
-        this.dayrent_entity.set_disable_comment();
+        // this.dayrent_entity.set_disable_comment();
         this.dayrent_entity.set_default_params({ optype: 2 });
         const default_columns_list_dayrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.dayrent_entity.set_default_columns_list(default_columns_list_dayrent);
@@ -97,7 +97,7 @@ export class FrontComponent {
         this.buy_entity.set_app_name('rent');
         this.buy_entity.set_table_name('data');
         this.buy_entity.set_primary_key('id');
-        this.buy_entity.set_disable_comment();
+        // this.buy_entity.set_disable_comment();
         this.buy_entity.set_default_params({ optype: 3 });
         const default_columns_list_buy = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.buy_entity.set_default_columns_list(default_columns_list_buy);
@@ -107,7 +107,7 @@ export class FrontComponent {
         this.needrent_entity.set_app_name('rent');
         this.needrent_entity.set_table_name('data');
         this.needrent_entity.set_primary_key('id');
-        this.needrent_entity.set_disable_comment();
+        // this.needrent_entity.set_disable_comment();
         this.needrent_entity.set_default_params({ optype: 4 });
         const default_columns_list_needrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.needrent_entity.set_default_columns_list(default_columns_list_needrent);
