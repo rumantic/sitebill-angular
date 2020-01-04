@@ -31,6 +31,7 @@ import { CommonTemplateComponent } from './common-template/common-template.compo
 import { Router } from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {type} from 'os';
+import {BillingService} from '../../_services/billing.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -168,6 +169,7 @@ export class GridComponent implements OnInit, OnDestroy
         protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
         protected modelService: ModelService,
+        protected billingService: BillingService,
         protected bitrix24Service: Bitrix24Service,
         protected _snackService: SnackService,
         private router: Router,
@@ -686,6 +688,12 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
+            this.billingService.get_user_limit().subscribe(
+                (limit: any) => {
+                    console.log(limit);
+                    this.cdr.markForCheck();
+                }
+            );
         } else {
             this.dialog.open(FormComponent, dialogConfig);
         }
