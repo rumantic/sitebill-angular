@@ -7,6 +7,7 @@ export class SbCalendarHelper {
     static dateFormat = SB_DATE_FORMAT;
 
     static parseEventsFromBooking(booking): CalendarEvent[] {
+        
         const result: CalendarEvent[] = [];
 
         if (! booking || !booking.data) {
@@ -27,9 +28,30 @@ export class SbCalendarHelper {
                 });
             });
         }
+        
+        if (booking.data.dates) {
+            
+            const calendarDatesList = Object.keys(booking.data.dates);
+            
+            calendarDatesList.forEach((dateDate) => {
+                const dayInfo = booking.data.dates[dateDate];
+                result.push({
+                    start: moment(dateDate, SB_DATE_FORMAT).toDate(),
+                    /*end: moment(dayInfo.date_end, SB_DATE_FORMAT).toDate(),*/
+                    allDay: true,
+                    title: 'Доступность ' + dayInfo.reservation_avdate_id,
+                    meta: {
+                        type: 'avdate',
+                        avdate: dayInfo,
+                    },
+                });
+            });
+        }
 
         if (booking.data.rates) {
             const calendarRatesList = Object.keys(booking.data.rates);
+            
+            
 
             calendarRatesList.forEach((rateDate) => {
                 const dayRatesList = booking.data.rates[rateDate];
@@ -76,7 +98,6 @@ export class SbCalendarHelper {
                 });
             });
         }
-
         return result;
     }
 
