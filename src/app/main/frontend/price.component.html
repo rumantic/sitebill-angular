@@ -25,7 +25,6 @@
 
                 <div class="package-type">
                     <div class="title">{{product.value.name.value}}</div>
-                    <div class="subtitle">{{product.value.description.value}}</div>
                 </div>
 
                 <div class="price primary-300" fxLayout="row" fxLayoutAlign="center start">
@@ -37,11 +36,7 @@
                 </div>
 
                 <div class="terms" fxLayout="column" fxLayoutAlign="start center">
-                    <div class="term">Аренда</div>
-                    <div class="term">Продажа</div>
-                    <div class="term">Посуточно</div>
-                    <div class="term">Куплю</div>
-                    <div class="term">Сниму</div>
+                    <div class="term" [innerHTML]="product.value.description.value"></div>
                 </div>
 
                 <button mat-raised-button class="cta-button" color="accent" (click)="add_to_cart(product)">Купить</button>

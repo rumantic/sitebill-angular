@@ -31,6 +31,7 @@ export class DashboardComponent
     public user_products_loaded: boolean;
     public invoices_loaded: boolean;
     public total_active_products: number;
+    public exclusive_limit: any;
     /**
      * Constructor
      *
@@ -70,6 +71,7 @@ export class DashboardComponent
         this.username = 'test';
         this.load_invoices();
         this.load_user_products();
+        this.load_user_limits();
     }
 
     load_invoices () {
@@ -86,12 +88,24 @@ export class DashboardComponent
         );
     }
 
+    load_user_limits () {
+        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
+            this.billingService.get_user_limit('exclusive').subscribe(
+                (limit: any) => {
+                    this.exclusive_limit =  limit.data;
+                    console.log(limit);
+                    this.cdr.markForCheck();
+                }
+            );
+        }
+    }
+
     load_user_products () {
         this.billingService.get_user_products().subscribe(
             (user_products: any) => {
                 this.user_products_loaded = true;
                 if (  user_products.records != null ) {
-                    console.log(user_products);
+                    //console.log(user_products);
                     this.total_active_products = user_products.total_active_products;
                     const mapped = Object.keys(user_products.records).map(key => ({id: key, value: user_products.records[key]}));
                     this.user_products = mapped;

@@ -70,22 +70,22 @@
                 <!-- / Widget 3 -->
 
                 <!-- Widget 4 -->
-                <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="33" *ngIf="exclusive_limit > 0">
 
                     <div class="fuse-card auto-width">
 
                         <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
 
                             <div class="pr-16">
-                                <div class="h3 secondary-text">Активные услуги</div>
-                                <div class="font-size-54 font-weight-300 line-height-1 mt-8">
-                                    3 эксклюзива
+                                <div class="h3 secondary-text">Пакеты услуг</div>
+                                <div class="font-size-24 font-weight-300 mt-8">
+                                    Эксклюзивы: {{exclusive_limit}}
                                 </div>
                             </div>
 
-                            <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                            <!--div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
                                 <div class="ml-4 text-nowrap">объявления</div>
-                            </div>
+                            </div-->
 
                         </div>
 
@@ -193,7 +193,7 @@
             <div fxLayout="row wrap" fxLayout.gt-md="column">
 
                 <!-- Widget 7 -->
-                <div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
+                <!--div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
 
 
                     <div class="fuse-card">
@@ -212,7 +212,7 @@
 
                     </div>
 
-                </div>
+                </div-->
                 <!-- / Widget 7 -->
 
 
