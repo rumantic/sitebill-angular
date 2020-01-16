@@ -50,7 +50,7 @@
                             </thead>
                             <tbody>
                             <ng-container *ngFor="let product of user_products">
-                                <tr *ngIf="product.value.status.value == 'active'">
+                                <tr *ngIf="product.value.status.value == 'active' && product.value.billingcycle.value != 'once'">
                                     <td>
                                         <ng-container *ngIf="product.value.product_info != false">{{product.value.product_info.name.value}}</ng-container>
                                     </td>

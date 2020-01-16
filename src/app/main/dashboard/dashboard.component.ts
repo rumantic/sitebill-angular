@@ -105,7 +105,7 @@ export class DashboardComponent
             (user_products: any) => {
                 this.user_products_loaded = true;
                 if (  user_products.records != null ) {
-                    //console.log(user_products);
+                    // console.log(user_products);
                     this.total_active_products = user_products.total_active_products;
                     const mapped = Object.keys(user_products.records).map(key => ({id: key, value: user_products.records[key]}));
                     this.user_products = mapped;
