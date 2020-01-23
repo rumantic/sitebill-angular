@@ -690,8 +690,11 @@ export class GridComponent implements OnInit, OnDestroy
         if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
             this.billingService.get_user_limit('exclusive').subscribe(
                 (limit: any) => {
-                    console.log(limit);
-                    this.cdr.markForCheck();
+                    if ( limit.data > 0 ) {
+                        this.dialog.open(FormComponent, dialogConfig);
+                    } else {
+                        this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
+                    }
                 }
             );
         } else {
