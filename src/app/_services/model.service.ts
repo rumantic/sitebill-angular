@@ -99,7 +99,10 @@ export class ModelService {
         }
     }
 
-    enable_need_reload() {
+    enable_need_reload( from = '') {
+        if ( from !== '' ) {
+            console.log('enable_need_reload from ' + from);
+        }
         //console.log('enable_need_reload');
         this.need_reload = true;
     }
@@ -150,7 +153,7 @@ export class ModelService {
                 if (result.error === 'check_session_key_failed') {
                     this.reset_local_user_storage();
                     let refresh_url = this.router.url;
-                    this.enable_need_reload();
+                    this.enable_need_reload('get_session_key_safe');
                     this.router.navigate([refresh_url]);
                 } else {
                     this.session_key_validate();
@@ -184,7 +187,7 @@ export class ModelService {
             if ( result.error === 'check_session_key_failed' ) {
                 this.reset_local_user_storage();
                 let refresh_url = this.router.url;
-                this.enable_need_reload();
+                this.enable_need_reload('init_nobody_user_storage');
                 this.router.navigate([refresh_url]);
             } else {
                 this.currentUser = result;
@@ -230,6 +233,7 @@ export class ModelService {
 
     reinit_currentUser() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.disable_need_reload();
         //console.log('reinit current user');
         //console.log(localStorage.getItem('currentUser'));
         //console.log(this.currentUser);
