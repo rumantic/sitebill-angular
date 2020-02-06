@@ -744,12 +744,20 @@ export class GridComponent implements OnInit, OnDestroy
         var self = this;
         if (images) {
             galleryImages[image_field] = images.map(function (image: any) {
+                if (image.remote === 'true') {
+                    return {
+                        small: image.preview + '?' + new Date().getTime(),
+                        medium: image.normal + '?' + new Date().getTime(),
+                        big: image.normal + '?' + new Date().getTime()
+                    };
+                } else {
+                    return {
+                        small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                        medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                        big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
+                    };
+                }
 
-                return {
-                    small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
-                    medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
-                    big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
-                };
             });
         } else {
             galleryImages[image_field] = [];

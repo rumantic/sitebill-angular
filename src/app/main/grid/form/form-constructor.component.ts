@@ -368,12 +368,19 @@ export class FormConstructorComponent implements OnInit {
         var self = this;
         if (images) {
             this.galleryImages[field_name] = images.map(function (image: any) {
-
-                return {
-                    small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
-                    medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
-                    big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
-                };
+                if (image.remote === 'true') {
+                    return {
+                        small: image.preview + '?' + new Date().getTime(),
+                        medium: image.normal + '?' + new Date().getTime(),
+                        big: image.normal + '?' + new Date().getTime()
+                    };
+                } else {
+                    return {
+                        small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                        medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                        big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
+                    };
+                }
             });
         } else {
             this.galleryImages[field_name] = [];
