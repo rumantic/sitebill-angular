@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -79,6 +80,7 @@ export class GridComponent implements OnInit, OnDestroy
     searchInput: FormControl;
     error: boolean = false;
     error_message: string;
+    selectionType = SelectionType;
 
     date_range_enable: boolean = false;
     date_range_key: string;
@@ -502,7 +504,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     get_control_column() {
-        let control_column = {
+        return {
             headerTemplate: this.commonTemplate.controlHdrTmpl,
             cellTemplate: this.commonTemplate.controlTmpl,
             width: 40,
@@ -510,10 +512,9 @@ export class GridComponent implements OnInit, OnDestroy
             ngx_name: this.entity.primary_key + '.title',
             model_name: this.entity.primary_key,
             title: '',
-            prop: this.entity.primary_key + '.value'
-        }
-        return control_column;
-
+            prop: this.entity.primary_key + '.value',
+            resizeable: false,
+        };
     }
 
     compose_columns(columns_list, model) {
@@ -529,7 +530,13 @@ export class GridComponent implements OnInit, OnDestroy
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-        this.data_columns = [];
+        this.data_columns = [{
+            cellTemplate: this.commonTemplate.gridCheckboxTmpl,
+            headerTemplate: this.commonTemplate.gridCheckboxHdrTmpl,
+            width: 40,
+            type: 'primary_key',
+            resizeable: false,
+        }];
 
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
@@ -902,7 +909,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
 
-    onSelect({ selected }) {
+    onSelect(selected) {
         console.log('Select Event', selected);
 
     }
