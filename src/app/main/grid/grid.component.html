@@ -77,6 +77,14 @@
                         <mat-icon>settings</mat-icon>
                     </button>
                     <!-- / SETTINGS BUTTON -->
+
+                    <!-- PDF BUTTON -->
+                    <button *ngIf="only_collections" mat-icon-button (click)="export_collections_pdf()"
+                            aria-label="Скачать PDF" matTooltip="Скачать PDF" class="mb-4">
+                        <mat-icon>picture_as_pdf</mat-icon>
+                    </button>
+                    <!-- / PDF BUTTON -->
+
                 </div>
                 <!-- / TOOLBAR -->
             </div>
