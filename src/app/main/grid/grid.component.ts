@@ -81,6 +81,7 @@ export class GridComponent implements OnInit, OnDestroy
     error: boolean = false;
     error_message: string;
     selectionType = SelectionType;
+    selected = [];
 
     date_range_enable: boolean = false;
     date_range_key: string;
@@ -156,6 +157,7 @@ export class GridComponent implements OnInit, OnDestroy
     input_entity: SitebillEntity;
 
     @Output() total_counterEvent = new EventEmitter<number>();
+
     private after_compose_complete_checked: boolean;
 
 
@@ -909,8 +911,12 @@ export class GridComponent implements OnInit, OnDestroy
 
 
 
-    onSelect(selected) {
+    onSelect({selected}) {
         console.log('Select Event', selected);
 
+        this.selected.splice(0, this.selected.length);
+        this.selected.push(...selected);
+
+        console.log(this.selected);
     }
 }
