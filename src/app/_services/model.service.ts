@@ -560,11 +560,12 @@ export class ModelService {
         return false;
     }
 
-    export_collections_pdf(deal_id) {
+    export_collections_pdf(domain, deal_id) {
         const request = {
             action: 'pdfreport',
             do: 'export_collections_pdf',
             deal_id: deal_id,
+            domain: domain,
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request, {responseType: 'blob'});

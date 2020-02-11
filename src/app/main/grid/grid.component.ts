@@ -910,7 +910,8 @@ export class GridComponent implements OnInit, OnDestroy
 
     export_collections_pdf() {
         const deal_id = this.bitrix24Service.get_deal_id();
-        this.modelService.export_collections_pdf(deal_id)
+        const domain = this.bitrix24Service.get_domain();
+        this.modelService.export_collections_pdf(domain, deal_id)
             .subscribe((response: any) => {
                 this.saveAsProject(response);
             });
