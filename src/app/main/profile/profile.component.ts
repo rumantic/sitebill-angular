@@ -45,7 +45,7 @@ export class ProfileComponent
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
-                    hidden: true
+                    hidden: false
                 },
                 toolbar: {
                     hidden: false

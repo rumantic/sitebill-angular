@@ -205,6 +205,10 @@ export class ToolbarComponent implements OnInit, OnDestroy
         this._router.navigate(['profile']);
     }
 
+    my_data() {
+        this._router.navigate(['grid/data']);
+    }
+
     dashboard() {
         this._router.navigate(['dashboard']);
     }

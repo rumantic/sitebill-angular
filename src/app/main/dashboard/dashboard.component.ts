@@ -54,7 +54,7 @@ export class DashboardComponent
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
-                    hidden: true
+                    hidden: false
                 },
                 toolbar: {
                     hidden: false
