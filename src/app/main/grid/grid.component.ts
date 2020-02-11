@@ -183,7 +183,7 @@ export class GridComponent implements OnInit, OnDestroy
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
-        this.ngxHeaderHeight = 48;
+        this.ngxHeaderHeight = 54;
         this.entity = new SitebillEntity();
         //console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
@@ -504,7 +504,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     get_control_column() {
-        return {
+        let control_column = {
             headerTemplate: this.commonTemplate.controlHdrTmpl,
             cellTemplate: this.commonTemplate.controlTmpl,
             width: 40,
@@ -512,9 +512,9 @@ export class GridComponent implements OnInit, OnDestroy
             ngx_name: this.entity.primary_key + '.title',
             model_name: this.entity.primary_key,
             title: '',
-            prop: this.entity.primary_key + '.value',
-            resizeable: false,
+            prop: this.entity.primary_key + '.value'
         };
+        return control_column;
     }
 
     compose_columns(columns_list, model) {
