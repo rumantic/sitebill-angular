@@ -82,7 +82,6 @@ export class GridComponent implements OnInit, OnDestroy
     error: boolean = false;
     error_message: string;
     selectionType = SelectionType;
-    selected = [];
 
     date_range_enable: boolean = false;
     date_range_key: string;
