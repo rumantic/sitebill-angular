@@ -88,7 +88,7 @@ export class FilterComponent {
                 this.filter_enable = true;
                 break;
             }
-            
+
             case "mobilephone":
             case "primary_key":
             case "safe_string": {
