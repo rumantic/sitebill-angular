@@ -83,13 +83,14 @@ export class FilterComponent {
                 break;
             }
 
-            case "mobilephone": 
-            case "primary_key":
             case "compose": {
                 this.compose_enable = true;
                 this.filter_enable = true;
                 break;
             }
+            
+            case "mobilephone":
+            case "primary_key":
             case "safe_string": {
                 this.string_filter_enable = true;
                 this.filter_enable = true;
