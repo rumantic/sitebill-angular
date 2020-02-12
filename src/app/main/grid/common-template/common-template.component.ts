@@ -14,6 +14,8 @@ import { ModelService } from 'app/_services/model.service';
 export class CommonTemplateComponent {
     api_url: string;
 
+    @ViewChild('gridCheckboxHdrTmpl') gridCheckboxHdrTmpl: TemplateRef<any>;
+    @ViewChild('gridCheckboxTmpl') gridCheckboxTmpl: TemplateRef<any>;
     @ViewChild('controlHdrTmpl') controlHdrTmpl: TemplateRef<any>;
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;

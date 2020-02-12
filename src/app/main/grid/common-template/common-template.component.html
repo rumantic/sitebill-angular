@@ -29,13 +29,33 @@
         </button>
     </div>
 </ng-template>
+
 <ng-template #controlHdrTmpl let-column="column">
 </ng-template>
+
 <ng-template #hdrTpl let-column="column">
-    <filter-comp [columnObject]=column [entity]="entity">
-    </filter-comp>
+    <filter-comp class="datatable-header__filter" [columnObject]=column [entity]="entity"></filter-comp>
 </ng-template>
 
+<ng-template
+    #gridCheckboxHdrTmpl
+    ngx-datatable-header-template
+    let-value="value"
+    let-allRowsSelected="allRowsSelected"
+    let-selectFn="selectFn"
+>
+    <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+</ng-template>
+
+<ng-template
+    #gridCheckboxTmpl
+    ngx-datatable-cell-template
+    let-value="value"
+    let-isSelected="isSelected"
+    let-onCheckboxChangeFn="onCheckboxChangeFn"
+>
+    <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+</ng-template>
 
 <ng-template #imageTmpl let-column="column" let-row="row" let-value="value">
     <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
@@ -97,7 +117,6 @@
         {{value}}
         <span *ngIf="row.price.currency_id != null">{{row.price.currency_id.value_string}}</span>
 </ng-template>
-
 
 <ng-template #clientControlTmpl let-row="row" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">

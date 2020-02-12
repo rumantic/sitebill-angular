@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
+import { SelectionType } from '@swimlane/ngx-datatable';
 import {ResponseContentType} from '@angular/http';
 
 registerLocaleData(localeRu, 'ru');
@@ -80,6 +81,8 @@ export class GridComponent implements OnInit, OnDestroy
     searchInput: FormControl;
     error: boolean = false;
     error_message: string;
+    selectionType = SelectionType;
+    selected = [];
 
     date_range_enable: boolean = false;
     date_range_key: string;
@@ -155,6 +158,7 @@ export class GridComponent implements OnInit, OnDestroy
     input_entity: SitebillEntity;
 
     @Output() total_counterEvent = new EventEmitter<number>();
+
     private after_compose_complete_checked: boolean;
 
 
@@ -182,7 +186,7 @@ export class GridComponent implements OnInit, OnDestroy
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._unsubscribeAll = new Subject();
-        this.ngxHeaderHeight = 48;
+        this.ngxHeaderHeight = 54;
         this.entity = new SitebillEntity();
         //console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
@@ -512,9 +516,8 @@ export class GridComponent implements OnInit, OnDestroy
             model_name: this.entity.primary_key,
             title: '',
             prop: this.entity.primary_key + '.value'
-        }
+        };
         return control_column;
-
     }
 
     compose_columns(columns_list, model) {
@@ -530,7 +533,13 @@ export class GridComponent implements OnInit, OnDestroy
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-        this.data_columns = [];
+        this.data_columns = [{
+            cellTemplate: this.commonTemplate.gridCheckboxTmpl,
+            headerTemplate: this.commonTemplate.gridCheckboxHdrTmpl,
+            width: 40,
+            type: 'primary_key',
+            resizeable: false,
+        }];
 
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
@@ -903,9 +912,13 @@ export class GridComponent implements OnInit, OnDestroy
 
 
 
-    onSelect({ selected }) {
+    onSelect({selected}) {
         console.log('Select Event', selected);
 
+        this.selected.splice(0, this.selected.length);
+        this.selected.push(...selected);
+
+        console.log(this.selected);
     }
 
     export_collections_pdf() {

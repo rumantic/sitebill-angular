@@ -207,5 +207,39 @@ mat-sidenav-container {
             }
         }
     }
+
+    ::ng-deep .datatable-header {
+        height: 54px;
+        min-height: 54px;
+        user-select: none;
+
+        .datatable-header-cell {
+            max-height: 100%;
+        }
+
+        .datatable-header__filter {
+            display: inline-block;
+            margin: 0;
+            width: 100%;
+
+            input {
+                padding: 0;
+            }
+
+            ng-select {
+                padding: 4px 0 0;
+            }
+
+            .ng-placeholder {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: calc(100% - 20px);
+                overflow: hidden;
+            }
+        }
+        .datatable-header-cell-template-wrap {
+            width: 100%;
+        }
+    }
 }
 

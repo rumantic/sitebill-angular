@@ -104,26 +104,30 @@
                         <div class="message-box error" *ngIf="error">
                             {{error_message}}
                         </div>
-                        <ngx-datatable *ngIf="compose_complete" class="material"
-                                       [rows]="rows_data"
-                                       [columns]="data_columns"
-                                       [loadingIndicator]="loadingIndicator"
-                                       [columnMode]="'force'"
-                                       [headerHeight]="ngxHeaderHeight"
-                                       [footerHeight]="56"
-                                       [rowHeight]="'auto'"
-                                       [scrollbarH]="true"
-                                       [reorderable]="reorderable"
-                                       [externalPaging]="true"
-                                       [count]="page.totalElements"
-                                       [offset]="page.pageNumber"
-                                       [limit]="page.size"
-                                       [selectionType]="'checkbox'"
-                                       [rowClass]="getRowClass"
-                                       (activate)="onActivate($event)"
-                                       (resize)="onResize($event)"
-                                       (page)='setPage($event)'
-                                       [messages]="{emptyMessage:'Ничего не найдено',totalMessage :'всего записей',selectedMessage :'выбрано'}">
+                        <ngx-datatable
+                            *ngIf="compose_complete"
+                            class="material"
+                            [rows]="rows_data"
+                            [columns]="data_columns"
+                            [loadingIndicator]="loadingIndicator"
+                            [columnMode]="'force'"
+                            [headerHeight]="ngxHeaderHeight"
+                            [footerHeight]="56"
+                            [rowHeight]="'auto'"
+                            [scrollbarH]="true"
+                            [reorderable]="reorderable"
+                            [externalPaging]="true"
+                            [count]="page.totalElements"
+                            [offset]="page.pageNumber"
+                            [limit]="page.size"
+                            [messages]="{emptyMessage:'Ничего не найдено',totalMessage :'всего записей',selectedMessage :'выбрано'}"
+                            [selectionType]="selectionType.checkbox"
+                            [rowClass]="getRowClass"
+                            (activate)="onActivate($event)"
+                            (resize)="onResize($event)"
+                            (page)="setPage($event)"
+                            (select)="onSelect($event)"
+                        >
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->
