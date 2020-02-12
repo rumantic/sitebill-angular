@@ -47,7 +47,12 @@ export class FrontendComponent
         };
     }
     ngOnInit() {
-        //this.modelService.get_session_key_safe();
-        this.router.navigate([this.modelService.getConfigValue('default_frontend_route')]);
+        // this.modelService.get_session_key_safe();
+        // console.log(this.modelService.getConfigValue('default_frontend_route'));
+        if ( this.modelService.getConfigValue('default_frontend_route') === null ) {
+            this.router.navigate(['grid/data']);
+        } else {
+            this.router.navigate([this.modelService.getConfigValue('default_frontend_route')]);
+        }
     }
 }

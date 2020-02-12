@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {DOCUMENT} from '@angular/platform-browser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -33,6 +33,7 @@ import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import {ResponseContentType} from '@angular/http';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -180,7 +181,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
-        private filterService: FilterService
+        private filterService: FilterService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -918,5 +919,25 @@ export class GridComponent implements OnInit, OnDestroy
         this.selected.push(...selected);
 
         console.log(this.selected);
+    }
+
+    export_collections_pdf() {
+        const deal_id = this.bitrix24Service.get_deal_id();
+        const domain = this.bitrix24Service.get_domain();
+        this.modelService.export_collections_pdf(domain, deal_id)
+            .subscribe((response: any) => {
+                this.saveAsProject(response);
+            });
+    }
+
+    saveAsProject(content){
+        this.writeContents((<any>content), 'Подборка по сделке '+ this.bitrix24Service.get_deal_id() +'.pdf', 'application/pdf');
+    }
+    writeContents(content, fileName, contentType) {
+        var a = document.createElement('a');
+        var file = new Blob([content], {type: contentType});
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
     }
 }
