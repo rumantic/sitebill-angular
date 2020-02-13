@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { ObservableMedia } from '@angular/flex-layout';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject } from 'rxjs';
@@ -6,11 +6,14 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseMatchMediaService } from '@fuse/services/match-media.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import {ModelService} from '../../../app/_services/model.service';
+import {SitebillEntity} from '../../../app/_models';
 
 @Component({
     selector   : 'fuse-shortcuts',
     templateUrl: './shortcuts.component.html',
-    styleUrls  : ['./shortcuts.component.scss']
+    styleUrls  : ['./shortcuts.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FuseShortcutsComponent implements OnInit, OnDestroy
 {
@@ -19,6 +22,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     filteredNavigationItems: any[];
     searching: boolean;
     mobileShortcutsPanelActive: boolean;
+    entity: SitebillEntity;
 
     @Input()
     navigation: any;
@@ -31,6 +35,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    private prev_entity_name: string;
 
     /**
      * Constructor
@@ -40,13 +45,17 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
      * @param {FuseMatchMediaService} _fuseMatchMediaService
      * @param {FuseNavigationService} _fuseNavigationService
      * @param {ObservableMedia} _observableMedia
+     * @param modelService
+     * @param cdr
      */
     constructor(
         private _cookieService: CookieService,
         private _fuseMatchMediaService: FuseMatchMediaService,
         private _fuseNavigationService: FuseNavigationService,
         private _observableMedia: ObservableMedia,
-        private _renderer: Renderer2
+        private _renderer: Renderer2,
+        protected modelService: ModelService,
+        protected cdr: ChangeDetectorRef,
     )
     {
         // Set the defaults
@@ -69,6 +78,8 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     {
         // Get the navigation items and flatten them
         this.filteredNavigationItems = this.navigationItems = this._fuseNavigationService.getFlatNavigation(this.navigation);
+        // console.log(this.modelService.get_current_entity());
+
 
         /*
         if ( this._cookieService.check('FUSE2.shortcuts') )
@@ -80,34 +91,6 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         }
          */
 
-        // User's shortcut items
-        this.shortcutItems = [
-            {
-                'title': 'База объектов',
-                'type' : 'item',
-                'icon' : 'list',
-                'url'  : '/frontend/front'
-            },
-            {
-                'title': 'Цены',
-                'type' : 'item',
-                'icon' : 'monetization_on',
-                'url'  : '/frontend/prices'
-            },
-            {
-                'title': 'О проекте',
-                'type' : 'item',
-                'icon' : 'textsms',
-                'url'  : '/frontend/about'
-            },
-            {
-                'title': 'Контакты',
-                'type' : 'item',
-                'icon' : 'account_box',
-                'url'  : '/frontend/contacts'
-            },
-        ];
-
         // Subscribe to media changes
         this._fuseMatchMediaService.onMediaChange
             .pipe(takeUntil(this._unsubscribeAll))
@@ -118,6 +101,77 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
                 }
             });
     }
+
+    clear_shortcuts () {
+        this.shortcutItems = [];
+    }
+
+    set_default_shortcuts () {
+        if ( this.modelService.getConfigValue('apps.products.contacts_market') === 1 ) {
+            // User's shortcut items
+            this.shortcutItems.push({
+                'title': 'База объектов',
+                'type' : 'item',
+                'icon' : 'list',
+                'url'  : '/frontend/front'
+            });
+
+            this.shortcutItems.push({
+                'title': 'Цены',
+                'type' : 'item',
+                'icon' : 'monetization_on',
+                'url'  : '/frontend/prices'
+            });
+
+            this.shortcutItems.push({
+                'title': 'О проекте',
+                'type' : 'item',
+                'icon' : 'textsms',
+                'url'  : '/frontend/about'
+            });
+
+            this.shortcutItems.push({
+                'title': 'Контакты',
+                'type' : 'item',
+                'icon' : 'account_box',
+                'url'  : '/frontend/contacts'
+            });
+        }
+    }
+
+    reinit_shortcuts (entity: SitebillEntity) {
+        // console.log('reinit ' + entity.get_app_name());
+        this.clear_shortcuts();
+        this.set_default_shortcuts();
+        if ( entity.get_app_name() === 'data' ) {
+            this.shortcutItems.push({
+                'title': 'Мои1',
+                'type' : 'item',
+                'icon' : 'account_box',
+                'url'  : '/grid/data/my/'
+            });
+        } else if ( entity.get_app_name() === 'client' ) {
+        }
+        setTimeout(() => {
+            this.cdr.markForCheck();
+        }, 100);
+    }
+
+    ngAfterViewChecked() {
+        if ( this.entity === null || this.entity === undefined ) {
+            this.entity = this.modelService.get_current_entity();
+        }
+        if ( this.entity !== null && this.entity !== undefined ) {
+            if ( this.prev_entity_name !== this.modelService.get_current_entity().get_app_name() ) {
+                this.entity = this.modelService.get_current_entity();
+                this.prev_entity_name = this.modelService.get_current_entity().get_app_name();
+                this.reinit_shortcuts(this.entity);
+            }
+
+        }
+
+    }
+
 
     /**
      * On destroy
