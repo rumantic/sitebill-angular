@@ -28,7 +28,7 @@ import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component'
 import { throttleTime } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CommonTemplateComponent } from './common-template/common-template.component';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
 import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
@@ -159,6 +159,7 @@ export class GridComponent implements OnInit, OnDestroy
     @Output() total_counterEvent = new EventEmitter<number>();
 
     private after_compose_complete_checked: boolean;
+    private params_filter: string;
 
 
 
@@ -177,6 +178,7 @@ export class GridComponent implements OnInit, OnDestroy
         protected bitrix24Service: Bitrix24Service,
         protected _snackService: SnackService,
         private router: Router,
+        protected route: ActivatedRoute,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
@@ -225,6 +227,8 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows = [];
         this.rows_my = [];
         //console.log('init');
+        this.params_filter = this.route.snapshot.paramMap.get('params_filter');
+
         this.refresh();
 
 
@@ -313,6 +317,7 @@ export class GridComponent implements OnInit, OnDestroy
         //this.load_grid_data(this.app_name, [], params);
         //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
         this.setPage({ offset: this.page.pageNumber });
+        this.modelService.set_current_entity(this.entity);
 
         //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
 
@@ -409,12 +414,16 @@ export class GridComponent implements OnInit, OnDestroy
     load_grid_data(app_name, grid_columns: string[], params: any) {
         //console.log('load_grid_data');
         let filter_params_json = {};
+        if ( this.params_filter === 'my' ) {
+            console.log('my');
+            this.filterService.share_data(this.entity, 'user_id', {'user_id': 24});
+        }
 
 
         if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
             //console.log('grid app name');
             //console.log(this.entity.get_app_name());
-            //console.log(this.filterService.share_array[this.entity.get_app_name()]);
+            console.log(this.filterService.share_array[this.entity.get_app_name()]);
 
             var obj = this.filterService.share_array[this.entity.get_app_name()];
             var mapped = Object.keys(obj);
