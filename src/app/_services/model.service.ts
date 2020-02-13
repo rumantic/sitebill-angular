@@ -21,6 +21,7 @@ export class ModelService {
     private sitebill_started: boolean;
     private config_loaded: boolean;
     private sitebill_config: any;
+    private current_entity: SitebillEntity;
 
 
     constructor(
@@ -569,5 +570,13 @@ export class ModelService {
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request, {responseType: 'blob'});
+    }
+
+    set_current_entity ( entity: SitebillEntity ) {
+        this.current_entity = entity;
+    }
+
+    get_current_entity () {
+        return this.current_entity;
     }
 }
