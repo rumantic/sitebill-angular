@@ -76,6 +76,14 @@ const routes = [
 
     },
     {
+        path     : 'data/:params_filter',
+        component: DataComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
         path: 'news',
         component: NewsComponent,
         resolve: {
