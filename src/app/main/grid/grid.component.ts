@@ -414,10 +414,6 @@ export class GridComponent implements OnInit, OnDestroy
     load_grid_data(app_name, grid_columns: string[], params: any) {
         //console.log('load_grid_data');
         let filter_params_json = {};
-        if ( this.params_filter === 'my' ) {
-            console.log('my');
-            this.filterService.share_data(this.entity, 'user_id', {'user_id': 24});
-        }
 
 
         if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
@@ -451,6 +447,7 @@ export class GridComponent implements OnInit, OnDestroy
                 filter_params_json['only_collections'] = true;
             }
         }
+        filter_params_json = this.extended_params(filter_params_json);
 
         let page_number = this.page.pageNumber + 1;
         //console.log(filter_params_json);
@@ -502,6 +499,14 @@ export class GridComponent implements OnInit, OnDestroy
                 this.refresh_complete = true;
             });
 
+    }
+
+    extended_params (params) {
+        if ( this.params_filter === 'my' ) {
+            params['user_id'] = this.modelService.get_user_id();
+        }
+
+        return params;
     }
 
     set_total_counter(counter: number) {

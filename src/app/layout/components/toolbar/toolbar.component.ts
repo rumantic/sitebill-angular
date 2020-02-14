@@ -206,7 +206,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     }
 
     my_data() {
-        this._router.navigate(['grid/data']);
+        this._router.navigate(['grid/data/my']);
     }
 
     dashboard() {
@@ -226,5 +226,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
         } else {
             this._router.navigate(['/frontend/prices']);
         }
+    }
+
+    all_data() {
+        this._router.navigate(['grid/data/']);
     }
 }

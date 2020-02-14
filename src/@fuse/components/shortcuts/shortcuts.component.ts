@@ -145,10 +145,16 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         this.set_default_shortcuts();
         if ( entity.get_app_name() === 'data' ) {
             this.shortcutItems.push({
-                'title': 'Мои1',
+                'title': 'Мои объекты',
                 'type' : 'item',
-                'icon' : 'account_box',
+                'icon' : 'business_center',
                 'url'  : '/grid/data/my/'
+            });
+            this.shortcutItems.push({
+                'title': 'Все объекты',
+                'type' : 'item',
+                'icon' : 'list',
+                'url'  : '/grid/data/'
             });
         } else if ( entity.get_app_name() === 'client' ) {
         }
