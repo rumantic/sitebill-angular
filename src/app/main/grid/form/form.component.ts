@@ -49,6 +49,5 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         this._unsubscribeAll.complete();
         this.dialogRef.close();
     }
-
 }
 

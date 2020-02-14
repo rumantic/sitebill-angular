@@ -252,7 +252,7 @@ export class FormConstructorComponent implements OnInit {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
             if (this.records[this.rows[i]].type == 'select_by_query') {
-                this.init_select_by_query_options(this.records[this.rows[i]].name);
+                // this.init_select_by_query_options(this.records[this.rows[i]].name);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
@@ -399,14 +399,16 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-
     init_select_by_query_options(columnName) {
-        this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
+        // console.log(this._data.get_default_params());
+        this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form())
+        // this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    //console.log(result);
+                    // console.log(result);
                     this.options_storage[columnName] = result.data;
+                    this.cdr.markForCheck();
                 }
 
             });
@@ -529,35 +531,9 @@ export class FormConstructorComponent implements OnInit {
             return;
         }
 
-        const ql_items = {};
-        const now = moment();
+        let ql_items = {};
+        ql_items = this.get_ql_items_from_form();
 
-        this.rows.forEach((row) => {
-            const type = this.records[row].type;
-            const control = this.form.controls[row];
-
-            if (this.text_area_editor_storage[row]) {
-                ql_items[row] = this.text_area_editor_storage[row];
-            } else if (type === 'checkbox' && !control.value) {
-                ql_items[row] = null;
-            } else if (type === 'date' && moment.isMoment(control.value)) {
-                ql_items[row] = control.value.format('DD.MM.YYYY');
-            } else if (type === 'dtdatetime' && moment.isMoment(control.value)) {
-                ql_items[row] = control.value.set({
-                    hour: now.get('hour'),
-                    minute: now.get('minute'),
-                    second: now.get('second'),
-                }).toISOString(true);
-            } else if (type === 'dtdate') {
-                console.log(control.value);
-            } else if (type === 'geodata') {
-                ql_items[row] = {lat: this.lat, lng: this.lng};
-            } else if (type === 'primary_key' && control.value === 0) {
-                ql_items[row] = this.modelService.entity.key_value;
-            } else {
-                ql_items[row] = control.value;
-            }
-        });
 
         if (this._data.key_value == null) {
             this.modelService.native_insert(this._data.get_table_name(), ql_items)
@@ -588,6 +564,41 @@ export class FormConstructorComponent implements OnInit {
                     }
                 });
         }
+    }
+
+    get_ql_items_from_form () {
+        const ql_items = {};
+        const now = moment();
+
+
+        this.rows.forEach((row) => {
+            const type = this.records[row].type;
+            const control = this.form.controls[row];
+            if ( control !== undefined && control !== null) {
+                if (this.text_area_editor_storage[row]) {
+                    ql_items[row] = this.text_area_editor_storage[row];
+                } else if (type === 'checkbox' && !control.value) {
+                    ql_items[row] = null;
+                } else if (type === 'date' && moment.isMoment(control.value)) {
+                    ql_items[row] = control.value.format('DD.MM.YYYY');
+                } else if (type === 'dtdatetime' && moment.isMoment(control.value)) {
+                    ql_items[row] = control.value.set({
+                        hour: now.get('hour'),
+                        minute: now.get('minute'),
+                        second: now.get('second'),
+                    }).toISOString(true);
+                } else if (type === 'dtdate') {
+                    console.log(control.value);
+                } else if (type === 'geodata') {
+                    ql_items[row] = {lat: this.lat, lng: this.lng};
+                } else if (type === 'primary_key' && control.value === 0) {
+                    ql_items[row] = this.modelService.entity.key_value;
+                } else {
+                    ql_items[row] = control.value;
+                }
+            }
+        });
+        return ql_items;
     }
 
     add_to_collections(data_id) {

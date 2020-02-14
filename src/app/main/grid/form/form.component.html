@@ -98,6 +98,7 @@
                                                    [clearOnBackspace]="false"
                                                    [searchable]="true"
                                                    [multiple]="false"
+                                                   (focus)="init_select_by_query_options(records[x].name)"
                                                    [hideSelected]="false"
                                                    [closeOnSelect]="true"
                                                    placeholder="{{records[x].title}}">
