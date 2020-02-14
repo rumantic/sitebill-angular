@@ -107,7 +107,10 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     }
 
     set_default_shortcuts () {
-        if ( this.modelService.getConfigValue('apps.products.contacts_market') === 1 ) {
+        // console.log('apps.products.contacts_market');
+        // console.log(this.modelService.getConfigValue('apps.products.contacts_market'));
+        if ( this.modelService.getConfigValue('apps.products.contacts_market') == 1 ) {
+            // console.log('market icons');
             // User's shortcut items
             this.shortcutItems.push({
                 'title': 'База объектов',
@@ -171,7 +174,11 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
             if ( this.prev_entity_name !== this.modelService.get_current_entity().get_app_name() ) {
                 this.entity = this.modelService.get_current_entity();
                 this.prev_entity_name = this.modelService.get_current_entity().get_app_name();
-                this.reinit_shortcuts(this.entity);
+                setTimeout(() => {
+                    this.reinit_shortcuts(this.entity);
+                    // this.cdr.markForCheck();
+                }, 100);
+
             }
 
         }
