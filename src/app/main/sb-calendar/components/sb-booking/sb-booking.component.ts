@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
 import {MatDialog} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
+import {SB_MONTHS, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 import {SbCalendarService} from '../../services/sb-calendar.service';
 import {takeUntil} from 'rxjs/operators';
 import {SbRatesEditDialogDataModel} from '../../models/sb-rates-edit-dialog-data.model';
@@ -73,6 +73,13 @@ export class SbBookingComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.updateEventsList();
             });
+    }
+
+    getMonthTitle() {
+        if (this.viewDate) {
+            return `${SB_MONTHS[this.viewDate.getMonth()].title} ${this.viewDate.getFullYear()}`;
+        }
+        return '';
     }
 
     dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {

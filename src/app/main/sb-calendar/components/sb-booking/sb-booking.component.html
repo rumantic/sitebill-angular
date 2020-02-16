@@ -16,6 +16,7 @@
         class="controls__btn"
         mwlCalendarToday
         [(viewDate)]="viewDate"
+        (viewDateChange)="onViewDateUpdate()"
     >Сегодня
     </button>
     <button
@@ -32,6 +33,7 @@
 </div>
 
 <div [ngSwitch]="view">
+    <div class="month-title">{{ getMonthTitle() }}</div>
     <mwl-calendar-month-view
         *ngSwitchCase="CalendarView.Month"
         [viewDate]="viewDate"

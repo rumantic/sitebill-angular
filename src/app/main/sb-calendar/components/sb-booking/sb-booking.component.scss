@@ -90,6 +90,14 @@ $color-booking: #b94a48;
     }
 }
 
+.month-title {
+    text-align: center;
+    padding: 5px 0;
+    font-weight: bold;
+    background: #ffffff;
+    border-bottom: solid 1px #e1e1e1;
+}
+
 .events {
     flex: 1;
     align-items: flex-end;
