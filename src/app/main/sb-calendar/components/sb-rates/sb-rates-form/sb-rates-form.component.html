@@ -1,31 +1,29 @@
 <ng-container *ngIf="isEditMode">
-    <ng-container [ngTemplateOutlet]="editFormTemplate"></ng-container>
+    <ng-container [ngTemplateOutlet]="editRateTemplate"></ng-container>
+    <div class="message-box error" *ngIf="errorMessage">{{ errorMessage }}</div>
 </ng-container>
 
 <ng-container *ngIf="!isEditMode">
-    <h3 class="list-title">Добавить новую цену</h3>
     <div class="list">
         <ng-container *ngFor="let rate of ratesList; let index = index">
             <ng-container
-                *ngIf="currentRateEdit?.rate.rateType === rate.rateType && currentRateEdit?.list === ratesListType.edit; else viewExistingItemTemplate"
-                [ngTemplateOutlet]="editFormTemplate"
+                [ngTemplateOutlet]="currentRateModel?.rateType === rate.rateType ? editRateTemplate : viewRateTemplate"
             ></ng-container>
 
-            <ng-template #viewExistingItemTemplate>
+            <ng-template #viewRateTemplate>
                 <div
                     class="list__item"
-                    (click)="onEditRateClick(rate, ratesListType.edit)"
+                    (click)="onEditRateClick(rate)"
                 >
                     <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
                     <div class="list__item-value">{{ rate.amount | price }}</div>
-
                 </div>
             </ng-template>
         </ng-container>
     </div>
 </ng-container>
 
-<ng-template #editFormTemplate>
+<ng-template #editRateTemplate>
     <mat-card class="form" *ngIf="currentRateModel">
         <mat-card-title class="form__title">{{ currentRateModel.title }}</mat-card-title>
         <mat-card-content [formGroup]="formModel.group">

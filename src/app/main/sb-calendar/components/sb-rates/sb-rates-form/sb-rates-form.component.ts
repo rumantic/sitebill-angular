@@ -1,21 +1,16 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
+import {SB_MONTHS, SB_RATE_TYPES, SB_WEEKDAYS} from '../../../classes/sb-calendar.constants';
 import {SbRateModel} from '../../../models/sb-rate.model';
-import {Observable, of, Subject, Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {SbCalendarService} from '../../../services/sb-calendar.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {switchMap, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {SbRatesEditDialogDataModel} from '../../../models/sb-rates-edit-dialog-data.model';
 
 class RateFormModel {
     group: FormGroup;
     subscription$: Subscription;
     options: { [name: string]: any };
-}
-
-enum SB_RATES_LIST_TYPE {
-    edit,
-    create,
 }
 
 @Component({
@@ -30,8 +25,10 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
     @Input() data: SbRatesEditDialogDataModel;
     @Output() closeForm = new EventEmitter<void>();
 
-    currentRateModel: SbRateModel = null;
     isEditMode = false;
+    currentRateModel: SbRateModel = null;
+
+    errorMessage = '';
 
     formModel: RateFormModel = {
         group: null,
@@ -42,23 +39,11 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
             days: Array(31).fill(0).map((value, index) => index + 1),
         },
     };
-    /**
-     * @deprecated
-     */
-    currentRateEdit: { rate: SbRateModel, list: SB_RATES_LIST_TYPE };
 
-    /**
-     * @deprecated
-     */
-    ratesList: SbRateModel[] = []; // RATES_LIST_TYPE.edit
-    /**
-     * @deprecated
-     */
-    existingRatesList: SbRateModel[] = []; // RATES_LIST_TYPE.create
+    ratesList: SbRateModel[] = []; // choose type to create new rate
 
     // for template use
     rateTypes = SB_RATE_TYPES;
-    ratesListType = SB_RATES_LIST_TYPE;
 
     private readonly destroy$ = new Subject<void>();
 
@@ -77,16 +62,13 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    onEditRateClick(rate: SbRateModel, list: SB_RATES_LIST_TYPE) {
-        this.currentRateEdit = {
-            rate: Object.assign({}, rate),
-            list,
-        };
-        this.buildRateForm(this.currentRateEdit.rate);
+    onEditRateClick(rate: SbRateModel) {
+        this.currentRateModel = Object.assign({}, rate);
+        this.buildRateForm(this.currentRateModel);
     }
 
     onCancelEditRateClick() {
-        this.currentRateEdit = null;
+        this.currentRateModel = null;
         this.closeForm.emit();
     }
 
@@ -106,9 +88,13 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
             )
-            .subscribe((result) => {
-                this.calendarService.updateEventsTrigger$.next();
-                this.closeForm.emit();
+            .subscribe((result: any) => {
+                if (result && result.data && result.data.status === 1) {
+                    this.calendarService.updateEventsTrigger$.next();
+                    this.closeForm.emit();
+                    return;
+                }
+                this.errorMessage = 'Не получилось сохранить данные. Пожалуйста, попробуйте позже.';
             });
     }
 
