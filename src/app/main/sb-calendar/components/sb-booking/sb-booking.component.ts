@@ -1,13 +1,14 @@
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
-import {format, endOfMonth, isSameDay, isSameMonth, startOfMonth} from 'date-fns';
-import {Subject} from 'rxjs';
-import {ModelService} from '../../../../_services/model.service';
-import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
-import {MatDialog} from '@angular/material';
-import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
-import {SbCalendarService} from '../../services/sb-calendar.service';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { endOfMonth, format, isSameDay, isSameMonth, startOfMonth } from 'date-fns';
+import { Subject } from 'rxjs';
+import { ModelService } from '../../../../_services/model.service';
+import { SbCalendarHelper } from '../../classes/sb-calendar-helper';
+import { MatDialog } from '@angular/material';
+import { SbRatesEditDialogComponent } from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
+import { SB_EVENTS_STATE, SB_RATE_TYPES } from '../../classes/sb-calendar.constants';
+import { SbCalendarService } from '../../services/sb-calendar.service';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'sb-booking',
@@ -17,14 +18,14 @@ import {SbCalendarService} from '../../services/sb-calendar.service';
         './sb-booking.component.scss',
     ],
 })
-export class SbBookingComponent implements OnInit {
+export class SbBookingComponent implements OnInit, OnDestroy {
     @Input('keyValue') set setKeyValue(value) {
         if (!value) {
             return;
         }
         this.keyValue = value;
         this.initEventsList();
-        
+
     }
 
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
@@ -41,14 +42,14 @@ export class SbBookingComponent implements OnInit {
 
     rateTypes = SB_RATE_TYPES;
 
-    events: CalendarEvent[] = [];
-
     activeDayIsOpen = true;
+
+    private readonly destroy$ = new Subject<void>();
 
     constructor(
         protected modelService: ModelService,
         public editRatesDialog: MatDialog,
-        private calendarService: SbCalendarService,
+        public calendarService: SbCalendarService,
     ) {
     }
 
@@ -56,17 +57,26 @@ export class SbBookingComponent implements OnInit {
         this.initEventsSubscription();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     initEventsList() {
         this.fetchEvents();
     }
 
     initEventsSubscription() {
-        this.calendarService.updateEvents$.subscribe(() => {
-            this.fetchEvents();
-        });
+        this.calendarService.updateEventsTrigger$
+            .pipe(
+                takeUntil(this.destroy$),
+            )
+            .subscribe(() => {
+                this.fetchEvents();
+            });
     }
 
-    dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
+    dayClicked({date, events}: {date: Date; events: CalendarEvent[]}): void {
         if (isSameMonth(date, this.viewDate)) {
             if (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) {
                 this.activeDayIsOpen = false;
@@ -83,18 +93,20 @@ export class SbBookingComponent implements OnInit {
             newStart,
             newEnd
         }: CalendarEventTimesChangedEvent
-    ): void {
-    
-        this.events = this.events.map(iEvent => {
-            if (iEvent === event) {
+    ) {
+
+        const events = this.calendarService.events.map((item) => {
+            if (item === event) {
                 return {
                     ...event,
                     start: newStart,
                     end: newEnd
                 };
             }
-            return iEvent;
+            return item;
         });
+
+        this.calendarService.events$.next(events);
     }
 
     closeOpenMonthViewDay(event, newStart, newEnd) {
@@ -115,7 +127,7 @@ export class SbBookingComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            //console.log(result);
+            // console.log(result);
         });
     }
 
@@ -128,9 +140,16 @@ export class SbBookingComponent implements OnInit {
                 end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
                 break;
         }
-        this.calendarService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
-            this.events = SbCalendarHelper.parseEventsFromBooking(result);
-        });
-        
+        this.calendarService.getBookingReservations(this.keyValue, start, end)
+            .pipe(
+                tap(() => this.calendarService.eventsState$.next(SB_EVENTS_STATE.loading)),
+                takeUntil(this.destroy$),
+            )
+            .subscribe((result) => {
+                this.calendarService.events$.next(SbCalendarHelper.parseEventsFromBooking(result));
+                this.calendarService.eventsState$.next(SB_EVENTS_STATE.ready);
+            }, () => {
+                this.calendarService.eventsState$.next(SB_EVENTS_STATE.error);
+            });
     }
 }

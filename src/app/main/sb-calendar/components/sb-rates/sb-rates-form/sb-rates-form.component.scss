@@ -49,6 +49,12 @@ mat-card {
     }
 }
 
+.list + .list-title {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: solid 1px #e0e0e0;
+}
+
 .form {
     width: 100%;
 
