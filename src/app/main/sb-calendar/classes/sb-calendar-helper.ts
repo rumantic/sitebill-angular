@@ -37,17 +37,24 @@ export class SbCalendarHelper {
                 if (!dayRatesList.length) {
                     return;
                 }
+                let isMainRateSelected = false;
                 dayRatesList.forEach((rate, index) => {
+                    const rateModel = new SbRateModel(rate);
+
                     result.push({
                         start: moment(rateDate, SB_DATE_FORMAT).toDate(),
                         allDay: true,
                         title: `${ rate.amount }`,
                         meta: {
                             type: 'rate',
-                            isMain: index === 0,
-                            rate: new SbRateModel(rate),
+                            isMain: !isMainRateSelected && rateModel.isActive,
+                            rate: rateModel,
                         },
                     });
+
+                    if (rateModel.isActive) {
+                        isMainRateSelected = true;
+                    }
                 });
             });
         }

@@ -63,7 +63,7 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
     }
 
     onEditRateClick(rate: SbRateModel) {
-        this.currentRateModel = Object.assign({}, rate);
+        this.currentRateModel = rate;
         this.buildRateForm(this.currentRateModel);
     }
 
@@ -110,7 +110,7 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
                     rate_type,
                     amount: 0,
                     id: 0,
-                    active: 1,
+                    active: '1',
                 });
             });
         }
