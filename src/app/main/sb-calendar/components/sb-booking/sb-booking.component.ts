@@ -1,14 +1,13 @@
 import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
-import {endOfMonth, format, isSameDay, isSameMonth, startOfMonth} from 'date-fns';
+import {isSameDay, isSameMonth} from 'date-fns';
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
-import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
 import {MatDialog} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import {SB_EVENTS_STATE, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
+import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 import {SbCalendarService} from '../../services/sb-calendar.service';
-import {takeUntil, tap} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {SbRatesEditDialogDataModel} from '../../models/sb-rates-edit-dialog-data.model';
 
 @Component({
