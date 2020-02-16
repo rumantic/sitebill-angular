@@ -1,6 +1,6 @@
 import * as moment from 'moment';
-import { Moment } from 'moment';
-import { SB_RATE_TYPES } from '../classes/sb-calendar.constants';
+import {Moment} from 'moment';
+import {SB_RATE_TYPES} from '../classes/sb-calendar.constants';
 
 export class SbRateModel {
     // api fields
@@ -78,7 +78,7 @@ export class SbRateModel {
     }
 
     get period_start() {
-        return this.period_start_d && this.period_start_m ? `${ this.period_start_m }-${ this.period_start_d }` : '';
+        return this.period_start_d && this.period_start_m ? `${this.period_start_m}-${this.period_start_d}` : '';
     }
 
     set period_end(value) {
@@ -92,7 +92,7 @@ export class SbRateModel {
     }
 
     get period_end() {
-        return this.period_end_d && this.period_end_m ? `${ this.period_end_m }-${ this.period_end_d }` : '';
+        return this.period_end_d && this.period_end_m ? `${this.period_end_m}-${this.period_end_d}` : '';
     }
 
     constructor(data) {

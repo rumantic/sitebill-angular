@@ -103,7 +103,8 @@
                     Бронирование на текущий день: {{events[0].title}}
                     с {{events[0].meta.reservation.checkin}} по {{events[0].meta.reservation.checkout}}
                 </div>
-                <ng-container *ngIf="events.length > 1 && events[0].meta.type === 'booking' || events.length && events[0].meta.type === 'rate'; else emptyRates">
+                <ng-container
+                    *ngIf="events.length > 1 && events[0].meta.type === 'booking' || events.length > 0 && events[0].meta.type === 'rate'">
                     <h4 class="events-preview__rates-title">Действующие цены:</h4>
 
                     <ul class="events-preview__rates-list">
@@ -111,20 +112,18 @@
                             *ngFor="let event of events; trackBy: trackByEventId"
                         >
                             <li *ngIf="event.meta?.type === 'rate'" class="events-preview__rates-list-item">
-                                {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
-                                {{event.meta?.rate.amount | price}} руб.
+                                <a (click)="onEditRatesClick(event, viewDate, keyValue)">
+                                    {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
+                                    {{event.meta?.rate.amount | price}} руб.
+                                </a>
                             </li>
                         </ng-container>
                     </ul>
-                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate, keyValue)">
-                        Изменить
-                    </button>
                 </ng-container>
-                <ng-template #emptyRates>
-                    <button mat-raised-button type="button" color="accent" (click)="onEditRatesClick(events, viewDate, keyValue)">
-                        Установить цены
-                    </button>
-                </ng-template>
+                <button mat-raised-button type="button" color="accent"
+                        (click)="onEditRatesClick(null, viewDate, keyValue)">
+                    Установить новые цены
+                </button>
             </div>
         </div>
     </div>

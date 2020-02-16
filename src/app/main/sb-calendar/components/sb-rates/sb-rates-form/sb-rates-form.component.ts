@@ -1,15 +1,16 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS } from '../../../classes/sb-calendar.constants';
-import { SbRateModel } from '../../../models/sb-rate.model';
-import { Observable, of, Subject, Subscription } from 'rxjs';
-import { SbCalendarService } from '../../../services/sb-calendar.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
+import {SbRateModel} from '../../../models/sb-rate.model';
+import {Observable, of, Subject, Subscription} from 'rxjs';
+import {SbCalendarService} from '../../../services/sb-calendar.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {switchMap, takeUntil} from 'rxjs/operators';
+import {SbRatesEditDialogDataModel} from '../../../models/sb-rates-edit-dialog-data.model';
 
 class RateFormModel {
     group: FormGroup;
     subscription$: Subscription;
-    options: {[name: string]: any};
+    options: { [name: string]: any };
 }
 
 enum SB_RATES_LIST_TYPE {
@@ -26,7 +27,11 @@ enum SB_RATES_LIST_TYPE {
 })
 export class SbRatesFormComponent implements OnInit, OnDestroy {
 
-    @Input() data: any;
+    @Input() data: SbRatesEditDialogDataModel;
+    @Output() closeForm = new EventEmitter<void>();
+
+    currentRateModel: SbRateModel = null;
+    isEditMode = false;
 
     formModel: RateFormModel = {
         group: null,
@@ -37,14 +42,23 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
             days: Array(31).fill(0).map((value, index) => index + 1),
         },
     };
-    currentRateEdit: {rate: SbRateModel, list: SB_RATES_LIST_TYPE};
+    /**
+     * @deprecated
+     */
+    currentRateEdit: { rate: SbRateModel, list: SB_RATES_LIST_TYPE };
 
-    rateTypes = SB_RATE_TYPES;
-
+    /**
+     * @deprecated
+     */
     ratesList: SbRateModel[] = []; // RATES_LIST_TYPE.edit
+    /**
+     * @deprecated
+     */
     existingRatesList: SbRateModel[] = []; // RATES_LIST_TYPE.create
 
-    ratesListType = SB_RATES_LIST_TYPE; // for template use
+    // for template use
+    rateTypes = SB_RATE_TYPES;
+    ratesListType = SB_RATES_LIST_TYPE;
 
     private readonly destroy$ = new Subject<void>();
 
@@ -73,6 +87,7 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
 
     onCancelEditRateClick() {
         this.currentRateEdit = null;
+        this.closeForm.emit();
     }
 
     onSaveRateClick() {
@@ -84,7 +99,7 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const model = new SbRateModel(Object.assign({}, this.currentRateEdit.rate));
+        const model = new SbRateModel(Object.assign({}, this.currentRateModel));
         model.update(this.formModel.group.value);
 
         this.calendarService.saveRate(this.data.keyValue, model)
@@ -93,32 +108,30 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
             )
             .subscribe((result) => {
                 this.calendarService.updateEventsTrigger$.next();
-                this.currentRateEdit = null;
-                this.initRatesViewList();
+                this.closeForm.emit();
             });
     }
 
     initRatesViewList() {
-        if (this.data && this.data.eventsList && Array.isArray(this.data.eventsList)) {
-            this.existingRatesList = [];
-            this.data.eventsList.forEach((item) => {
-                if (item && item.meta && item.meta.rate) {
-                    this.existingRatesList.push(item.meta.rate);
-                }
+        if (this.data.event && this.data.event.meta) {
+            this.isEditMode = true;
+            this.currentRateModel = new SbRateModel(this.data.event.meta.rate);
+            this.buildRateForm(this.currentRateModel);
+        } else {
+            this.isEditMode = false;
+            this.ratesList = Object.keys(this.rateTypes).map((rate_type) => {
+                return new SbRateModel({
+                    rate_type,
+                    amount: 0,
+                    id: 0,
+                });
             });
         }
 
-        this.ratesList = Object.keys(this.rateTypes).map((rate_type) => {
-            return new SbRateModel({
-                rate_type,
-                amount: 0,
-                id: 0,
-            });
-        });
     }
 
     private buildRateForm(rate: SbRateModel) {
-        const config: {[name: string]: any} = {
+        const config: { [name: string]: any } = {
             id: [rate.id, []],
             amount: [rate.amount.toString(), [Validators.required, Validators.min(0)]],
             isActive: [rate.isActive, []],

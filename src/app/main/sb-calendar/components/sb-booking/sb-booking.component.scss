@@ -41,8 +41,27 @@ $color-booking: #b94a48;
             margin-right: 8px;
         }
     }
+
     &__rates-list-item {
         list-style: disc;
+
+        a {
+            color: #ffffff;
+            text-decoration: none !important;
+            display: inline-block;
+            padding: 2px 4px;
+            transition: background .3s;
+            border-radius: 2px;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            &:active {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
     }
 }
 
@@ -64,6 +83,7 @@ $color-booking: #b94a48;
             background: $color-booking;
             color: #fff;
         }
+
         &_rate {
             font-size: 14px;
             line-height: 14px;
@@ -77,6 +97,7 @@ $color-booking: #b94a48;
         max-height: 85vh;
         padding: 0;
     }
+
     .cal-month-view .cal-day-cell.cal-today .cal-day-number {
         font-size: 1.2em;
         font-weight: bold;

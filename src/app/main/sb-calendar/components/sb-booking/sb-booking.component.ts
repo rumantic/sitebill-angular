@@ -1,14 +1,15 @@
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { endOfMonth, format, isSameDay, isSameMonth, startOfMonth } from 'date-fns';
-import { Subject } from 'rxjs';
-import { ModelService } from '../../../../_services/model.service';
-import { SbCalendarHelper } from '../../classes/sb-calendar-helper';
-import { MatDialog } from '@angular/material';
-import { SbRatesEditDialogComponent } from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import { SB_EVENTS_STATE, SB_RATE_TYPES } from '../../classes/sb-calendar.constants';
-import { SbCalendarService } from '../../services/sb-calendar.service';
-import { takeUntil, tap } from 'rxjs/operators';
+import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {endOfMonth, format, isSameDay, isSameMonth, startOfMonth} from 'date-fns';
+import {Subject} from 'rxjs';
+import {ModelService} from '../../../../_services/model.service';
+import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
+import {MatDialog} from '@angular/material';
+import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
+import {SB_EVENTS_STATE, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
+import {SbCalendarService} from '../../services/sb-calendar.service';
+import {takeUntil, tap} from 'rxjs/operators';
+import {SbRatesEditDialogDataModel} from '../../models/sb-rates-edit-dialog-data.model';
 
 @Component({
     selector: 'sb-booking',
@@ -25,7 +26,6 @@ export class SbBookingComponent implements OnInit, OnDestroy {
         }
         this.keyValue = value;
         this.initEventsList();
-
     }
 
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
@@ -76,7 +76,7 @@ export class SbBookingComponent implements OnInit, OnDestroy {
             });
     }
 
-    dayClicked({date, events}: {date: Date; events: CalendarEvent[]}): void {
+    dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
         if (isSameMonth(date, this.viewDate)) {
             if (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) {
                 this.activeDayIsOpen = false;
@@ -114,11 +114,11 @@ export class SbBookingComponent implements OnInit, OnDestroy {
         this.fetchEvents();
     }
 
-    onEditRatesClick(eventsList, viewDate, keyValue) {
-        const data = {
-            eventsList,
-            date: viewDate,
-            keyValue: keyValue
+    onEditRatesClick(event, viewDate, keyValue) {
+        const data: SbRatesEditDialogDataModel = {
+            event,
+            viewDate,
+            keyValue
         };
 
         const dialogRef = this.editRatesDialog.open(SbRatesEditDialogComponent, {

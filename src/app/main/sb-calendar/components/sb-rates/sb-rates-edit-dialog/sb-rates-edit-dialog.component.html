@@ -7,6 +7,6 @@
     </mat-toolbar-row>
 </mat-toolbar>
 <mat-dialog-content class="content">
-    <sb-rates-form [data]="data">
+    <sb-rates-form [data]="data" (closeForm)="onFormClose()">
     </sb-rates-form>
 </mat-dialog-content>
