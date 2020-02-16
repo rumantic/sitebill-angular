@@ -63,7 +63,7 @@ export class SbBookingComponent implements OnInit, OnDestroy {
     }
 
     initEventsList() {
-        this.fetchEvents();
+        this.updateEventsList();
     }
 
     initEventsSubscription() {
@@ -72,7 +72,7 @@ export class SbBookingComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
             )
             .subscribe(() => {
-                this.fetchEvents();
+                this.updateEventsList();
             });
     }
 
@@ -109,9 +109,9 @@ export class SbBookingComponent implements OnInit, OnDestroy {
         this.calendarService.events$.next(events);
     }
 
-    closeOpenMonthViewDay(event, newStart, newEnd) {
+    onViewDateUpdate() {
         this.activeDayIsOpen = false;
-        this.fetchEvents();
+        this.updateEventsList();
     }
 
     onEditRatesClick(event, viewDate, keyValue) {
@@ -131,25 +131,11 @@ export class SbBookingComponent implements OnInit, OnDestroy {
         });
     }
 
-    private fetchEvents() {
-        let start = '';
-        let end = '';
-        switch (this.view) {
-            case CalendarView.Month:
-                start = format(startOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                break;
-        }
-        this.calendarService.getBookingReservations(this.keyValue, start, end)
+    private updateEventsList() {
+        this.calendarService.updateEventsList(this.keyValue, this.viewDate)
             .pipe(
-                tap(() => this.calendarService.eventsState$.next(SB_EVENTS_STATE.loading)),
                 takeUntil(this.destroy$),
             )
-            .subscribe((result) => {
-                this.calendarService.events$.next(SbCalendarHelper.parseEventsFromBooking(result));
-                this.calendarService.eventsState$.next(SB_EVENTS_STATE.ready);
-            }, () => {
-                this.calendarService.eventsState$.next(SB_EVENTS_STATE.error);
-            });
+            .subscribe(() => true);
     }
 }

@@ -35,7 +35,6 @@ export class SbRateModel {
 
     set isActive(value: boolean) {
         this.active = value ? 1 : 0;
-        console.log(this.active);
     }
 
     set season_start(value) {

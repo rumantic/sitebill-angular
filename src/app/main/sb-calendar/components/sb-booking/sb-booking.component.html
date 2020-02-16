@@ -6,7 +6,7 @@
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay(null, null, null)"
+        (viewDateChange)="onViewDateUpdate()"
     >
         <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
@@ -25,7 +25,7 @@
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay(null, null, null)"
+        (viewDateChange)="onViewDateUpdate()"
     >
         <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
@@ -111,7 +111,12 @@
                         <ng-container
                             *ngFor="let event of events; trackBy: trackByEventId"
                         >
-                            <li *ngIf="event.meta?.type === 'rate'" class="events-preview__rates-list-item">
+                            <li
+                                *ngIf="event.meta?.type === 'rate'"
+                                class="events-preview__rates-list-item"
+                                [ngClass]="{'events-preview__rates-list-item_active': event.meta?.rate.isActive}"
+                                [title]="event.meta?.rate.isActive ? 'Активная цена' : 'Неактивная цена'"
+                            >
                                 <a (click)="onEditRatesClick(event, viewDate, keyValue)">
                                     {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
                                     {{event.meta?.rate.amount | price}} руб.
