@@ -26,6 +26,8 @@ enum SB_RATES_LIST_TYPE {
 })
 export class SbRatesFormComponent implements OnInit, OnDestroy {
 
+    @Input() data: any;
+
     formModel: RateFormModel = {
         group: null,
         subscription$: null,
@@ -43,8 +45,6 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
     existingRatesList: SbRateModel[] = []; // RATES_LIST_TYPE.create
 
     ratesListType = SB_RATES_LIST_TYPE; // for template use
-
-    @Input() data: any;
 
     private readonly destroy$ = new Subject<void>();
 

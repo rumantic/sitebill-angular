@@ -3,9 +3,9 @@ import {FuseConfigService} from '../../../../../@fuse/services/config.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
 @Component({
-    templateUrl: 'sb-booking-page.component.html',
+    templateUrl: 'sb-booking.page.component.html',
     styleUrls: [
-        'sb-booking-page.component.scss',
+        'sb-booking.page.component.scss',
     ]
 })
 export class SbBookingPageComponent implements OnInit {
