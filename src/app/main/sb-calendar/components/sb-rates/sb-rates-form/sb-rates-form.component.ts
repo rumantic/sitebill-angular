@@ -110,6 +110,7 @@ export class SbRatesFormComponent implements OnInit, OnDestroy {
                     rate_type,
                     amount: 0,
                     id: 0,
+                    active: 1,
                 });
             });
         }
