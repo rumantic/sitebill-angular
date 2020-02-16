@@ -38,7 +38,7 @@ export class SbCalendarHelper {
                     return;
                 }
                 let isMainRateSelected = false;
-                dayRatesList.forEach((rate, index) => {
+                dayRatesList.forEach((rate) => {
                     const rateModel = new SbRateModel(rate);
 
                     result.push({
