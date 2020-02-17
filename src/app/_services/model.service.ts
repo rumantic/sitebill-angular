@@ -493,6 +493,12 @@ export class ModelService {
         return null;
     }
 
+    get_access ($model_name, $function_name) {
+        let body = {};
+        body = {action: 'oauth', do: 'get_access', model_name: $model_name, function_name: $function_name, session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
     load_config () {
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
