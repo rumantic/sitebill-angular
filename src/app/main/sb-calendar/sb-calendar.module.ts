@@ -23,7 +23,7 @@ import {SbRatesEditDialogComponent} from './components/sb-rates/sb-rates-edit-di
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SbCalendarService} from './services/sb-calendar.service';
 import {SbCalendarRoutesModule} from './sb-calendar-routes.module';
-import {SbBookingPageComponent} from './components/sb-booking-page/sb-booking-page.component';
+import {SbBookingPageComponent} from './pages/sb-booking/sb-booking.page.component';
 
 const bundle = [
     SbBookingComponent,

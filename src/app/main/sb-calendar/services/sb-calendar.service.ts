@@ -1,56 +1,74 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ModelService} from '../../../_services/model.service';
+import { Injectable } from '@angular/core';
+import {CalendarEvent, CalendarView} from 'angular-calendar';
+import { HttpClient } from '@angular/common/http';
+import { ModelService } from '../../../_services/model.service';
+import {BehaviorSubject, EMPTY, Subject} from 'rxjs';
+import { SbRateModel } from '../models/sb-rate.model';
+import { SB_EVENTS_STATE } from '../classes/sb-calendar.constants';
+import {endOfMonth, format, startOfMonth} from 'date-fns';
+import {SbCalendarHelper} from '../classes/sb-calendar-helper';
+import {catchError, map, takeUntil, tap} from 'rxjs/operators';
 
 @Injectable()
 export class SbCalendarService {
-    updateEvents$ = new EventEmitter();
-    
+
+    events$ = new BehaviorSubject<CalendarEvent[]>([]); // events list Observable
+    eventsState$ = new BehaviorSubject(SB_EVENTS_STATE.ready); // events list current state Observable
+    updateEventsTrigger$ = new Subject(); // push .next() here to trigger events$ update
+
+    get events(): CalendarEvent[] {
+        return this.events$.getValue();
+    }
+
     constructor(
         private http: HttpClient,
         private modelService: ModelService,
     ) {
-    
+
     }
-    
-    get_booking_reservations(key_value, start_date, end_date) {
-        const body = {action: 'reservation', do: 'calender_data', id: key_value, start: start_date, end: end_date, session_key: this.modelService.get_session_key_safe()};
-        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
-    }
-    
-    create_rate(object_id, params) {
-        
-        var r = {
-            month_number: (typeof params.month_number != 'undefined' ? params.month_number : 0),
-            day_number: (typeof params.day_number != 'undefined' ? params.day_number : 0),
-            period_start: (typeof params.period_start != 'undefined' ? params.period_start : ''),
-            period_end: (typeof params.period_end != 'undefined' ? params.period_end : ''),
-            season_start: (typeof params.season_start != 'undefined' ? params.season_start.format('YYYY-MM-DD') : ''),
-            season_end: (typeof params.season_start != 'undefined' ? params.season_end.format('YYYY-MM-DD') : ''),
-            active: (Number(params.active) == 1 ? 1 : 0),
-            rate_type: params.rateTypeValue,
-            amount: params.amount
+
+    getBookingReservations(key_value, start_date, end_date) {
+        const body = {
+            action: 'reservation',
+            do: 'calender_data',
+            id: key_value,
+            start: start_date,
+            end: end_date,
+            session_key: this.modelService.get_session_key_safe()
         };
-        const body = {action: 'reservation', do: 'rate_create', data: r, object_id: object_id, session_key: this.modelService.get_session_key_safe()};
-        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
+        return this.http.post(`${ this.modelService.get_api_url() }/apps/api/rest.php`, body);
     }
-    
-    edit_rate(object_id, rate_id, params) {
-        
-        var r = {
-            month_number: (typeof params.month_number != 'undefined' ? params.month_number : 0),
-            day_number: (typeof params.day_number != 'undefined' ? params.day_number : 0),
-            period_start: (typeof params.period_start != 'undefined' ? params.period_start : ''),
-            period_end: (typeof params.period_end != 'undefined' ? params.period_end : ''),
-            season_start: params.season_start.format('YYYY-MM-DD'),
-            season_end: params.season_end.format('YYYY-MM-DD'),
-            active: (Number(params.active) == 1 ? 1 : 0),
-            amount: params.amount
+
+    saveRate(objectId: string, model: SbRateModel) {
+        const body = {
+            action: 'reservation',
+            do: model.id ? 'rate_edit' : 'rate_create',
+            data: model.exportValue(),
+            object_id: objectId,
+            session_key: this.modelService.get_session_key_safe(),
         };
-        //console.log(r);
-        
-        
-        const body = {action: 'reservation', do: 'rate_edit', id: rate_id, data: r, object_id: object_id, session_key: this.modelService.get_session_key_safe()};
-        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
+        if (model.id) {
+            body['id'] = model.id;
+        }
+        return this.http.post(`${ this.modelService.get_api_url() }/apps/api/rest.php`, body);
+    }
+
+    updateEventsList(keyValue: string, viewDate: Date) {
+        const start = format(startOfMonth(viewDate), SbCalendarHelper.dateFormat);
+        const end = format(endOfMonth(viewDate), SbCalendarHelper.dateFormat);
+
+        return this.getBookingReservations(keyValue, start, end)
+            .pipe(
+                tap(() => this.eventsState$.next(SB_EVENTS_STATE.loading)),
+                catchError(() => {
+                    this.events$.next([]);
+                    this.eventsState$.next(SB_EVENTS_STATE.error);
+                    return EMPTY;
+                }),
+                map((result) => {
+                    this.events$.next(SbCalendarHelper.parseEventsFromBooking(result));
+                    this.eventsState$.next(SB_EVENTS_STATE.ready);
+                }),
+            );
     }
 }

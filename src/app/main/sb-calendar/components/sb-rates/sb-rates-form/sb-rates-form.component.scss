@@ -6,7 +6,9 @@ mat-card {
 
 .list {
     $parent-class: &;
+
     width: 100%;
+    margin-bottom: 8px;
 
     &__item {
         display: flex;
@@ -43,10 +45,12 @@ mat-card {
         opacity: 0;
         transition: opacity 250ms;
     }
-    &__item-value {
-        margin-left: 10px;
-        text-align: right;
-    }
+}
+
+.list + .list-title {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: solid 1px #e0e0e0;
 }
 
 .form {

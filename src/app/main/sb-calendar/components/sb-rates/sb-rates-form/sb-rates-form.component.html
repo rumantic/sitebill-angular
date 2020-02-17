@@ -1,39 +1,32 @@
-<h3>Существующие рейты</h3>
-<div class="list">
-    <ng-container *ngFor="let rate of existingRatesList; let index = index">
-        <div
-            *ngIf="! currentRateEdit || currentRateEdit.rateType !== rate.rateType; else editForm"
-            class="list__item"
-            [ngClass]="rate.isMain ? 'list__item_main' : ''"
-            (click)="onEditRateClick(rate)"
-        >
-            <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
-            <div class="list__item-value">{{ rate.amount | price }}</div>
-            
-        </div>
-    </ng-container>
-</div>
-<h3>Доступные варианты</h3>
-<div class="list">
-    <ng-container *ngFor="let rate of ratesList; let index = index">
-        <div
-            *ngIf="! currentRateEdit || currentRateEdit.rateType !== rate.rateType; else editForm"
-            class="list__item"
-            [ngClass]="rate.isMain ? 'list__item_main' : ''"
-            (click)="onEditRateClick(rate)"
-        >
-            <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
-            <div class="list__item-value">{{ rate.amount | price }}</div>
-            
-        </div>
-    </ng-container>
-</div>
+<ng-container *ngIf="isEditMode">
+    <ng-container [ngTemplateOutlet]="editRateTemplate"></ng-container>
+    <div class="message-box error" *ngIf="errorMessage">{{ errorMessage }}</div>
+</ng-container>
 
-<ng-template #editForm>
-    <mat-card class="form">
-        <mat-card-title class="form__title">{{ currentRateEdit.title }}</mat-card-title>
+<ng-container *ngIf="!isEditMode">
+    <div class="list">
+        <ng-container *ngFor="let rate of ratesList; let index = index">
+            <ng-container
+                [ngTemplateOutlet]="currentRateModel?.rateType === rate.rateType ? editRateTemplate : viewRateTemplate"
+            ></ng-container>
+
+            <ng-template #viewRateTemplate>
+                <div
+                    class="list__item"
+                    (click)="onEditRateClick(rate)"
+                >
+                    <div class="list__item-title">{{ rate.title }} <mat-icon class="list__item-icon">edit</mat-icon></div>
+                </div>
+            </ng-template>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-template #editRateTemplate>
+    <mat-card class="form" *ngIf="currentRateModel">
+        <mat-card-title class="form__title">{{ currentRateModel.title }}</mat-card-title>
         <mat-card-content [formGroup]="formModel.group">
-            <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldSeason">
+            <div class="form__row" *ngIf="currentRateModel.meta.hasFieldSeason">
                 <mat-form-field>
                     <input matInput
                            type="text"
@@ -54,7 +47,7 @@
                     <mat-datepicker #endDatepicker></mat-datepicker>
                 </mat-form-field>
             </div>
-            <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldPeriod">
+            <div class="form__row" *ngIf="currentRateModel.meta.hasFieldPeriod">
                 <mat-form-field>
                     <select formControlName="period_start_m" matNativeControl placeholder="Месяц">
                         <option *ngFor="let month of formModel.options.months" [value]="month.id">{{month.title}}</option>
@@ -79,17 +72,17 @@
                     </select>
                 </mat-form-field>
             </div>
-            <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldMonth">
+            <div class="form__row" *ngIf="currentRateModel.meta.hasFieldMonth">
                 <mat-form-field>
                     <select formControlName="month_number" matNativeControl>
-                        <option *ngFor="let month of formModel.options.months" [value]="month.id" [selected]="month.id == currentRateEdit.month_number">{{month.title}}</option>
+                        <option *ngFor="let month of formModel.options.months" [value]="month.id" [selected]="month.id == currentRateModel.month_number">{{month.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
-            <div class="form__row" *ngIf="currentRateEdit.meta.hasFieldWeekday">
+            <div class="form__row" *ngIf="currentRateModel.meta.hasFieldWeekday">
                 <mat-form-field>
                     <select formControlName="day_number" matNativeControl>
-                        <option *ngFor="let weekday of formModel.options.weekdays" [value]="weekday.id" [selected]="weekday.id == currentRateEdit.day_number" >{{weekday.title}}</option>
+                        <option *ngFor="let weekday of formModel.options.weekdays" [value]="weekday.id" [selected]="weekday.id == currentRateModel.day_number" >{{weekday.title}}</option>
                     </select>
                 </mat-form-field>
             </div>
@@ -98,9 +91,8 @@
                     <input matInput type="text" formControlName="amount" placeholder="Стоимость">
                 </mat-form-field>
             </div>
-            <input type="hidden" formControlName="id" placeholder="ID" value="{{currentRateEdit.id}}">
             <div class="form__row">
-                <mat-checkbox formControlName="active">Активная</mat-checkbox>
+                <mat-checkbox formControlName="isActive">Активная</mat-checkbox>
             </div>
         </mat-card-content>
         <mat-card-actions class="form__actions">

@@ -72,3 +72,9 @@ export const SB_WEEKDAYS = [
     {id: 6, title: 'сб'},
     {id: 7, title: 'вс'},
 ];
+
+export enum SB_EVENTS_STATE {
+    loading,
+    ready,
+    error,
+};

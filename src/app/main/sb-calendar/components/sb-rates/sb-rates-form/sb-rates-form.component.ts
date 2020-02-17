@@ -1,17 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {SB_RATE_TYPES, SB_WEEKDAYS, SB_MONTHS} from '../../../classes/sb-calendar.constants';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {SB_MONTHS, SB_RATE_TYPES, SB_WEEKDAYS} from '../../../classes/sb-calendar.constants';
 import {SbRateModel} from '../../../models/sb-rate.model';
-import {Observable, of, Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {SbCalendarService} from '../../../services/sb-calendar.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
-class RatesListItem extends SbRateModel {
-    isMain = false;
-
-    constructor(data) {
-        super(data);
-    }
-}
+import {takeUntil} from 'rxjs/operators';
+import {SbRatesEditDialogDataModel} from '../../../models/sb-rates-edit-dialog-data.model';
 
 class RateFormModel {
     group: FormGroup;
@@ -26,7 +20,15 @@ class RateFormModel {
         './sb-rates-form.component.scss',
     ],
 })
-export class SbRatesFormComponent implements OnInit {
+export class SbRatesFormComponent implements OnInit, OnDestroy {
+
+    @Input() data: SbRatesEditDialogDataModel;
+    @Output() closeForm = new EventEmitter<void>();
+
+    isEditMode = false;
+    currentRateModel: SbRateModel = null;
+
+    errorMessage = '';
 
     formModel: RateFormModel = {
         group: null,
@@ -37,13 +39,13 @@ export class SbRatesFormComponent implements OnInit {
             days: Array(31).fill(0).map((value, index) => index + 1),
         },
     };
-    currentRateEdit: SbRateModel;
 
+    ratesList: SbRateModel[] = []; // choose type to create new rate
+
+    // for template use
     rateTypes = SB_RATE_TYPES;
-    ratesList: RatesListItem[] = [];
-    existingRatesList: RatesListItem[] = [];
 
-    @Input() data: any;
+    private readonly destroy$ = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
@@ -55,14 +57,19 @@ export class SbRatesFormComponent implements OnInit {
         this.initRatesViewList();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     onEditRateClick(rate: SbRateModel) {
-        //this.currentRateEdit = Object.assign({}, rate);
-        this.currentRateEdit = rate;
-        this.buildRateForm(this.currentRateEdit);
+        this.currentRateModel = rate;
+        this.buildRateForm(this.currentRateModel);
     }
 
     onCancelEditRateClick() {
-        this.currentRateEdit = null;
+        this.currentRateModel = null;
+        this.closeForm.emit();
     }
 
     onSaveRateClick() {
@@ -73,64 +80,53 @@ export class SbRatesFormComponent implements OnInit {
             });
             return;
         }
-        
-        const model = new SbRateModel(Object.assign({}, this.currentRateEdit, this.formModel.group.value));
-        
-        this.saveRate(this.data.keyValue, model).subscribe((result) => {
-            this.data.eventsList = result;
-            this.currentRateEdit = null;
-            this.calendarService.updateEvents$.emit();
-            this.initRatesViewList();
-        });
+
+        const model = new SbRateModel(Object.assign({}, this.currentRateModel));
+        model.update(this.formModel.group.value);
+
+        this.calendarService.saveRate(this.data.keyValue, model)
+            .pipe(
+                takeUntil(this.destroy$),
+            )
+            .subscribe((result: any) => {
+                if (result && result.data && result.data.status === 1) {
+                    this.calendarService.updateEventsTrigger$.next();
+                    this.closeForm.emit();
+                    return;
+                }
+                this.errorMessage = 'Не получилось сохранить данные. Пожалуйста, попробуйте позже.';
+            });
     }
 
     initRatesViewList() {
-        
-        if (this.data && this.data.eventsList) {
-            
-            for(var i in this.data.eventsList){
-                const r = this.data.eventsList[i].meta.rate;
-                if(typeof this.rateTypes[r.rate_type] != 'undefined'){
-                    r.title = this.rateTypes[r.rate_type].title;
-                    r.rateType = this.rateTypes[r.rate_type].rateType;
-                    r.rateTypeValue = this.rateTypes[r.rate_type].rateTypeValue;
-                }
-                this.existingRatesList[i] = new RatesListItem(r);
-            }
-        }
-        
-        
-        
-        let mainRateIndex = -1;
-        this.ratesList = Object.keys(this.rateTypes).map((type, rateIndex) => {
-            const result = new RatesListItem({
-                rateType: this.rateTypes[type].rateType,
-                rateTypeValue: this.rateTypes[type].rateTypeValue,
-                title: this.rateTypes[type].title,
-                amount: 0,
-                id: 0
+        if (this.data.event && this.data.event.meta) {
+            this.isEditMode = true;
+            this.currentRateModel = new SbRateModel(this.data.event.meta.rate);
+            this.buildRateForm(this.currentRateModel);
+        } else {
+            this.isEditMode = false;
+            this.ratesList = Object.keys(this.rateTypes).map((rate_type) => {
+                return new SbRateModel({
+                    rate_type,
+                    amount: 0,
+                    id: 0,
+                    active: '1',
+                });
             });
-
-            return result;
-        });
-
-        if (mainRateIndex >= 0) {
-            this.ratesList[mainRateIndex].isMain = true;
         }
-        
+
     }
 
     private buildRateForm(rate: SbRateModel) {
-        
         const config: { [name: string]: any } = {
             id: [rate.id, []],
             amount: [rate.amount.toString(), [Validators.required, Validators.min(0)]],
-            active: [rate.active, []],
+            isActive: [rate.isActive, []],
         };
-        
+
         if (rate.meta.hasFieldSeason) {
-            config.season_start = [rate.season_start ? rate.season_start.toDate() : null, [Validators.required]];
-            config.season_end = [rate.season_end ? rate.season_end.toDate() : null, [Validators.required]];
+            config.season_start = [rate.season_start ? rate.season_start : null, [Validators.required]];
+            config.season_end = [rate.season_end ? rate.season_end : null, [Validators.required]];
         }
         if (rate.meta.hasFieldPeriod) {
             config.period_start_m = [rate.period_start_m, [Validators.required]];
@@ -145,61 +141,5 @@ export class SbRatesFormComponent implements OnInit {
             config.day_number = [rate.day_number, [Validators.required]];
         }
         this.formModel.group = this.fb.group(config);
-        // this.initRateFormSubscription(rate);
-    }
-
-    private initRateFormSubscription(rate: SbRateModel) {
-        if (!this.formModel.group) {
-            return;
-        }
-
-        if (this.formModel.subscription$ instanceof Subscription) {
-            this.formModel.subscription$.unsubscribe();
-        }
-
-        this.formModel.subscription$ = this.formModel.group.valueChanges.subscribe((value) => {
-            if (rate.meta.hasFieldSeason) {
-                if (!value || !value.season_start) {
-                    this.formModel.group.controls['season_end'].disable();
-                } else {
-                    this.formModel.group.controls['season_end'].enable();
-                    this.formModel.group.controls['season_end'].setValidators([Validators.required, Validators.min(value.season_start)]);
-                }
-            }
-            if (rate.meta.hasFieldPeriod) {
-                if (!value || !value.period_start_m || !value.period_start_d) {
-                    this.formModel.group.controls['period_end_m'].disable();
-                    this.formModel.group.controls['period_end_d'].disable();
-                } else {
-                    this.formModel.group.controls['period_end_m'].enable();
-                    this.formModel.group.controls['period_end_d'].enable();
-                    this.formModel.group.controls['period_end_m'].setValidators([Validators.required, Validators.min(value.period_start_m)]);
-                    if (value.period_start_m === value.period_end_m) {
-                        this.formModel.group.controls['period_end_d'].setValidators([Validators.required, Validators.min(value.period_start_d)]);
-                    } else {
-                        this.formModel.group.controls['period_end_d'].setValidators([Validators.required]);
-                    }
-                }
-            }
-        });
-    }
-
-    private saveRate(keyValue, model: SbRateModel): Observable<any> {
-        
-        
-        
-        if(model.id && Number(model.id) != 0){
-            this.calendarService.edit_rate(keyValue, model.id, model).subscribe((result) => {
-                return of(result);
-            });
-        }else{
-            this.calendarService.create_rate(keyValue, model).subscribe((result) => {
-                return of(result);
-            });
-        }
-        
-        const result = [...this.data.eventsList];
-
-        return of(result);
     }
 }

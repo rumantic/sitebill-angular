@@ -1,13 +1,14 @@
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
-import {format, endOfMonth, isSameDay, isSameMonth, startOfMonth} from 'date-fns';
+import {isSameDay, isSameMonth} from 'date-fns';
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
-import {SbCalendarHelper} from '../../classes/sb-calendar-helper';
 import {MatDialog} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
-import {SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
+import {SB_MONTHS, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 import {SbCalendarService} from '../../services/sb-calendar.service';
+import {takeUntil} from 'rxjs/operators';
+import {SbRatesEditDialogDataModel} from '../../models/sb-rates-edit-dialog-data.model';
 
 @Component({
     selector: 'sb-booking',
@@ -17,14 +18,13 @@ import {SbCalendarService} from '../../services/sb-calendar.service';
         './sb-booking.component.scss',
     ],
 })
-export class SbBookingComponent implements OnInit {
+export class SbBookingComponent implements OnInit, OnDestroy {
     @Input('keyValue') set setKeyValue(value) {
         if (!value) {
             return;
         }
         this.keyValue = value;
         this.initEventsList();
-        
     }
 
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
@@ -41,14 +41,14 @@ export class SbBookingComponent implements OnInit {
 
     rateTypes = SB_RATE_TYPES;
 
-    events: CalendarEvent[] = [];
-
     activeDayIsOpen = true;
+
+    private readonly destroy$ = new Subject<void>();
 
     constructor(
         protected modelService: ModelService,
         public editRatesDialog: MatDialog,
-        private calendarService: SbCalendarService,
+        public calendarService: SbCalendarService,
     ) {
     }
 
@@ -56,14 +56,30 @@ export class SbBookingComponent implements OnInit {
         this.initEventsSubscription();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     initEventsList() {
-        this.fetchEvents();
+        this.updateEventsList();
     }
 
     initEventsSubscription() {
-        this.calendarService.updateEvents$.subscribe(() => {
-            this.fetchEvents();
-        });
+        this.calendarService.updateEventsTrigger$
+            .pipe(
+                takeUntil(this.destroy$),
+            )
+            .subscribe(() => {
+                this.updateEventsList();
+            });
+    }
+
+    getMonthTitle() {
+        if (this.viewDate) {
+            return `${SB_MONTHS[this.viewDate.getMonth()].title} ${this.viewDate.getFullYear()}`;
+        }
+        return '';
     }
 
     dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
@@ -83,30 +99,32 @@ export class SbBookingComponent implements OnInit {
             newStart,
             newEnd
         }: CalendarEventTimesChangedEvent
-    ): void {
-    
-        this.events = this.events.map(iEvent => {
-            if (iEvent === event) {
+    ) {
+
+        const events = this.calendarService.events.map((item) => {
+            if (item === event) {
                 return {
                     ...event,
                     start: newStart,
                     end: newEnd
                 };
             }
-            return iEvent;
+            return item;
         });
+
+        this.calendarService.events$.next(events);
     }
 
-    closeOpenMonthViewDay(event, newStart, newEnd) {
+    onViewDateUpdate() {
         this.activeDayIsOpen = false;
-        this.fetchEvents();
+        this.updateEventsList();
     }
 
-    onEditRatesClick(eventsList, viewDate, keyValue) {
-        const data = {
-            eventsList,
-            date: viewDate,
-            keyValue: keyValue
+    onEditRatesClick(event, viewDate, keyValue) {
+        const data: SbRatesEditDialogDataModel = {
+            event,
+            viewDate,
+            keyValue
         };
 
         const dialogRef = this.editRatesDialog.open(SbRatesEditDialogComponent, {
@@ -115,22 +133,15 @@ export class SbBookingComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            //console.log(result);
+            // console.log(result);
         });
     }
 
-    private fetchEvents() {
-        let start = '';
-        let end = '';
-        switch (this.view) {
-            case CalendarView.Month:
-                start = format(startOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                end = format(endOfMonth(this.viewDate), SbCalendarHelper.dateFormat);
-                break;
-        }
-        this.calendarService.get_booking_reservations(this.keyValue, start, end).subscribe((result) => {
-            this.events = SbCalendarHelper.parseEventsFromBooking(result);
-        });
-        
+    private updateEventsList() {
+        this.calendarService.updateEventsList(this.keyValue, this.viewDate)
+            .pipe(
+                takeUntil(this.destroy$),
+            )
+            .subscribe(() => true);
     }
 }

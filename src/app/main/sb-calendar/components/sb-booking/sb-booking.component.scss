@@ -21,6 +21,7 @@ $color-booking: #b94a48;
 
     &__rates-title {
         margin-top: 0;
+        margin-bottom: 16px;
     }
 
     &__booking {
@@ -41,9 +42,60 @@ $color-booking: #b94a48;
             margin-right: 8px;
         }
     }
-    &__rates-list-item {
-        list-style: disc;
+
+    &__rates-list {
+        padding-left: 0;
+        margin-bottom: 20px;
     }
+
+    &__rates-list-item {
+        list-style: none;
+
+        &:before {
+            content: "\2022";
+            color: #8793A2;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 1.5em;
+            width: 1em;
+            margin-left: 0;
+        }
+
+        a {
+            color: #BEBEC5;
+            text-decoration: none !important;
+            display: inline-block;
+            padding: 2px 4px;
+            transition: background .3s;
+            border-radius: 2px;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            &:active {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        &_active {
+            &:before {
+                color: #2AA198;
+            }
+            a {
+                color: #ffffff;
+            }
+        }
+    }
+}
+
+.month-title {
+    text-align: center;
+    padding: 5px 0;
+    font-weight: bold;
+    background: #ffffff;
+    border-bottom: solid 1px #e1e1e1;
 }
 
 .events {
@@ -64,6 +116,7 @@ $color-booking: #b94a48;
             background: $color-booking;
             color: #fff;
         }
+
         &_rate {
             font-size: 14px;
             line-height: 14px;
@@ -77,6 +130,7 @@ $color-booking: #b94a48;
         max-height: 85vh;
         padding: 0;
     }
+
     .cal-month-view .cal-day-cell.cal-today .cal-day-number {
         font-size: 1.2em;
         font-weight: bold;

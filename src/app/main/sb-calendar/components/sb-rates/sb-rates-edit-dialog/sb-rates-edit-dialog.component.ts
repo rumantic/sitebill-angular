@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {SbRatesEditDialogDataModel} from '../../../models/sb-rates-edit-dialog-data.model';
 
 @Component({
     templateUrl: 'sb-rates-edit-dialog.component.html',
@@ -9,7 +10,12 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 })
 export class SbRatesEditDialogComponent {
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: SbRatesEditDialogDataModel,
+        public dialogRef: MatDialogRef<SbRatesEditDialogComponent>
     ) {
+    }
+
+    onFormClose() {
+        this.dialogRef.close();
     }
 }
