@@ -65,11 +65,20 @@ import {SaleComponent} from './entity/front/sale.component';
 import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
+import {FavoritesComponent} from './entity/favorites/favorites.component';
 
 const routes = [
     {
         path     : 'data',
         component: DataComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path     : 'favorites',
+        component: FavoritesComponent,
         resolve: {
             chat: ChatService
         }
@@ -255,7 +264,8 @@ const routes = [
         MemoryListComponent,
         FrontComponent,
         SaleComponent,
-        ComposeModalComponent
+        ComposeModalComponent,
+        FavoritesComponent
     ],
     imports     : [
         RouterModule.forChild(routes),

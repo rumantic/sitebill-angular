@@ -35,6 +35,9 @@ export class Bitrix24Service {
     }
 
     get_domain() {
+        if ( this.domain === null || this.domain === undefined ) {
+            return 'localhost';
+        }
         return this.domain;
     }
 
@@ -67,6 +70,9 @@ export class Bitrix24Service {
     }
 
     get_deal_id() {
+        if ( this.placement_options.get_id() === null ) {
+            return 1;
+        }
         return this.placement_options.get_id();
     }
 

@@ -2,20 +2,20 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 
-
 @Component({
-    selector: 'data-grid',
-    templateUrl: '../grid.component.html',
-    styleUrls: ['../grid.component.scss'],
+    selector: 'favorites-grid',
+    templateUrl: '../../grid.component.html',
+    styleUrls: ['../../grid.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
-export class DataComponent extends GridComponent {
+export class FavoritesComponent extends GridComponent {
     setup_apps() {
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
         this.switch_collections(true);
+        this.switch_only_collections(true);
         this.enable_date_range('date_added');
     }
     getRowClass(row): string {
@@ -38,5 +38,4 @@ export class DataComponent extends GridComponent {
 
 
     }
-
 }

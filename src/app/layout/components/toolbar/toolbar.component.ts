@@ -231,4 +231,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     all_data() {
         this._router.navigate(['grid/data/']);
     }
+
+    my_collections() {
+        this._router.navigate(['grid/favorites/']);
+    }
 }

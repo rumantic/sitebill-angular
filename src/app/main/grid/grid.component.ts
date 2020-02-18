@@ -831,8 +831,10 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     toggle_collection(event) {
-        //console.log(event);
-        //console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
+        // console.log(event);
+        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
+        // console.log('domain = ' + this.bitrix24Service.get_domain());
+        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_deal_id());
         let data_id = event.value;
         let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
@@ -962,5 +964,12 @@ export class GridComponent implements OnInit, OnDestroy
         a.href = URL.createObjectURL(file);
         a.download = fileName;
         a.click();
+    }
+    switch_collections(status: boolean) {
+        this.enable_collections = status;
+    }
+
+    switch_only_collections (status: boolean) {
+        this.only_collections = status;
     }
 }
