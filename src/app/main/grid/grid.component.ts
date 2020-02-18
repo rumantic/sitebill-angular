@@ -854,6 +854,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                     this.filterService.empty_share(this.entity);
                     this.refresh();
+                    this.cdr.markForCheck();
                 }
             });
     }
