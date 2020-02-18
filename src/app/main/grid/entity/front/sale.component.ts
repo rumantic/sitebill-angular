@@ -48,4 +48,24 @@ export class SaleComponent extends GridComponent {
 
     }
 
+    getRowClass(row): string {
+        try {
+            if (row['id'].collections != null) {
+                return 'green-100-bg';
+            }
+        } catch {
+        }
+
+        try {
+            if (row.active.value != 1) {
+                return 'red-100-bg';
+            }
+            if (row.hot.value == 1) {
+                return 'amber-100-bg';
+            }
+        } catch {
+        }
+
+
+    }
 }

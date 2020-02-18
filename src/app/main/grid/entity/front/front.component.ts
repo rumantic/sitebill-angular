@@ -34,6 +34,7 @@ export class FrontComponent {
     private needrent_entity: SitebillEntity;
 
     private topic_columns: any[][];
+    enable_collections: boolean;
 
     constructor(
         private filterService: FilterService,
@@ -44,6 +45,7 @@ export class FrontComponent {
     ) {
         this.disable_menu();
         this.topic_columns = [];
+        this.enable_collections = true;
         // console.log('lead constructor');
     }
 

@@ -53,6 +53,7 @@
                                         [disable_delete_button]="disable_delete_button"
                                         [disable_gallery_controls]="disable_gallery_controls"
                                         [freeze_default_columns_list]="true"
+                                        [enable_collections]="enable_collections"
                                         [disable_activation_button]="disable_activation_button">
                                 </sale-grid>
                             </div>
@@ -78,6 +79,7 @@
                                         [disable_edit_button]="disable_edit_button"
                                         [disable_view_button]="disable_view_button"
                                         [disable_delete_button]="disable_delete_button"
+                                        [enable_collections]="enable_collections"
                                         [disable_gallery_controls]="disable_gallery_controls"
                                         [freeze_default_columns_list]="true"
                                         [disable_activation_button]="disable_activation_button">
@@ -99,6 +101,7 @@
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
                                 <sale-grid  *ngIf="reload"
+                                        [enable_collections]="enable_collections"
                                         [input_entity]="dayrent_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
@@ -126,6 +129,7 @@
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
                                 <sale-grid  *ngIf="reload"
+                                        [enable_collections]="enable_collections"
                                         [input_entity]="buy_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
@@ -153,6 +157,7 @@
                             <!-- Front -->
                             <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
                                 <sale-grid  *ngIf="reload"
+                                        [enable_collections]="enable_collections"
                                         [input_entity]="needrent_entity"
                                         [disable_menu]="true"
                                         [disable_add_button]="disable_add_button"
