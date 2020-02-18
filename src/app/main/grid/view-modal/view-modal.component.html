@@ -63,6 +63,10 @@
                                                         {{records[x].value}} <span *ngIf="records[x].currency_id != null">{{records[x].currency_id.value_string}}</span>
                                                     </ng-container>
 
+                                                    <ng-container *ngSwitchCase="'injector'">
+                                                        <user-profile [user_id]="records['user_id'].value"></user-profile>
+                                                    </ng-container>
+
                                                     <ng-container *ngSwitchCase="'mobilephone'">
                                                         <a href="tel:{{records[x].value}}">{{records[x].value}}</a>
                                                     </ng-container>

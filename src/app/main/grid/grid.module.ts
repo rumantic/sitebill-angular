@@ -265,7 +265,7 @@ const routes = [
         FrontComponent,
         SaleComponent,
         ComposeModalComponent,
-        FavoritesComponent
+        FavoritesComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),

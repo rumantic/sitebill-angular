@@ -57,6 +57,7 @@ import {ProfileCardComponent} from './main/profile/card/profile-card.component';
 import {GatewaysComponent} from './main/gateways/gateways.component';
 import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.component';
 import {RemindModalComponent} from './login/remind-modal/remind-modal.component';
+import {UserProfileComponent} from './main/grid/entity/user-profile/user-profile.component';
 
 @NgModule({
     imports: [
@@ -142,6 +143,7 @@ import {RemindModalComponent} from './login/remind-modal/remind-modal.component'
         ProfileCardComponent,
         GatewaysComponent,
         GatewaysModalComponent,
+        UserProfileComponent
     ],
     providers: [
         ChatService,

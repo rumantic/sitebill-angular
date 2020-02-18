@@ -32,7 +32,7 @@ export class SaleComponent extends GridComponent {
             }
             this.cdr.markForCheck();
         }
-        console.log(this.entity);
+        //console.log(this.entity);
 
 
         //this.table_index_params[0] = { user_id: 0 };
