@@ -90,7 +90,7 @@
                     </mat-tab-group>
                 </form>
             </div>
-            <div class="modal-content__comments" *ngIf="_data.is_enable_comment()">
+            <div class="modal-content__comments" *ngIf="_data.is_enable_comment() && this.modelService.get_access('comment', 'access')">
                 <mat-accordion>
                     <mat-expansion-panel
                         class="comments"

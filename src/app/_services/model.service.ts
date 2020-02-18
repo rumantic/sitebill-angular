@@ -52,6 +52,7 @@ export class ModelService {
         if ( !this.sitebill_started ) {
             console.log('Sitebill started');
             this.init_config();
+            this.init_permissions();
             this.sitebill_started = true;
         }
     }
@@ -493,10 +494,21 @@ export class ModelService {
         return null;
     }
 
-    get_access ($model_name, $function_name) {
-        let body = {};
-        body = {action: 'oauth', do: 'get_access', model_name: $model_name, function_name: $function_name, session_key: this.get_session_key_safe()};
-        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    get_access (model_name, function_name) {
+        const storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        if (storage['structure'] == null) {
+            return false;
+        }
+        if (storage['structure']['group_name'] === 'admin') {
+            return true;
+        }
+        if (storage['structure'][model_name] === null || storage['structure'][model_name] === undefined ) {
+            return false;
+        }
+        if (storage['structure'][model_name][function_name]  === 1 ) {
+            return true;
+        }
+        return false;
     }
 
     load_config () {
@@ -584,5 +596,19 @@ export class ModelService {
 
     get_current_entity () {
         return this.current_entity;
+    }
+
+    private init_permissions() {
+        const request = {
+            action: 'oauth',
+            do: 'check_session_key',
+            session_key: this.get_session_key_safe()
+        };
+        this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request)
+            .subscribe((result: any) => {
+                if ( result.success === 1 ) {
+                    localStorage.setItem('currentUser', JSON.stringify(result));
+                }
+            });
     }
 }
