@@ -45,6 +45,11 @@ export class UserProfileComponent  implements OnInit {
 
     ngOnInit() {
         this.entity = this._data.entity;
+        this.modelService.get_oauth_user_profile_any(this.user_id).subscribe(
+            (result: any) => {
+                console.log(result);
+            }
+        );
     }
 
 }

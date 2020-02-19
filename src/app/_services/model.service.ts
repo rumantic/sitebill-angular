@@ -568,6 +568,15 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
+    get_oauth_user_profile_any( user_id ) {
+        const load_data_request = {
+            action: 'oauth',
+            do: 'load_any_profile',
+            user_id: user_id,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
 
     get_current_user_profile () {
         return this.current_user_profile;
