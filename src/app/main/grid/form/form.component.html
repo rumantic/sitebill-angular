@@ -209,7 +209,8 @@
                                     </mat-form-field>
 
                                     <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
-                                        <sb-booking [keyValue]="_data.key_value"></sb-booking>
+                                        <sb-booking *ngIf="records[x].name === 'booking'" [keyValue]="_data.key_value"></sb-booking>
+                                        <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="this.modelService.get_user_id()"></user-profile>
                                     </div>
 
                                     <mat-form-field [hidden]="records[x].hidden" *ngSwitchDefault>
