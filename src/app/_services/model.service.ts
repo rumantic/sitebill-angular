@@ -22,6 +22,7 @@ export class ModelService {
     private config_loaded: boolean;
     private sitebill_config: any;
     private current_entity: SitebillEntity;
+    private navbar_hidden: boolean;
 
 
     constructor(
@@ -31,12 +32,14 @@ export class ModelService {
         private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
+        this.navbar_hidden = false;
         //console.log('ModelService constructor');
         this.entity = new SitebillEntity;
         this.entity.set_app_name(null);
         this.entity.set_table_name(null);
         this.entity.primary_key = null;
         this.entity.key_value = null;
+
 
         this.current_user_profile = new UserProfile();
 
@@ -619,5 +622,17 @@ export class ModelService {
                     localStorage.setItem('currentUser', JSON.stringify(result));
                 }
             });
+    }
+
+    show_navbar () {
+        this.navbar_hidden = false;
+    }
+
+    hide_navbar () {
+        this.navbar_hidden = true;
+    }
+
+    is_navbar_hidden () {
+        return this.navbar_hidden;
     }
 }

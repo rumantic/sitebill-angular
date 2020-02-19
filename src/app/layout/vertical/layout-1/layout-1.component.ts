@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { navigation } from 'app/navigation/navigation';
+import {ModelService} from '../../../_services/model.service';
 
 @Component({
     selector     : 'vertical-layout-1',
@@ -25,7 +26,8 @@ export class VerticalLayout1Component implements OnInit, OnDestroy
      * @param {FuseConfigService} _fuseConfigService
      */
     constructor(
-        private _fuseConfigService: FuseConfigService
+        private _fuseConfigService: FuseConfigService,
+        public modelService: ModelService,
     )
     {
         // Set the defaults
