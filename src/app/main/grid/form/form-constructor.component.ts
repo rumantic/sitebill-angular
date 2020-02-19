@@ -192,7 +192,7 @@ export class FormConstructorComponent implements OnInit {
                         this.close();
                         return false;
                     } else {
-                        //console.log(result);
+                        // console.log(result);
                         this.records = result.data;
                         this.tabs = result.tabs;
                         this.tabs_keys = Object.keys(result.tabs);

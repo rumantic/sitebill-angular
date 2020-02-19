@@ -101,7 +101,7 @@ export class ViewModalComponent extends FormComponent implements OnInit {
     }
 
     get_colspan(type: string, name: string) {
-        if (type === 'geodata' || type === 'uploads' || type === 'textarea_editor' || name === 'youtube') {
+        if (type === 'geodata' || type === 'uploads' || type === 'textarea_editor' || name === 'youtube' || type === 'injector') {
             return 2;
         }
         return 1;

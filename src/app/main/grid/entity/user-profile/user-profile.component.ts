@@ -1,55 +1,79 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {FormBuilder} from '@angular/forms';
+import {MatDialog} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {SitebillEntity} from '../../../../_models';
 import {ModelService} from '../../../../_services/model.service';
 import {FilterService} from '../../../../_services/filter.service';
+import {ViewStaticComponent} from '../../view-modal/view-static.component';
+import {ChatService} from '../../../apps/chat/chat.service';
+import {SnackService} from '../../../../_services/snack.service';
+import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'user-profile',
-    templateUrl: './user-profile.component.html',
-    styleUrls: ['./user-profile.component.scss'],
-    animations: fuseAnimations
+    templateUrl: '../../view-modal/view-modal.component.html',
+    styleUrls: ['../../view-modal/view-modal.component.scss'],
+    animations: fuseAnimations,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserProfileComponent  implements OnInit {
-    valid_domain_through_email: FormGroup;
-    loading = false;
-    show_login: boolean;
-    private entity: SitebillEntity;
-    form_compose_columns: any[];
-    private composeForm: FormGroup;
-    public compose_form_complete: boolean;
-    options_storage = {};
-    options_storage_titles = [];
-    dictionary_loaded = [];
-    clear_enable: boolean;
+export class UserProfileComponent extends ViewStaticComponent implements OnInit {
 
     @Input("user_id")
     user_id: number;
 
 
     constructor(
+        protected _chatService: ChatService,
         protected modelService: ModelService,
-        private _formBuilder: FormBuilder,
-        private filterService: FilterService,
-        protected cdr: ChangeDetectorRef,
-        @Inject(MAT_DIALOG_DATA) private _data: any
+        protected _formBuilder: FormBuilder,
+        protected _snackService: SnackService,
+        public _matDialog: MatDialog,
+        protected filterService: FilterService,
+        protected bitrix24Service: Bitrix24Service,
+        protected cdr: ChangeDetectorRef
     ) {
-        this.valid_domain_through_email = this._formBuilder.group({
-            domain_checker: ['', [Validators.required, Validators.email]],
-        });
-        this.show_login = true;
 
-    }
-
-    ngOnInit() {
-        this.entity = this._data.entity;
-        this.modelService.get_oauth_user_profile_any(this.user_id).subscribe(
-            (result: any) => {
-                console.log(result);
-            }
+        super(
+            _chatService,
+            modelService,
+            _formBuilder,
+            _snackService,
+            _matDialog,
+            filterService,
+            bitrix24Service,
+            cdr,
         );
+        this._data = new SitebillEntity();
+        this._data.set_app_name('user');
+        this._data.set_table_name('user');
+        this._data.set_primary_key('user_id');
+        this._data.set_key_value(this.user_id);
+        this._data.set_readonly(true);
+        this._data.set_disable_comment();
+
     }
 
+    getModel(): void {
+        this.modelService.get_user_profile(this.user_id)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                if (result) {
+                    if (result.state === 'error') {
+                        this._snackService.message(result.message);
+                        return false;
+                    } else {
+                        this.records = result.data;
+                        this.tabs = result.tabs;
+                        this.tabs_keys = Object.keys(result.tabs);
+                        this.rows = Object.keys(result.data);
+                        // console.log(this.rows);
+                        // console.log(this.tabs);
+                        this.init_form();
+                    }
+                    this.cdr.markForCheck();
+                }
+            });
+    }
 }
