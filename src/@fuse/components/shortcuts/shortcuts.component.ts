@@ -90,6 +90,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         {
         }
          */
+        this.set_default_shortcuts();
 
         // Subscribe to media changes
         this._fuseMatchMediaService.onMediaChange
