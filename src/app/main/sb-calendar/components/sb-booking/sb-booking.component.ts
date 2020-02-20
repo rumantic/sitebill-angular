@@ -3,12 +3,13 @@ import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angul
 import {isSameDay, isSameMonth} from 'date-fns';
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
 import {SB_MONTHS, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 import {SbCalendarService} from '../../services/sb-calendar.service';
 import {takeUntil} from 'rxjs/operators';
 import {SbRatesEditDialogDataModel} from '../../models/sb-rates-edit-dialog-data.model';
+import {ConfirmComponent} from '../../../../dialogs/confirm/confirm.component';
 
 @Component({
     selector: 'sb-booking',
@@ -42,6 +43,8 @@ export class SbBookingComponent implements OnInit, OnDestroy {
     rateTypes = SB_RATE_TYPES;
 
     activeDayIsOpen = true;
+
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
     private readonly destroy$ = new Subject<void>();
 
@@ -143,5 +146,24 @@ export class SbBookingComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
             )
             .subscribe(() => true);
+    }
+
+    onDeleteRatesClick(keyValue: string) {
+
+        this.confirmDialogRef = this.editRatesDialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.calendarService.deleteRate(keyValue).subscribe((result_delete) => {
+                    this.updateEventsList();
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+
     }
 }

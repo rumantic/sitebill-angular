@@ -53,6 +53,17 @@ export class SbCalendarService {
         return this.http.post(`${ this.modelService.get_api_url() }/apps/api/rest.php`, body);
     }
 
+    deleteRate(objectId: string) {
+        const body = {
+            action: 'reservation',
+            do: 'rate_delete',
+            object_id: objectId,
+            session_key: this.modelService.get_session_key_safe(),
+        };
+        return this.http.post(`${ this.modelService.get_api_url() }/apps/api/rest.php`, body);
+    }
+
+
     updateEventsList(keyValue: string, viewDate: Date) {
         const start = format(startOfMonth(viewDate), SbCalendarHelper.dateFormat);
         const end = format(endOfMonth(viewDate), SbCalendarHelper.dateFormat);

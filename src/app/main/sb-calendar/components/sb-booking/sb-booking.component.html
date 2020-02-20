@@ -123,6 +123,13 @@
                                     {{event.meta?.rate.rate_type && rateTypes[event.meta?.rate.rate_type] ? rateTypes[event.meta?.rate.rate_type].title : ''}}
                                     {{event.meta?.rate.amount | price}} руб.
                                 </a>
+                                <a (click)="onEditRatesClick(event, viewDate, keyValue)" [title]="'Редактировать'">
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+                                <a (click)="onDeleteRatesClick(event.meta?.rate.id)" [title]="'Удалить'">
+                                    <mat-icon>delete</mat-icon>
+                                </a>
+
                             </li>
                         </ng-container>
                     </ul>
