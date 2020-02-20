@@ -23,6 +23,7 @@ export class ModelService {
     private sitebill_config: any;
     private current_entity: SitebillEntity;
     private navbar_hidden: boolean;
+    private toolbar_hidden: boolean;
 
 
     constructor(
@@ -33,6 +34,7 @@ export class ModelService {
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.navbar_hidden = false;
+        this.toolbar_hidden = false;
         //console.log('ModelService constructor');
         this.entity = new SitebillEntity;
         this.entity.set_app_name(null);
@@ -634,5 +636,17 @@ export class ModelService {
 
     is_navbar_hidden () {
         return this.navbar_hidden;
+    }
+
+    show_toolbar () {
+        this.toolbar_hidden = false;
+    }
+
+    hide_toolbar () {
+        this.toolbar_hidden = true;
+    }
+
+    is_toolbar_hidden () {
+        return this.toolbar_hidden;
     }
 }

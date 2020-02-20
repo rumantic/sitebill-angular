@@ -67,6 +67,11 @@ export class AppComponent implements OnInit, OnDestroy
             this.modelService.hide_navbar();
         }
 
+        if (this.elRef.nativeElement.getAttribute('toolbar_hidden') === 'true') {
+            this.modelService.hide_toolbar();
+        }
+
+
         if (this.elRef.nativeElement.getAttribute('run') === 'calculator') {
             this.router.navigate(['/calculator']);
         }
