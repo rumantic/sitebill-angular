@@ -58,7 +58,19 @@ export class FrontComponent {
             this.change_columns_list({value: query.topic_id});
         });
 
+        this.modelService.config_loaded_emitter.subscribe((result: any) => {
+            if ( result === true ) {
+                console.log('config_loaded_emitter ' + result);
+                this.init_front();
+            }
+        });
+        if ( this.modelService.is_config_loaded() ) {
+            console.log('config already loaded');
+            this.init_front();
+        }
+    }
 
+    init_front () {
         this.enable_guest_mode();
         this.reload = true;
 
@@ -114,9 +126,7 @@ export class FrontComponent {
         const default_columns_list_needrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.needrent_entity.set_default_columns_list(default_columns_list_needrent);
         this.needrent_entity.hide_column_edit('user_id');
-
-
-
+        this.cdr.markForCheck();
     }
 
     push_reload_event () {

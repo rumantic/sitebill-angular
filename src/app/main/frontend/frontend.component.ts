@@ -47,12 +47,8 @@ export class FrontendComponent
         };
     }
     ngOnInit() {
+        console.log('run frontend');
         // this.modelService.get_session_key_safe();
         // console.log(this.modelService.getConfigValue('default_frontend_route'));
-        if ( this.modelService.getConfigValue('default_frontend_route') === null ) {
-            this.router.navigate(['grid/data']);
-        } else {
-            this.router.navigate([this.modelService.getConfigValue('default_frontend_route')]);
-        }
     }
 }

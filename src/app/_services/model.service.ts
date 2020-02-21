@@ -1,4 +1,4 @@
-import {Injectable, Inject, isDevMode} from '@angular/core';
+import {Injectable, Inject, isDevMode, Output, EventEmitter} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {currentUser, UserProfile} from 'app/_models/currentuser';
@@ -24,6 +24,9 @@ export class ModelService {
     private current_entity: SitebillEntity;
     private navbar_hidden: boolean;
     private toolbar_hidden: boolean;
+
+    @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
+
 
 
     constructor(
@@ -92,17 +95,23 @@ export class ModelService {
     }
 
     enable_guest_mode () {
-        if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
-            console.log('need guest mode');
-            if ( this.get_session_key() === null ) {
-                this.init_nobody_user_storage();
-            } else if ( this.get_session_key() === 'nobody' ) {
-                this.enable_nobody_mode();
-            } else if ( this.get_session_key() === undefined ) {
-                this.init_nobody_user_storage();
-            } else {
-                this.enable_nobody_mode();
+        console.log('apps.realty.enable_guest_mode ' + this.getConfigValue('apps.realty.enable_guest_mode'));
+        if ( this.getConfigValue('apps.realty.enable_guest_mode') === '1') {
+            if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
+                console.log('need guest mode');
+                if ( this.get_session_key() === null ) {
+                    this.init_nobody_user_storage();
+                } else if ( this.get_session_key() === 'nobody' ) {
+                    this.enable_nobody_mode();
+                } else if ( this.get_session_key() === undefined ) {
+                    this.init_nobody_user_storage();
+                } else {
+                    this.enable_nobody_mode();
+                }
             }
+        } else {
+            console.log('guest mode not enabled');
+            this.router.navigate(['/login/']);
         }
     }
 
@@ -214,11 +223,14 @@ export class ModelService {
     }
 
     logout() {
-        this.disable_menu();
-        this.reset_local_user_storage();
-        this.disable_session_key_validity();
-        this.current_user_profile = new UserProfile();
-        this.router.navigate(['/logout']);
+        if ( this.all_checks_passes() ) {
+            console.log('logout');
+            this.disable_menu();
+            this.reset_local_user_storage();
+            this.disable_session_key_validity();
+            this.current_user_profile = new UserProfile();
+            this.router.navigate(['/logout']);
+        }
     }
 
     disable_menu() {
@@ -517,6 +529,7 @@ export class ModelService {
     }
 
     load_config () {
+        console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
@@ -532,8 +545,22 @@ export class ModelService {
                 if (result.state === 'success') {
                     this.sitebill_config = result.data;
                     this.config_loaded = true;
+                    this.after_config_loaded();
                 }
             });
+
+    }
+
+    after_config_loaded () {
+        this.config_loaded_emitter.emit(true);
+        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || !this.getConfigValue('apps.realty.enable_guest_mode') ) {
+            console.log('default route');
+            this.router.navigate(['grid/data']);
+        } else {
+            console.log('config route');
+            console.log(this.getConfigValue('apps.realty.default_frontend_route'));
+            this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
+        }
 
     }
     
