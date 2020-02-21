@@ -225,6 +225,7 @@ export class LoginComponent implements OnInit {
         this._snackService.message('Авторизация успешна!');
         this.modelSerivce.disable_nobody_mode();
         this.modelSerivce.load_current_user_profile();
+        this.modelSerivce.init_config();
     }
 
 
