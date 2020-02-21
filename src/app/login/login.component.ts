@@ -197,9 +197,11 @@ export class LoginComponent implements OnInit {
                             this._fuseNavigationService.unregister('main');
                             this._fuseNavigationService.register('main', navigation);
                             this._fuseNavigationService.setCurrentNavigation('main');
+                            this.after_success_login();
 
                             this.router.navigate([this.returnUrl]);
                         } else if (data.success == 1) {
+                            this.after_success_login();
                             this.router.navigate(['/']);
                         } else {
                             let error = 'Доступ запрещен';
@@ -218,6 +220,13 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+    after_success_login () {
+        this._snackService.message('Авторизация успешна!');
+        this.modelSerivce.disable_nobody_mode();
+        this.modelSerivce.load_current_user_profile();
+    }
+
 
     init_input_parameters() {
         let app_root_element;
