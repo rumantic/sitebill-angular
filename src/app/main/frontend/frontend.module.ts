@@ -23,11 +23,16 @@ import {BillingService} from '../../_services/billing.service';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {RegisterModalComponent} from '../../login/register-modal/register-modal.component';
 import {SharedModule} from '../../shared.module';
+import {PageComponent} from './page/page.component';
 
 const routes = [
     {
         path     : 'prices',
         component: PriceComponent
+    },
+    {
+        path     : 'content/:slug',
+        component: PageComponent
     },
     {
         path     : '**',
@@ -39,6 +44,7 @@ const routes = [
     declarations: [
         FrontendComponent,
         PriceComponent,
+        PageComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
