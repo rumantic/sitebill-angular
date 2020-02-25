@@ -41,7 +41,6 @@ registerLocaleData(localeRu, 'ru');
     selector   : 'grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class GridComponent implements OnInit, OnDestroy
@@ -173,7 +172,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(DOCUMENT) private document: any,
         protected dialog: MatDialog,
         private _fuseConfigService: FuseConfigService,
-        protected modelService: ModelService,
+        public modelService: ModelService,
         protected billingService: BillingService,
         protected bitrix24Service: Bitrix24Service,
         protected _snackService: SnackService,
@@ -947,10 +946,10 @@ export class GridComponent implements OnInit, OnDestroy
         console.log(this.selected);
     }
 
-    export_collections_pdf() {
+    export_collections_pdf(report_type = 'client') {
         const deal_id = this.bitrix24Service.get_deal_id();
         const domain = this.bitrix24Service.get_domain();
-        this.modelService.export_collections_pdf(domain, deal_id)
+        this.modelService.export_collections_pdf(domain, deal_id, report_type)
             .subscribe((response: any) => {
                 this.saveAsProject(response);
             });

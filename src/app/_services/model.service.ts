@@ -546,8 +546,14 @@ export class ModelService {
                     this.sitebill_config = result.data;
                     this.config_loaded = true;
                     this.after_config_loaded();
+                } else {
+                    console.log('load config failed');
                 }
-            });
+            },
+                    error => {
+                        console.log('load config failed, bad request');
+                        this.router.navigate(['grid/data']);
+                });
 
     }
 
@@ -620,12 +626,13 @@ export class ModelService {
         return false;
     }
 
-    export_collections_pdf(domain, deal_id) {
+    export_collections_pdf(domain, deal_id, report_type: string = 'client') {
         const request = {
             action: 'pdfreport',
             do: 'export_collections_pdf',
             deal_id: deal_id,
             domain: domain,
+            report_type: report_type,
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request, {responseType: 'blob'});
