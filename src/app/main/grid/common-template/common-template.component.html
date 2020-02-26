@@ -58,7 +58,7 @@
 </ng-template>
 
 <ng-template #imageTmpl let-column="column" let-row="row" let-value="value">
-    <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
+    <button mat-icon-button (click)="view_gallery(row, column, value, !get_permission(row, 'D'))">
         <div matBadge="{{value.length}}" matBadgeColor="accent" matBadgeOverlap="true" *ngIf="value.length > 0">
 
             <img *ngIf="value[0].remote === 'true'" width="50"
@@ -67,7 +67,7 @@
             <img *ngIf="value[0].remote !== 'true'" width="50"
                  src="{{api_url}}/img/data/{{value[0].preview}}" />
         </div>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
+        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls &&  get_permission(row, 'D')">image_search</mat-icon>
     </button>
 </ng-template>
 
