@@ -291,12 +291,13 @@ export class GridComponent implements OnInit, OnDestroy
                 //console.log('search string share');
                 this.filterService.share_data(this.entity, 'concatenate_search', searchText);
             });
-        this.cdr.markForCheck();
+        // this.cdr.markForCheck();
 
     }
 
 
     ngAfterViewChecked() {
+        /*
         if ( this.compose_complete ) {
             if ( !this.after_compose_complete_checked ) {
                 setTimeout(() => {
@@ -305,6 +306,7 @@ export class GridComponent implements OnInit, OnDestroy
                 this.after_compose_complete_checked = true;
             }
         }
+         */
     }
 
     refresh() {
@@ -822,7 +824,7 @@ export class GridComponent implements OnInit, OnDestroy
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
-                    this.cdr.markForCheck();
+                    // this.cdr.markForCheck();
                     this.refresh();
                 }
             });
@@ -853,7 +855,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                     this.filterService.empty_share(this.entity);
                     this.refresh();
-                    this.cdr.markForCheck();
+                    // this.cdr.markForCheck();
                 }
             });
     }

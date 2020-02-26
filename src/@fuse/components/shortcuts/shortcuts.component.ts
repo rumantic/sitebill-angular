@@ -131,14 +131,14 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
                 'title': 'О проекте',
                 'type' : 'item',
                 'icon' : 'textsms',
-                'url'  : '/frontend/about'
+                'url'  : '/frontend/content/about'
             });
 
             this.shortcutItems.push({
                 'title': 'Контакты',
                 'type' : 'item',
                 'icon' : 'account_box',
-                'url'  : '/frontend/contacts'
+                'url'  : '/frontend/content/contacts'
             });
         }
     }

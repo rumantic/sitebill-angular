@@ -616,6 +616,17 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
+    load_page( slug ) {
+        const load_data_request = {
+            action: 'model',
+            do: 'load_page',
+            slug: slug,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+
     get_current_user_profile () {
         return this.current_user_profile;
     }

@@ -1,14 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {FuseConfigService} from '../../../../@fuse/services/config.service';
 import {FuseTranslationLoaderService} from '../../../../@fuse/services/translation-loader.service';
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
-import {BillingService} from '../../../_services/billing.service';
-import {FilterService} from '../../../_services/filter.service';
-import {Router} from '@angular/router';
-import {MatDialog, MatDialogConfig} from '@angular/material';
-import {LoginModalComponent} from '../../../login/modal/login-modal.component';
+import {ActivatedRoute} from '@angular/router';
 import {ModelService} from '../../../_services/model.service';
 
 @Component({
@@ -21,31 +16,48 @@ import {ModelService} from '../../../_services/model.service';
 export class PageComponent
 {
     private loading_in_progress: boolean;
+    private slug: string;
+    public page: any;
+    public load_complete: boolean;
+
     /**
      * Constructor
      *
      */
     constructor(
-        private _fuseConfigService: FuseConfigService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private billingSerivce: BillingService,
-        protected router: Router,
-        protected dialog: MatDialog,
+        private route: ActivatedRoute,
         public modelService: ModelService,
-        private filterService: FilterService,
         protected cdr: ChangeDetectorRef
     )
     {
         this.loading_in_progress = false;
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
+
+        this.slug = this.route.snapshot.paramMap.get('slug');
+        this.load_complete = false;
+
     }
 
     ngOnInit() {
-        this.modelService.enable_guest_mode();
+        this.load_page(this.slug);
     }
 
-    login_modal () {
-        const dialogConfig = new MatDialogConfig();
-        this.dialog.open(LoginModalComponent, dialogConfig);
+    ngAfterViewChecked() {
+        if ( this.slug !==  this.route.snapshot.paramMap.get('slug')) {
+            this.slug = this.route.snapshot.paramMap.get('slug');
+            this.load_page(this.slug);
+        }
+    }
+
+
+    load_page ( slug: string ) {
+        this.modelService.load_page(slug).subscribe( (result: any) => {
+            if ( result.state === 'success' ) {
+                this.page = result.data;
+                this.load_complete = true;
+                this.cdr.markForCheck();
+            }
+        });
     }
 }
