@@ -1,8 +1,9 @@
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="p-16 p-sm-24" fxLayout="row" fxLayoutAlign="center center" [formGroup]="form">
+        <div class="p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start" [formGroup]="form">
 
-            <div class="fuse-card">
+            <div class="fuse-card" fxFlex="100" fxFlex.gt-sm="33">
 
                 <div class="p-16 pt-8">
                     <mat-label>База объектов</mat-label>
@@ -15,7 +16,7 @@
 
             </div>
 
-            <div class="fuse-card">
+            <div class="fuse-card" fxFlex="100" fxFlex.gt-sm="33">
 
                 <div class="p-16 pt-8">
                     <mat-label>В регионе</mat-label>
