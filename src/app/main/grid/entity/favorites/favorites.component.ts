@@ -6,7 +6,6 @@ import { fuseAnimations } from '@fuse/animations';
     selector: 'favorites-grid',
     templateUrl: '../../grid.component.html',
     styleUrls: ['../../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class FavoritesComponent extends GridComponent {

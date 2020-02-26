@@ -548,6 +548,7 @@ export class ModelService {
                     this.after_config_loaded();
                 } else {
                     console.log('load config failed');
+                    this.router.navigate(['grid/data']);
                 }
             },
                     error => {

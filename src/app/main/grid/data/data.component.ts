@@ -7,7 +7,6 @@ import { fuseAnimations } from '@fuse/animations';
     selector: 'data-grid',
     templateUrl: '../grid.component.html',
     styleUrls: ['../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class DataComponent extends GridComponent {
