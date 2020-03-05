@@ -570,7 +570,7 @@ export class ModelService {
         }
 
     }
-    
+
     load_current_user_profile () {
         this.get_oauth_user_profile()
             .subscribe((result: any) => {
@@ -694,5 +694,16 @@ export class ModelService {
 
     is_toolbar_hidden () {
         return this.toolbar_hidden;
+    }
+
+    get_contact(contact_id: number) {
+        const load_data_request = {
+            action: 'model',
+            primary_key: 'id',
+            do: 'get_contact',
+            key_value: contact_id,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 }

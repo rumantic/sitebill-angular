@@ -119,7 +119,8 @@
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'injector'">
-                        <user-profile [user_id]="records['user_id'].value"></user-profile>
+                        <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="records['user_id'].value"></user-profile>
+                        <contact-injector *ngIf="records[x].name === 'contact_id'" [contact_id]="records[x].value"></contact-injector>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'mobilephone'">
