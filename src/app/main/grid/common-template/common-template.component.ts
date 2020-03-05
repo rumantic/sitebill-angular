@@ -9,7 +9,6 @@ import { ModelService } from 'app/_services/model.service';
     selector: 'common-template',
     templateUrl: './common-template.component.html',
     styleUrls: ['./common-template.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommonTemplateComponent {
     api_url: string;

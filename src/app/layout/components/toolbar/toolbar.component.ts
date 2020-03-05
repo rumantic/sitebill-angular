@@ -156,7 +156,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-    
+
     logout() {
         this.modelService.logout();
     }
@@ -234,5 +234,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
     my_collections() {
         this._router.navigate(['grid/favorites/']);
+    }
+
+    goto(route: string) {
+        this._router.navigate([route]);
     }
 }
