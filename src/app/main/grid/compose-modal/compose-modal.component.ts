@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {takeUntil} from 'rxjs/operators';
 import {SitebillEntity} from '../../../_models';
 import {FilterService} from '../../../_services/filter.service';
+import {ChangeContext} from 'ng5-slider';
 
 @Component({
     selector: 'compose-modal',
@@ -23,6 +24,7 @@ export class ComposeModalComponent  implements OnInit {
     private composeForm: FormGroup;
     public compose_form_complete: boolean;
     options_storage = {};
+    options_storage_type = {};
     options_storage_titles = [];
     dictionary_loaded = [];
     clear_enable: boolean;
@@ -65,6 +67,14 @@ export class ComposeModalComponent  implements OnInit {
         return this._data.entity.model[this._data.entity.columns_index[column_name]].title;
     }
 
+    get_column_model ( column_name ) {
+        return this._data.entity.model[this._data.entity.columns_index[column_name]];
+    }
+
+    get_column_model_parameters ( column_name ) {
+        return this._data.entity.model[this._data.entity.columns_index[column_name]].parameters;
+    }
+
     get_composed_column_name () {
         return this._data.column.model_name;
     }
@@ -90,23 +100,43 @@ export class ComposeModalComponent  implements OnInit {
                 this.form_compose_columns = compose_columns;
                 for (let i = 0; i < compose_columns.length; i++) {
                     if ( this.column_defined(compose_columns[i]) ) {
+                        const parameters = this.get_column_model_parameters(compose_columns[i]);
+                        console.log(parameters);
+                        if (parameters.slider !== undefined && parameters.slider !== null) {
+                            this.options_storage_type[compose_columns[i]] = 'slider';
+                            this.options_storage[compose_columns[i]] = {};
+                            this.options_storage[compose_columns[i]].min = 0;
+                            this.options_storage[compose_columns[i]].max = 0;
+                            this.options_storage[compose_columns[i]].loaded = false;
+                            this.options_storage[compose_columns[i]].title = this.get_title(compose_columns[i]);
+                            this.modelService.get_max(this.entity.get_table_name(), compose_columns[i]).subscribe((result: any) => {
+                                console.log(result);
+                                if ( result.state === 'success' ) {
+                                    this.options_storage[compose_columns[i]].max = result.message;
+                                    this.options_storage[compose_columns[i]].options = result.message;
+                                    this.options_storage[compose_columns[i]].loaded = true;
+                                }
+                            });
 
-                        if ( !this.is_dictionary_loaded(compose_columns[i]) ) {
-                            this.load_dictionary(compose_columns[i]);
-                        }
-
-                        const form_control_item = new FormControl(compose_columns[i]);
-                        form_control_item.clearValidators();
-                        this.options_storage[compose_columns[i]] = [];
-                        this.options_storage_titles[compose_columns[i]] = this.get_title(compose_columns[i]);
-                        this.composeForm.addControl(compose_columns[i], form_control_item);
-                        if (filter_compose_storage != null) {
-                            if ( filter_compose_storage[compose_columns[i]] != null ) {
-                                this.composeForm.controls[compose_columns[i]].patchValue(filter_compose_storage[compose_columns[i]]);
-                                this.clear_enable = true;
+                        } else {
+                            if ( !this.is_dictionary_loaded(compose_columns[i]) ) {
+                                this.load_dictionary(compose_columns[i]);
                             }
+
+                            const form_control_item = new FormControl(compose_columns[i]);
+                            form_control_item.clearValidators();
+                            this.options_storage_type[compose_columns[i]] = 'select';
+                            this.options_storage[compose_columns[i]] = [];
+                            this.options_storage_titles[compose_columns[i]] = this.get_title(compose_columns[i]);
+                            this.composeForm.addControl(compose_columns[i], form_control_item);
+                            if (filter_compose_storage != null) {
+                                if ( filter_compose_storage[compose_columns[i]] != null ) {
+                                    this.composeForm.controls[compose_columns[i]].patchValue(filter_compose_storage[compose_columns[i]]);
+                                    this.clear_enable = true;
+                                }
+                            }
+                            // console.log(this.filterService.get_share_data(this.entity.get_app_name(), compose_columns[i]));
                         }
-                        // console.log(this.filterService.get_share_data(this.entity.get_app_name(), compose_columns[i]));
                     }
                 }
                 this.compose_form_complete = true;
@@ -145,6 +175,7 @@ export class ComposeModalComponent  implements OnInit {
             const compose_result = {};
             this.clear_enable = false;
             if (compose_columns.length > 0) {
+                console.log(this.options_storage);
                 for (let i = 0; i < compose_columns.length; i++) {
                     if ( this.column_defined(compose_columns[i]) ) {
                         if ( this.composeForm.controls[compose_columns[i]].value !==  compose_columns[i]) {
@@ -190,5 +221,9 @@ export class ComposeModalComponent  implements OnInit {
 
     enable_clear_button() {
         this.clear_enable = true;
+    }
+
+    onPriceSliderChange($event: ChangeContext) {
+
     }
 }
