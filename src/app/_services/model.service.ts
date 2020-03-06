@@ -699,6 +699,7 @@ export class ModelService {
     get_contact(contact_id: number) {
         const load_data_request = {
             action: 'model',
+            model_name: 'contact',
             primary_key: 'id',
             do: 'get_contact',
             key_value: contact_id,

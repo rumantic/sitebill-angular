@@ -14,6 +14,7 @@ import {AlertService, AuthenticationService} from '../../../_services/index';
 import {ModelService} from '../../../_services/model.service';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoginModalComponent} from '../../../login/modal/login-modal.component';
+import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private route: ActivatedRoute,
         private _router: Router,
         public modelService: ModelService,
+        protected bitrix24Service: Bitrix24Service,
         protected dialog: MatDialog,
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService
@@ -233,7 +235,11 @@ export class ToolbarComponent implements OnInit, OnDestroy
     }
 
     my_collections() {
-        this._router.navigate(['grid/favorites/']);
+        if ( this.bitrix24Service.get_domain() !== 'localhost' ) {
+            this._router.navigate(['grid/collections/']);
+        } else {
+            this._router.navigate(['grid/favorites/']);
+        }
     }
 
     goto(route: string) {
