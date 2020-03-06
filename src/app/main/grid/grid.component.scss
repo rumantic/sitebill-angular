@@ -25,7 +25,9 @@ mat-sidenav-container {
 
     .mat-dialog-container {
         padding: 0;
-        width: 740px;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
 
         .compose-form {
 
@@ -55,7 +57,7 @@ mat-sidenav-container {
     }
 
     .dialog-content-wrapper {
-        max-height: 86vh;
+        max-height: 100vh;
         display: flex;
         flex-direction: column;
     }
