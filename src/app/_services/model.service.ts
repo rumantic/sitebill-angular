@@ -287,8 +287,8 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    load_dictionary_model_with_params(model_name, columnName, params) {
-        const request = {action: 'model', do: 'load_dictionary_with_params', columnName: columnName, model_name: model_name, params: params, anonymous: true, session_key: this.get_session_key_safe()};
+    load_dictionary_model_with_params(model_name, columnName, params, switch_off_ai_mode = false) {
+        const request = {action: 'model', do: 'load_dictionary_with_params', columnName: columnName, model_name: model_name, params: params, switch_off_ai_mode: switch_off_ai_mode, anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 

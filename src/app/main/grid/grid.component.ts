@@ -704,6 +704,10 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
+        dialogConfig.width = '99vw';
+        dialogConfig.maxWidth = '99vw';
+        dialogConfig.height = '99vh';
+
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
         if (this.only_collections) {

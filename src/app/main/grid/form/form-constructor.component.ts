@@ -252,7 +252,7 @@ export class FormConstructorComponent implements OnInit {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
             if (this.records[this.rows[i]].type == 'select_by_query') {
-                // this.init_select_by_query_options(this.records[this.rows[i]].name);
+                this.init_select_by_query_options(this.records[this.rows[i]].name);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
@@ -401,7 +401,7 @@ export class FormConstructorComponent implements OnInit {
 
     init_select_by_query_options(columnName) {
         // console.log(this._data.get_default_params());
-        this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form())
+        this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
         // this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
