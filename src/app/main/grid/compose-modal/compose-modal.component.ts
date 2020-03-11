@@ -101,19 +101,31 @@ export class ComposeModalComponent  implements OnInit {
                 for (let i = 0; i < compose_columns.length; i++) {
                     if ( this.column_defined(compose_columns[i]) ) {
                         const parameters = this.get_column_model_parameters(compose_columns[i]);
-                        console.log(parameters);
                         if (parameters.slider !== undefined && parameters.slider !== null) {
                             this.options_storage_type[compose_columns[i]] = 'slider';
                             this.options_storage[compose_columns[i]] = {};
                             this.options_storage[compose_columns[i]].min = 0;
                             this.options_storage[compose_columns[i]].max = 0;
+                            try {
+                                if (filter_compose_storage[compose_columns[i]] != null) {
+                                    this.options_storage[compose_columns[i]].min = filter_compose_storage[compose_columns[i]].min;
+                                    this.options_storage[compose_columns[i]].max = filter_compose_storage[compose_columns[i]].max;
+                                }
+                            } catch (e) {
+
+                            }
                             this.options_storage[compose_columns[i]].loaded = false;
                             this.options_storage[compose_columns[i]].title = this.get_title(compose_columns[i]);
+
                             this.modelService.get_max(this.entity.get_table_name(), compose_columns[i]).subscribe((result: any) => {
-                                console.log(result);
+                                //console.log(result);
                                 if ( result.state === 'success' ) {
-                                    this.options_storage[compose_columns[i]].max = result.message;
-                                    this.options_storage[compose_columns[i]].options = result.message;
+                                    this.options_storage[compose_columns[i]].options = {};
+                                    if (this.options_storage[compose_columns[i]].max === 0) {
+                                        this.options_storage[compose_columns[i]].max = result.message;
+                                    }
+                                    this.options_storage[compose_columns[i]].options.floor = 0;
+                                    this.options_storage[compose_columns[i]].options.ceil = result.message;
                                     this.options_storage[compose_columns[i]].loaded = true;
                                 }
                             });
@@ -131,6 +143,8 @@ export class ComposeModalComponent  implements OnInit {
                             this.composeForm.addControl(compose_columns[i], form_control_item);
                             if (filter_compose_storage != null) {
                                 if ( filter_compose_storage[compose_columns[i]] != null ) {
+                                    console.log(filter_compose_storage[compose_columns[i]]);
+
                                     this.composeForm.controls[compose_columns[i]].patchValue(filter_compose_storage[compose_columns[i]]);
                                     this.clear_enable = true;
                                 }
@@ -175,14 +189,26 @@ export class ComposeModalComponent  implements OnInit {
             const compose_result = {};
             this.clear_enable = false;
             if (compose_columns.length > 0) {
-                console.log(this.options_storage);
+                //console.log('apply');
+                //console.log(compose_columns);
+
                 for (let i = 0; i < compose_columns.length; i++) {
+                    //console.log(compose_columns[i]);
+
                     if ( this.column_defined(compose_columns[i]) ) {
-                        if ( this.composeForm.controls[compose_columns[i]].value !==  compose_columns[i]) {
-                            compose_result[compose_columns[i]] = this.composeForm.controls[compose_columns[i]].value;
+                        if ( this.composeForm.controls[compose_columns[i]] != null ) {
+                            if ( this.composeForm.controls[compose_columns[i]].value !==  compose_columns[i]) {
+                                compose_result[compose_columns[i]] = this.composeForm.controls[compose_columns[i]].value;
+                                this.clear_enable = true;
+                            }
+                        }
+                        if (this.options_storage[compose_columns[i]] != null) {
+                            compose_result[compose_columns[i]] = this.options_storage[compose_columns[i]];
                             this.clear_enable = true;
                         }
                     }
+                    //console.log(this.options_storage[compose_columns[i]]);
+
                     // console.log(compose_columns[i]);
                 }
 
