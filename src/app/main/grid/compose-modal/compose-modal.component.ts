@@ -203,8 +203,12 @@ export class ComposeModalComponent  implements OnInit {
                             }
                         }
                         if (this.options_storage[compose_columns[i]] != null) {
-                            compose_result[compose_columns[i]] = this.options_storage[compose_columns[i]];
-                            this.clear_enable = true;
+                            if ( this.options_storage_type[compose_columns[i]] != null ) {
+                                if ( this.options_storage_type[compose_columns[i]] === 'slider' ) {
+                                    compose_result[compose_columns[i]] = this.options_storage[compose_columns[i]];
+                                    this.clear_enable = true;
+                                }
+                            }
                         }
                     }
                     //console.log(this.options_storage[compose_columns[i]]);

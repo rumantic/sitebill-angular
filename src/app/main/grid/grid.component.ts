@@ -420,7 +420,7 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
             //console.log('grid app name');
             //console.log(this.entity.get_app_name());
-            console.log(this.filterService.share_array[this.entity.get_app_name()]);
+            // console.log(this.filterService.share_array[this.entity.get_app_name()]);
 
             var obj = this.filterService.share_array[this.entity.get_app_name()];
             var mapped = Object.keys(obj);

@@ -55,8 +55,13 @@ mat-sidenav-container {
             }
         }
     }
+    .dialog-content {
+        height: 99vh;
+        max-height: 99vh;
+    }
 
     .dialog-content-wrapper {
+        height: 99vh;
         max-height: 99vh;
         display: flex;
         flex-direction: column;
