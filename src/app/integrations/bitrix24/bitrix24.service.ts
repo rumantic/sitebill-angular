@@ -12,6 +12,7 @@ export class Bitrix24Service {
     private domain: string;
     private placement: string;
     private collections_count: number;
+    private app_root_element: any;
 
     constructor(
         private http: HttpClient,
@@ -70,10 +71,27 @@ export class Bitrix24Service {
     }
 
     get_deal_id() {
+        this.reload_placement_option_id();
+        console.log('this.placement_options.get_id() = ' + this.placement_options.get_id());
         if ( this.placement_options.get_id() === null ) {
             return 1;
         }
         return this.placement_options.get_id();
+    }
+
+    reload_placement_option_id () {
+        try {
+            let placement_options = this.app_root_element.getAttribute('bitrix24_placement_options').replace(/\'/g, '"');
+            console.log(this.app_root_element.getAttribute('bitrix24_placement_options'));
+            console.log(placement_options);
+            if (placement_options != null) {
+                let placement_options_parsed = JSON.parse(placement_options);
+                console.log('placement_options_parsed.ID = ' + placement_options_parsed.ID);
+                this.placement_options.set_id(placement_options_parsed.ID);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     init_input_parameters() {
@@ -86,6 +104,8 @@ export class Bitrix24Service {
         } else if (this.document.getElementById('app_root')) {
             app_root_element = this.document.getElementById('app_root');
         }
+        this.app_root_element = app_root_element;
+
         if (app_root_element.getAttribute('bitrix24_access_token')) {
             this.set_access_token(app_root_element.getAttribute('bitrix24_access_token'));
         }
