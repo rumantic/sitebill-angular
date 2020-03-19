@@ -92,7 +92,7 @@ export class AppComponent implements OnInit, OnDestroy
 
         //console.log((platformLocation as any).location);
         //console.log((platformLocation as any).location.href);
-        //console.log((platformLocation as any).location.origin);        
+        //console.log((platformLocation as any).location.origin);
         //console.log(this.hero);
         //console.log(APP_BASE_HREF);
         // Get default navigation
@@ -200,7 +200,6 @@ export class AppComponent implements OnInit, OnDestroy
                 }
                 this.init_input_parameters();
             });
-        this.modelService.onSitebillStart();
     }
 
     init_input_parameters() {
@@ -229,7 +228,13 @@ export class AppComponent implements OnInit, OnDestroy
         if (app_root_element.getAttribute('bitrix24_placement')) {
             this.bitrix24Router.route(app_root_element.getAttribute('bitrix24_placement'));
         }
+        if (app_root_element.getAttribute('disable_default_frontend_route')) {
+            console.log('set disable_default_frontend_route');
+            this.modelService.setDomConfigValue('disable_default_frontend_route', true);
+        }
+
         this.document.body.classList.add(this.fuseConfig.colorTheme);
+        this.modelService.onSitebillStart();
 
     }
 

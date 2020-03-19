@@ -26,6 +26,7 @@ export class ModelService {
     private toolbar_hidden: boolean;
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
+    private dom_sitebill_config: any;
 
 
 
@@ -44,6 +45,8 @@ export class ModelService {
         this.entity.set_table_name(null);
         this.entity.primary_key = null;
         this.entity.key_value = null;
+        this.sitebill_config = {};
+        this.dom_sitebill_config = {};
 
 
         this.current_user_profile = new UserProfile();
@@ -511,6 +514,19 @@ export class ModelService {
         return null;
     }
 
+    getDomConfigValue ( key: string ) {
+        return this.dom_sitebill_config[key];
+    }
+
+    setDomConfigValue ( key: string, value: any ) {
+        return this.dom_sitebill_config[key] = value;
+    }
+
+
+    setConfigValue (key, value) {
+        this.sitebill_config[key] = value;
+    }
+
     get_access (model_name, function_name) {
         const storage = JSON.parse(localStorage.getItem('currentUser')) || [];
         if (storage['structure'] == null) {
@@ -560,7 +576,8 @@ export class ModelService {
 
     after_config_loaded () {
         this.config_loaded_emitter.emit(true);
-        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || !this.getConfigValue('apps.realty.enable_guest_mode') ) {
+        console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        if ( this.getConfigValue('apps.realty.default_frontend_route') === null ) {
             console.log('default route');
             this.router.navigate(['grid/data']);
         } else {
