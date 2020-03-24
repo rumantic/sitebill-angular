@@ -137,6 +137,10 @@
     </div>
 </ng-template>
 
+<ng-template #injectorTmpl let-row="row" let-value="value">
+            <div [innerHTML]="row.contact_id.value_string|safehtml"></div>
+</ng-template>
+
 <ng-template #clientStatusIdTmpl let-row="row" let-rowIndex="rowIndex" let-value="value">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
         <span *ngIf="row.user_id.value == 0">

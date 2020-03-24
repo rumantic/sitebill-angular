@@ -598,6 +598,10 @@ export class GridComponent implements OnInit, OnDestroy
                     cellTemplate = this.commonTemplate.dtdateTmpl;
                     break;
 
+                case 'injector':
+                    cellTemplate = this.commonTemplate.injectorTmpl;
+                    break;
+
                 case 'geodata':
                     cellTemplate = this.commonTemplate.geoTmpl;
                     prop = model[this.columns_index[row]].name + '.value_string';
@@ -739,6 +743,11 @@ export class GridComponent implements OnInit, OnDestroy
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию объявлений', 5000);
         }
+    }
+
+    view_injector (event: any) {
+        console.log('view injector');
+        console.log(event);
     }
 
 

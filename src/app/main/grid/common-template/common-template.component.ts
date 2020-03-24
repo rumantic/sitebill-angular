@@ -29,6 +29,7 @@ export class CommonTemplateComponent {
     @ViewChild('checkboxTmpl') checkboxTmpl: TemplateRef<any>;
     @ViewChild('clientControlTmpl') clientControlTmpl: TemplateRef<any>;
     @ViewChild('clientIdTmpl') clientIdTmpl: TemplateRef<any>;
+    @ViewChild('injectorTmpl') injectorTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
     @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
 
@@ -55,6 +56,7 @@ export class CommonTemplateComponent {
     @Output() deleteEvent = new EventEmitter<number>();
     @Output() toggle_activeEvent = new EventEmitter<any>();
     @Output() view_galleryEvent = new EventEmitter<any>();
+    @Output() view_injectorEvent = new EventEmitter<any>();
     @Output() toggle_collectionEvent = new EventEmitter<any>();
 
 
@@ -81,6 +83,12 @@ export class CommonTemplateComponent {
         const event = { row: row, value: value };
         this.toggle_collectionEvent.next(event);
     }
+
+    view_injector(row, value) {
+        const event = { row: row, value: value };
+        this.view_injectorEvent.next(event);
+    }
+
 
     view_gallery(row, column, images, disable_gallery_controls) {
         const event = { row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls };
