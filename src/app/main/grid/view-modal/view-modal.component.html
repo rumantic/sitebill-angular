@@ -114,8 +114,12 @@
                             </ng-container>
                         </agm-map>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'price'">
-                        {{records[x].value}} <span *ngIf="records[x].currency_id != null">{{records[x].currency_id.value_string}}</span>
+                    <ng-container *ngSwitchCase="'docuploads'">
+                        <ng-container *ngIf="records[x].value.length > 0">
+                            <span *ngFor="let doc of records[x].value">
+                                <a href="{{doc.normal_url}}" target="_blank">{{doc.normal}}</a> |
+                            </span>
+                        </ng-container>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'injector'">
