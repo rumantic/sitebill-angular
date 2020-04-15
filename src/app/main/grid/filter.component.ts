@@ -10,6 +10,9 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 import {HttpClient} from '@angular/common/http';
 
+interface Dict {
+    data: any[];
+}
 
 @Component({
     selector: 'filter-comp',
@@ -74,7 +77,7 @@ export class FilterComponent {
                 switchMap(term => this.modelSerivce.load_dictionary_model(this.entity.get_table_name(), this.columnObject.model_name, term))
             )
             .subscribe(items => {
-                this.items = items.data;
+                this.items = items['data'];
             }, (err) => {
                 console.log('error', err);
                 this.items = [];
