@@ -46,7 +46,7 @@
 <ng-select *ngIf="string_filter_enable"
            [(ngModel)]="selectedFilter"
            appendTo="body"
-           [items]="options"
+           [items]="items"
            [clearOnBackspace]="false"
            class="select_options"
            [searchable]="true"
@@ -54,6 +54,7 @@
            (focus)="onFocus($event)"
            [hideSelected]="false"
            [closeOnSelect]="false"
+           [typeahead]="typeahead"
            (ngModelChange)="selectItem($event)"
            placeholder="{{columnObject.title}}">
 

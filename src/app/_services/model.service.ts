@@ -6,7 +6,6 @@ import {SitebillEntity, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
-import {of} from 'rxjs';
 
 
 @Injectable()
@@ -39,7 +38,7 @@ export class ModelService {
     ) {
         this.navbar_hidden = false;
         this.toolbar_hidden = false;
-        //console.log('ModelService constructor');
+        // console.log('ModelService constructor');
         this.entity = new SitebillEntity;
         this.entity.set_app_name(null);
         this.entity.set_table_name(null);
@@ -74,7 +73,7 @@ export class ModelService {
         } else if (this.api_url == null) {
             return '';
         } else {
-            //console.log('prod url');
+            // console.log('prod url');
             return this.api_url;
         }
     }
@@ -122,24 +121,24 @@ export class ModelService {
         if ( from !== '' ) {
             console.log('enable_need_reload from ' + from);
         }
-        //console.log('enable_need_reload');
+        // console.log('enable_need_reload');
         this.need_reload = true;
     }
 
     disable_need_reload() {
-        //console.log('disable_need_reload');
+        // console.log('disable_need_reload');
         this.need_reload = false;
         this.session_key_validate();
     }
 
     is_need_reload() {
-        //console.log('is_need_reload');
-        //console.log(this.need_reload);
+        // console.log('is_need_reload');
+        // console.log(this.need_reload);
         return this.need_reload;
     }
 
     session_key_validate() {
-        //console.log('session_key_validate');
+        // console.log('session_key_validate');
         if ( !this.session_key_validated ) {
             this.load_current_user_profile();
         }
@@ -147,7 +146,7 @@ export class ModelService {
     }
 
     is_validated_session_key() {
-        //console.log('is_validated_session_key');
+        // console.log('is_validated_session_key');
         return this.session_key_validated;
     }
 
@@ -156,9 +155,9 @@ export class ModelService {
     }
 
     get_session_key() {
-        //console.log('|get_session_key');
-        //console.log(this.currentUser);
-        //console.log('get_session_key|');
+        // console.log('|get_session_key');
+        // console.log(this.currentUser);
+        // console.log('get_session_key|');
         if (this.currentUser === null) {
             return null;
         }
@@ -217,7 +216,7 @@ export class ModelService {
     }
 
     reset_local_user_storage() {
-        //console.log('reset_local_user_storage');
+        // console.log('reset_local_user_storage');
         localStorage.removeItem('currentUser');
         if (this.currentUser != null) {
             this.currentUser.session_key = null;
@@ -237,7 +236,7 @@ export class ModelService {
     }
 
     disable_menu() {
-        //console.log('disable menu');
+        // console.log('disable menu');
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
@@ -256,10 +255,10 @@ export class ModelService {
     reinit_currentUser() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         this.disable_need_reload();
-        //console.log('reinit current user');
-        //console.log(localStorage.getItem('currentUser'));
-        //console.log(this.currentUser);
-        //console.log('reinit complete');
+        // console.log('reinit current user');
+        // console.log(localStorage.getItem('currentUser'));
+        // console.log(this.currentUser);
+        // console.log('reinit complete');
     }
 
     load(model_name, grid_item, filter_params_json, owner, page, per_page) {
@@ -278,15 +277,23 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    //Возвращаем только записи, которые используются в связанной таблице
+    // Возвращаем только записи, которые используются в связанной таблице
     load_dictionary(columnName) {
         const request = {action: 'model', do: 'load_dictionary', columnName: columnName, anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    //Возвращаем только записи, которые используются в связанной таблице
-    load_dictionary_model(model_name, columnName) {
-        const request = {action: 'model', do: 'load_dictionary', columnName: columnName, model_name: model_name, anonymous: true, session_key: this.get_session_key_safe()};
+    // Возвращаем только записи, которые используются в связанной таблице
+    load_dictionary_model(model_name, columnName, term = '') {
+        const request = {
+            action: 'model',
+            do: 'load_dictionary',
+            columnName: columnName,
+            model_name: model_name,
+            term: term,
+            anonymous: true,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
@@ -296,7 +303,7 @@ export class ModelService {
     }
 
 
-    //Возвращает все записи
+    // Возвращает все записи
     load_dictionary_model_all(model_name, columnName) {
         const request = {
             action: 'model',
