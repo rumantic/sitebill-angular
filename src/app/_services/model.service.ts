@@ -322,6 +322,17 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
+    load_only_model(model_name) {
+        const load_data_request = {
+            action: 'model',
+            do: 'load_only_model',
+            model_name: model_name,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+
     loadById(model_name, primary_key, key_value) {
         const load_data_request = {
             action: 'model',

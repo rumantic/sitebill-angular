@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
 import {AuthenticationService} from '../../_services';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'register-modal',
@@ -58,7 +59,26 @@ export class RegisterModalComponent  implements OnInit {
     }
 
     ngOnInit() {
+        // Получить модель юзера
+        if ( this.modelService.get_nobody_mode() ) {
+            this.get_user_model();
+        }
     }
+
+    get_user_model () {
+        this.modelService.load_only_model('user')
+            .subscribe((result: any) => {
+                if (result) {
+
+                    //for (var i = 0; i < result.length; i++) {
+                        //console.log(this.records[this.rows[i]].type);
+                    //}
+
+                    console.log(result.data.user);
+                }
+            });
+    }
+
 
     register() {
         this.loading = true;
