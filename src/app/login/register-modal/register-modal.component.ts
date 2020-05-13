@@ -1,19 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ModelService} from '../../_services/model.service';
 import {SnackService} from '../../_services/snack.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
 import {AuthenticationService} from '../../_services';
 import {takeUntil} from 'rxjs/operators';
+import * as moment from 'moment';
+import {forbiddenNullValue, FormConstructorComponent} from '../../main/grid/form/form-constructor.component';
+import {FilterService} from '../../_services/filter.service';
+import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
+import {MatDialog} from '@angular/material';
+import {SitebillEntity} from '../../_models';
 
 @Component({
     selector: 'register-modal',
+    // templateUrl: '../../main/grid/form/form.component.html',
     templateUrl: './register-modal.component.html',
     styleUrls: ['./register-modal.component.scss'],
     animations: fuseAnimations
 })
-export class RegisterModalComponent  implements OnInit {
+export class RegisterModalComponent extends FormConstructorComponent implements OnInit {
     registerForm: FormGroup;
     registerFormErrors: any;
     registerMessage: string;
@@ -29,9 +36,23 @@ export class RegisterModalComponent  implements OnInit {
         protected modelService: ModelService,
         protected _snackService: SnackService,
         private authenticationService: AuthenticationService,
-        private _formBuilder: FormBuilder,
+        protected _formBuilder: FormBuilder,
         protected _fuseNavigationService: FuseNavigationService,
+        protected filterService: FilterService,
+        protected bitrix24Service: Bitrix24Service,
+        public _matDialog: MatDialog,
+        protected cdr: ChangeDetectorRef
     ) {
+        super(
+            modelService,
+            _formBuilder,
+            _snackService,
+            filterService,
+            bitrix24Service,
+            _matDialog,
+            cdr,
+        );
+
         this.valid_domain_through_email = this._formBuilder.group({
             domain_checker: ['', [Validators.required, Validators.email]],
         });
@@ -54,11 +75,21 @@ export class RegisterModalComponent  implements OnInit {
             agree: ['', Validators.required],
             username: ['', [Validators.required]],
             password: ['', Validators.required],
-            password_retype: ['', Validators.required]
+            password_retype: ['', Validators.required],
+            city_id: ['', Validators.required],
         });
     }
 
     ngOnInit() {
+        this._data = new SitebillEntity();
+        this._data.set_app_name('user');
+        this._data.set_table_name('user');
+        this._data.set_key_value('user_id');
+
+
+        this.form = this._formBuilder.group({});
+        this._data.set_readonly(false);
+
         // Получить модель юзера
         if ( this.modelService.get_nobody_mode() ) {
             this.get_user_model();
@@ -69,16 +100,30 @@ export class RegisterModalComponent  implements OnInit {
         this.modelService.load_only_model('user')
             .subscribe((result: any) => {
                 if (result) {
-
-                    //for (var i = 0; i < result.length; i++) {
-                        //console.log(this.records[this.rows[i]].type);
-                    //}
-
-                    console.log(result.data.user);
+                    console.log(result);
+                    const columns = this.cleanup_columns(result.columns);
+                    this.records = columns;
+                    this.tabs = result.tabs;
+                    this.tabs_keys = Object.keys(result.tabs);
+                    this.rows = Object.keys(columns);
+                    console.log(this.records);
+                    console.log(this.rows);
+                    //console.log(this.tabs);
+                    this.init_form();
                 }
             });
     }
 
+    cleanup_columns ( columns ) {
+        const result = [];
+        for (var i = 0; i < columns.length; i++) {
+            if ( columns[i].required === 'on' && columns[i].name !== 'email' && columns[i].name !== 'login' ) {
+                result.push(columns[i]);
+                console.log(columns[i]);
+            }
+        }
+        return result;
+    }
 
     register() {
         this.loading = true;
