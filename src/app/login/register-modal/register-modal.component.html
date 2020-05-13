@@ -7,7 +7,7 @@
             <div class="title">Регистрация</div>
 
 
-            <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+            <form name="loginForm" [formGroup]="form" (ngSubmit)="register()" novalidate>
                 <mat-form-field>
                     <input matInput placeholder="Логин (email)" formControlName="username" name="username">
                     <mat-error *ngIf="registerFormErrors.username.required">
@@ -253,7 +253,7 @@
                     </a-->
                 </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Регистрация"
-                        [disabled]="registerForm.invalid || registerForm.get('agree').value != true">
+                        [disabled]="form.invalid || form.get('agree').value != true">
                     <mat-icon *ngIf="!loading">
                         create
                     </mat-icon>

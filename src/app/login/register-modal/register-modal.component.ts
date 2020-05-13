@@ -70,13 +70,12 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
             password_retype: {},
             agree: {},
         };
-        this.registerForm = this._formBuilder.group({
+        this.form = this._formBuilder.group({
             domain: [''],
             agree: ['', Validators.required],
             username: ['', [Validators.required]],
             password: ['', Validators.required],
             password_retype: ['', Validators.required],
-            city_id: ['', Validators.required],
         });
     }
 
@@ -87,7 +86,6 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         this._data.set_key_value('user_id');
 
 
-        this.form = this._formBuilder.group({});
         this._data.set_readonly(false);
 
         // Получить модель юзера
@@ -101,7 +99,8 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
             .subscribe((result: any) => {
                 if (result) {
                     console.log(result);
-                    const columns = this.cleanup_columns(result.columns);
+                    const columns = this.cleanup_columns(result.data.user, result.columns);
+                    //const columns = result.data.user;
                     this.records = columns;
                     this.tabs = result.tabs;
                     this.tabs_keys = Object.keys(result.tabs);
@@ -110,16 +109,21 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
                     console.log(this.rows);
                     //console.log(this.tabs);
                     this.init_form();
+                    console.log(this.form);
+
                 }
             });
     }
 
-    cleanup_columns ( columns ) {
+    cleanup_columns ( columns, columns_index ) {
+        console.log(columns_index);
+        console.log(columns);
         const result = [];
-        for (var i = 0; i < columns.length; i++) {
-            if ( columns[i].required === 'on' && columns[i].name !== 'email' && columns[i].name !== 'login' ) {
-                result.push(columns[i]);
-                console.log(columns[i]);
+        for (var i = 0; i < columns_index.length; i++) {
+            if ( columns[columns_index[i].name].required === 'on' && columns[columns_index[i].name].name !== 'email' && columns[columns_index[i].name].name !== 'login' ) {
+                console.log(columns[columns_index[i].name]);
+                result[columns_index[i].name] = columns[columns_index[i].name];
+                console.log(columns[columns_index[i].name]);
             }
         }
         return result;
