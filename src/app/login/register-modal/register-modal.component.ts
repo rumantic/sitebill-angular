@@ -98,32 +98,32 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         this.modelService.load_only_model('user')
             .subscribe((result: any) => {
                 if (result) {
-                    console.log(result);
+                    // console.log(result);
                     const columns = this.cleanup_columns(result.data.user, result.columns);
-                    //const columns = result.data.user;
+                    // const columns = result.data.user;
                     this.records = columns;
                     this.tabs = result.tabs;
                     this.tabs_keys = Object.keys(result.tabs);
                     this.rows = Object.keys(columns);
-                    console.log(this.records);
-                    console.log(this.rows);
-                    //console.log(this.tabs);
+                    // console.log(this.records);
+                    // console.log(this.rows);
+                    // console.log(this.tabs);
                     this.init_form();
-                    console.log(this.form);
+                    // console.log(this.form);
 
                 }
             });
     }
 
     cleanup_columns ( columns, columns_index ) {
-        console.log(columns_index);
-        console.log(columns);
+        // console.log(columns_index);
+        // console.log(columns);
         const result = [];
-        for (var i = 0; i < columns_index.length; i++) {
+        for (let i = 0; i < columns_index.length; i++) {
             if ( columns[columns_index[i].name].required === 'on' && columns[columns_index[i].name].name !== 'email' && columns[columns_index[i].name].name !== 'login' ) {
-                console.log(columns[columns_index[i].name]);
+                // console.log(columns[columns_index[i].name]);
                 result[columns_index[i].name] = columns[columns_index[i].name];
-                console.log(columns[columns_index[i].name]);
+                // console.log(columns[columns_index[i].name]);
             }
         }
         return result;
@@ -133,11 +133,11 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         this.loading = true;
         this.hide_register_complete();
 
-        this.authenticationService.register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.password_retype)
+        this.authenticationService.register(this.form.value.username, this.form.value.password, this.form.value.password_retype)
             .subscribe(
                 (data: any) => {
                     this.loading = false;
-                    if (data.result == '0') {
+                    if (data.result === '0') {
                         this._snackService.message(data.msg);
                     } else {
                         let register_complete_message = 'Регистрация успешна!';

@@ -90,7 +90,7 @@ export class Bitrix24Service {
                 this.placement_options.set_id(placement_options_parsed.ID);
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     }
 
