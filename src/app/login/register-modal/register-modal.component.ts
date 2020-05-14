@@ -30,8 +30,6 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
     show_register: boolean;
     show_login: boolean;
 
-
-
     constructor(
         protected modelService: ModelService,
         protected _snackService: SnackService,
@@ -123,21 +121,24 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
             if ( columns[columns_index[i].name].required === 'on' && columns[columns_index[i].name].name !== 'email' && columns[columns_index[i].name].name !== 'login' ) {
                 // console.log(columns[columns_index[i].name]);
                 result[columns_index[i].name] = columns[columns_index[i].name];
-                // console.log(columns[columns_index[i].name]);
+                //  console.log(columns_index[i].name);
+                //  console.log(this.additional_params_index);
             }
         }
         return result;
     }
-
     register() {
         this.loading = true;
         this.hide_register_complete();
 
-        this.authenticationService.register(this.form.value.username, this.form.value.password, this.form.value.password_retype)
+        const additional_params = this.get_ql_items_from_form();
+
+        this.authenticationService.register(this.form.value.username, this.form.value.password, this.form.value.password_retype, additional_params)
             .subscribe(
                 (data: any) => {
                     this.loading = false;
-                    if (data.result === '0') {
+                    // console.log(data);
+                    if (data.result == '0') {
                         this._snackService.message(data.msg);
                     } else {
                         let register_complete_message = 'Регистрация успешна!';
@@ -158,10 +159,10 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         this.show_login = false;
         this.show_register = false;
         this.registerMessage = message;
-        this.registerForm.controls['username'].patchValue('');
-        this.registerForm.controls['password'].patchValue('');
-        this.registerForm.controls['password_retype'].patchValue('');
-        this.registerForm.controls['agree'].patchValue(false);
+        this.form.controls['username'].patchValue('');
+        this.form.controls['password'].patchValue('');
+        this.form.controls['password_retype'].patchValue('');
+        this.form.controls['agree'].patchValue(false);
     }
 
 

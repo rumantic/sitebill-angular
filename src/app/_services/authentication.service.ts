@@ -17,7 +17,7 @@ export class AuthenticationService {
     fuseConfig: any;
     api_url: string;
     private currentUser: currentUser;
-    
+
 
     constructor(
         private http: HttpClient,
@@ -61,10 +61,20 @@ export class AuthenticationService {
             .catch(e => { return throwError('site error'); });
     }
 
-    register(username: string, password: string, password_retype: string) {
+    register(username: string, password: string, password_retype: string, additional_params = null) {
         const url = `${this.modelSerivce.get_api_url()}/apps/api/rest.php`;
 
-        const register_request = {action: 'oauth', do: 'register', proxysalt: '123', login: username, password: password, password_retype: password_retype};
+        let register_request = {
+            action: 'oauth',
+            do: 'register',
+            proxysalt: '123',
+            login: username,
+            password: password,
+            password_retype: password_retype
+        };
+        if ( additional_params !== null ) {
+            register_request = {...register_request, ...additional_params};
+        }
 
         return this.http.post<any>(url, register_request)
             .map(user => {
@@ -100,7 +110,7 @@ export class AuthenticationService {
 
     logout() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        
+
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.api_url}/apps/api/rest.php`;
 
