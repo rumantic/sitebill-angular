@@ -3,7 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import {MatDialog, MatDialogConfig, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
 
 import {AlertService, AuthenticationService} from '../_services/index';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -12,6 +12,7 @@ import { ModelService } from 'app/_services/model.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import {SnackService} from '../_services/snack.service';
 import {toASCII, decode} from 'punycode';
+import {LoginModalComponent} from './modal/login-modal.component';
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',
@@ -43,12 +44,13 @@ export class LoginComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _fuseConfigService: FuseConfigService,
         public snackBar: MatSnackBar,
+        protected dialog: MatDialog,
         protected _snackService: SnackService,
         private modelSerivce: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
         @Inject(DOCUMENT) private document: any,
         private alertService: AlertService) {
-        
+
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
@@ -75,6 +77,9 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.login_modal();
+        return true;
+
         this.hide_domain = true;
 
         // reset login status
@@ -247,6 +252,12 @@ export class LoginComponent implements OnInit {
         }
 
     }
+
+    login_modal () {
+        const dialogConfig = new MatDialogConfig();
+        this.dialog.open(LoginModalComponent, dialogConfig);
+    }
+
 
     show_login_form() {
         this.show_login = true;

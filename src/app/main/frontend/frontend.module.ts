@@ -20,8 +20,6 @@ import {
 import {GridModule} from '../grid/grid.module';
 import {PriceComponent} from './price.component';
 import {BillingService} from '../../_services/billing.service';
-import {LoginModalComponent} from '../../login/modal/login-modal.component';
-import {RegisterModalComponent} from '../../login/register-modal/register-modal.component';
 import {SharedModule} from '../../shared.module';
 import {PageComponent} from './page/page.component';
 

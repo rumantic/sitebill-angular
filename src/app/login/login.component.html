@@ -1,6 +1,6 @@
 <div id="login" fxLayout="column">
 
-    
+
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="show_login">
@@ -10,8 +10,9 @@
             </div>
 
             <div class="title">Авторизация</div>
+            <div class="title">Нажмите Вход</div>
 
-            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+            <!--form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
                 <mat-form-field *ngIf="!hide_domain">
                     <input matInput placeholder="Сайт" formControlName="domain" name="domain" >
                     <mat-error *ngIf="loginFormErrors.domain.required">
@@ -33,9 +34,8 @@
                 </mat-form-field>
                 <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
                      fxLayoutAlign="space-between center">
-                    <!--mat-checkbox class="remember-me" aria-label="Remember Me">
-                        Запомпнить меня
-                    </mat-checkbox-->
+
+
                     <a mat-button color="accent" (click)="show_remind_form()" *ngIf="this.modelSerivce.getConfigValue('allow_remind_password') == 1">Забыли пароль?</a>
                 </div>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
@@ -48,9 +48,9 @@
                     Вход
                 </button>
 
-            </form>
+            </form-->
 
-            <ng-container *ngIf="!hide_domain">
+            <!--ng-container *ngIf="!hide_domain">
                 <div class="separator">
                     <span class="text">или</span>
                 </div>
@@ -68,22 +68,10 @@
                     <span class="text">Еще нет аккаунта?</span>
                     <button mat-button color="accent" (click)="show_register_form()">Зарегистрироваться</button>
                 </div>
-            </ng-container>
+            </ng-container-->
 
 
 
-            <!--button mat-raised-button class="google">
-                Log in with Google
-            </button>
-
-            <button mat-raised-button class="facebook">
-                Log in with Facebook
-            </button>
-
-            <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                <span class="text">Don't have an account?</span>
-                <a class="link" [routerLink]="'/pages/auth/register'">Create an account</a>
-            </div-->
 
         </div>
 

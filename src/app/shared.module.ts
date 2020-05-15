@@ -59,6 +59,7 @@ import {GatewaysModalComponent} from './main/gateways/modal/gateways-modal.compo
 import {RemindModalComponent} from './login/remind-modal/remind-modal.component';
 import {UserProfileComponent} from './main/grid/entity/user-profile/user-profile.component';
 import {ContactInjectorComponent} from './main/grid/entity/contact-injector/contact-injector.component';
+import {RegisterDomainModalComponent} from './login/register-domain-modal/register-domain-modal.component';
 
 @NgModule({
     imports: [
@@ -120,6 +121,7 @@ import {ContactInjectorComponent} from './main/grid/entity/contact-injector/cont
         FuseWidgetModule,
     ],
     declarations: [
+        RegisterDomainModalComponent,
         RegisterModalComponent,
         RemindModalComponent,
         LoginModalComponent,
@@ -154,6 +156,7 @@ import {ContactInjectorComponent} from './main/grid/entity/contact-injector/cont
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
+        RegisterDomainModalComponent,
         RegisterModalComponent,
         RemindModalComponent,
         NgxUploaderModule,

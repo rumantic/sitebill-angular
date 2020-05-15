@@ -36,6 +36,7 @@ export class LoginModalComponent  implements OnInit {
     show_register: boolean;
     show_login: boolean;
     show_remind: boolean;
+    public show_register_domain: boolean;
 
 
 
@@ -225,5 +226,13 @@ export class LoginModalComponent  implements OnInit {
         this.show_login = false;
         this.show_register = false;
         this.show_remind = true;
+    }
+
+    show_register_domain_form() {
+        this.show_login = false;
+        this.show_register = false;
+        this.show_register_domain = true;
+        this.show_remind = false;
+        this.hide_register_complete();
     }
 }

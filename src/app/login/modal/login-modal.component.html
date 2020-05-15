@@ -52,11 +52,11 @@
                 </div>
                 <div class="register" fxLayout="column" fxLayoutAlign="center center">
                     <span class="text">Еще нет аккаунта?</span>
-                    <a class="link" [routerLink]="'/register/'">Создать сайт</a>
+                    <button mat-button color="accent" (click)="show_register_domain_form()">Создать сайт</button>
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
+            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1 && hide_domain">
                 <div class="separator">
                     <span class="text">или</span>
                 </div>
@@ -82,11 +82,14 @@
 
         </div>
         <remind-modal *ngIf="show_remind">
-
         </remind-modal>
-        <register-modal *ngIf="show_register">
 
+        <register-modal *ngIf="show_register">
         </register-modal>
+
+        <register-domain-modal *ngIf="show_register_domain">
+        </register-domain-modal>
+
         <ng-container *ngIf="show_register || show_remind">
             <div class="separator">
                 <span class="text">или</span>
