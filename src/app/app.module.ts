@@ -73,10 +73,8 @@ import {SharedModule} from './shared.module';
 
 
 const appRoutes: Routes = [
-    //{path: '', component: CalculatorMiniComponent },
     {path: '', redirectTo: 'frontend', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
-    //{path: 'register', component: RegisterComponent},
     {path: 'logout', component: LoginComponent},
     {
         path: 'control/:model_name/:id/:control_name',
@@ -129,10 +127,6 @@ const appRoutes: Routes = [
     {
         path: 'vk',
         loadChildren: 'app/main/vk/vk.module#VkModule'
-    },
-    {
-        path: 'register',
-        loadChildren: 'app/main/register/register.module#RegisterModule'
     },
     {
         path: 'profile',
@@ -230,7 +224,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes, {useHash: true, onSameUrlNavigation: 'reload'}),
-        //RouterModule.forRoot(appRoutes),
+        // RouterModule.forRoot(appRoutes),
         CommonModule,
 
         TranslateModule.forRoot(),
@@ -302,7 +296,7 @@ const appRoutes: Routes = [
         SnackService,
         Bitrix24Router
         // provider used to create fake backend
-        //fakeBackendProvider
+        // fakeBackendProvider
     ],
     entryComponents: [AppComponent, SelectDistrictDialogComponent, MortgageCalculatorComponent, CalculatorMiniComponent, SearchFormComponent, SnackBarComponent]
 })
