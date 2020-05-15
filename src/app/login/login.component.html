@@ -3,99 +3,15 @@
 
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
-        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="show_login">
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
 
             <div class="logo" *ngIf="hide_domain">
                 <img src="https://www.sitebill.ru/storage/icons/dragon.png">
             </div>
 
             <div class="title">Авторизация</div>
-            <div class="title">Нажмите Вход</div>
-
-            <!--form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-                <mat-form-field *ngIf="!hide_domain">
-                    <input matInput placeholder="Сайт" formControlName="domain" name="domain" >
-                    <mat-error *ngIf="loginFormErrors.domain.required">
-                        укажите ваш сайт
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Логин" formControlName="username" name="username">
-                    <mat-error *ngIf="loginFormErrors.username.required">
-                        укажите ваш логин
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput type="password" placeholder="Пароль" name="password" formControlName="password">
-                    <mat-error *ngIf="loginFormErrors.password.required">
-                        укажите ваш пароль
-                    </mat-error>
-                </mat-form-field>
-                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
-                     fxLayoutAlign="space-between center">
-
-
-                    <a mat-button color="accent" (click)="show_remind_form()" *ngIf="this.modelSerivce.getConfigValue('allow_remind_password') == 1">Забыли пароль?</a>
-                </div>
-                <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
-                        [disabled]="loginForm.invalid">
-                    <mat-icon *ngIf="!loading">
-                        vpn_key
-                    </mat-icon>
-                    <mat-icon *ngIf="loading"><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
-
-                    Вход
-                </button>
-
-            </form-->
-
-            <!--ng-container *ngIf="!hide_domain">
-                <div class="separator">
-                    <span class="text">или</span>
-                </div>
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <span class="text">Еще нет аккаунта?</span>
-                    <a class="link" [routerLink]="'/register/'">Создать сайт</a>
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
-                <div class="separator">
-                    <span class="text">или</span>
-                </div>
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <span class="text">Еще нет аккаунта?</span>
-                    <button mat-button color="accent" (click)="show_register_form()">Зарегистрироваться</button>
-                </div>
-            </ng-container-->
-
-
-
-
+            <a mat-button color="accent" (click)="login_modal()">Войти</a>
         </div>
-
-
-        <div *ngIf="show_remind" id="register-module">
-            <remind-modal>
-
-            </remind-modal>
-            <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
-            </div>
-        </div>
-
-        <div *ngIf="show_register" id="register-module">
-            <register-modal *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
-
-            </register-modal>
-            <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1">
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
-                </div>
-            </ng-container>
-        </div>
-
     </div>
 
 </div>
