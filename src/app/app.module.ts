@@ -69,7 +69,6 @@ import {ModelService} from 'app/_services/model.service';
 import {SnackService} from './_services/snack.service';
 import {SnackBarComponent} from './main/snackbar/snackbar.component';
 import {Bitrix24Router} from './integrations/bitrix24/bitrix24router';
-import {RegisterComponent} from './register/index';
 import {SharedModule} from './shared.module';
 
 
@@ -215,7 +214,6 @@ const appRoutes: Routes = [
         SliderComponent,
         CarouselComponent,
         LoginComponent,
-        RegisterComponent,
         AlertComponent,
         SelectDistrictDialogComponent,
         MortgageCalculatorComponent,
