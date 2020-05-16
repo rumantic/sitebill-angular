@@ -4,8 +4,9 @@
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="register_success">
-            <div class="title">Регистрация успешна!</div>
-            <div class="title">Через три минуты на вашу почту будет отправлен адрес созданного сайта и вы <a class="link" (click)="show_login_form()">сможете войти</a>.</div>
+            <div class="title">Создание сайта</div>
+            <div class="title">{{wait_message}}</div>
+            <mat-progress-bar mode="{{progress_mode}}" value="{{progress}}"></mat-progress-bar>
         </div>
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="!register_success">
             <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="register()" novalidate>

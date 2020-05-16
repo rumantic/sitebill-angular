@@ -9,7 +9,7 @@ import {
     MatCheckboxModule,
     MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule,
     MatFormFieldModule, MatGridListModule, MatIconModule,
-    MatInputModule, MatMenuModule, MatOptionModule,
+    MatInputModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
     MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSnackBarModule, MatTableModule,
     MatTabsModule,
     MatToolbarModule, MatTooltipModule
@@ -95,6 +95,7 @@ import {RegisterDomainModalComponent} from './login/register-domain-modal/regist
         MatDialogModule,
         MatButtonToggleModule,
         MatBadgeModule,
+        MatProgressBarModule,
         Ng5SliderModule,
 
         ConfirmDialogModule,

@@ -20,6 +20,11 @@ import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
 
+export interface Progress {
+    progress: string;
+    message: string;
+}
+
 @Component({
     selector: 'register-domain-modal',
     // templateUrl: '../../main/grid/form/form.component.html',
@@ -38,6 +43,10 @@ export class RegisterDomainModalComponent
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     public source: any;
+    progress: any;
+    private domain: any;
+    wait_message: any;
+    progress_mode: any;
 
 
     /**
@@ -58,6 +67,8 @@ export class RegisterDomainModalComponent
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
+        this.progress = 0;
+        this.progress_mode = 'determinate';
 
         // Set the defaults
         this.loginFormErrors = {
@@ -82,8 +93,14 @@ export class RegisterDomainModalComponent
     whmcs_create(fullname, lastname, email, password) {
         const request = { action: 'addclient', fullname: fullname, lastname: '', email: email, password: password, source: this.source };
         console.log(request);
+        // return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1_dump.php`, request);
         return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1.php`, request);
     }
+
+    get_progress(domain_name) {
+        return this.http.get('http://' + domain_name + '/progress.php');
+    }
+
 
 
     register() {
@@ -101,9 +118,37 @@ export class RegisterDomainModalComponent
                         });
                     } else {
                         this.register_success = true;
+                        this.modelSerivce.set_install_mode(true);
+                        this.progress_mode = 'determinate';
+                        this.wait_message = 'Пожалуйста, подождите ... ';
+                        this.show_progress(data.domain);
                     }
                 }
             );
+    }
+
+    show_progress ( domain = null ) {
+        // console.log('progress');
+        // domain = 'api.sitebill.ru';
+        if ( domain !== null ) {
+            this.domain = domain;
+        }
+
+        const refreshIntervalId = setInterval(() => {
+            this.get_progress(this.domain).subscribe( (data: Progress) => {
+                console.log(data);
+                if ( data.progress !== null ) {
+                    this.progress_mode = 'determinate';
+                    this.progress = data.progress;
+                }
+                if ( data.progress == '100' ) {
+                    clearInterval(refreshIntervalId);
+                    this.run_autologin();
+                }
+            });
+
+        }, 1000);
+
     }
 
 
@@ -127,6 +172,12 @@ export class RegisterDomainModalComponent
 
 
     show_login_form() {
+
+    }
+
+    private run_autologin() {
+        this.wait_message = 'Готово';
+        console.log('run autologin');
 
     }
 }

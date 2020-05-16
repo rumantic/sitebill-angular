@@ -26,6 +26,7 @@ export class ModelService {
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     private dom_sitebill_config: any;
+    private install_mode: boolean;
 
 
 
@@ -46,6 +47,7 @@ export class ModelService {
         this.entity.key_value = null;
         this.sitebill_config = {};
         this.dom_sitebill_config = {};
+        this.install_mode = false;
 
 
         this.current_user_profile = new UserProfile();
@@ -741,5 +743,13 @@ export class ModelService {
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+    set_install_mode ( mode: boolean ) {
+        this.install_mode = mode;
+    }
+
+    get_install_mode () {
+        return this.install_mode;
     }
 }
