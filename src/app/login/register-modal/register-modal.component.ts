@@ -1,12 +1,10 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {ModelService} from '../../_services/model.service';
 import {SnackService} from '../../_services/snack.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
 import {AuthenticationService} from '../../_services';
-import {takeUntil} from 'rxjs/operators';
-import * as moment from 'moment';
 import {forbiddenNullValue, FormConstructorComponent} from '../../main/grid/form/form-constructor.component';
 import {FilterService} from '../../_services/filter.service';
 import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
@@ -169,4 +167,6 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
     hide_register_complete () {
         this.registerMessage = null;
     }
+
+
 }

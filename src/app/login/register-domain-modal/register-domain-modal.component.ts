@@ -37,7 +37,7 @@ export class RegisterDomainModalComponent
     hide_domain: boolean = false;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
-
+    public source: any;
 
 
     /**
@@ -68,6 +68,7 @@ export class RegisterDomainModalComponent
 
     }
     ngOnInit() {
+        this.init_input_parameters();
         this.loginForm = this._formBuilder.group({
             name: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
@@ -79,7 +80,8 @@ export class RegisterDomainModalComponent
     }
 
     whmcs_create(fullname, lastname, email, password) {
-        const request = { action: 'addclient', fullname: fullname, lastname: '', email: email, password: password };
+        const request = { action: 'addclient', fullname: fullname, lastname: '', email: email, password: password, source: this.source };
+        console.log(request);
         return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1.php`, request);
     }
 
@@ -105,14 +107,23 @@ export class RegisterDomainModalComponent
     }
 
 
-    init_input_parameters () {
+    init_input_parameters() {
         let app_root_element;
-        if (this.document.getElementById('calculator_mini_root')) {
-            app_root_element = this.document.getElementById('calculator_mini_root');
-        } else if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
+        if (this.document.getElementById('angular_search')) {
+            app_root_element = this.document.getElementById('angular_search');
+        } else if (this.document.getElementById('angular_search_ankonsul')) {
+            app_root_element = this.document.getElementById('angular_search_ankonsul');
+        } else if (this.document.getElementById('app_root')) {
             app_root_element = this.document.getElementById('app_root');
         }
+
+        if (app_root_element.getAttribute('source') !== undefined ) {
+            this.source = app_root_element.getAttribute('source');
+        } else {
+            this.source = 'native';
+        }
     }
+
 
 
     show_login_form() {

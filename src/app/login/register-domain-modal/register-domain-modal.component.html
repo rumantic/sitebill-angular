@@ -28,7 +28,7 @@
                     </mat-error>
                 </mat-form-field>
                 <button mat-raised-button color="accent" class="submit-button" aria-label="Вход"
-                        [disabled]="loginForm.invalid">
+                        [disabled]="loginForm.invalid || loading">
                     <mat-icon *ngIf="!loading">
                         vpn_key
                     </mat-icon>
