@@ -27,7 +27,7 @@ export class FrontendComponent
      *
      */
     constructor(
-        private modelService: ModelService,
+        public modelService: ModelService,
         private _fuseConfigService: FuseConfigService,
         protected router: Router,
         protected dialog: MatDialog,
