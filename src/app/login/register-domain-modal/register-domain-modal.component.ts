@@ -105,12 +105,14 @@ export class RegisterDomainModalComponent
 
     register() {
         this.loading = true;
+        this.modelSerivce.set_install_mode(true);
         this.whmcs_create(this.loginForm.value.name, '', this.loginForm.value.email, this.loginForm.value.password)
             .subscribe(
                 (data: any) => {
                     this.loading = false;
                     //console.log(data);
                     if ( data.RESULT == 'error' ) {
+                        this.modelSerivce.set_install_mode(false);
                         this.snackBar.open(data.MESSAGE, 'ok', {
                             duration: 2000,
                             horizontalPosition: this.horizontalPosition,
