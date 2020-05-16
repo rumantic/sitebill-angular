@@ -4,9 +4,6 @@
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
         <div id="register-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}"  *ngIf="registerMessage == null">
-            <div class="title">Регистрация</div>
-
-
             <form name="loginForm" [formGroup]="form" (ngSubmit)="register()" novalidate>
                 <mat-form-field>
                     <input matInput placeholder="Логин (email)" formControlName="username" name="username">

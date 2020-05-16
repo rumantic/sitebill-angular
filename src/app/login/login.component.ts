@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
         public snackBar: MatSnackBar,
         protected dialog: MatDialog,
         protected _snackService: SnackService,
-        private modelSerivce: ModelService,
+        private modelService: ModelService,
         protected _fuseNavigationService: FuseNavigationService,
         @Inject(DOCUMENT) private document: any,
         private alertService: AlertService) {
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        if ( this.modelSerivce.is_logged_in() ) {
+        if ( this.modelService.is_logged_in() ) {
             this.logout();
         } else {
             this.login_modal();
@@ -64,6 +64,9 @@ export class LoginComponent implements OnInit {
 
     login_modal () {
         const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
         this.dialog.open(LoginModalComponent, dialogConfig);
     }
 }

@@ -3,9 +3,6 @@
     <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
 
         <div id="register-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}"  *ngIf="registerMessage == null && !show_input_remind_code">
-            <div class="title">Забыли пароль?</div>
-
-
             <form name="loginForm" [formGroup]="registerForm" (ngSubmit)="remind()" novalidate>
                 <mat-form-field>
                     <input matInput placeholder="Email" formControlName="username" name="username">

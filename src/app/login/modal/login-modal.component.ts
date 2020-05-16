@@ -37,6 +37,7 @@ export class LoginModalComponent  implements OnInit {
     show_login: boolean;
     show_remind: boolean;
     public show_register_domain: boolean;
+    auth_title: any;
 
 
 
@@ -69,6 +70,7 @@ export class LoginModalComponent  implements OnInit {
         this.valid_domain_through_email = this._formBuilder.group({
             domain_checker: ['', [Validators.required, Validators.email]],
         });
+        this.auth_title = 'Авторизация';
         this.show_login = true;
         this.init_register_form();
 
@@ -205,16 +207,20 @@ export class LoginModalComponent  implements OnInit {
     }
 
     show_login_form() {
+        this.auth_title = 'Авторизация';
         this.show_login = true;
         this.show_register = false;
         this.show_remind = false;
+        this.show_register_domain = false;
         this.hide_register_complete();
     }
 
     show_register_form() {
+        this.auth_title = 'Регистрация';
         this.show_login = false;
         this.show_register = true;
         this.show_remind = false;
+        this.show_register_domain = false;
         this.hide_register_complete();
     }
 
@@ -223,16 +229,23 @@ export class LoginModalComponent  implements OnInit {
     }
 
     show_remind_form() {
+        this.auth_title = 'Напомнить пароль';
         this.show_login = false;
         this.show_register = false;
+        this.show_register_domain = false;
         this.show_remind = true;
     }
 
     show_register_domain_form() {
+        this.auth_title = 'Создать новый сайт';
         this.show_login = false;
         this.show_register = false;
         this.show_register_domain = true;
         this.show_remind = false;
         this.hide_register_complete();
+    }
+
+    close() {
+        this.dialogRef.close();
     }
 }

@@ -8,13 +8,6 @@
             <div class="title">Через три минуты на вашу почту будет отправлен адрес созданного сайта и вы <a class="link" (click)="show_login_form()">сможете войти</a>.</div>
         </div>
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="!register_success">
-
-            <div class="logo" *ngIf="hide_domain">
-                <img src="https://www.sitebill.ru/storage/icons/dragon.png">
-            </div>
-
-            <div class="title">Регистрация</div>
-
             <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="register()" novalidate>
                 <mat-form-field>
                     <input matInput placeholder="Ваше Имя" formControlName="name" name="name">

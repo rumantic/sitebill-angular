@@ -1,5 +1,11 @@
 @import "src/@fuse/scss/fuse";
 
+::ng-deep {
+    .mat-dialog-container {
+        padding: 0;
+    }
+}
+
 :host {
 
     #login {
@@ -7,6 +13,7 @@
 
         #login-form-wrapper {
             flex: 1 0 auto;
+            padding: 24px;
 
             @include media-breakpoint('xs') {
                 padding: 16px;

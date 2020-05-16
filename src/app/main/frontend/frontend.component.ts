@@ -8,6 +8,8 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {Router} from '@angular/router';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginModalComponent} from '../../login/modal/login-modal.component';
 
 @Component({
     selector   : 'frontend',
@@ -28,6 +30,7 @@ export class FrontendComponent
         private modelService: ModelService,
         private _fuseConfigService: FuseConfigService,
         protected router: Router,
+        protected dialog: MatDialog,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
@@ -48,7 +51,19 @@ export class FrontendComponent
     }
     ngOnInit() {
         console.log('run frontend');
+        if ( !this.modelService.is_logged_in() ) {
+            this.login_modal();
+        }
+
         // this.modelService.get_session_key_safe();
         // console.log(this.modelService.getConfigValue('default_frontend_route'));
+    }
+
+    login_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(LoginModalComponent, dialogConfig);
     }
 }

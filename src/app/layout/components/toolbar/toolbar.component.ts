@@ -165,6 +165,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
     login_modal () {
         const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
         this.dialog.open(LoginModalComponent, dialogConfig);
     }
 
