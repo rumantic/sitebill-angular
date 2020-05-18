@@ -93,7 +93,7 @@
         <register-modal *ngIf="show_register">
         </register-modal>
 
-        <register-domain-modal *ngIf="show_register_domain">
+        <register-domain-modal *ngIf="show_register_domain" (close)="close_register_domain()">
         </register-domain-modal>
 
         <ng-container *ngIf="(show_register || show_remind || show_register_domain) && !modelService.get_install_mode()">

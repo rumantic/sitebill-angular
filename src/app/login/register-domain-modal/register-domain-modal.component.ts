@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Component, ElementRef, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {ModelService} from '../../_services/model.service';
 import {SnackService} from '../../_services/snack.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
-import {AuthenticationService} from '../../_services';
+import {AlertService, AuthenticationService} from '../../_services';
 import {takeUntil} from 'rxjs/operators';
 import * as moment from 'moment';
 import {forbiddenNullValue, FormConstructorComponent} from '../../main/grid/form/form-constructor.component';
@@ -19,6 +19,7 @@ import {APP_CONFIG, AppConfig} from '../../app.config.module';
 import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-loader.service';
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
+import {navigation} from '../../navigation/navigation';
 
 export interface Progress {
     progress: string;
@@ -48,6 +49,7 @@ export class RegisterDomainModalComponent
     wait_message: any;
     progress_mode: any;
 
+    @Output() close = new EventEmitter();
 
     /**
      * Constructor
@@ -62,7 +64,10 @@ export class RegisterDomainModalComponent
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
         public snackBar: MatSnackBar,
+        private authenticationService: AuthenticationService,
+        protected _fuseNavigationService: FuseNavigationService,
         protected _snackService: SnackService,
+        private alertService: AlertService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
@@ -92,7 +97,7 @@ export class RegisterDomainModalComponent
 
     whmcs_create(fullname, lastname, email, password) {
         const request = { action: 'addclient', fullname: fullname, lastname: '', email: email, password: password, source: this.source };
-        console.log(request);
+        // console.log(request);
         // return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1_dump.php`, request);
         return this.http.post(`https://www.sitebill.ru/whmcs_cpanel1.php`, request);
     }
@@ -138,14 +143,14 @@ export class RegisterDomainModalComponent
 
         const refreshIntervalId = setInterval(() => {
             this.get_progress(this.domain).subscribe( (data: Progress) => {
-                console.log(data);
+                // console.log(data);
                 if ( data.progress !== null ) {
                     this.progress_mode = 'determinate';
                     this.progress = data.progress;
                 }
-                if ( data.progress == '100' ) {
+                if ( parseInt(data.progress) >= 100 ) {
                     clearInterval(refreshIntervalId);
-                    this.run_autologin();
+                    this.run_autologin(domain, this.loginForm.value.email, this.loginForm.value.password);
                 }
             });
 
@@ -177,9 +182,59 @@ export class RegisterDomainModalComponent
 
     }
 
-    private run_autologin() {
+    private run_autologin(domain, login, password) {
         this.wait_message = 'Готово';
         console.log('run autologin');
 
+        this.modelSerivce.set_api_url('https://' + domain);
+        this.progress_mode = 'indeterminate';
+
+
+        const refreshIntervalId = setInterval(() => {
+            this.authenticationService.login(domain, login, password)
+                .subscribe(
+                    (data: any) => {
+                        clearInterval(refreshIntervalId);
+
+                        if (data.state == 'error') {
+                            this.loading = false;
+                            this._snackService.message('Логин или пароль указаны неверно');
+                        } else {
+                            if (data.admin_panel_login == 1) {
+
+                                this._fuseNavigationService.unregister('main');
+                                this._fuseNavigationService.register('main', navigation);
+                                this._fuseNavigationService.setCurrentNavigation('main');
+                                this.after_success_login();
+                            } else if (data.success == 1) {
+                                this.after_success_login();
+                            } else {
+                                let error = 'Доступ запрещен';
+                                this.alertService.error(error);
+                                this.loading = false;
+                                this.snackBar.open(error, 'ok', {
+                                    duration: 2000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                });
+                            }
+                        }
+                    },
+                    error => {
+                        this._snackService.message('Ошибка подключения к сайту');
+                        this.loading = false;
+                    });
+        }, 5000);
     }
+
+    after_success_login () {
+        this._snackService.message('Авторизация успешна!');
+        this.modelSerivce.disable_nobody_mode();
+        this.modelSerivce.load_current_user_profile();
+        this.modelSerivce.set_install_mode(false);
+        this.modelSerivce.init_config();
+        this.close.emit();
+        // this.dialogRef.close();
+    }
+
 }
