@@ -103,7 +103,7 @@ export class RegisterDomainModalComponent
     }
 
     get_progress(domain_name) {
-        return this.http.get('http://' + domain_name + '/progress.php');
+        return this.http.get('https://api.sitebill.ru/progress/' + domain_name + '.php');
     }
 
 
