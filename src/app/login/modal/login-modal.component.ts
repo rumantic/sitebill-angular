@@ -43,7 +43,7 @@ export class LoginModalComponent  implements OnInit {
 
     constructor(
         protected dialogRef: MatDialogRef<FormComponent>,
-        protected modelService: ModelService,
+        public modelService: ModelService,
         protected _snackService: SnackService,
         public _matDialog: MatDialog,
         private authenticationService: AuthenticationService,
