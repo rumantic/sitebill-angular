@@ -1,13 +1,7 @@
 @import "src/@fuse/scss/fuse";
 
-::ng-deep {
-    .mat-dialog-container {
-        padding: 0;
-    }
-}
 
 :host {
-
     #login {
         width: 100%;
 
