@@ -228,14 +228,30 @@ export class ModelService {
 
     logout() {
         if ( this.all_checks_passes() ) {
-            console.log('logout');
-            this.disable_menu();
-            this.reset_local_user_storage();
-            this.disable_session_key_validity();
-            this.current_user_profile = new UserProfile();
-            this.router.navigate(['/logout']);
+            console.log('run logout');
+            this.model_logout().subscribe(
+                data => {
+                    this.disable_menu();
+                    this.reset_local_user_storage();
+                    this.disable_session_key_validity();
+                    this.current_user_profile = new UserProfile();
+                    this.router.navigate(['/logout']);
+                },
+                error => {
+                    console.log(error);
+                });
         }
     }
+
+    model_logout() {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+
+        const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
+        const url = `${this.api_url}/apps/api/rest.php`;
+
+        return this.http.post<any>(url, body);
+    }
+
 
     disable_menu() {
         // console.log('disable menu');
