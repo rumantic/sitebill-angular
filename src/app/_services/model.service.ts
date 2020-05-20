@@ -102,16 +102,38 @@ export class ModelService {
         console.log('apps.realty.enable_guest_mode ' + this.getConfigValue('apps.realty.enable_guest_mode'));
         if ( this.getConfigValue('apps.realty.enable_guest_mode') === '1') {
             if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
-                console.log('need guest mode');
-                if ( this.get_session_key() === null ) {
-                    this.init_nobody_user_storage();
-                } else if ( this.get_session_key() === 'nobody' ) {
-                    this.enable_nobody_mode();
-                } else if ( this.get_session_key() === undefined ) {
-                    this.init_nobody_user_storage();
-                } else {
-                    this.enable_nobody_mode();
-                }
+                this.get_cms_session().subscribe((result: any) => {
+                    console.log(result);
+                    let finaly_need_guest = false;
+                    try {
+                        const storage = JSON.parse(result) || [];
+                        if (storage.user_id > 0) {
+                            console.log('cms user_id = ' + storage.user_id);
+                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.reinit_currentUser();
+                            this.after_config_loaded();
+                            return true;
+                        } else {
+                            finaly_need_guest = true;
+                        }
+                    } catch (e) {
+                        finaly_need_guest = true;
+                    }
+
+                    if (finaly_need_guest) {
+                        console.log('need guest mode');
+                        if ( this.get_session_key() === null ) {
+                            this.init_nobody_user_storage();
+                        } else if ( this.get_session_key() === 'nobody' ) {
+                            this.enable_nobody_mode();
+                        } else if ( this.get_session_key() === undefined ) {
+                            this.init_nobody_user_storage();
+                        } else {
+                            this.enable_nobody_mode();
+                        }
+                    }
+
+                });
             }
         } else {
             console.log('guest mode not enabled');
