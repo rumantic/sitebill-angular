@@ -270,6 +270,11 @@ export class GridComponent implements OnInit, OnDestroy
             }
         });
 
+        this._fuseConfigService.broadcast.subscribe((result) => {
+            this.refresh();
+        });
+
+
         this.resizeObservable.subscribe(() => {
 
             //console.log('subscirbe');

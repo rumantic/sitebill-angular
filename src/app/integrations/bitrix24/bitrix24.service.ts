@@ -72,7 +72,7 @@ export class Bitrix24Service {
 
     get_deal_id() {
         this.reload_placement_option_id();
-        console.log('this.placement_options.get_id() = ' + this.placement_options.get_id());
+        // console.log('this.placement_options.get_id() = ' + this.placement_options.get_id());
         if ( this.placement_options.get_id() === null ) {
             return 1;
         }

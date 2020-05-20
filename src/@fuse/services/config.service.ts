@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import {EventEmitter, Inject, Injectable, InjectionToken, Output} from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -16,6 +16,8 @@ export class FuseConfigService
     // Private
     private _configSubject: BehaviorSubject<any>;
     private readonly _defaultConfig: any;
+    @Output() broadcast: EventEmitter<any> = new EventEmitter();
+
 
     /**
      * Constructor
@@ -156,5 +158,11 @@ export class FuseConfigService
         // Set the config from the default config
         this._configSubject.next(_.cloneDeep(this._defaultConfig));
     }
+
+    broadcast_refresh () {
+        const rand = Math.random();
+        this.broadcast.emit(rand);
+    }
+
 }
 

@@ -12,6 +12,8 @@ import {toASCII} from "punycode";
 import {navigation} from '../../navigation/navigation';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';
 import {AlertService, AuthenticationService} from '../../_services';
+import {FilterService} from '../../_services/filter.service';
+import {FuseConfigService} from '../../../@fuse/services/config.service';
 
 @Component({
     selector: 'login-modal',
@@ -49,8 +51,10 @@ export class LoginModalComponent  implements OnInit {
         private authenticationService: AuthenticationService,
         private _formBuilder: FormBuilder,
         private modelSerivce: ModelService,
+        private _fuseConfigService: FuseConfigService,
         private alertService: AlertService,
         public snackBar: MatSnackBar,
+        private filterService: FilterService,
         protected _fuseNavigationService: FuseNavigationService,
         @Inject(APP_CONFIG) protected config: AppConfig,
         @Inject(DOCUMENT) private document: any,
@@ -185,6 +189,7 @@ export class LoginModalComponent  implements OnInit {
         this.modelService.disable_nobody_mode();
         this.modelService.load_current_user_profile();
         this.modelSerivce.init_config();
+        this._fuseConfigService.broadcast_refresh();
         this.dialogRef.close();
     }
 
