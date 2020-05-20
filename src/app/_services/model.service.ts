@@ -253,10 +253,8 @@ export class ModelService {
             console.log('run logout');
             this.model_logout().subscribe(
                 data => {
-                    this.disable_menu();
-                    this.reset_local_user_storage();
-                    this.disable_session_key_validity();
-                    this.current_user_profile = new UserProfile();
+                    this.enable_guest_mode();
+
                     this.router.navigate(['/logout']);
                 },
                 error => {
@@ -270,6 +268,11 @@ export class ModelService {
 
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.api_url}/apps/api/rest.php`;
+
+        this.disable_menu();
+        this.reset_local_user_storage();
+        this.disable_session_key_validity();
+        this.current_user_profile = new UserProfile();
 
         return this.http.post<any>(url, body);
     }

@@ -85,12 +85,13 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         this._data.set_readonly(false);
 
         // Получить модель юзера
-        if ( this.modelService.get_nobody_mode() ) {
+        // if ( this.modelService.get_nobody_mode() ) {
             this.get_user_model();
-        }
+        // }
     }
 
     get_user_model () {
+        // console.log('get_user_model');
         this.modelService.load_only_model('user')
             .subscribe((result: any) => {
                 if (result) {
