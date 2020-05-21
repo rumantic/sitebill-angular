@@ -17,6 +17,18 @@ export const navigation: FuseNavigation[] = [
         */
     },
     {
+        id: 'parser',
+        title: 'Парсер',
+        type: 'item',
+        icon: 'cloud',
+        url: 'grid/parser',
+        badge    : {
+            title    : '1034',
+            bg       : '#F44336',
+            fg       : '#FFFFFF'
+        }
+    },
+    {
         id: 'client',
         title: 'Клиенты',
         type: 'item',

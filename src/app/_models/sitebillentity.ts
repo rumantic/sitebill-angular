@@ -13,6 +13,7 @@ export class SitebillEntity {
     private hook: string;
     private readonly: boolean;
     private enable_comment: boolean;
+    private app_url: string;
 
     constructor() {
         this.columns = [];
@@ -25,6 +26,7 @@ export class SitebillEntity {
         this.hook = null;
         this.readonly = false;
         this.enable_comment = true;
+        this.app_url = null;
     }
 
     get_app_name() {
@@ -127,6 +129,21 @@ export class SitebillEntity {
             return true;
         }
         return false;
+    }
+
+    get_app_url() {
+        try {
+            if ( this.app_url !== undefined && this.app_url != null ) {
+                return this.app_url;
+            }
+        } catch (e) {
+
+        }
+        return null;
+    }
+
+    set_app_url(app_url: string) {
+        this.app_url = app_url;
     }
 
 }

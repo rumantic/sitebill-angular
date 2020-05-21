@@ -66,11 +66,20 @@ import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 import {FavoritesComponent} from './entity/favorites/favorites.component';
+import {ParserComponent} from './entity/parser/parser.component';
 
 const routes = [
     {
         path     : 'data',
         component: DataComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path     : 'parser',
+        component: ParserComponent,
         resolve: {
             chat: ChatService
         }
@@ -266,6 +275,7 @@ const routes = [
         SaleComponent,
         ComposeModalComponent,
         FavoritesComponent,
+        ParserComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),

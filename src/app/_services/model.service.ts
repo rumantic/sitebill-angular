@@ -70,6 +70,14 @@ export class ModelService {
     }
 
     get_api_url() {
+        try {
+            if (this.get_current_entity().get_app_url() != null) {
+                return this.get_current_entity().get_app_url();
+                // console.log(this.get_current_entity().get_app_name() + Math.random());
+            }
+        } catch (e) {
+
+        }
         if (isDevMode() && (this.api_url == '' || this.api_url === null)) {
             return this.config.apiEndpoint;
         } else if (this.api_url == null) {
