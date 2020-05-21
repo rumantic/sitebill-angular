@@ -4,6 +4,9 @@
     .login-form .mat-dialog-container {
         padding: 0;
     }
+    .mat-dialog-content {
+        min-height: 85vh;
+    }
 }
 :host {
     position: relative;
