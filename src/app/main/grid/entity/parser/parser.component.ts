@@ -13,6 +13,7 @@ export class ParserComponent extends GridComponent {
     setup_apps() {
         this.entity.set_app_name('parser');
         this.entity.set_app_url('https://www.etown.ru');
+        this.entity.set_app_session_key('nobody');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
         this.switch_collections(true);

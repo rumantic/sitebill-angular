@@ -14,6 +14,7 @@ export class SitebillEntity {
     private readonly: boolean;
     private enable_comment: boolean;
     private app_url: string;
+    private app_session_key: string;
 
     constructor() {
         this.columns = [];
@@ -27,6 +28,7 @@ export class SitebillEntity {
         this.readonly = false;
         this.enable_comment = true;
         this.app_url = null;
+        this.app_session_key = null;
     }
 
     get_app_name() {
@@ -145,6 +147,22 @@ export class SitebillEntity {
     set_app_url(app_url: string) {
         this.app_url = app_url;
     }
+
+    get_app_session_key() {
+        try {
+            if ( this.app_session_key !== undefined && this.app_session_key != null ) {
+                return this.app_session_key;
+            }
+        } catch (e) {
+
+        }
+        return null;
+    }
+
+    set_app_session_key(app_session_key: string) {
+        this.app_session_key = app_session_key;
+    }
+
 
 }
 export class SitebillModelItem {

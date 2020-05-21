@@ -187,6 +187,15 @@ export class ModelService {
     }
 
     get_session_key() {
+        try {
+            if (this.get_current_entity().get_app_session_key() != null) {
+                return this.get_current_entity().get_app_session_key();
+                // console.log(this.get_current_entity().get_app_name() + Math.random());
+            }
+        } catch (e) {
+
+        }
+
         // console.log('|get_session_key');
         // console.log(this.currentUser);
         // console.log('get_session_key|');
