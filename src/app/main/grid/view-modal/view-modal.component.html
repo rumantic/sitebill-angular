@@ -138,7 +138,12 @@
                                 <div [innerHTML]="get_youtube_code(records[x].value)|safehtml"></div>
                             </ng-container>
                             <ng-container *ngSwitchDefault>
-                                {{records[x].value}}
+                                <ng-container *ngIf="valid_link(records[x].value); else simpleText">
+                                    <div><a href="{{records[x].value}}" target="_blank" matTooltip="{{records[x].value}}">{{records[x].value}}</a></div>
+                                </ng-container>
+                                <ng-template #simpleText>
+                                    <div>{{records[x].value}}</div>
+                                </ng-template>
                             </ng-container>
                         </ng-container>
                     </ng-container>

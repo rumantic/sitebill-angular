@@ -22,7 +22,7 @@ export class ParserComponent extends GridComponent {
         this.disable_delete_button = true;
         this.enable_collections = false;
         this.disable_wild_search = true;
-        // this.freeze_default_columns_list = true;
+        this.freeze_default_columns_list = true;
     }
 
     getRowClass(row): string {

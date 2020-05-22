@@ -119,4 +119,13 @@ export class ViewModalComponent extends FormComponent implements OnInit {
         this.dialogRef.close();
         this._chatService.closeChat();
     }
+
+    valid_link (value) {
+        const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+        if ( value.match(reg) ) {
+            return true;
+        }
+        return false;
+    }
+
 }
