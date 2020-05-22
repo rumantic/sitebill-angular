@@ -43,6 +43,25 @@
                 <!-- / WIDGET GROUP -->
             </mat-tab>
 
+            <mat-tab label="Парсер">
+                <!-- WIDGET GROUP -->
+                <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                     [@animateStagger]="{value:'50'}">
+                    <!-- WIDGET 11 -->
+                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
+                                 fxFlex="100">
+                        <!-- Front -->
+                        <div class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                            <parser-grid [enable_collections]="true" [disable_menu]="true" (total_counterEvent)="set_total_counter_data($event)"></parser-grid>
+                        </div>
+                        <!-- / Front -->
+                    </fuse-widget>
+                    <!-- / WIDGET 11 -->
+                </div>
+                <!-- / WIDGET GROUP -->
+            </mat-tab>
+
+
 
         </mat-tab-group>
 
