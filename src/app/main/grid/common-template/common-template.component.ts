@@ -89,6 +89,14 @@ export class CommonTemplateComponent {
         this.view_injectorEvent.next(event);
     }
 
+    valid_link (value) {
+        const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+        if ( value.match(reg) ) {
+            return true;
+        }
+        return false;
+    }
+
 
     view_gallery(row, column, images, disable_gallery_controls) {
         const event = { row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls };

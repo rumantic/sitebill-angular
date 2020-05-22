@@ -82,7 +82,12 @@
 </ng-template>
 
 <ng-template #textTmpl let-row="row" let-value="value">
-    <div [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
+    <ng-container *ngIf="valid_link(value); else defaultTextBlock">
+        <div><a href="{{value}}" target="_blank" matTooltip="{{value}}">{{value|replace:'(https://www.|https://)':' '|slice:0:15}}</a></div>
+    </ng-container>
+    <ng-template #defaultTextBlock>
+        <div [innerHTML]="value|replace:'(<([^>]+)>)':' '|slice:0:70" matTooltip="{{value|replace:'(<([^>]+)>)':' '|replace:'htmlEntities'}}" [matTooltipShowDelay]="1000"></div>
+    </ng-template>
 </ng-template>
 
 <ng-template #checkboxTmpl let-row="row" let-value="value">
@@ -114,8 +119,10 @@
 </ng-template>
 
 <ng-template #priceTmpl let-row="row" let-value="value">
-        {{value}}
+    {{value}}
+    <ng-container *ngIf="row.price != null">
         <span *ngIf="row.price.currency_id != null">{{row.price.currency_id.value_string}}</span>
+    </ng-container>
 </ng-template>
 
 <ng-template #clientControlTmpl let-row="row" let-value="value">

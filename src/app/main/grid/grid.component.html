@@ -33,7 +33,7 @@
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->
                 <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-                    <div class="search-wrapper mt-sm-0">
+                    <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
                         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon color="primary">search</mat-icon>
                             <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">

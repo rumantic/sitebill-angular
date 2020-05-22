@@ -134,6 +134,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('disable_add_button')
     disable_add_button: boolean;
 
+    @Input('disable_wild_search')
+    disable_wild_search: boolean;
+
     @Input('disable_view_button')
     disable_view_button: boolean;
 
@@ -193,6 +196,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.page.pageNumber = 0;
         this.page.size = 0;
         this.searchInput = new FormControl('');
+        this.disable_wild_search = false;
 
 
         this.api_url = this.modelService.get_api_url();
@@ -322,8 +326,8 @@ export class GridComponent implements OnInit, OnDestroy
         //const params = { owner: true };
         //this.load_grid_data(this.app_name, [], params);
         //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
-        this.setPage({ offset: this.page.pageNumber });
         this.modelService.set_current_entity(this.entity);
+        this.setPage({ offset: this.page.pageNumber });
 
         //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
 
