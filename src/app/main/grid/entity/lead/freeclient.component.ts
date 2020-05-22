@@ -8,7 +8,7 @@ import { MatDialogConfig } from '@angular/material';
     selector: 'freeclient-grid',
     templateUrl: './myclient.component.html',
     styleUrls: ['../../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class FreeClientComponent extends GridComponent {

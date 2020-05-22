@@ -6,7 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
     selector: 'group-grid',
     templateUrl: '../../grid.component.html',
     styleUrls: ['../../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class GroupComponent extends GridComponent {

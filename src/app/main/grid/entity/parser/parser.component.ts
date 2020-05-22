@@ -18,6 +18,11 @@ export class ParserComponent extends GridComponent {
         this.entity.primary_key = 'id';
         this.switch_collections(true);
         this.enable_date_range('date_added');
+        this.disable_add_button = true;
+        this.disable_delete_button = true;
+        this.enable_collections = false;
+        this.disable_wild_search = true;
+        // this.freeze_default_columns_list = true;
     }
 
     getRowClass(row): string {

@@ -10,7 +10,7 @@ import { MatDialogConfig } from '@angular/material';
     selector: 'myclient-grid',
     templateUrl: './myclient.component.html',
     styleUrls: ['../../grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
 })
 export class MyClientComponent extends GridComponent {

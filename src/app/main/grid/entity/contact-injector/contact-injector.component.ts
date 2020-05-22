@@ -16,7 +16,7 @@ import {takeUntil} from 'rxjs/operators';
     templateUrl: '../../view-modal/view-modal.component.html',
     styleUrls: ['../../view-modal/view-modal.component.scss'],
     animations: fuseAnimations,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactInjectorComponent extends ViewStaticComponent implements OnInit {
 
