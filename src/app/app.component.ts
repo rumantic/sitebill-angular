@@ -229,7 +229,7 @@ export class AppComponent implements OnInit, OnDestroy
             this.bitrix24Router.route(app_root_element.getAttribute('bitrix24_placement'));
         }
         if (app_root_element.getAttribute('disable_default_frontend_route')) {
-            console.log('set disable_default_frontend_route');
+            // console.log('set disable_default_frontend_route');
             this.modelService.setDomConfigValue('disable_default_frontend_route', true);
         }
 

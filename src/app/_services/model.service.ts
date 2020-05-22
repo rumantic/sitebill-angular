@@ -69,14 +69,16 @@ export class ModelService {
         }
     }
 
-    get_api_url() {
-        try {
-            if (this.get_current_entity().get_app_url() != null) {
-                return this.get_current_entity().get_app_url();
-                // console.log(this.get_current_entity().get_app_name() + Math.random());
-            }
-        } catch (e) {
+    get_api_url(ignore_entity_url = false) {
+        if ( !ignore_entity_url ) {
+            try {
+                if (this.get_current_entity().get_app_url() != null) {
+                    return this.get_current_entity().get_app_url();
+                    // console.log(this.get_current_entity().get_app_name() + Math.random());
+                }
+            } catch (e) {
 
+            }
         }
         if (isDevMode() && (this.api_url == '' || this.api_url === null)) {
             return this.config.apiEndpoint;
@@ -728,7 +730,7 @@ export class ModelService {
     }
     get_profile_img_url () {
         if ( this.current_user_profile.imgfile.value != null && this.current_user_profile.imgfile.value !== '') {
-            return this.get_api_url() + '/img/data/user/' + this.current_user_profile.imgfile.value;
+            return this.get_api_url(true) + '/img/data/user/' + this.current_user_profile.imgfile.value;
         }
         return false;
     }
