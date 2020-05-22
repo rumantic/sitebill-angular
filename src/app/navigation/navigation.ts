@@ -23,7 +23,7 @@ export const navigation: FuseNavigation[] = [
         icon: 'cloud',
         url: 'grid/parser',
         badge    : {
-            title    : '1034',
+            title    : '',
             bg       : '#F44336',
             fg       : '#FFFFFF'
         }

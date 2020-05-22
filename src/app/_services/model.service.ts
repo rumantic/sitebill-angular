@@ -68,6 +68,10 @@ export class ModelService {
             this.sitebill_started = true;
         }
     }
+    get_parser_api_url() {
+        return 'https://www.etown.ru';
+    }
+
 
     get_api_url(ignore_entity_url = false) {
         if ( !ignore_entity_url ) {
@@ -804,6 +808,18 @@ export class ModelService {
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
+
+    get_parser_today_count() {
+        const load_data_request = {
+            action: 'model',
+            model_name: 'data',
+            primary_key: 'id',
+            do: 'get_today_count',
+            session_key: 'nobody'
+        };
+        return this.http.post(`${this.get_parser_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
 
     set_install_mode ( mode: boolean ) {
         this.install_mode = mode;
