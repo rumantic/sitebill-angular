@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {DOCUMENT} from '@angular/platform-browser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
@@ -47,7 +47,6 @@ export class GridComponent implements OnInit, OnDestroy
 {
     rows = [];
     ngxHeaderHeight: any;
-    //item_model: any[];
     rows_my = [];
     rows_data = [];
     selected = [];
@@ -235,17 +234,17 @@ export class GridComponent implements OnInit, OnDestroy
         this.refresh();
 
 
-        if (this.filterService.share_array[this.entity.get_app_name()] != null) {
-            if (this.filterService.share_array[this.entity.get_app_name()]['concatenate_search'] != null) {
-                this.searchInput = new FormControl(this.filterService.share_array[this.entity.get_app_name()]['concatenate_search']);
+        if (this.filterService.get_share_array(this.entity.get_app_name()) != null) {
+            if (this.filterService.get_share_array(this.entity.get_app_name())['concatenate_search'] != null) {
+                this.searchInput = new FormControl(this.filterService.get_share_array(this.entity.get_app_name())['concatenate_search']);
             }
 
-            if (this.filterService.share_array[this.entity.get_app_name()][this.date_range_key] != null) {
-                console.log(this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate);
+            if (this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key] != null) {
+                // console.log(this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].startDate);
 
                 if (
-                    this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate != null &&
-                    this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].endDate != null
+                    this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].startDate != null &&
+                    this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].endDate != null
                 ) {
                     this.selected_date_filter = {};
                     this.selected_date_filter_has_values = true;
@@ -257,8 +256,8 @@ export class GridComponent implements OnInit, OnDestroy
                     //this.selected_date_filter['startDate'] = null;
                     //this.selected_date_filter['endDate'] = null;
 
-                    this.selected_date_filter['startDate'] = this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].startDate;
-                    this.selected_date_filter['endDate'] = this.filterService.share_array[this.entity.get_app_name()][this.date_range_key].endDate;
+                    this.selected_date_filter['startDate'] = moment(this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].startDate);
+                    this.selected_date_filter['endDate'] = moment(this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].endDate);
                     //selected_date_filter: { startDate: Moment, endDate: Moment };
                 }
             }
@@ -426,13 +425,14 @@ export class GridComponent implements OnInit, OnDestroy
         let filter_params_json = {};
 
 
-        if (this.filterService.params_count[this.entity.get_app_name()] > 0) {
-            //console.log('grid app name');
-            //console.log(this.entity.get_app_name());
+        if (this.filterService.get_params_count(this.entity.get_app_name()) > 0) {
+            // console.log('grid app name has share array');
+            // console.log(this.entity.get_app_name());
             // console.log(this.filterService.share_array[this.entity.get_app_name()]);
 
-            var obj = this.filterService.share_array[this.entity.get_app_name()];
+            var obj = this.filterService.get_share_array(this.entity.get_app_name());
             var mapped = Object.keys(obj);
+            // console.log(mapped);
             mapped.forEach(function (item, i, arr) {
                 //console.log(obj[item]);
                 //console.log(obj[item].length);
@@ -460,7 +460,7 @@ export class GridComponent implements OnInit, OnDestroy
         filter_params_json = this.extended_params(filter_params_json);
 
         let page_number = this.page.pageNumber + 1;
-        //console.log(filter_params_json);
+        // console.log(filter_params_json);
 
         this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))

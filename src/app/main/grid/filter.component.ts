@@ -86,9 +86,10 @@ export class FilterComponent {
 
     // tslint:disable-next-line:use-life-cycle-interface
     ngOnInit(): void {
-        if (this.filterService.share_array[this.entity.get_app_name()] != null) {
-            // console.log(this.filterService.share_array[this.entity.app_name]);
-            if (this.filterService.share_array[this.entity.get_app_name()][this.columnObject.model_name] != null) {
+        // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
+        if (this.filterService.get_share_array(this.entity.get_app_name()) !== null && this.filterService.get_share_array(this.entity.get_app_name()) !== undefined) {
+            // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
+            if (this.filterService.get_share_array(this.entity.get_app_name())[this.columnObject.model_name] !== undefined) {
                 this.onFocus();
             }
         }
@@ -175,15 +176,15 @@ export class FilterComponent {
                     this.price_max = result.message;
                     this.options_price_zero_10m.ceil = result.message;
                 }
-                if (this.filterService.share_array[this.entity.get_app_name()] !== undefined) {
-                    if (this.filterService.share_array[this.entity.get_app_name()]['price_min'] !== undefined ) {
-                        this.price_min = this.filterService.share_array[this.entity.get_app_name()]['price_min'];
+                if (this.filterService.get_share_array(this.entity.get_app_name()) !== null) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ) {
+                        this.price_min = this.filterService.get_share_array(this.entity.get_app_name())['price_min'];
                     }
-                    if (this.filterService.share_array[this.entity.get_app_name()]['price_max'] !== undefined) {
-                        this.price_max = this.filterService.share_array[this.entity.get_app_name()]['price_max'];
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
+                        this.price_max = this.filterService.get_share_array(this.entity.get_app_name())['price_max'];
                     }
-                    if (this.filterService.share_array[this.entity.get_app_name()]['price_min'] !== undefined ||
-                        this.filterService.share_array[this.entity.get_app_name()]['price_max'] !== undefined) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ||
+                        this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
                         this.price_selector = 5;
                     }
                 }
@@ -212,8 +213,9 @@ export class FilterComponent {
             .subscribe((result: any) => {
                 // console.log(columnName);
                 // console.log(result);
-                if (this.filterService.share_array[this.entity.get_app_name()] !== undefined) {
-                    this.selectedFilter = this.filterService.share_array[this.entity.get_app_name()][columnName];
+                if (this.filterService.get_share_array(this.entity.get_app_name()) !== null &&
+                    this.filterService.get_share_array(this.entity.get_app_name()) !== undefined) {
+                    this.selectedFilter = this.filterService.get_share_array(this.entity.get_app_name())[columnName];
                 }
                 this.options = result.data;
                 this.cdr.markForCheck();
@@ -252,7 +254,7 @@ export class FilterComponent {
 
     get_compose_params_counter(columnObject: any) {
         const share_data = this.filterService.get_share_data(this.entity.get_app_name(), columnObject.model_name);
-        if ( share_data != null && share_data !== undefined) {
+        if ( share_data != null) {
             // console.log(share_data);
             // console.log(typeof share_data);
 
