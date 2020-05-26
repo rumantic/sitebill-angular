@@ -79,7 +79,7 @@ export class GridComponent implements OnInit, OnDestroy
     searchInput: FormControl;
     error: boolean = false;
     error_message: string;
-    selectionType = SelectionType;
+    selectionType = '';
 
     date_range_enable: boolean = false;
     date_range_key: string;
@@ -228,6 +228,9 @@ export class GridComponent implements OnInit, OnDestroy
         this.setup_apps();
         if (this.enable_collections) {
             this.entity.set_enable_collections();
+        }
+        if ( this.enable_select_rows ) {
+            this.selectionType = 'checkbox';
         }
         this.rows = [];
         this.rows_my = [];
