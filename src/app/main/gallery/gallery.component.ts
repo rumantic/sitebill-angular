@@ -124,7 +124,7 @@ export class GalleryComponent implements OnInit {
                 imageBullets: true,
                 previewCloseOnClick: true,
                 imageInfinityMove: true,
-                preview: false
+                preview: true
             }
         ];
 
