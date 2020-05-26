@@ -78,8 +78,9 @@ export class FilterService {
         return null;
     }
     get_share_data (app_name: string, key: string) {
-        if (this.share_array[app_name] != null) {
-            return this.share_array[app_name][key];
+        const share_array = this.get_share_array(app_name);
+        if (share_array[key] != null) {
+            return share_array[key];
         }
         return null;
     }
