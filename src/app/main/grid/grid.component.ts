@@ -157,6 +157,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('input_entity')
     input_entity: SitebillEntity;
 
+    @Input('enable_select_rows')
+    enable_select_rows = false;
+
     @Output() total_counterEvent = new EventEmitter<number>();
 
     private after_compose_complete_checked: boolean;
@@ -556,13 +559,15 @@ export class GridComponent implements OnInit, OnDestroy
         }
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
-        this.data_columns = [{
-            cellTemplate: this.commonTemplate.gridCheckboxTmpl,
-            headerTemplate: this.commonTemplate.gridCheckboxHdrTmpl,
-            width: 40,
-            type: 'primary_key',
-            resizeable: false,
-        }];
+        if ( this.enable_select_rows ) {
+            this.data_columns = [{
+                cellTemplate: this.commonTemplate.gridCheckboxTmpl,
+                headerTemplate: this.commonTemplate.gridCheckboxHdrTmpl,
+                width: 30,
+                type: 'primary_key',
+                resizeable: false,
+            }];
+        }
 
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 

@@ -23,6 +23,7 @@ export class ParserComponent extends GridComponent {
         this.enable_collections = false;
         this.disable_wild_search = true;
         this.freeze_default_columns_list = true;
+        this.enable_select_rows = false;
     }
 
     getRowClass(row): string {
