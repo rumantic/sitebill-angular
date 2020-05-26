@@ -126,6 +126,8 @@ export class FrontComponent {
         const default_columns_list_needrent = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
         this.needrent_entity.set_default_columns_list(default_columns_list_needrent);
         this.needrent_entity.hide_column_edit('user_id');
+
+
         this.cdr.markForCheck();
     }
 
@@ -140,8 +142,12 @@ export class FrontComponent {
     change_columns_list (event) {
         this.push_reload_event();
         let default_columns_list = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image'];
-        if ( this.topic_columns[event.value].length > 1) {
-            default_columns_list = this.topic_columns[event.value];
+        try {
+            if ( this.topic_columns[event.value].length > 1) {
+                default_columns_list = this.topic_columns[event.value];
+            }
+        } catch (e) {
+
         }
         this.sale_entity.set_default_columns_list(default_columns_list);
         this.redefine_default_params(this.sale_entity, 'topic_id', event.value);
@@ -161,13 +167,15 @@ export class FrontComponent {
     }
 
     redefine_default_params (entity: SitebillEntity, name: string, value: string) {
-        let params = entity.get_default_params();
+        const params = entity.get_default_params();
         params[name] = value;
         entity.set_default_params(params);
+        this.filterService.share_data(entity, name, value);
     }
 
     change_region_list ( event ) {
         this.push_reload_event();
+        // console.log(event.value);
 
         this.redefine_default_params(this.sale_entity, 'region_id', event.value);
         this.redefine_default_params(this.rent_entity, 'region_id', event.value);
@@ -176,9 +184,16 @@ export class FrontComponent {
         this.redefine_default_params(this.needrent_entity, 'region_id', event.value);
     }
 
-    set_topic_id_value (value) {
+    set_topic_id_value (value: string) {
+        this.form.controls['topic_id'].setValue(value);
         this.form.controls['topic_id'].patchValue(value);
     }
+    set_region_id_value (value: string) {
+        this.form.controls['region_id'].setValue(value);
+        this.form.controls['region_id'].patchValue(value);
+        this.filterService.share_data(this.sale_entity, 'region_id', value.toString());
+    }
+
 
     enable_guest_mode () {
         this.switch_off_grid_controls();
@@ -200,7 +215,13 @@ export class FrontComponent {
     load_regions () {
         this.modelService.load_dictionary_model_all('data', 'region_id')
             .subscribe((response: any) => {
+                const share_region_id = this.filterService.get_share_data('sale', 'region_id');
                 this.regions = response.data;
+                if ( share_region_id !== null ) {
+                    this.set_region_id_value(share_region_id);
+                } else {
+                    this.set_region_id_value(this.regions[0].id);
+                }
                 this.cdr.markForCheck();
             });
     }
