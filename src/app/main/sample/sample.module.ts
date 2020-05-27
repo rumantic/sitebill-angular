@@ -8,7 +8,7 @@ import { SampleComponent } from './sample.component';
 
 const routes = [
     {
-        path     : '**',
+        path     : 'sample',
         component: SampleComponent
     }
 ];

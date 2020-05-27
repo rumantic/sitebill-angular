@@ -83,7 +83,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'grid',
-        loadChildren: 'app/main/grid/grid.module#GridModule',
+        loadChildren: () => import('app/main/grid/grid.module').then(m => m.GridModule),
         canActivate: [AuthGuard]
     },
     {
@@ -99,7 +99,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'frontend',
-        loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
+        loadChildren: () => import('app/main/frontend/frontend.module').then(m => m.FrontendModule),
     },
     {
         path: 'dashboard',
