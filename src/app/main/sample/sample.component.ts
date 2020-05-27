@@ -2,7 +2,7 @@ import {Component, isDevMode, ElementRef, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {currentUser} from 'app/_models/currentuser';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -20,7 +20,7 @@ export class SampleComponent
 {
     private currentUser: currentUser;
     private api_url: string;
-    
+
     /**
      * Constructor
      *
@@ -54,7 +54,7 @@ export class SampleComponent
     }
     ngOnInit() {
     }
-    
+
     init_input_parameters () {
         let app_root_element;
         if (this.document.getElementById('calculator_mini_root')) {
@@ -63,6 +63,6 @@ export class SampleComponent
             app_root_element = this.document.getElementById('app_root');
         }
     }
-    
-    
+
+
 }

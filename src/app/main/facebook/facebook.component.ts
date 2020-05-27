@@ -2,7 +2,7 @@ import {Component, isDevMode, ElementRef, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {currentUser} from 'app/_models/currentuser';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 
 import {FuseTranslationLoaderService} from '@fuse/services/translation-loader.service';
@@ -69,7 +69,7 @@ export class FacebookComponent {
             this.load_config();
         });
     }
-    
+
     load_config () {
         const body = {action: 'config', anonymous: false, do: 'get', session_key: this.currentUser.session_key};
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
@@ -82,7 +82,7 @@ export class FacebookComponent {
                 }
             });
     }
-    
+
     refreash_access_token () {
         //console.log('refreash');
         //Получаем текущий access_token из базы
@@ -92,15 +92,15 @@ export class FacebookComponent {
                 console.log(result);
                 this.test_token(result.data);
             });
-        
+
         //Выполняем тестовый запросы с этим токеном
         //Если все ок, тогда ничего не делаем
         //Если нет, то предлагаем авторизоваться заново
     }
-    
+
     test_token ( access_token ) {
         //let access_token = 'EAAGZBmgctvgUBAIoxx1IsrZAZAb6uaZBfcdi0gb5RFrqriWKEowxZAHgSwXDFBrNuNipInn727UULeIZCVtkjtxhZA4bw1Qx08n78w5AUBWlZC8INV94Y2Xi19ET8PhiDUpC6KU5B6St5wHtImiV2agpMDZB1vFQxKM3Xt2W5ZAxGuR5eKZBXYEF9kTQKyaTjN54CfJ25IorhYHKQZDZD';
-        
+
         const body = {access_token: access_token};
         this._httpClient.post(`https://graph.facebook.com/me`, body)
             .subscribe((result: any) => {
@@ -115,14 +115,14 @@ export class FacebookComponent {
                 this.exchange_token(this.user.authToken);
             }
             );
-        
+
     }
-    
+
     exchange_token (authToken) {
         //long live https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=ID&client_secret=SEC&fb_exchange_token=TOKEN
         let client_id = this.cms_config['apps.facebook.app_id'];
         let client_secret = this.cms_config['apps.facebook.app_secret'];
-        
+
         //const body = {grant_type: 'fb_exchange', client_id: client_id, client_secret: client_secret, fb_exchange_token: authToken};
         let url = `https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=`+client_id+`&client_secret=`+ client_secret +`&fb_exchange_token=${authToken}`;
         this._httpClient.get(url)
@@ -134,7 +134,7 @@ export class FacebookComponent {
                 }
             });
     }
-    
+
     update_access_token (access_token) {
         const body = {action: 'config', anonymous: false, do: 'updateHiddenConfigValue', key: 'apps.facebook.access_token', value: access_token, session_key: this.currentUser.session_key};
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
@@ -142,7 +142,7 @@ export class FacebookComponent {
                 console.log(result);
             });
     }
-    
+
     signInWithFB(): void {
         this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
     }

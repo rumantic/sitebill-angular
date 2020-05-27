@@ -6,7 +6,7 @@ import {APP_CONFIG, AppConfig} from '../../app.config.module';
 import {SitebillEntity} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../@fuse/animations';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import {toASCII} from "punycode";
 import {navigation} from '../../navigation/navigation';
 import {FuseNavigationService} from '../../../@fuse/components/navigation/navigation.service';

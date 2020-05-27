@@ -10,7 +10,7 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import { MortgageCalculatorComponent } from 'app/main/mortgage-calculator/mortgage-calculator.component';
