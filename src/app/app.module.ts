@@ -40,6 +40,32 @@ import {ControlElementsComponent} from "./main/control-elements/control-elements
 import {AnkonsulSearchFormComponent} from "./main/search-form/ankonsul/ankonsul.search-form.component";
 import {CarouselComponent} from "./main/carousel/carousel.component";
 import {SliderComponent} from "./main/slider/slider.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatSelectModule} from "@angular/material/select";
+import {MatTableModule} from "@angular/material/table";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatCardModule} from "@angular/material/card";
+import {MatInputModule} from "@angular/material/input";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {AlertComponent} from "./_directives";
+import {Error500Component} from "./main/pages/errors/500/error-500.component";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {Ng5SliderModule} from "ng5-slider";
 
 const appRoutes: Routes = [
     {path: '', redirectTo: 'frontend', pathMatch: 'full'},
@@ -144,6 +170,18 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
+        ControlElementsComponent,
+        SliderComponent,
+        CarouselComponent,
+        LoginComponent,
+        AlertComponent,
+        SelectDistrictDialogComponent,
+        MortgageCalculatorComponent,
+        CalculatorMiniComponent,
+        Error404Component,
+        Error500Component,
+        SearchFormComponent,
+        AnkonsulSearchFormComponent,
         SnackBarComponent,
         Bitrix24Router,
     ],
@@ -161,6 +199,30 @@ const appRoutes: Routes = [
         // Material
         MatButtonModule,
         MatIconModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatTableModule,
+        MatTabsModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatRadioModule,
+        MatCardModule,
+        MatInputModule,
+        MatSliderModule,
+        MatAutocompleteModule,
+        MatSnackBarModule,
+        MatButtonToggleModule,
+        MatExpansionModule,
+        MatToolbarModule,
+
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -174,6 +236,9 @@ const appRoutes: Routes = [
         SampleModule,
         SharedModule,
         AppConfigModule,
+
+        NgSelectModule,
+        Ng5SliderModule,
     ],
     providers: [
         MessageService,
