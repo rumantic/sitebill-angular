@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild,TemplateRef, ElementRef, SimpleChan
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
 import { SitebillEntity } from 'app/_models';
 

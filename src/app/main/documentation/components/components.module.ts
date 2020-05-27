@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatButtonToggleModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatSelectModule, MatSlideToggleModule, MatTabsModule } from '@angular/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -15,6 +14,15 @@ import { DocsComponentsSearchBarComponent } from 'app/main/documentation/compone
 import { DocsComponentsSidebarComponent } from 'app/main/documentation/components/sidebar/sidebar.component';
 import { DocsComponentsShortcutsComponent } from 'app/main/documentation/components/shortcuts/shortcuts.component';
 import { DocsComponentsWidgetComponent } from 'app/main/documentation/components/widget/widget.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatTabsModule} from "@angular/material/tabs";
 
 const routes = [
     {

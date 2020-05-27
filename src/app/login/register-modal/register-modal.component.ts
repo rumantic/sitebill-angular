@@ -8,7 +8,7 @@ import {AuthenticationService} from '../../_services';
 import {forbiddenNullValue, FormConstructorComponent} from '../../main/grid/form/form-constructor.component';
 import {FilterService} from '../../_services/filter.service';
 import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {SitebillEntity} from '../../_models';
 
 @Component({

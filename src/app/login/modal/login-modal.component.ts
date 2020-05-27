@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
 import {FormComponent} from '../../main/grid/form/form.component';
 import {ModelService} from '../../_services/model.service';
 import {SnackService} from '../../_services/snack.service';
@@ -14,6 +13,8 @@ import {FuseNavigationService} from '../../../@fuse/components/navigation/naviga
 import {AlertService, AuthenticationService} from '../../_services';
 import {FilterService} from '../../_services/filter.service';
 import {FuseConfigService} from '../../../@fuse/services/config.service';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: 'login-modal',

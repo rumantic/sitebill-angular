@@ -11,7 +11,7 @@ import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {BillingService} from '../../_services/billing.service';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {GatewaysModalComponent} from '../gateways/modal/gateways-modal.component';
 

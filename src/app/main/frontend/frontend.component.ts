@@ -8,7 +8,7 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {Router} from '@angular/router';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 
 @Component({

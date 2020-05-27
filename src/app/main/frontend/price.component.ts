@@ -8,7 +8,7 @@ import {BillingService} from '../../_services/billing.service';
 import {FilterService} from '../../_services/filter.service';
 import {Router} from '@angular/router';
 import {ViewModalComponent} from '../grid/view-modal/view-modal.component';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {ModelService} from '../../_services/model.service';
 

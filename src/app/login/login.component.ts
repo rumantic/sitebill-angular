@@ -3,7 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder} from '@angular/forms';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
-import {MatDialog, MatDialogConfig, MatSnackBar} from '@angular/material';
 
 import {AlertService, AuthenticationService} from '../_services/index';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -11,6 +10,8 @@ import { ModelService } from 'app/_services/model.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import {SnackService} from '../_services/snack.service';
 import {LoginModalComponent} from './modal/login-modal.component';
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',

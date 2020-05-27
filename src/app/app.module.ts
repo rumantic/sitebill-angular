@@ -6,14 +6,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule, Routes} from '@angular/router';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {
-    MatButtonModule, MatCheckboxModule, MatGridListModule,
-    MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-    MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
-    MatAutocompleteModule, MatButtonToggleModule, MatExpansionModule
-} from '@angular/material';
-import {
     MatSnackBarModule
-} from '@angular/material';
+} from '@angular/material/snack-bar';
 
 
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -70,6 +64,29 @@ import {SnackService} from './_services/snack.service';
 import {SnackBarComponent} from './main/snackbar/snackbar.component';
 import {Bitrix24Router} from './integrations/bitrix24/bitrix24router';
 import {SharedModule} from './shared.module';
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatTableModule} from "@angular/material/table";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatCardModule} from "@angular/material/card";
+import {MatInputModule} from "@angular/material/input";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 const appRoutes: Routes = [

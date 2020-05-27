@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';

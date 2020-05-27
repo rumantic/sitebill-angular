@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatIconModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseHighlightModule } from '@fuse/components';
@@ -9,6 +8,8 @@ import { DocsDirectivesFuseIfOnDomComponent } from 'app/main/documentation/direc
 import { DocsDirectivesFuseInnerScrollComponent } from 'app/main/documentation/directives/fuseInnerScroll/fuse-inner-scroll.component';
 import { DocsDirectivesFuseMatSidenavComponent } from 'app/main/documentation/directives/fuseMatSidenav/fuse-mat-sidenav.component';
 import { DocsDirectivesFusePerfectScrollbarComponent } from 'app/main/documentation/directives/fusePerfectScrollbar/fuse-perfect-scrollbar.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 const routes = [
     {

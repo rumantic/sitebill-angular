@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Course} from "app/model/course";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import * as moment from 'moment';
 
 import {Model} from 'app/model';
@@ -26,9 +26,9 @@ export class DeclineClientComponent implements OnInit {
     comment: any;
     declinePressed: boolean;
     declineProcessing: boolean;
-    
+
     declineForm: FormGroup;
-    
+
     description:string;
     @Input() model: Model;
     rows: any[];
@@ -36,14 +36,14 @@ export class DeclineClientComponent implements OnInit {
     api_url: string;
     render_value_string_array = ['empty','select_box','select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty','textarea_editor', 'safe_string', 'textarea', 'primary_key'];
-    
+
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
-    
+
     @Output() submitEvent = new EventEmitter<string>();
-    
-    
-    
+
+
+
 
     constructor(
         private fb: FormBuilder,
@@ -55,7 +55,7 @@ export class DeclineClientComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: any
         ) {
         this.loadingIndicator = true;
-        
+
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.api_url = this.modelSerivce.get_api_url();
@@ -63,7 +63,7 @@ export class DeclineClientComponent implements OnInit {
         this.declineFormErrors = {
             comment: {}
         };
-        
+
         this.declinePressed = false;
         this.declineProcessing = false;
 
@@ -76,23 +76,23 @@ export class DeclineClientComponent implements OnInit {
         this.declineForm = this.fb.group({
             comment: ['', Validators.required]
         });
-        
+
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
             });
-        
+
         this.getModel();
-        
+
         this.declineForm.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
                 this.onFormValuesChanged();
             });
-        
-        
+
+
     }
-    
+
     /**
      * On form values changed
      */
@@ -117,7 +117,7 @@ export class DeclineClientComponent implements OnInit {
             }
         }
     }
-    
+
     decline () {
         console.log('decline');
         console.log(this.declineForm.controls.comment.value);
@@ -125,7 +125,7 @@ export class DeclineClientComponent implements OnInit {
         console.log(chat_id);
         this.declinePressed = true;
         this.declineProcessing = true;
-        
+
         // Update the server
         this._chatService.updateDialog(chat_id, 'Причина отказа: ' + this.declineForm.controls.comment.value).then(response => {
             console.log(response);
@@ -134,11 +134,11 @@ export class DeclineClientComponent implements OnInit {
                 //this.dialog.push(response.comment_data);
             }
             //this.dialog.push(message);
-            
+
             //this.readyToReply();
         });
     }
-    
+
     toggleUserGet ( client_id ) {
         //console.log('user_id');
         //console.log(row.client_id.value);
@@ -154,31 +154,31 @@ export class DeclineClientComponent implements OnInit {
                 //console.log(result);
                 //this.refreash();
             });
-        
+
     }
-    
-    
+
+
 
     getModel(): void {
         //console.log('get');
-        
+
         const primary_key = this._data.primary_key;
         const key_value = this._data.key_value;
         const model_name = this._data.app_name;
-        
+
         //'5725a680b3249760ea21de52'
         this._chatService.getChat(model_name, primary_key, key_value);
-        
-        
+
+
         //const PLACEMENT = this.route.snapshot.paramMap.get('PLACEMENT');
         //const PLACEMENT_OPTIONS = this.route.snapshot.paramMap.get('PLACEMENT_OPTIONS');
         //console.log('subscribe PLACEMENT = ' + PLACEMENT + 'PLACEMENT_OPTIONS = ' + PLACEMENT_OPTIONS);
-        
+
         //console.log(`${this.api_url}/apps/api/rest.php?action=model&do=load_data&session_key=${this.currentUser.session_key}`);
 
         const load_data_request = { action: 'model', do: 'load_data', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.modelSerivce.get_session_key()};
         //console.log(load_data_request);
-        
+
 
         this._httpClient.post(`${this.api_url}/apps/api/rest.php`, load_data_request)
             .pipe(takeUntil(this._unsubscribeAll))
@@ -193,7 +193,7 @@ export class DeclineClientComponent implements OnInit {
                 }
 
             });
-        
+
     }
 
     save() {

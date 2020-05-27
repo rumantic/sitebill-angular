@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { Page } from '../../page';
 import { currentUser } from 'app/_models/currentuser';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
     selector: 'myclient-grid',

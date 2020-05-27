@@ -6,7 +6,7 @@ import { SitebillEntity } from 'app/_models';
 import { Options, ChangeContext } from 'ng5-slider';
 import { ModelService } from 'app/_services/model.service';
 import {NgSelectConfig} from '@ng-select/ng-select';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 import {HttpClient} from '@angular/common/http';
 

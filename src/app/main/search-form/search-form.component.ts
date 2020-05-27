@@ -16,7 +16,8 @@ import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {Options, ChangeContext} from 'ng5-slider';
 import {map, startWith} from 'rxjs/operators';
 
-import {MatDialog, MatDialogConfig, MatDatepicker} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDatepicker} from "@angular/material/datepicker";
 import {SelectDistrictDialogComponent} from "app/main/search-form/dialogs/select-district/select-district.component";
 import {FilterService} from 'app/_services/filter.service';
 
@@ -126,13 +127,13 @@ export class SearchFormComponent implements OnInit {
         floor: 5000000,
         ceil: 10000000
     };
-    
+
     options_price_zero_10m: Options = {
         floor: 0,
         ceil: 10000000,
         step: 1000
     };
-    
+
 
     options_floor: Options = {
         floor: 0,
@@ -142,7 +143,7 @@ export class SearchFormComponent implements OnInit {
         floor: 0,
         ceil: 30
     };
-    
+
     options1: string[] = ['One', 'Two', 'Three'];
 
     //price_options: any[] = [{id: 0, value: 'Все'},{id: 1, value: 'до 1 500 000'}, 'до 2 000 000', 'до 3 000 000', 'до 5 000 000', 'diap'];
@@ -172,13 +173,13 @@ export class SearchFormComponent implements OnInit {
 
     floor_min: number = 0;
     floor_max: number = 25;
-    
+
     floor_count_min: number = 0;
     floor_count_max: number = 30;
 
     floor_count_min_default: number = 0;
     floor_count_max_default: number = 30;
-        
+
 
     filteredOptions: Observable<string[]>;
     myControl = new FormControl();
@@ -361,7 +362,7 @@ export class SearchFormComponent implements OnInit {
             if (!elements.find(x => x == 'topic_id_selector')) {
                 delete this.form.controls.topic_id_selector;
             }
-            
+
 
         }
 
@@ -373,13 +374,13 @@ export class SearchFormComponent implements OnInit {
         }
 
     }
-    
+
     public init_price_params (params: any) {
         if (params["price_min"] != null) {
             if ( params["price_min"] >= 5000000) {
                 this.form.controls.price_selector.patchValue(5);
             }
-            
+
             this.form.controls.price_min.patchValue(params["price_min"]);
             if (params["price"] != null) {
                 this.form.controls.price_max.patchValue(params["price"]);
@@ -389,11 +390,11 @@ export class SearchFormComponent implements OnInit {
         if ( params["price"] >= 3000000 && params["price"] < 5000000) {
             this.form.controls.price_selector.patchValue(4);
         }
-        
+
         if ( params["price"] >= 2000000 && params["price"] < 3000000) {
             this.form.controls.price_selector.patchValue(3);
         }
-        
+
         if ( params["price"] >= 1500000 && params["price"] < 2000000) {
             this.form.controls.price_selector.patchValue(2);
         }
@@ -434,7 +435,7 @@ export class SearchFormComponent implements OnInit {
             this.form.controls.floor_selector.patchValue(1);
             this.floor_max = params["floor_max"];
         }
-        
+
         if (params["floor_count_min"] != null) {
             this.form.controls.floor_count_selector.patchValue(1);
             this.floor_count_min = params["floor_count_min"];
@@ -443,7 +444,7 @@ export class SearchFormComponent implements OnInit {
             this.form.controls.floor_count_selector.patchValue(1);
             this.floor_count_max = params["floor_count_max"];
         }
-        
+
 
         if (params["not_first_floor"] != null) {
             this.form.controls.not_first_floor.patchValue(params["not_first_floor"]);
@@ -655,7 +656,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
     render_floor_count_parts() {
         let query_parts = [];
         //console.log(this.form.controls.floor_selector.value);
@@ -669,7 +670,7 @@ export class SearchFormComponent implements OnInit {
         }
         return query_parts;
     }
-    
+
 
     render_deadline_parts() {
         let query_parts = [];

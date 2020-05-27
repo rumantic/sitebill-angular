@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FilterService} from 'app/_services/filter.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
@@ -29,7 +29,7 @@ export class SelectDistrictDialogComponent implements OnInit {
     options: any;
     entity: SitebillEntity;
 
-    
+
 
     dialogForm: FormGroup;
 

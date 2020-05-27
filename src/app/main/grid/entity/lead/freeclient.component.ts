@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, TemplateRef, ViewChild} from '@angul
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
     selector: 'freeclient-grid',
