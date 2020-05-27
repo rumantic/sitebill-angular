@@ -56,12 +56,67 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {AlertComponent} from "./_directives";
+import {Error404Component} from "./main/pages/errors/404/error-404.component";
+import {Error500Component} from "./main/pages/errors/500/error-500.component";
 
 const appRoutes: Routes = [
-    {path: '', redirectTo: 'sample', pathMatch: 'full'},
+    {path: '', redirectTo: 'frontend', pathMatch: 'full'},
+    {path: 'login', component: LoginComponent},
+    {path: 'logout', component: LoginComponent},
+    {
+        path: 'control/:model_name/:id/:control_name',
+        component: ControlElementsComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'calculator',
+        component: MortgageCalculatorComponent
+    },
+    {
+        path: 'calculator-mini',
+        component: CalculatorMiniComponent
+    },
     {
         path: 'sample',
         loadChildren: 'app/main/sample/sample.module#SampleModule'
+    },
+    {
+        path: 'grid',
+        loadChildren: 'app/main/grid/grid.module#GridModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'public',
+        loadChildren: 'app/main/grid/grid.module#GridModule',
+        canActivate: [PublicGuard],
+        runGuardsAndResolvers: 'always'
+    },
+    {
+        path: 'profile',
+        loadChildren: 'app/main/profile/profile.module#ProfileModule',
+        canActivate: [PublicGuard],
+    },
+    {
+        path: 'frontend',
+        loadChildren: 'app/main/frontend/frontend.module#FrontendModule'
+    },
+    {
+        path: 'dashboard',
+        loadChildren: 'app/main/dashboard/dashboard.module#DashboardModule',
+        canActivate: [PublicGuard],
+    },
+    {
+        path: 'cart/:step/:item_id',
+        loadChildren: 'app/main/cart/cart.module#CartModule'
+    },
+    {
+        path: 'cart/:step',
+        loadChildren: 'app/main/cart/cart.module#CartModule'
+    },
+    {
+        path: 'calendar',
+        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModuleWithRoutes',
     },
     /*
     {
@@ -80,6 +135,15 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
+        SnackBarComponent,
+        Bitrix24Router,
+        ControlElementsComponent,
+        LoginComponent,
+        AlertComponent,
+        MortgageCalculatorComponent,
+        CalculatorMiniComponent,
+        Error404Component,
+        Error500Component,
         SnackBarComponent,
         Bitrix24Router,
     ],
