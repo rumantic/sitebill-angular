@@ -1,5 +1,5 @@
-import {EventEmitter, Inject, Injectable, InjectionToken, Output} from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { ResolveEnd, Router } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -16,8 +16,6 @@ export class FuseConfigService
     // Private
     private _configSubject: BehaviorSubject<any>;
     private readonly _defaultConfig: any;
-    @Output() broadcast: EventEmitter<any> = new EventEmitter();
-
 
     /**
      * Constructor
@@ -98,7 +96,7 @@ export class FuseConfigService
         // Reload the default layout config on every RoutesRecognized event
         // if the current layout config is different from the default one
         this._router.events
-            .pipe(filter(event => event instanceof RoutesRecognized))
+            .pipe(filter(event => event instanceof ResolveEnd))
             .subscribe(() => {
                 if ( !_.isEqual(this._configSubject.getValue().layout, this._defaultConfig.layout) )
                 {
@@ -158,11 +156,5 @@ export class FuseConfigService
         // Set the config from the default config
         this._configSubject.next(_.cloneDeep(this._defaultConfig));
     }
-
-    broadcast_refresh () {
-        const rand = Math.random();
-        this.broadcast.emit(rand);
-    }
-
 }
 
