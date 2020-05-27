@@ -67,7 +67,7 @@ mat-sidenav-container {
         flex-direction: column;
     }
 }
-:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+:host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
 }
 
 .control_hover {
@@ -79,7 +79,7 @@ mat-sidenav-container {
     left: 50px;
 }
 
-:host /deep/ .datatable-body-row:hover .control_hover {
+:host ::ng-deep .datatable-body-row:hover .control_hover {
     display: flex;
     position: absolute;
     align-items: center;
@@ -89,25 +89,25 @@ mat-sidenav-container {
     overflow: visible;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
-:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+:host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
     overflow: visible !important;
 }
-:host /deep/ .not-active {
+:host ::ng-deep .not-active {
     background: #ef5350;
 }
-:host /deep/ .hot {
+:host ::ng-deep .hot {
     background: #ffecb3;
 }
-:host /deep/ .map-container-inner {
+:host ::ng-deep .map-container-inner {
     width: 300px;
     height: 200px;
 }
-:host /deep/ .md-drppicker {
+:host ::ng-deep .md-drppicker {
     left: -443px;
     top: 42px !important;
     width: 700px !important;
 }
-:host /deep/ .md-drppicker {
+:host ::ng-deep .md-drppicker {
     color: black !important;
 }
 
