@@ -319,6 +319,7 @@ const appRoutes: Routes = [
 })
 export class AppModule {
     ngDoBootstrap(app) {
+        console.log('test');
         app.bootstrap(AppComponent);
         if (document.getElementById('calculator_mini_root')) {
             app.bootstrap(CalculatorMiniComponent);
