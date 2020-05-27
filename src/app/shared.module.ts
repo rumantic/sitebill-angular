@@ -9,7 +9,7 @@ import {FormComponent} from './main/grid/form/form.component';
 import {GalleryModalComponent} from './main/gallery/modal/gallery-modal.component';
 import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {NgxGalleryModule} from 'ngx-gallery';
+import {NgxGalleryModule} from 'ngx-gallery-9';
 import {NgxUploaderModule} from 'ngx-uploader';
 import {UploaderComponent} from './main/uploader/uploader.component';
 import {GalleryComponent} from './main/gallery/gallery.component';

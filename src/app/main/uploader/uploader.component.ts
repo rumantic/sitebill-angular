@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, isDevMode, Inject } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
-import { NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
