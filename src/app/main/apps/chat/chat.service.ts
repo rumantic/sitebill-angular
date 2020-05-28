@@ -97,18 +97,23 @@ export class ChatService implements Resolve<any>
 
         //console.log('open close ' + this.open_close);
 
+        const chatItem = false;
+        /*
         const chatItem = this.user.chatList.find((item) => {
             return item.contactId === contactId;
         });
+         */
 
         /**
          * Create new chat, if it's not created yet.
          */
         if (!chatItem) {
+            /*
             this.createNewChat(contactId).then((newChats) => {
                 this.getChat(model_name, primary_key, key_value);
             });
             return;
+             */
         }
 
         const body = { action: 'comment', do: 'get', model_name: model_name, primary_key: primary_key, key_value: key_value, session_key: this.modelSerivce.get_session_key() };
@@ -120,10 +125,12 @@ export class ChatService implements Resolve<any>
             this._httpClient.post(`${this.modelSerivce.get_api_url()}/apps/api/rest.php`, body)
                 .subscribe((response: any) => {
                     const chat = response;
-
+                    const chatContact = null;
+                    /*
                     const chatContact = this.contacts.find((contact) => {
                         return contact.id === contactId;
                     });
+                     */
 
                     const chatData = {
                         chatId: contactId,
@@ -164,9 +171,11 @@ export class ChatService implements Resolve<any>
     createNewChat(contactId): Promise<any> {
         return new Promise((resolve, reject) => {
 
+            /*
             const contact = this.contacts.find((item) => {
                 return item.id === contactId;
             });
+             */
 
             const chatId = FuseUtils.generateGUID();
 
