@@ -151,7 +151,7 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes),
+        RouterModule.forRoot(appRoutes, {useHash: true, onSameUrlNavigation: 'reload'}),
 
         TranslateModule.forRoot(),
 
