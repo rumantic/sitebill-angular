@@ -30,7 +30,9 @@ export class GalleryModalComponent implements OnInit {
     }
 
     close() {
-        this.filterService.empty_share(this._data.entity);
+        if ( !this._data.disable_gallery_controls ) {
+            this.filterService.empty_share(this._data.entity);
+        }
         this.dialogRef.close();
     }
 
