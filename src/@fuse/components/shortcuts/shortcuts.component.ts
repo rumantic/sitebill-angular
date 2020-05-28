@@ -283,7 +283,9 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     showMobileShortcutsPanel(): void
     {
         this.mobileShortcutsPanelActive = true;
-        this._renderer.addClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        if ( this.shortcutsEl !== undefined ) {
+            this._renderer.addClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        }
     }
 
     /**
@@ -292,6 +294,8 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     hideMobileShortcutsPanel(): void
     {
         this.mobileShortcutsPanelActive = false;
-        this._renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        if ( this.shortcutsEl !== undefined ) {
+            this._renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        }
     }
 }
