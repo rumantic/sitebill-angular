@@ -63,6 +63,16 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform
     )
     {
+        /*
+        const conf = {
+            layout: {
+                sidepanel: {
+                    hidden: true,
+                }
+            }
+        }
+         */
+        //this._fuseConfigService.setConfig(conf);
         if (this.elRef.nativeElement.getAttribute('navbar_hidden') === 'true') {
             this.modelService.hide_navbar();
         }

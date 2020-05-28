@@ -79,7 +79,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'sample',
-        loadChildren: 'app/main/sample/sample.module#SampleModule'
+        loadChildren: () => import('app/main/sample/sample.module').then(m => m.SampleModule),
     },
     {
         path: 'grid',
@@ -88,13 +88,13 @@ const appRoutes: Routes = [
     },
     {
         path: 'public',
-        loadChildren: 'app/main/grid/grid.module#GridModule',
+        loadChildren: () => import('app/main/grid/grid.module').then(m => m.GridModule),
         canActivate: [PublicGuard],
         runGuardsAndResolvers: 'always'
     },
     {
         path: 'profile',
-        loadChildren: 'app/main/profile/profile.module#ProfileModule',
+        loadChildren: () => import('app/main/profile/profile.module').then(m => m.ProfileModule),
         canActivate: [PublicGuard],
     },
     {
@@ -103,20 +103,20 @@ const appRoutes: Routes = [
     },
     {
         path: 'dashboard',
-        loadChildren: 'app/main/dashboard/dashboard.module#DashboardModule',
+        loadChildren: () => import('app/main/dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [PublicGuard],
     },
     {
         path: 'cart/:step/:item_id',
-        loadChildren: 'app/main/cart/cart.module#CartModule'
+        loadChildren: () => import('app/main/cart/cart.module').then(m => m.CartModule),
     },
     {
         path: 'cart/:step',
-        loadChildren: 'app/main/cart/cart.module#CartModule'
+        loadChildren: () => import('app/main/cart/cart.module').then(m => m.CartModule),
     },
     {
         path: 'calendar',
-        loadChildren: 'app/main/sb-calendar/sb-calendar.module#SbCalendarModuleWithRoutes',
+        loadChildren: () => import('app/main/sb-calendar/sb-calendar.module').then(m => m.SbCalendarModuleWithRoutes),
     },
     /*
     {

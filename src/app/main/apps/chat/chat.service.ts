@@ -67,9 +67,9 @@ export class ChatService implements Resolve<any>
 
         return new Promise((resolve, reject) => {
             Promise.all([
-                this.getContacts(),
-                this.getChats(),
-                this.getUser()
+                //this.getContacts(),
+                //this.getChats(),
+                //this.getUser()
             ]).then(
                 ([contacts, chats, user]) => {
                     //console.log(contacts);

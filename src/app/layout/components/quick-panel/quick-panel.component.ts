@@ -49,6 +49,7 @@ export class QuickPanelComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        /*
         // Subscribe to the events
         this._httpClient.get('api/quick-panel-events')
             .pipe(takeUntil(this._unsubscribeAll))
@@ -62,6 +63,7 @@ export class QuickPanelComponent implements OnInit, OnDestroy
             .subscribe((response: any) => {
                 this.notes = response;
             });
+         */
     }
 
     /**
