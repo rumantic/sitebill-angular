@@ -64,10 +64,10 @@ export class CommonTemplateComponent {
         @Inject(APP_CONFIG) private config: AppConfig,
         private modelSerivce: ModelService,
     ) {
-        this.api_url = this.modelSerivce.get_api_url();
     }
 
     ngOnInit () {
+        this.api_url = this.modelSerivce.get_api_url();
     }
 
     view(item_id: number) {

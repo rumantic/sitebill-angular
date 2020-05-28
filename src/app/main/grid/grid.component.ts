@@ -207,6 +207,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.loadingIndicator = true;
     }
     ngOnInit() {
+        this.entity.set_app_url(null);
         if (this.disable_menu) {
             //console.log(this.disable_menu);
         } else {
@@ -818,9 +819,9 @@ export class GridComponent implements OnInit, OnDestroy
                     };
                 } else {
                     return {
-                        small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
-                        medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
-                        big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
+                        small: self.modelService.get_api_url() + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                        medium: self.modelService.get_api_url() + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                        big: self.modelService.get_api_url() + '/img/data/' + image.normal + '?' + new Date().getTime()
                     };
                 }
 
