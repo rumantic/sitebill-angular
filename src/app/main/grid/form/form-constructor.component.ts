@@ -638,4 +638,12 @@ export class FormConstructorComponent implements OnInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
+    valid_link (value) {
+        const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+        if ( value.match(reg) ) {
+            return true;
+        }
+        return false;
+    }
 }
