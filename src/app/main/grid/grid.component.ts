@@ -428,7 +428,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
-        //console.log('load_grid_data');
+        // console.log('load_grid_data');
         let filter_params_json = {};
 
 
@@ -561,6 +561,8 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.compose_complete) {
             //return;
         }
+        delete (this.data_columns);
+        this.data_columns = [];
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         if ( this.enable_select_rows ) {
@@ -572,7 +574,6 @@ export class GridComponent implements OnInit, OnDestroy
                 resizeable: false,
             }];
         }
-
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
         this.data_columns.push(this.get_control_column());
@@ -922,8 +923,6 @@ export class GridComponent implements OnInit, OnDestroy
                     //console.log(response);
                 });
         }
-
-
     }
 
 
