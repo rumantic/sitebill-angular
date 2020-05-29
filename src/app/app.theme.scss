@@ -122,7 +122,6 @@ body.theme-default {
     );
 
     @include fuse-color-classes($palettes);
-    @import "~@ng-select/ng-select/themes/material.theme.css";
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -158,7 +157,6 @@ body.theme-yellow-light {
     );
 
     @include fuse-color-classes($palettes);
-    @import "~@ng-select/ng-select/themes/material.theme.css";
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -194,7 +192,6 @@ body.theme-blue-gray-dark {
     );
 
     @include fuse-color-classes($palettes);
-    @import "~@ng-select/ng-select/themes/material.theme.css";
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -230,5 +227,4 @@ body.theme-pink-dark {
     );
 
     @include fuse-color-classes($palettes);
-    @import "~@ng-select/ng-select/themes/material.theme.css";
 }
