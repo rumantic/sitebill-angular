@@ -916,12 +916,13 @@ export class GridComponent implements OnInit, OnDestroy
 
     onResize(event) {
         const params = { width: event.newValue };
-        //console.log(event);
+        if ( event.column !== undefined && event.column.model_name !== undefined ) {
+            this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
+                .subscribe((response: any) => {
+                    //console.log(response);
+                });
+        }
 
-        this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
-            .subscribe((response: any) => {
-                //console.log(response);
-            });
 
     }
 
