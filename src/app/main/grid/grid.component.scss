@@ -102,12 +102,12 @@ mat-sidenav-container {
     width: 300px;
     height: 200px;
 }
-:host ::ng-deep .md-drppicker {
-    left: -443px;
+::ng-deep .md-drppicker {
     top: 42px !important;
     width: 700px !important;
+    background: white;
 }
-:host ::ng-deep .md-drppicker {
+::ng-deep .md-drppicker {
     color: black !important;
 }
 
