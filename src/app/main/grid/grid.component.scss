@@ -20,14 +20,25 @@ mat-sidenav-container {
 
 }
 
+::ng-deep {
+    .example-container .mat-dialog-container {
+        padding: 0 !important;
+    }
+    .example-container .mat-dialog-content {
+        min-height: 75vh !important;
+    }
+}
+
 
 ::ng-deep .form-ngrx-compose-dialog {
 
     .mat-dialog-container {
         padding: 0;
         width: 99vw;
-        height: 99vh;
+        height: 90vh;
         max-width: none;
+        min-height: 90vh !important;
+
 
         .compose-form {
 
@@ -56,13 +67,13 @@ mat-sidenav-container {
         }
     }
     .dialog-content {
-        height: 99vh;
-        max-height: 99vh;
+        height: 90vh;
+        max-height: 90vh;
     }
 
     .dialog-content-wrapper {
-        height: 99vh;
-        max-height: 99vh;
+        height: 90vh;
+        max-height: 90vh;
         display: flex;
         flex-direction: column;
     }

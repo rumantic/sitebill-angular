@@ -3,10 +3,10 @@
 
 ::ng-deep {
     .login-form .mat-dialog-container {
-        padding: 0;
+        padding: 0 !important;
     }
-    .mat-dialog-content {
-        min-height: 85vh;
+    .login-form .mat-dialog-content {
+        min-height: 85vh !important;
     }
 }
 :host {
