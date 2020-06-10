@@ -22,6 +22,8 @@ export class MyClientComponent extends GridComponent {
         this.entity.set_app_name('myclient');
         this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
+        this.entity.set_default_params({ user_id: this.modelService.get_user_id() });
+        this.entity.set_enable_comment();
         this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };

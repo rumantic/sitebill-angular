@@ -218,8 +218,10 @@ export class AppComponent implements OnInit, OnDestroy
         this.modelService.get_parser_today_count().subscribe((result: any) => {
             if ( result.state === 'success' ) {
                 const properties = this._fuseNavigationService.getNavigationItem('parser');
-                properties.badge.title = result.message;
-                this._fuseNavigationService.updateNavigationItem('parser', properties);
+                if ( properties ) {
+                    properties.badge.title = result.message;
+                    this._fuseNavigationService.updateNavigationItem('parser', properties);
+                }
             }
         });
 

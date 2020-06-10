@@ -20,6 +20,9 @@ export class FreeClientComponent extends GridComponent {
         this.entity.set_app_name('freeclient');
         this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
+        this.entity.set_default_params({ user_id: 0 });
+        this.disable_view_button = true;
+
         this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };

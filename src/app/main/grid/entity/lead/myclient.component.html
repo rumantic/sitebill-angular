@@ -17,7 +17,7 @@
             </button>
         </span>
 
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_view_button">
             <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
         </button>
 
@@ -30,7 +30,7 @@
 <ng-template #controlTmplMy let-row="row" let-value="value">
     <!--mat-checkbox class="form-checkbox"></mat-checkbox-->
     <div class="control_hover">
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!disable_view_button">
             <mat-icon (click)="view(value)" aria-label="Просмотр" matTooltip="Просмотреть запись">pageview</mat-icon>
         </button>
         <span *ngIf="row.active">
