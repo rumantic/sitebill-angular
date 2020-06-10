@@ -28,7 +28,7 @@ export class FreeClientComponent extends GridComponent {
         //this.table_index_params[0] = { user_id: 0 };
         this.define_grid_params({ user_id: 0 });
 
-        let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
+        let grid_fields = ['user_id', 'date', 'type_id', 'src_page', 'fio'];
         this.define_grid_fields(grid_fields);
         //this.refresh();
 

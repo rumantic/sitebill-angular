@@ -30,7 +30,7 @@ export class MyClientComponent extends GridComponent {
         this.define_grid_params({ user_id: this.modelService.get_user_id() });
 
         //let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
-        let grid_fields = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
+        let grid_fields = ['user_id', 'date', 'type_id', 'src_page', 'fio', 'phone'];
         this.define_grid_fields(grid_fields);
         //this.refresh();
 
