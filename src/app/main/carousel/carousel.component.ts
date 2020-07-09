@@ -9,7 +9,7 @@ import {IImage} from 'ng-simple-slideshow';
 import {NguCarousel, NguCarouselConfig, NguCarouselStore} from '@ngu/carousel';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import { ModelService } from 'app/_services/model.service';
 //import { WINDOW } from "app/_services/window/services/window.service";
 //import { WindowRef } from 'app/_services/window/WindowRef';

@@ -6,8 +6,9 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { CartComponent } from './cart.component';
 import {BillingService} from '../../_services/billing.service';
-import {MatGridListModule, MatIconModule} from '@angular/material';
 import {SharedModule} from '../../shared.module';
+import {MatIconModule} from "@angular/material/icon";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 const routes = [
     {

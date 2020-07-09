@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import { ObservableMedia } from '@angular/flex-layout';
+import { MediaObserver } from '@angular/flex-layout';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
      * @param {CookieService} _cookieService
      * @param {FuseMatchMediaService} _fuseMatchMediaService
      * @param {FuseNavigationService} _fuseNavigationService
-     * @param {ObservableMedia} _observableMedia
+     * @param {MediaObserver} _observableMedia
      * @param modelService
      * @param cdr
      */
@@ -52,7 +52,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         private _cookieService: CookieService,
         private _fuseMatchMediaService: FuseMatchMediaService,
         private _fuseNavigationService: FuseNavigationService,
-        private _observableMedia: ObservableMedia,
+        private _observableMedia: MediaObserver,
         private _renderer: Renderer2,
         protected modelService: ModelService,
         protected cdr: ChangeDetectorRef,
@@ -283,7 +283,9 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     showMobileShortcutsPanel(): void
     {
         this.mobileShortcutsPanelActive = true;
-        this._renderer.addClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        if ( this.shortcutsEl !== undefined ) {
+            this._renderer.addClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        }
     }
 
     /**
@@ -292,6 +294,8 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     hideMobileShortcutsPanel(): void
     {
         this.mobileShortcutsPanelActive = false;
-        this._renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        if ( this.shortcutsEl !== undefined ) {
+            this._renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+        }
     }
 }

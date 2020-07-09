@@ -1,12 +1,12 @@
-/deep/ .ngx-gallery-thumbnail.ngx-gallery-active {
+::ng-deep .ngx-gallery-thumbnail.ngx-gallery-active {
 }
 
-/deep/ .ngx-gallery-icon {
+::ng-deep .ngx-gallery-icon {
     padding: 2px;
     font-size: 0.5rem;
 }
 
-/deep/ .ngx-gallery-icon:hover {
+::ng-deep .ngx-gallery-icon:hover {
     background-color: white;
     font-size: 0.5rem;
     padding: 2px;

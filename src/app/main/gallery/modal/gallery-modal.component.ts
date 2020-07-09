@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, Input} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
@@ -30,7 +30,9 @@ export class GalleryModalComponent implements OnInit {
     }
 
     close() {
-        this.filterService.empty_share(this._data.entity);
+        if ( !this._data.disable_gallery_controls ) {
+            this.filterService.empty_share(this._data.entity);
+        }
         this.dialogRef.close();
     }
 

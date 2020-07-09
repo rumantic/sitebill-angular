@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ObservableMedia } from '@angular/flex-layout';
+import {MediaObserver} from '@angular/flex-layout';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -30,12 +30,12 @@ export class ChatChatsSidenavComponent implements OnInit, OnDestroy
      *
      * @param {ChatService} _chatService
      * @param {FuseMatSidenavHelperService} _fuseMatSidenavHelperService
-     * @param {ObservableMedia} _observableMedia
+     * @param {MediaObserver} _observableMedia
      */
     constructor(
         private _chatService: ChatService,
         private _fuseMatSidenavHelperService: FuseMatSidenavHelperService,
-        public _observableMedia: ObservableMedia
+        public _observableMedia: MediaObserver
     )
     {
         // Set the defaults

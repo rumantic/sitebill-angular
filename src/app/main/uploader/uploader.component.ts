@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, isDevMode, Inject } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
-import { NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
 import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
@@ -139,7 +139,7 @@ export class UploaderComponent {
                 }
 
             }
- 
+
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);
@@ -232,5 +232,5 @@ export class UploaderComponent {
 
     removeAllFiles(): void {
         this.uploadInput.emit({ type: 'removeAll' });
-    }    
+    }
 }

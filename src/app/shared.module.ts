@@ -2,18 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RegisterModalComponent} from './login/register-modal/register-modal.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {
-    MAT_DATE_LOCALE,
-    MatAutocompleteModule, MatBadgeModule,
-    MatButtonModule, MatButtonToggleModule, MatCardModule,
-    MatCheckboxModule,
-    MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule,
-    MatFormFieldModule, MatGridListModule, MatIconModule,
-    MatInputModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
-    MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSnackBarModule, MatTableModule,
-    MatTabsModule,
-    MatToolbarModule, MatTooltipModule
-} from '@angular/material';
 import {FuseSharedModule} from '../@fuse/shared.module';
 import {LoginModalComponent} from './login/modal/login-modal.component';
 import {RouterModule} from '@angular/router';
@@ -21,7 +9,7 @@ import {FormComponent} from './main/grid/form/form.component';
 import {GalleryModalComponent} from './main/gallery/modal/gallery-modal.component';
 import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {NgxGalleryModule} from 'ngx-gallery';
+import {NgxGalleryModule} from 'ngx-gallery-9';
 import {NgxUploaderModule} from 'ngx-uploader';
 import {UploaderComponent} from './main/uploader/uploader.component';
 import {GalleryComponent} from './main/gallery/gallery.component';
@@ -60,6 +48,33 @@ import {RemindModalComponent} from './login/remind-modal/remind-modal.component'
 import {UserProfileComponent} from './main/grid/entity/user-profile/user-profile.component';
 import {ContactInjectorComponent} from './main/grid/entity/contact-injector/contact-injector.component';
 import {RegisterDomainModalComponent} from './login/register-domain-modal/register-domain-modal.component';
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatRadioModule} from "@angular/material/radio";
+import {MAT_DATE_LOCALE, MatOptionModule} from "@angular/material/core";
+import {MatCardModule} from "@angular/material/card";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
+import {MatTableModule} from "@angular/material/table";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
     imports: [

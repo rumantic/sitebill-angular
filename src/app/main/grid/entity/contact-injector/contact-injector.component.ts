@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {SitebillEntity} from '../../../../_models';
 import {ModelService} from '../../../../_services/model.service';

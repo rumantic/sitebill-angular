@@ -6,17 +6,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
-import {
-    MatButtonModule, MatCheckboxModule, MatGridListModule,
-    MatDividerModule, MatFormFieldModule, MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule, MatDialogModule, MatDatepickerModule,
-    MatProgressSpinnerModule, MatTooltipModule, MatSidenavModule, MatToolbarModule, MatRadioModule, MatCardModule, MatInputModule, MatIconModule, MatSliderModule,
-    MatAutocompleteModule, MatButtonToggleModule, MatBadgeModule, MAT_DATE_LOCALE
-} from '@angular/material';
-import {
-    MatSnackBarModule
-} from '@angular/material';
-
-
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { ConfirmDialogModule } from 'app/dialogs/confirm/confirm.module';
@@ -41,7 +30,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 
 import { NgxUploaderModule } from 'ngx-uploader';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from 'ngx-gallery-9';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ReplacePipe } from 'app/pipes/replace.pipe';
 import { UserComponent } from './user/user.component';
@@ -67,6 +56,31 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
 import {FavoritesComponent} from './entity/favorites/favorites.component';
 import {ParserComponent} from './entity/parser/parser.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatInputModule} from "@angular/material/input";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatCardModule} from "@angular/material/card";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatSelectModule} from "@angular/material/select";
+import {MatTableModule} from "@angular/material/table";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MAT_DATE_LOCALE} from "@angular/material/core";
 
 const routes = [
     {

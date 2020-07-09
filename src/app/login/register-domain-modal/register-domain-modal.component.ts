@@ -10,16 +10,16 @@ import * as moment from 'moment';
 import {forbiddenNullValue, FormConstructorComponent} from '../../main/grid/form/form-constructor.component';
 import {FilterService} from '../../_services/filter.service';
 import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
-import {MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material';
 import {SitebillEntity} from '../../_models';
 import {HttpClient} from '@angular/common/http';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import {FuseConfigService} from '../../../@fuse/services/config.service';
 import {APP_CONFIG, AppConfig} from '../../app.config.module';
 import {FuseTranslationLoaderService} from '../../../@fuse/services/translation-loader.service';
 import {locale as english} from './i18n/en';
 import {locale as russian} from './i18n/ru';
 import {navigation} from '../../navigation/navigation';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 export interface Progress {
     progress: string;

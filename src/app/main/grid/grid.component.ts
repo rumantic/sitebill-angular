@@ -1,7 +1,7 @@
 import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { FilterService } from 'app/_services/filter.service';
 import { fuseAnimations } from '@fuse/animations';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
@@ -207,6 +207,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.loadingIndicator = true;
     }
     ngOnInit() {
+        this.entity.set_app_url(null);
         if (this.disable_menu) {
             //console.log(this.disable_menu);
         } else {
@@ -427,7 +428,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
-        //console.log('load_grid_data');
+        // console.log('load_grid_data');
         let filter_params_json = {};
 
 
@@ -560,6 +561,8 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.compose_complete) {
             //return;
         }
+        delete (this.data_columns);
+        this.data_columns = [];
         //проходим по columns_list
         //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         if ( this.enable_select_rows ) {
@@ -571,7 +574,6 @@ export class GridComponent implements OnInit, OnDestroy
                 resizeable: false,
             }];
         }
-
         //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
         this.data_columns.push(this.get_control_column());
@@ -818,9 +820,9 @@ export class GridComponent implements OnInit, OnDestroy
                     };
                 } else {
                     return {
-                        small: self.api_url + '/img/data/' + image.preview + '?' + new Date().getTime(),
-                        medium: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime(),
-                        big: self.api_url + '/img/data/' + image.normal + '?' + new Date().getTime()
+                        small: self.modelService.get_api_url() + '/img/data/' + image.preview + '?' + new Date().getTime(),
+                        medium: self.modelService.get_api_url() + '/img/data/' + image.normal + '?' + new Date().getTime(),
+                        big: self.modelService.get_api_url() + '/img/data/' + image.normal + '?' + new Date().getTime()
                     };
                 }
 
@@ -915,13 +917,12 @@ export class GridComponent implements OnInit, OnDestroy
 
     onResize(event) {
         const params = { width: event.newValue };
-        //console.log(event);
-
-        this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
-            .subscribe((response: any) => {
-                //console.log(response);
-            });
-
+        if ( event.column !== undefined && event.column.model_name !== undefined ) {
+            this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
+                .subscribe((response: any) => {
+                    //console.log(response);
+                });
+        }
     }
 
 

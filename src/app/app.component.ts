@@ -63,6 +63,16 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform
     )
     {
+        /*
+        const conf = {
+            layout: {
+                sidepanel: {
+                    hidden: true,
+                }
+            }
+        }
+         */
+        //this._fuseConfigService.setConfig(conf);
         if (this.elRef.nativeElement.getAttribute('navbar_hidden') === 'true') {
             this.modelService.hide_navbar();
         }
@@ -208,8 +218,10 @@ export class AppComponent implements OnInit, OnDestroy
         this.modelService.get_parser_today_count().subscribe((result: any) => {
             if ( result.state === 'success' ) {
                 const properties = this._fuseNavigationService.getNavigationItem('parser');
-                properties.badge.title = result.message;
-                this._fuseNavigationService.updateNavigationItem('parser', properties);
+                if ( properties ) {
+                    properties.badge.title = result.message;
+                    this._fuseNavigationService.updateNavigationItem('parser', properties);
+                }
             }
         });
 

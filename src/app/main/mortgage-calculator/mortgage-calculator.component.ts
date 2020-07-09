@@ -10,7 +10,7 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {ActivatedRoute} from '@angular/router';
 
 import {currentUser} from 'app/_models/currentuser';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 
@@ -56,7 +56,7 @@ export class MortgageCalculatorComponent implements OnInit {
     step_down_payment = 10000;
     max_down_payment = 20000000;
     min_down_payment = 0;
-    
+
     realty_minus_down = 0;
 
     percent = 8.5;
@@ -75,17 +75,17 @@ export class MortgageCalculatorComponent implements OnInit {
     show_credit_sum = false;
 
     credit_sum = 0;
-    
+
     stavka_title = "Ставка % **";
     stavka_description = "** для семей с двумя детьми и более";
-    
+
     top_text = "Ежемесячный платеж:";
     bottom_text = "по двум документам!";
-    
+
     ipoteka_order_url = "";
 
     private _tickInterval = 1;
-    
+
     license_check_true: boolean = false;
     license_check_false: boolean = false;
 
@@ -125,12 +125,12 @@ export class MortgageCalculatorComponent implements OnInit {
         this.controlPressed = false;
         this.controlProcessing = true;
         this.init_input_parameters();
-        
-        
+
+
         this.calculate(null);
 
     }
-    
+
     init_input_parameters () {
         let app_root_element;
         if (this.document.getElementById('calculator_mini_root')) {
@@ -140,7 +140,7 @@ export class MortgageCalculatorComponent implements OnInit {
         } else if (this.document.getElementById('app_root').getAttribute('realty_price') > 0) {
             app_root_element = this.document.getElementById('app_root');
         }
-        
+
         if (app_root_element.getAttribute('years') > 0) {
             this.years = app_root_element.getAttribute('years');
         }
@@ -155,40 +155,40 @@ export class MortgageCalculatorComponent implements OnInit {
         } else {
             this.down_payment = this.realty_price * 0.20;
         }
-        
+
         if (app_root_element.getAttribute('down_percent') > 0) {
             this.down_percent = app_root_element.getAttribute('down_percent');
             this.down_payment = this.realty_price*(app_root_element.getAttribute('down_percent')/100);
         } else {
             this.down_payment = this.realty_price * 0.20;
         }
-        
+
         if (app_root_element.getAttribute('show_overpayment') == 1) {
             this.show_overpayment = true;
         } else {
             this.show_overpayment = false;
         }
-        
+
         if (app_root_element.getAttribute('show_credit_sum') == 1) {
             this.show_credit_sum = true;
         } else {
             this.show_credit_sum = false;
         }
-        
+
         if (app_root_element.getAttribute('top_text') != null) {
             this.top_text = app_root_element.getAttribute('top_text');
         }
-        
+
         if (app_root_element.getAttribute('bottom_text') != null) {
             this.bottom_text = app_root_element.getAttribute('bottom_text');
         }
-        
+
         if (app_root_element.getAttribute('ipoteka_order_url') != null) {
             this.ipoteka_order_url = app_root_element.getAttribute('ipoteka_order_url');
         }
-        
+
     }
-    
+
 
     getStyleSheet(unique_title) {
         for (var i = 0; i < this.document.styleSheets.length; i++) {
@@ -230,18 +230,18 @@ export class MortgageCalculatorComponent implements OnInit {
 
         return value;
     }
-    
+
     formatLabelDown(value: number | null, realty_price: number | null) {
         if (!value) {
             return 0;
         }
         return (this.realty_price - value)/this.realty_price;
     }
-    
+
     displayFnDown (value: number | null) {
         return 100-Math.round((this.realty_price - value)*100/this.realty_price) + '%';
     }
-    
+
 
     calculate(event) {
         this.max_down_payment = this.realty_price;
@@ -271,9 +271,9 @@ export class MortgageCalculatorComponent implements OnInit {
     }
 
     check_license() {
-        
+
         const body = {proxysalt: 'jkkwJJfk34u76vjLDmckIQ2', action: 'license', anonymous: true, do: 'check', module: 'mortgage_calculator'};
-        
+
         this._httpClient.post(`https://api.sitebill.ru/apps/apiproxy/restproxy.php`, body)
             .subscribe((result: any) => {
                 //console.log(result);

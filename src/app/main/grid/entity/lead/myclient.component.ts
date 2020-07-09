@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { Page } from '../../page';
 import { currentUser } from 'app/_models/currentuser';
 import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
     selector: 'myclient-grid',
@@ -22,13 +22,15 @@ export class MyClientComponent extends GridComponent {
         this.entity.set_app_name('myclient');
         this.entity.set_table_name('client');
         this.entity.primary_key = 'client_id';
+        this.entity.set_default_params({ user_id: this.modelService.get_user_id() });
+        this.entity.set_enable_comment();
         this.enable_date_range('date');
 
         //this.table_index_params[0] = { user_id: 0 };
         this.define_grid_params({ user_id: this.modelService.get_user_id() });
 
         //let grid_fields = ['client_id', 'date', 'type_id', 'status_id', 'fio'];
-        let grid_fields = ['client_id', 'user_id', 'date', 'type_id', 'status_id', 'fio', 'phone'];
+        let grid_fields = ['user_id', 'date', 'type_id', 'src_page', 'fio', 'phone'];
         this.define_grid_fields(grid_fields);
         //this.refresh();
 

@@ -20,14 +20,25 @@ mat-sidenav-container {
 
 }
 
+::ng-deep {
+    .example-container .mat-dialog-container {
+        padding: 0 !important;
+    }
+    .example-container .mat-dialog-content {
+        min-height: 75vh !important;
+    }
+}
+
 
 ::ng-deep .form-ngrx-compose-dialog {
 
     .mat-dialog-container {
         padding: 0;
         width: 99vw;
-        height: 99vh;
+        height: 95vh;
         max-width: none;
+        min-height: 95vh !important;
+
 
         .compose-form {
 
@@ -56,18 +67,18 @@ mat-sidenav-container {
         }
     }
     .dialog-content {
-        height: 99vh;
-        max-height: 99vh;
+        height: 95vh;
+        max-height: 95vh;
     }
 
     .dialog-content-wrapper {
-        height: 99vh;
-        max-height: 99vh;
+        height: 95vh;
+        max-height: 95vh;
         display: flex;
         flex-direction: column;
     }
 }
-:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+:host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
 }
 
 .control_hover {
@@ -79,7 +90,7 @@ mat-sidenav-container {
     left: 50px;
 }
 
-:host /deep/ .datatable-body-row:hover .control_hover {
+:host ::ng-deep .datatable-body-row:hover .control_hover {
     display: flex;
     position: absolute;
     align-items: center;
@@ -89,25 +100,25 @@ mat-sidenav-container {
     overflow: visible;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
-:host /deep/ .datatable-body-row:hover .datatable-body-cell {
+:host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
     overflow: visible !important;
 }
-:host /deep/ .not-active {
+:host ::ng-deep .not-active {
     background: #ef5350;
 }
-:host /deep/ .hot {
+:host ::ng-deep .hot {
     background: #ffecb3;
 }
-:host /deep/ .map-container-inner {
+:host ::ng-deep .map-container-inner {
     width: 300px;
     height: 200px;
 }
-:host /deep/ .md-drppicker {
-    left: -443px;
+::ng-deep .md-drppicker {
     top: 42px !important;
     width: 700px !important;
+    background: white;
 }
-:host /deep/ .md-drppicker {
+::ng-deep .md-drppicker {
     color: black !important;
 }
 

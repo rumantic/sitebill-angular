@@ -1,10 +1,6 @@
 import {ChangeDetectionStrategy, Component, TemplateRef, ViewChild} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
-import { Page } from '../../page';
-import { currentUser } from 'app/_models/currentuser';
-import { DeclineClientComponent } from 'app/dialogs/decline-client/decline-client.component';
-import { MatDialogConfig } from '@angular/material';
 
 @Component({
     selector: 'sale-grid',

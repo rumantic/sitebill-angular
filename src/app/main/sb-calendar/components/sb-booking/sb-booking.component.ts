@@ -3,7 +3,7 @@ import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angul
 import {isSameDay, isSameMonth} from 'date-fns';
 import {Subject} from 'rxjs';
 import {ModelService} from '../../../../_services/model.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SbRatesEditDialogComponent} from '../sb-rates/sb-rates-edit-dialog/sb-rates-edit-dialog.component';
 import {SB_MONTHS, SB_RATE_TYPES} from '../../classes/sb-calendar.constants';
 import {SbCalendarService} from '../../services/sb-calendar.service';

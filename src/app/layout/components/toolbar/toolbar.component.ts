@@ -12,7 +12,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
 import {AlertService, AuthenticationService} from '../../../_services/index';
 import {ModelService} from '../../../_services/model.service';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../../login/modal/login-modal.component';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 

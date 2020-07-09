@@ -1,7 +1,7 @@
 import {Component, ElementRef, Inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {DOCUMENT} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
