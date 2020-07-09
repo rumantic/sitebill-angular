@@ -44,7 +44,7 @@ export class CollectionsComponent implements OnInit {
                     hidden: true
                 },
                 toolbar: {
-                    hidden: false
+                    hidden: true
                 },
                 footer: {
                     hidden: true
@@ -62,9 +62,37 @@ export class CollectionsComponent implements OnInit {
         this.data_total_counter = event;
     }
 
+    configure_menu () {
+        if ( this.modelSerivce.is_config_loaded() ) {
+            //console.log(this.modelSerivce.getConfigValue('apps.realty.enable_toolbar'));
+            if (this.modelSerivce.getConfigValue('apps.realty.enable_toolbar') === '1') {
+                this._fuseConfigService.config = {
+                    layout: {
+                        toolbar: {
+                            hidden: false
+                        },
+                    }
+                };
+            }
+
+            if (this.modelSerivce.getConfigValue('apps.realty.enable_navbar') === '1') {
+                this._fuseConfigService.config = {
+                    layout: {
+                        navbar: {
+                            hidden: false
+                        },
+                    }
+                };
+            }
+
+        }
+
+    }
+
     ngOnInit() {
         //this.test_bitrix24();
         this.disable_menu();
+        this.configure_menu();
         this.bitrix24Service.init_input_parameters();
         this.bitrix24Service.set_collections_count(this.collections_total_counter);
 
