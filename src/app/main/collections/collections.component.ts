@@ -23,9 +23,9 @@ export class CollectionsComponent implements OnInit {
     private data_total_counter: number;
 
     response: any;
-    
-    
-    
+
+
+
 
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -44,7 +44,7 @@ export class CollectionsComponent implements OnInit {
                     hidden: true
                 },
                 toolbar: {
-                    hidden: true
+                    hidden: false
                 },
                 footer: {
                     hidden: true
@@ -57,7 +57,7 @@ export class CollectionsComponent implements OnInit {
         this.collections_total_counter = event;
         this.bitrix24Service.set_collections_count(event);
     }
-    
+
     set_total_counter_data(event) {
         this.data_total_counter = event;
     }
