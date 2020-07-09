@@ -248,4 +248,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     goto(route: string) {
         this._router.navigate([route]);
     }
+    goto_link(link: string) {
+        window.open(link, "_blank");
+    }
+
 }

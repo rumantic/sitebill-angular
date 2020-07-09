@@ -22,6 +22,17 @@
         </div>
 
         <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+            <ng-container *ngIf="modelService.getConfigValue('external_links') !== null">
+                <ng-container *ngFor="let button of modelService.getConfigValue('external_links')">
+                    <button mat-button class="user-button">
+                        <div fxLayout="row" fxLayoutAlign="center center" (click)="goto_link(button.url)">
+                            <img class="avatar mr-0 mr-sm-16" src="{{button.img}}">
+                            <span class="username mr-12" fxHide fxShow.gt-sm>{{button.title}}</span>
+                        </div>
+                    </button>
+                </ng-container>
+            </ng-container>
+
             <button *ngIf="modelService.getConfigValue('apps.products.contacts_market') == 1" mat-menu-item (click)="show_price()">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <ng-container *ngIf="has_contacts_access()">
