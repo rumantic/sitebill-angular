@@ -29,7 +29,7 @@ export class CollectionsComponent implements OnInit {
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-        protected modelSerivce: ModelService,
+        public modelSerivce: ModelService,
         protected bitrix24Service: Bitrix24Service,
         private filterService: FilterService
         ) {
