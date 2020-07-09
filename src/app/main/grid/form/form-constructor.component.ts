@@ -643,5 +643,4 @@ export class FormConstructorComponent implements OnInit {
         const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
         return !!value.match(reg);
     }
-
 }
