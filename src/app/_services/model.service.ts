@@ -661,6 +661,13 @@ export class ModelService {
     after_config_loaded () {
         this.config_loaded_emitter.emit(true);
         console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
+            this.show_navbar();
+        }
+        if (this.getConfigValue('apps.realty.enable_toolbar') === '1') {
+            this.show_toolbar();
+        }
+
         if ( this.getConfigValue('apps.realty.default_frontend_route') === null ) {
             console.log('default route');
             this.router.navigate(['grid/data']);
