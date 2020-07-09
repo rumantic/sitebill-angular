@@ -153,6 +153,9 @@ export class AuthGuard implements CanActivate {
 
     cleanUpNavigation(navigation: any[], permission) {
         let remove_counter = 0;
+        if ( this.modelService.getConfigValue('parser.disable') === true ) {
+            this._fuseNavigationService.removeNavigationItem('parser');
+        }
         if (permission['group_name'] == 'admin') {
             return -1;
         }
@@ -168,7 +171,7 @@ export class AuthGuard implements CanActivate {
             if (need_remove && (row.id != 'access' && row.id != 'content' && row.id != 'dictionaries')) {
                 //console.log('remove ' + row.id);
                 ++remove_counter;
-                //Этот механизм только удаляет записи. 
+                //Этот механизм только удаляет записи.
                 //Если хотите чтобы в текущей сессии добавился пункт, после того как вы его в админке добавили тогда надо перегружать браузер
                 this._fuseNavigationService.removeNavigationItem(row.id);
                 //console.log('remove');
