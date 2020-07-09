@@ -54,7 +54,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         private _fuseNavigationService: FuseNavigationService,
         private _observableMedia: MediaObserver,
         private _renderer: Renderer2,
-        protected modelService: ModelService,
+        public modelService: ModelService,
         protected cdr: ChangeDetectorRef,
     )
     {
