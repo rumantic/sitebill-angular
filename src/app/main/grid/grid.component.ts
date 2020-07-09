@@ -227,6 +227,8 @@ export class GridComponent implements OnInit, OnDestroy
         }
 
         this.setup_apps();
+        this.configure_buttons();
+
         if (this.enable_collections) {
             this.entity.set_enable_collections();
         }
@@ -1007,4 +1009,21 @@ export class GridComponent implements OnInit, OnDestroy
     switch_only_collections (status: boolean) {
         this.only_collections = status;
     }
+
+    configure_buttons () {
+        console.log('configure buttons ' + this.entity.get_app_name());
+        if ( this.modelService.getConfigValue(this.entity.get_app_name() + '.add.disable') === true ) {
+            this.disable_add_button = true;
+        }
+        if ( this.modelService.getConfigValue(this.entity.get_app_name() + '.edit.disable') === true ) {
+            this.disable_edit_button = true;
+        }
+        if ( this.modelService.getConfigValue(this.entity.get_app_name() + '.delete.disable') === true ) {
+            this.disable_delete_button = true;
+        }
+        if ( this.modelService.getConfigValue(this.entity.get_app_name() + '.activation.disable') === true ) {
+            this.disable_activation_button = true;
+        }
+    }
+
 }
