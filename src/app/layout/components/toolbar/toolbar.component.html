@@ -50,31 +50,41 @@
                 </div>
             </button>
             <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-                <button mat-menu-item (click)="dashboard()">
-                    <mat-icon>dashboard</mat-icon>
-                    <span>Аккаунт</span>
-                </button>
-                <button mat-menu-item (click)="my_data()">
-                    <mat-icon>business_center</mat-icon>
-                    <span>Мои объекты</span>
-                </button>
-                <button mat-menu-item (click)="all_data()">
-                    <mat-icon>list</mat-icon>
-                    <span>Все объекты</span>
-                </button>
-                <button mat-menu-item (click)="goto('/grid/client/')">
-                    <mat-icon>favorite</mat-icon>
-                    <span>Клиенты</span>
-                </button>
-                <button mat-menu-item (click)="profile()">
-                    <mat-icon>account_circle</mat-icon>
-                    <span>Личные данные</span>
-                </button>
+                <ng-container *ngIf="modelService.getConfigValue('user_menu') !== null">
+                    <ng-container *ngFor="let button of modelService.getConfigValue('user_menu')">
+                        <button mat-menu-item (click)="goto(button.url)">
+                            <mat-icon>{{button.icon}}</mat-icon>
+                            <span>{{button.title}}</span>
+                        </button>
+                    </ng-container>
+                </ng-container>
 
-                <button mat-menu-item (click)="my_collections()">
-                    <mat-icon>star</mat-icon>
-                    <span>Подборки / избранное</span>
-                </button>
+                <ng-container *ngIf="modelService.getConfigValue('user_menu') === null">
+                    <button mat-menu-item (click)="dashboard()">
+                        <mat-icon>dashboard</mat-icon>
+                        <span>Аккаунт</span>
+                    </button>
+                    <button mat-menu-item (click)="my_data()">
+                        <mat-icon>business_center</mat-icon>
+                        <span>Мои объекты</span>
+                    </button>
+                    <button mat-menu-item (click)="all_data()">
+                        <mat-icon>list</mat-icon>
+                        <span>Все объекты</span>
+                    </button>
+                    <button mat-menu-item (click)="goto('/grid/client/')">
+                        <mat-icon>favorite</mat-icon>
+                        <span>Клиенты</span>
+                    </button>
+                    <button mat-menu-item (click)="profile()">
+                        <mat-icon>account_circle</mat-icon>
+                        <span>Личные данные</span>
+                    </button>
+                    <button mat-menu-item (click)="my_collections()">
+                        <mat-icon>star</mat-icon>
+                        <span>Подборки / избранное</span>
+                    </button>
+                </ng-container>
 
                 <button mat-menu-item class="" (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>
