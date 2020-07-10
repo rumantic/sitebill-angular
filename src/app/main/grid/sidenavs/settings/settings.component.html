@@ -1,5 +1,15 @@
 <div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
+        <div class="header p8">
+
+            <span class="title">Настройки таблицы</span>
+
+            <button mat-icon-button class="close-button" (click)="onCloseClick()">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </div>
+
         <div fxLayout="row" fxLayoutAlign="start">
             <div fxFlex="50">
                 <div class="content p-8">
@@ -17,7 +27,7 @@
             </div>
             <div fxFlex="50">
                 <div class="content p-8 pr-48">
-                    <button mat-raised-button (click)="logout()" color="fuse-red" matTooltip="Выйти" *ngIf="show_logout_button">
+                    <button mat-raised-button (click)="logout()" color="fuse-red" matTooltip="Выйти" *ngIf="show_logout_button && modelService.getConfigValue('apps.realty.enable_toolbar') !== '1'">
                         <mat-icon>exit_to_app</mat-icon>
                         Выйти
                     </button>
