@@ -724,6 +724,33 @@ export class GridComponent implements OnInit, OnDestroy
         });
     }
 
+    report(item_id: any) {
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Хотите отправить жалобу?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.modelService.report(this.entity.get_table_name(), this.entity.primary_key, item_id)
+                    .subscribe((response: any) => {
+                        console.log(response);
+
+                        if (response.state == 'error') {
+                            this._snackService.message(response.message);
+                            return null;
+                        } else {
+                            this._snackService.message('Жалоба отправлена');
+                            this.filterService.empty_share(this.entity);
+                        }
+                    });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+
     edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 

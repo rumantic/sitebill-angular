@@ -27,6 +27,10 @@
         <button mat-icon-button color="warn" *ngIf="!disable_delete_button && get_permission(row, 'D')">
             <mat-icon (click)="delete(value)" aria-label="Удалить" matTooltip="Удалить запись">delete</mat-icon>
         </button>
+        <button mat-icon-button>
+            <mat-icon (click)="report(value)" aria-label="Пожаловаться" matTooltip="Пожаловаться">report</mat-icon>
+        </button>
+
     </div>
 </ng-template>
 

@@ -54,6 +54,7 @@ export class CommonTemplateComponent {
     @Output() viewEvent = new EventEmitter<number>();
     @Output() edit_formEvent = new EventEmitter<number>();
     @Output() deleteEvent = new EventEmitter<number>();
+    @Output() reportEvent = new EventEmitter<number>();
     @Output() toggle_activeEvent = new EventEmitter<any>();
     @Output() view_galleryEvent = new EventEmitter<any>();
     @Output() view_injectorEvent = new EventEmitter<any>();
@@ -110,6 +111,11 @@ export class CommonTemplateComponent {
     delete(item_id: number) {
         this.deleteEvent.next(item_id);
     }
+
+    report(item_id: number) {
+        this.reportEvent.next(item_id);
+    }
+
     get_permission ( row, action ) {
         if ( row[this.entity.get_primary_key()].permissions != null ) {
             if ( row[this.entity.get_primary_key()].permissions[action] === true ) {
