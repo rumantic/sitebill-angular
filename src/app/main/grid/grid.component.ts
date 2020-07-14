@@ -160,6 +160,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('enable_select_rows')
     enable_select_rows = false;
 
+    @Input('complaint_mode')
+    complaint_mode = false;
+
     @Output() total_counterEvent = new EventEmitter<number>();
 
     private after_compose_complete_checked: boolean;

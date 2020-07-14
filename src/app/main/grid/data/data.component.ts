@@ -14,6 +14,9 @@ export class DataComponent extends GridComponent {
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
+        if ( this.modelService.getConfigValue('apps.mailbox.use_complaint_mode') === '1' ) {
+            this.complaint_mode = true;
+        }
         this.switch_collections(true);
         this.enable_date_range('date_added');
     }
@@ -35,6 +38,12 @@ export class DataComponent extends GridComponent {
         } catch {
         }
 
+        try {
+            if (row.complaint_id.value === '1') {
+                return 'amber-100-bg';
+            }
+        } catch {
+        }
 
     }
 

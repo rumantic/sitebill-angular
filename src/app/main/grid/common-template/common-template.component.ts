@@ -51,6 +51,9 @@ export class CommonTemplateComponent {
     @Input("disable_gallery_controls")
     disable_gallery_controls: boolean;
 
+    @Input("complaint_mode")
+    complaint_mode: boolean;
+
     @Output() viewEvent = new EventEmitter<number>();
     @Output() edit_formEvent = new EventEmitter<number>();
     @Output() deleteEvent = new EventEmitter<number>();
