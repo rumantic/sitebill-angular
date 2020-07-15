@@ -96,6 +96,7 @@ export class CollectionsComponent implements OnInit {
         this.bitrix24Service.init_input_parameters();
         this.bitrix24Service.set_collections_count(this.collections_total_counter);
 
+        /*
         this.bitrix24Service.get_client()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -106,6 +107,7 @@ export class CollectionsComponent implements OnInit {
                     return false;
                 }
             );
+         */
         this.filterService.share.subscribe((entity: SitebillEntity) => {
             this.set_total_counter_collections(this.bitrix24Service.get_collections_count());
             //console.log('subscribe collections');
