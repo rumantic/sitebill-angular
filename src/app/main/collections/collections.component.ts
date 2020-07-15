@@ -41,10 +41,10 @@ export class CollectionsComponent implements OnInit {
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
-                    hidden: true
+                    hidden: false
                 },
                 toolbar: {
-                    hidden: true
+                    hidden: false
                 },
                 footer: {
                     hidden: true
@@ -74,7 +74,6 @@ export class CollectionsComponent implements OnInit {
                     }
                 };
             }
-
             if (this.modelSerivce.getConfigValue('apps.realty.enable_navbar') === '1') {
                 this._fuseConfigService.config = {
                     layout: {
