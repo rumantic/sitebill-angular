@@ -62,6 +62,11 @@ export class SaleComponent extends GridComponent {
         } catch {
         }
 
-
+        try {
+            if (row.complaint_id.value === '1') {
+                return 'amber-100-bg';
+            }
+        } catch {
+        }
     }
 }
