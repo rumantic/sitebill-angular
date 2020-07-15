@@ -70,7 +70,7 @@
                     </ng-container>
                 </ng-container>
 
-                <ng-container *ngIf="modelService.getConfigValue('user_menu') === null">
+                <!--ng-container *ngIf="modelService.getConfigValue('user_menu') === null || modelService.getConfigValue('user_menu') === undefined">
                     <button mat-menu-item (click)="dashboard()">
                         <mat-icon>dashboard</mat-icon>
                         <span>Аккаунт</span>
@@ -95,7 +95,7 @@
                         <mat-icon>star</mat-icon>
                         <span>Подборки / избранное</span>
                     </button>
-                </ng-container>
+                </ng-container-->
 
                 <button mat-menu-item class="" (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>
