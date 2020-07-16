@@ -17,8 +17,11 @@
                 <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
                     <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
                         <ng-template matTabContent>
-                            <span *ngFor="let x of tabs[tab]">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  class="flex_wrap">
+
+                            <span *ngFor="let x of tabs[tab]" class="p-12" fxFlex.xl="20" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="100">
                                 <span [ngSwitch]="records[x].type">
+
                                     <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
                                     <mat-form-field *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
@@ -65,9 +68,9 @@
                                         </mat-datepicker>
                                     </mat-form-field>
 
-                                    <uploader-component  [hidden]="records[x].hidden" *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
+                                    <uploader-component [hidden]="records[x].hidden" *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
 
-                                    <uploader-component  [hidden]="records[x].hidden" *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
+                                    <uploader-component [hidden]="records[x].hidden" *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
 
                                     <span *ngSwitchCase="'select_box_structure'" [hidden]="records[x].hidden">
                                         <ng-select [formControlName]="records[x].name"
@@ -99,30 +102,39 @@
 
 
                                     <span *ngSwitchCase="'select_by_query'"  [hidden]="records[x].hidden">
-                                        <ng-select [formControlName]="records[x].name"
-                                                   [required]="records[x].required_boolean"
-                                                   appendTo="body"
-                                                   bindValue="id"
-                                                   bindLabel="value"
-                                                   [items]="options_storage[records[x].name]"
-                                                   [clearOnBackspace]="false"
-                                                   [searchable]="true"
-                                                   [multiple]="false"
-                                                   (focus)="init_select_by_query_options(records[x].name)"
-                                                   [hideSelected]="false"
-                                                   [closeOnSelect]="true"
-                                                   placeholder="{{records[x].title}}">
-                                            <ng-template ng-label-tmp let-item="item" let-index="index">
-                                                <span [innerHTML]="item.value">
-                                                </span>
-                                            </ng-template>
+                                        <div fxLayout="row">
+                                            <div fxFlex="90">
+                                                <ng-select [formControlName]="records[x].name"
+                                                           [required]="records[x].required_boolean"
+                                                           appendTo="body"
+                                                           bindValue="id"
+                                                           bindLabel="value"
+                                                           [items]="options_storage[records[x].name]"
+                                                           [clearOnBackspace]="false"
+                                                           [searchable]="true"
+                                                           [multiple]="false"
+                                                           (focus)="init_select_by_query_options(records[x].name)"
+                                                           [hideSelected]="false"
+                                                           [closeOnSelect]="true"
+                                                           placeholder="{{records[x].title}}">
+                                                    <ng-template ng-label-tmp let-item="item" let-index="index">
+                                                        <span [innerHTML]="item.value">
+                                                        </span>
+                                                    </ng-template>
 
-                                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                                                <span [innerHTML]="item.value">
-                                                </span>
-                                            </ng-template>
-                                        </ng-select>
-                                        <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                        <span [innerHTML]="item.value">
+                                                        </span>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                            </div>
+                                            <div fxFlex="10">
+                                                <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
+                                                    <mat-icon>add</mat-icon>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </span>
 
                                     <span *ngSwitchCase="'select_box'" [hidden]="records[x].hidden">
@@ -228,8 +240,9 @@
                                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                     </mat-form-field>
                                 </span>
-
                             </span>
+                            </div>
+
                         </ng-template>
                     </mat-tab>
 
