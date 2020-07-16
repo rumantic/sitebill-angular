@@ -1,3 +1,7 @@
+export enum FormType {
+    simple="simple",
+    inline="inline"
+}
 export class SitebillEntity {
     private app_name: string;
     private table_name: string;
@@ -15,6 +19,8 @@ export class SitebillEntity {
     private enable_comment: boolean;
     private app_url: string;
     private app_session_key: string;
+    private title: string;
+    private form_type: string;
 
     constructor() {
         this.columns = [];
@@ -29,6 +35,8 @@ export class SitebillEntity {
         this.enable_comment = true;
         this.app_url = null;
         this.app_session_key = null;
+        this.title = null;
+        this.form_type = FormType.simple;
     }
 
     get_app_name() {
@@ -162,8 +170,21 @@ export class SitebillEntity {
     set_app_session_key(app_session_key: string) {
         this.app_session_key = app_session_key;
     }
+    get_title() {
+        return this.title;
+    }
 
+    set_title(title: string) {
+        this.title = title;
+    }
 
+    get_form_type() {
+        return this.form_type;
+    }
+
+    set_form_type(form_type: string) {
+        this.form_type = FormType[form_type];
+    }
 }
 export class SitebillModelItem {
     action: string;

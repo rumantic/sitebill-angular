@@ -4,7 +4,7 @@ import {FormBuilder} from '@angular/forms';
 
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {ModelService} from 'app/_services/model.service';
-import {SitebillEntity} from 'app/_models';
+import {FormType, SitebillEntity} from 'app/_models';
 
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
@@ -61,12 +61,18 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         entity.set_table_name(record.primary_key_table);
         entity.set_app_name(record.primary_key_table);
         entity.set_primary_key(record.primary_key_name);
+        entity.set_title(record.title);
+        entity.set_form_type(FormType.inline);
         dialogConfig.data = entity;
         dialogConfig.panelClass = 'inline-dialog';
         //console.log(model_name);
 
+        if (this.modelService.get_access(entity.get_table_name(), 'access')) {
+            this._matDialog.open(FormComponent, dialogConfig);
+        } else {
+            this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
+        }
 
-        this._matDialog.open(FormComponent, dialogConfig);
 
         /*
         this.entity.set_key_value(item_id);

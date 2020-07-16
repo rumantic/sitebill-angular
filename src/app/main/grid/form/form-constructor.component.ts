@@ -3,7 +3,7 @@ import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
 import {takeUntil} from 'rxjs/operators';
-import {SitebillEntity} from '../../../_models';
+import {FormType, SitebillEntity} from '../../../_models';
 import {Subject} from 'rxjs';
 import * as moment from 'moment';
 import {ConfirmComponent} from '../../../dialogs/confirm/confirm.component';
@@ -642,5 +642,15 @@ export class FormConstructorComponent implements OnInit {
     valid_link (value) {
         const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
         return !!value.match(reg);
+    }
+
+    get_flex_width ( size:string, form_type:string ) {
+        if ( form_type == FormType.inline ) {
+            return 100;
+        }
+        if ( size == 'xl' ) {
+            return 20;
+        }
+        return 30;
     }
 }

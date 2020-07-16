@@ -3,7 +3,8 @@
 <div id="course-dialog" class="dialog-content-wrapper">
     <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">Форма</span>
+            <span class="title dialog-title" *ngIf="_data.get_title() === null">Форма</span>
+            <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
                 <mat-icon>close</mat-icon>
             </button>
@@ -19,7 +20,7 @@
                         <ng-template matTabContent>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  class="flex_wrap">
 
-                            <span *ngFor="let x of tabs[tab]" class="p-12" fxFlex.xl="20" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="100">
+                            <span *ngFor="let x of tabs[tab]" class="p-12" fxFlex.xl="{{get_flex_width('xl', _data.get_form_type())}}" fxFlex.lg="{{get_flex_width('lg', _data.get_form_type())}}" fxFlex.md="50" fxFlex.xs="100">
                                 <span [ngSwitch]="records[x].type">
 
                                     <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
@@ -129,7 +130,7 @@
                                                 </ng-select>
                                                 <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                                             </div>
-                                            <div fxFlex="10">
+                                            <div fxFlex="10" *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
                                                 <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
                                                     <mat-icon>add</mat-icon>
                                                 </a>
