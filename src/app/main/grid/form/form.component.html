@@ -18,7 +18,7 @@
                 <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
                     <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
                         <ng-template matTabContent>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"  class="flex_wrap">
+                            <div fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap">
 
                             <span
                                 *ngFor="let x of tabs[tab]"
@@ -26,7 +26,9 @@
                                 fxFlex.xl="{{get_flex_width('xl', _data.get_form_type(), records[x])}}"
                                 fxFlex.lg="{{get_flex_width('lg', _data.get_form_type(), records[x])}}"
                                 fxFlex.lt-md="{{get_flex_width('md', _data.get_form_type(), records[x])}}"
+                                fxFlex.md="{{get_flex_width('md', _data.get_form_type(), records[x])}}"
                                 fxFlex.xs="{{get_flex_width('xs', _data.get_form_type(), records[x])}}"
+                                fxFlex.gt-xs="{{get_flex_width('xs', _data.get_form_type(), records[x])}}"
                                 [hidden]="records[x].hidden || records[x].type == 'hidden'"
                             >
 
