@@ -48,3 +48,6 @@ textarea {
 :host ::ng-deep agm-map {
     height: 300px;
 }
+::ng-deep .flex_wrap {
+    flex-wrap: wrap !important;
+}
