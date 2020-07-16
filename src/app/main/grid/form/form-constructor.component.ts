@@ -644,13 +644,37 @@ export class FormConstructorComponent implements OnInit {
         return !!value.match(reg);
     }
 
-    get_flex_width ( size:string, form_type:string ) {
+    get_flex_width ( size:string, form_type:string, record ) {
+        if ( record.type == 'hidden' || record.hidden == true ) {
+            return 0;
+        }
+        var width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
+        if ( width_100.indexOf(record.type) > -1 ) {
+            return 100;
+        }
         if ( form_type == FormType.inline ) {
             return 100;
         }
         if ( size == 'xl' ) {
             return 20;
         }
-        return 30;
+        if ( size == 'md' ) {
+            return 50;
+        }
+        if ( size == 'xs' ) {
+            return 100;
+        }
+
+        return 33;
+    }
+    get_flex_padding ( size:string, form_type:string, record ) {
+        if ( record.type == 'hidden' || record.hidden == true ) {
+            return '';
+        }
+        return 'p-12';
+    }
+    get_appearance() {
+        // outline,standard,fill,legacy
+        return 'outline';
     }
 }

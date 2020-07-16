@@ -18,18 +18,29 @@
                 <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
                     <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
                         <ng-template matTabContent>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  class="flex_wrap">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"  class="flex_wrap">
 
-                            <span *ngFor="let x of tabs[tab]" class="p-12" fxFlex.xl="{{get_flex_width('xl', _data.get_form_type())}}" fxFlex.lg="{{get_flex_width('lg', _data.get_form_type())}}" fxFlex.md="50" fxFlex.xs="100">
+                            <span
+                                *ngFor="let x of tabs[tab]"
+                                class="{{get_flex_padding('xl', _data.get_form_type(), records[x])}}"
+                                fxFlex.xl="{{get_flex_width('xl', _data.get_form_type(), records[x])}}"
+                                fxFlex.lg="{{get_flex_width('lg', _data.get_form_type(), records[x])}}"
+                                fxFlex.lt-md="{{get_flex_width('md', _data.get_form_type(), records[x])}}"
+                                fxFlex.xs="{{get_flex_width('xs', _data.get_form_type(), records[x])}}"
+                                [hidden]="records[x].hidden || records[x].type == 'hidden'"
+                            >
+
                                 <span [ngSwitch]="records[x].type">
 
                                     <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
-                                    <mat-form-field *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
                                     </mat-form-field>
 
-                                    <mat-form-field *ngSwitchCase="'date'" [hidden]="records[x].hidden">
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                         <mat-datepicker #dp
@@ -37,13 +48,15 @@
                                         </mat-datepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                                         <mat-icon matSuffix>access_time</mat-icon>
                                         <ngx-material-timepicker #picker></ngx-material-timepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                         <mat-datepicker #dp
@@ -51,8 +64,8 @@
                                         </mat-datepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field *ngSwitchCase="'docuploads'">
-                                        Документы
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'docuploads'">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input [formControlName]="records[x].name" matInput [hidden]="true">
                                         <ng-container *ngIf="records[x].value.length > 0">
                                             <span *ngFor="let doc of records[x].value">
@@ -61,7 +74,8 @@
                                         </ng-container>
                                     </mat-form-field>
 
-                                    <mat-form-field *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
+                                    <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                         <mat-datepicker #dp
@@ -221,7 +235,8 @@
 
                                     </span>
 
-                                    <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
+                                    <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <textarea matInput matTextareaAutosize [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
                                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                     </mat-form-field>
@@ -236,7 +251,8 @@
                                         <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="this.modelService.get_user_id()"></user-profile>
                                     </div>
 
-                                    <mat-form-field [hidden]="records[x].hidden" *ngSwitchDefault>
+                                    <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchDefault>
+                                        <mat-label>{{records[x].title}}</mat-label>
                                         <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                     </mat-form-field>
