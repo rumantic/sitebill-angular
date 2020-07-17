@@ -81,6 +81,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
+import {ReportComponent} from "../../dialogs/report/report.component";
 
 const routes = [
     {
@@ -280,6 +281,7 @@ const routes = [
         UserComponent,
         FilterComponent,
         DeclineClientComponent,
+        ReportComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
@@ -358,7 +360,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent]
+    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent]
 
 })
 

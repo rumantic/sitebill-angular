@@ -34,6 +34,7 @@ import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import {ResponseContentType} from '@angular/http';
+import {ReportComponent} from "../../dialogs/report/report.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -104,6 +105,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
+    reportDialogRef: MatDialogRef<ReportComponent>;
 
 
 
@@ -728,13 +730,13 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     report(item_id: any) {
-        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+        this.reportDialogRef = this.dialog.open(ReportComponent, {
             disableClose: false
         });
 
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Хотите отправить жалобу?';
+        //this.reportDialogRef.componentInstance.confirmMessage = 'Хотите отправить жалобу?';
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
+        this.reportDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.modelService.report(this.entity.get_table_name(), this.entity.primary_key, item_id)
                     .subscribe((response: any) => {
@@ -749,7 +751,7 @@ export class GridComponent implements OnInit, OnDestroy
                         }
                     });
             }
-            this.confirmDialogRef = null;
+            this.reportDialogRef = null;
         });
     }
 
