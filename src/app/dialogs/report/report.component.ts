@@ -9,6 +9,9 @@ import {Model} from 'app/model';
 import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import {SnackService} from "../../_services/snack.service";
+import {SitebillEntity} from "../../_models";
+import {FilterService} from "../../_services/filter.service";
 
 
 @Component({
@@ -37,6 +40,7 @@ export class ReportComponent implements OnInit {
 
     description:string;
     @Input() model: Model;
+    @Input() data: SitebillEntity;
     rows: any[];
     records: any[];
     api_url: string;
@@ -56,7 +60,9 @@ export class ReportComponent implements OnInit {
         public modelService: ModelService,
         private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) private _data: any
+        @Inject(MAT_DIALOG_DATA) private _data: any,
+        private filterService: FilterService,
+        protected _snackService: SnackService,
         ) {
         this.loadingIndicator = true;
 
@@ -77,10 +83,10 @@ export class ReportComponent implements OnInit {
     ngOnInit() {
         // Horizontal Stepper form steps
         this.declineForm = this.fb.group({
-            comment: ['', Validators.required]
+            comment: [''],
+            variant: ['', Validators.required]
         });
 
-        console.log(this.modelService.getConfigValue('apps.mailbox.complaint_mode_variants'));
 
 
         this.declineForm.valueChanges
@@ -117,43 +123,26 @@ export class ReportComponent implements OnInit {
         }
     }
 
-    decline () {
-        console.log('decline');
+    submit () {
+        console.log('submit');
         console.log(this.declineForm.controls.comment.value);
-        const chat_id = this._data.app_name + this._data.key_value;
-        console.log(chat_id);
+        console.log(this.declineForm.controls.variant.value);
         this.declinePressed = true;
         this.declineProcessing = true;
 
-        // Update the server
-        this._chatService.updateDialog(chat_id, 'Причина отказа: ' + this.declineForm.controls.comment.value).then(response => {
-            console.log(response);
-            if ( response.status == 'ok' ) {
-                this.toggleUserGet(this._data.key_value);
-                //this.dialog.push(response.comment_data);
-            }
-            //this.dialog.push(message);
+        this.modelService.report(this._data.get_table_name(), this._data.primary_key, this._data.get_key_value())
+            .subscribe((response: any) => {
+                console.log(response);
 
-            //this.readyToReply();
-        });
-    }
-
-    toggleUserGet ( client_id ) {
-        //console.log('user_id');
-        //console.log(row.client_id.value);
-
-        const body = { action: 'model', do: 'set_user_id_for_client', client_id: client_id, session_key: this.modelService.get_session_key() };
-        //console.log(body);
-
-        this._httpClient.post(`${this.api_url}/apps/api/rest.php`, body)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                this.close();
-                //this.submitEvent.emit('refresh');
-                //console.log(result);
-                //this.refreash();
+                if (response.state == 'error') {
+                    this._snackService.message(response.message);
+                    return null;
+                } else {
+                    this._snackService.message('Жалоба отправлена');
+                    this.filterService.empty_share(this._data);
+                    this.close();
+                }
             });
-
     }
 
     save() {

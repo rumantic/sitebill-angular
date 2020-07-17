@@ -10,20 +10,14 @@
 
     <!--h2 mat-dialog-title>Объект</h2-->
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-        <form class="example-form" [formGroup]="declineForm">
+        <form [formGroup]="declineForm"  fxLayout="column" fxLayoutAlign="start center"  class="flex_wrap">
 
-            <mat-radio-group class="example-radio-group" [(ngModel)]="favoriteSeason">
-                <mat-radio-button class="p-24 m-0" *ngFor="let season of modelService.getConfigValue('apps.mailbox.complaint_mode_variants')" [value]="season">
-                    {{season}}
+            <mat-radio-group class="example-radio-group" formControlName="variant"  fxLayout="column" fxLayoutAlign="start start"  class="flex_wrap" required>
+                <mat-radio-button fxFlex="50" class="p-24 m-0" *ngFor="let item of modelService.getConfigValue('apps.mailbox.complaint_mode_variants') | keyvalue" [value]="item.key">
+                    {{item.value}}
                 </mat-radio-button>
             </mat-radio-group>
-
-
-            <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Свой вариант" formControlName="comment"></textarea>
-            </mat-form-field>
-
-            <button mat-raised-button matStepperNext type="button" color="accent" (click)="decline()">
+            <button mat-raised-button matStepperNext type="button" color="accent" (click)="submit()"  *ngIf="!declineProcessing">
                 Пожаловаться
             </button>
             <mat-spinner [diameter]="40" *ngIf="declineProcessing"></mat-spinner>

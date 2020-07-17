@@ -730,28 +730,10 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     report(item_id: any) {
+        this.entity.set_key_value(item_id);
         this.reportDialogRef = this.dialog.open(ReportComponent, {
-            disableClose: false
-        });
-
-        //this.reportDialogRef.componentInstance.confirmMessage = 'Хотите отправить жалобу?';
-
-        this.reportDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.modelService.report(this.entity.get_table_name(), this.entity.primary_key, item_id)
-                    .subscribe((response: any) => {
-                        console.log(response);
-
-                        if (response.state == 'error') {
-                            this._snackService.message(response.message);
-                            return null;
-                        } else {
-                            this._snackService.message('Жалоба отправлена');
-                            this.filterService.empty_share(this.entity);
-                        }
-                    });
-            }
-            this.reportDialogRef = null;
+            disableClose: false,
+            data: this.entity
         });
     }
 

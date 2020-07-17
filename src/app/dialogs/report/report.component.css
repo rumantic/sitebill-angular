@@ -8,3 +8,6 @@ textarea {
     height: 100px;
     resize: vertical;
 }
+::ng-deep .flex_wrap {
+    flex-wrap: wrap !important;
+}
