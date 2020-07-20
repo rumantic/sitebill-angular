@@ -153,7 +153,7 @@ export class AuthGuard implements CanActivate {
 
     cleanUpNavigation(navigation: any[], permission) {
         let remove_counter = 0;
-        if ( this.modelService.getConfigValue('parser.disable') === true ) {
+        if ( this.modelService.getConfigValue('parser.disable') === true || this.modelService.getDomConfigValue('parser_disable') === true) {
             this._fuseNavigationService.removeNavigationItem('parser');
         }
         if (permission['group_name'] == 'admin') {

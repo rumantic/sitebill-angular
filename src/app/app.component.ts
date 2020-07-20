@@ -257,6 +257,11 @@ export class AppComponent implements OnInit, OnDestroy
             // console.log('set disable_default_frontend_route');
             this.modelService.setDomConfigValue('disable_default_frontend_route', true);
         }
+        if (app_root_element.getAttribute('parser_disable') === 'true') {
+            // console.log('set disable_default_frontend_route');
+            this.modelService.setDomConfigValue('parser_disable', true);
+        }
+
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
         this.modelService.onSitebillStart();
