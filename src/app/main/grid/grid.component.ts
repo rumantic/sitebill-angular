@@ -35,8 +35,11 @@ import {BillingService} from '../../_services/billing.service';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import {ResponseContentType} from '@angular/http';
 import {ReportComponent} from "../../dialogs/report/report.component";
-
+import *  as localization from 'moment/locale/ru';
+import {LocaleConfig} from "ngx-daterangepicker-material";
 registerLocaleData(localeRu, 'ru');
+
+moment.locale('ru', localization);
 
 @Component({
     selector   : 'grid',
@@ -94,12 +97,14 @@ export class GridComponent implements OnInit, OnDestroy
         'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
         'Прошлый месяц': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     };
-    date_range_locale = {
+    date_range_locale: LocaleConfig = {
         format: 'DD.MM.YYYY',
         separator: ' - ', // default is ' - '
         cancelLabel: 'Отмена', // detault is 'Cancel'
         applyLabel: 'Применить', // detault is 'Apply'
-        firstDay: 1 // first day is monday
+        firstDay: 1, // first day is monday
+        daysOfWeek: moment.weekdaysMin(),
+        monthNames: moment.months()
     };
 
 
