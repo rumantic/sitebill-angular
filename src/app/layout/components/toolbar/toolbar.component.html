@@ -4,7 +4,7 @@
 
         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="navbar-toggle-button"
-                    *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                    *ngIf="!hiddenNavbar && !rightNavbar && !modelService.getDomConfigValue('navbar_hidden')" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                 <mat-icon class="secondary-text">menu</mat-icon>
             </button>
 

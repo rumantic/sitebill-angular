@@ -75,10 +75,12 @@ export class AppComponent implements OnInit, OnDestroy
         //this._fuseConfigService.setConfig(conf);
         if (this.elRef.nativeElement.getAttribute('navbar_hidden') === 'true') {
             this.modelService.hide_navbar();
+            this.modelService.setDomConfigValue('navbar_hidden', true);
         }
 
         if (this.elRef.nativeElement.getAttribute('toolbar_hidden') === 'true') {
             this.modelService.hide_toolbar();
+            this.modelService.setDomConfigValue('toolbar_hidden', true);
         }
 
 
