@@ -471,7 +471,7 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.enable_collections) {
             filter_params_json['load_collections'] = true;
             filter_params_json['collections_domain'] = this.bitrix24Service.get_domain();
-            filter_params_json['collections_deal_id'] = this.bitrix24Service.get_deal_id();
+            filter_params_json['collections_deal_id'] = this.bitrix24Service.get_entity_id();
             if (this.only_collections) {
                 filter_params_json['only_collections'] = true;
             }
@@ -890,10 +890,12 @@ export class GridComponent implements OnInit, OnDestroy
         // console.log(event);
         // console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
         // console.log('domain = ' + this.bitrix24Service.get_domain());
-        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_deal_id());
+        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_entity_id());
         let data_id = event.value;
-        let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
-        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
+        // console.log(this.bitrix24Service.get_placement());
+        let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+
+        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
@@ -905,6 +907,25 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         collections_count--;
                     }
+
+                    //Добавляем комментарий
+                    try {
+                        this.bitrix24Service.crm_timeline_comment_add (
+                            this.bitrix24Service.get_entity_type(),
+                            this.bitrix24Service.get_entity_id(),
+                            '<b>Подборка:</b> ' +
+                            (response.data.operation == 'add'? 'Добавлен':'Удален') +
+                            ' объект ID = ' +
+                            data_id + ', ' +
+                            this.compose_comment(event.row))
+                            .subscribe((response: any) => {
+                                    // console.log(response);
+                                }
+                            );
+                    } catch (e) {
+
+                    }
+
                     this.bitrix24Service.set_collections_count(collections_count);
 
 
@@ -913,6 +934,21 @@ export class GridComponent implements OnInit, OnDestroy
                     // this.cdr.markForCheck();
                 }
             });
+    }
+
+    compose_comment ( row ) {
+        let result = '';
+        for (let key in row) {
+            if ( row[key].type != 'image' && row[key].type != 'primary_key' && row[key].name != 'date_added'  && row[key].value != ''  && row[key].value != 0  ) {
+                //console.log(row[key]);
+                if (row[key].value_string !== undefined) {
+                    result += ' | ' +row[key].value_string;
+                } else {
+                    result += ' | ' +row[key].value;
+                }
+            }
+        }
+        return result;
     }
 
 
@@ -1003,7 +1039,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     export_collections_pdf(report_type = 'client') {
-        const deal_id = this.bitrix24Service.get_deal_id();
+        const deal_id = this.bitrix24Service.get_entity_id();
         const domain = this.bitrix24Service.get_domain();
         this.modelService.export_collections_pdf(domain, deal_id, report_type)
             .subscribe((response: any) => {
@@ -1012,7 +1048,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     saveAsProject(content){
-        this.writeContents((<any>content), 'Подборка по сделке '+ this.bitrix24Service.get_deal_id() +'.pdf', 'application/pdf');
+        this.writeContents((<any>content), 'Подборка по сделке '+ this.bitrix24Service.get_entity_id() +'.pdf', 'application/pdf');
     }
     writeContents(content, fileName, contentType) {
         var a = document.createElement('a');
@@ -1030,7 +1066,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     configure_buttons () {
-        console.log('configure buttons ' + this.entity.get_app_name());
+        // console.log('configure buttons ' + this.entity.get_app_name());
         if ( this.modelService.getConfigValue(this.entity.get_app_name() + '.add.disable') === true ) {
             this.disable_add_button = true;
         }

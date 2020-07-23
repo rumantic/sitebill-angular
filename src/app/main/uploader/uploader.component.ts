@@ -162,8 +162,8 @@ export class UploaderComponent {
     }
 
     add_to_collections(data_id) {
-        let title = 'bitrix deal ' + this.bitrix24Service.get_deal_id();
-        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_deal_id(), title, data_id)
+        let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
             });
     }

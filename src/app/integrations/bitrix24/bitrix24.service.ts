@@ -24,13 +24,41 @@ export class Bitrix24Service {
     }
 
     get_client() {
-        console.log('get client');
         const url = `https://${this.get_domain()}/rest/crm.contact.get.json`;
-
-        const login_request = { id: this.placement_options.get_id(), auth: this.get_access_token() };
-
-        return this.http.post<any>(url, login_request);
+        const request = { id: this.placement_options.get_id(), auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
     }
+
+    get_deal(id) {
+        const url = `https://${this.get_domain()}/rest/crm.deal.get.json`;
+        const request = { id: id, auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+    log_blogpost_add (message) {
+        const url = `https://${this.get_domain()}/rest/log.blogpost.add.json`;
+        const request = { POST_MESSAGE: message, auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+    crm_timeline_comment_add (type, id, comment) {
+        const url = `https://${this.get_domain()}/rest/crm.timeline.comment.add`;
+        const request = { fields: {ENTITY_ID: id, ENTITY_TYPE: type, COMMENT: comment}, auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+    crm_timeline_comment_list (type, id) {
+        const url = `https://${this.get_domain()}/rest/crm.timeline.comment.list.json`;
+        const request = { fields: {ENTITY_ID: id, ENTITY_TYPE: type}, auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+    crm_timeline_comment_fields () {
+        const url = `https://${this.get_domain()}/rest/crm.timeline.comment.fields.json`;
+        const request = { auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
     set_domain(_domain: string) {
         this.domain = _domain;
     }
@@ -58,6 +86,22 @@ export class Bitrix24Service {
         return this.placement;
     }
 
+    get_entity_type () {
+        let entity_type = '';
+        switch (this.get_placement()) {
+            case 'CRM_DEAL_DETAIL_TAB':
+                entity_type = 'deal';
+                break;
+            case 'CRM_CONTACT_DETAIL_TAB':
+                entity_type = 'contact';
+                break;
+            default:
+                entity_type = 'undefined';
+
+        }
+        return entity_type;
+    }
+
     get_placement_options_id() {
         return this.placement_options.get_id();
     }
@@ -70,7 +114,7 @@ export class Bitrix24Service {
         this.collections_count = count;
     }
 
-    get_deal_id() {
+    get_entity_id() {
         this.reload_placement_option_id();
         // console.log('this.placement_options.get_id() = ' + this.placement_options.get_id());
         if ( this.placement_options.get_id() === null ) {
@@ -82,11 +126,11 @@ export class Bitrix24Service {
     reload_placement_option_id () {
         try {
             let placement_options = this.app_root_element.getAttribute('bitrix24_placement_options').replace(/\'/g, '"');
-            console.log(this.app_root_element.getAttribute('bitrix24_placement_options'));
-            console.log(placement_options);
+            // console.log(this.app_root_element.getAttribute('bitrix24_placement_options'));
+            // console.log(placement_options);
             if (placement_options != null) {
                 let placement_options_parsed = JSON.parse(placement_options);
-                console.log('placement_options_parsed.ID = ' + placement_options_parsed.ID);
+                // console.log('placement_options_parsed.ID = ' + placement_options_parsed.ID);
                 this.placement_options.set_id(placement_options_parsed.ID);
             }
         } catch (e) {
@@ -118,7 +162,7 @@ export class Bitrix24Service {
         if (app_root_element.getAttribute('bitrix24_placement_options')) {
             try {
                 let placement_options = app_root_element.getAttribute('bitrix24_placement_options').replace(/\'/g, '"');
-                console.log(placement_options);
+                // console.log(placement_options);
                 if (placement_options != null) {
                     let placement_options_parsed = JSON.parse(placement_options);
                     this.placement_options.set_id(placement_options_parsed.ID);

@@ -102,11 +102,6 @@ export class AppComponent implements OnInit, OnDestroy
             }
         }
 
-        //console.log((platformLocation as any).location);
-        //console.log((platformLocation as any).location.href);
-        //console.log((platformLocation as any).location.origin);
-        //console.log(this.hero);
-        //console.log(APP_BASE_HREF);
         // Get default navigation
         this.navigation = navigation.slice(0);
 
