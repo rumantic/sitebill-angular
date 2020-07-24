@@ -59,6 +59,19 @@ export class Bitrix24Service {
         return this.http.post<any>(url, request);
     }
 
+    user_option_get () {
+        const url = `https://${this.get_domain()}/rest/user.option.get.json`;
+        const request = { options: 'mister', auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+    user_option_set ( options ) {
+        const url = `https://${this.get_domain()}/rest/user.option.set.json`;
+        const request = { options: options, auth: this.get_access_token() };
+        return this.http.post<any>(url, request);
+    }
+
+
     set_domain(_domain: string) {
         this.domain = _domain;
     }
@@ -104,6 +117,10 @@ export class Bitrix24Service {
 
     get_placement_options_id() {
         return this.placement_options.get_id();
+    }
+
+    get_placement_options() {
+        return this.placement_options;
     }
 
     get_collections_count() {
@@ -170,6 +187,19 @@ export class Bitrix24Service {
             } catch {
             }
         }
+        if (app_root_element.getAttribute('bitrix24_user_option')) {
+
+            try {
+                let user_option = app_root_element.getAttribute('bitrix24_user_option').replace(/\'/g, '"');
+                // console.log(placement_options);
+                if (user_option != null) {
+                    let user_options_parsed = JSON.parse(user_option);
+                    this.placement_options.set_user_option(user_options_parsed);
+                }
+            } catch {
+            }
+        }
+
 
         //console.log(this.access_token);
         //console.log(this.domain);
