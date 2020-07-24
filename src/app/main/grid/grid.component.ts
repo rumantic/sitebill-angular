@@ -903,15 +903,15 @@ export class GridComponent implements OnInit, OnDestroy
 
         console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('mister'));
         console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('mister_null'));
+        console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key'));
         //this.bitrix24Service.pla
 
-        /*
-        this.bitrix24Service.user_option_set({'sitebill_auth':'admin'})
+        let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.bitrix24Service.user_option_set(storage)
             .subscribe((response: any) => {
                     console.log(response);
                 }
             );
-         */
 
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {

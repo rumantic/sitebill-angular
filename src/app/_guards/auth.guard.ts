@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SnackService } from 'app/_services/snack.service';
 import { navigation } from 'app/navigation/navigation';
 import { public_navigation } from 'app/navigation/public.navigation';
+import {StorageService} from "../_services/storage.service";
 
 
 @Injectable()
@@ -17,6 +18,7 @@ export class AuthGuard implements CanActivate {
     constructor(
         protected router: Router,
         protected modelService: ModelService,
+        protected storageService: StorageService,
         protected _fuseNavigationService: FuseNavigationService,
         protected _fuseConfigService: FuseConfigService,
         protected _snackService: SnackService,
@@ -35,11 +37,11 @@ export class AuthGuard implements CanActivate {
     }
 
     check_session(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, success_redirect: string) {
-        //console.log(localStorage.getItem('currentUser'));
+        //console.log(this.storageService.getItem('currentUser'));
 
-        if (localStorage.getItem('currentUser') && !this.modelService.is_need_reload()) {
+        if (this.storageService.getItem('currentUser') && !this.modelService.is_need_reload()) {
             //console.log('!check session and locaStorage not null');
-            //console.log(localStorage.getItem('currentUser'));
+            //console.log(this.storageService.getItem('currentUser'));
             //console.log('check session and locaStorage not null!');
             return this.check_permissions(route, state);
         } else {
@@ -110,8 +112,8 @@ export class AuthGuard implements CanActivate {
 
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
-        let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
-        //console.log(storage);
+        let storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
+        console.log(storage);
         if (storage['structure'] == null) {
             //console.log('structure null - logout');
             this.modelService.logout();

@@ -5,12 +5,14 @@ import { FuseNavigationService } from "@fuse/components/navigation/navigation.se
 import { FuseConfigService } from "@fuse/services/config.service";
 import { ModelService } from "app/_services/model.service";
 import { SnackService } from "app/_services/snack.service";
+import {StorageService} from "../_services/storage.service";
 
 @Injectable()
 export class PublicGuard extends AuthGuard {
     constructor(
         router: Router,
         protected modelService: ModelService,
+        protected storageService: StorageService,
         _fuseNavigationService: FuseNavigationService,
         _fuseConfigService: FuseConfigService,
         protected _snackService: SnackService,
@@ -18,6 +20,7 @@ export class PublicGuard extends AuthGuard {
         super(
             router,
             modelService,
+            storageService,
             _fuseNavigationService,
             _fuseConfigService,
             _snackService
@@ -37,7 +40,7 @@ export class PublicGuard extends AuthGuard {
 
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
-        let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        let storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
         this.cleanUpNavigation(navigtaion_clone, storage['structure']);
 
         if (storage['structure'] == null) {

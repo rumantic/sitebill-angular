@@ -136,7 +136,6 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         SnackBarComponent,
-        Bitrix24Router,
         ControlElementsComponent,
         LoginComponent,
         AlertComponent,

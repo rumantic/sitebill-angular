@@ -75,6 +75,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {StorageService} from "./_services/storage.service";
 
 @NgModule({
     imports: [
@@ -169,6 +170,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         ChatService,
         Bitrix24Service,
         BillingService,
+        StorageService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [

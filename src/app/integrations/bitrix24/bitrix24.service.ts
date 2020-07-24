@@ -13,6 +13,7 @@ export class Bitrix24Service {
     private placement: string;
     private collections_count: number;
     private app_root_element: any;
+    private bitrix24_user_option: string;
 
     constructor(
         private http: HttpClient,
@@ -156,6 +157,7 @@ export class Bitrix24Service {
     }
 
     init_input_parameters() {
+        console.log('Решить загрузку битрикс24 параметров один раз');
         let app_root_element;
         let elements = [];
         if (this.document.getElementById('angular_search')) {
@@ -188,8 +190,8 @@ export class Bitrix24Service {
             }
         }
         if (app_root_element.getAttribute('bitrix24_user_option')) {
-
             try {
+                this.bitrix24_user_option = app_root_element.getAttribute('bitrix24_user_option');
                 let user_option = app_root_element.getAttribute('bitrix24_user_option').replace(/\'/g, '"');
                 // console.log(placement_options);
                 if (user_option != null) {
@@ -205,7 +207,9 @@ export class Bitrix24Service {
         //console.log(this.domain);
         //console.log(this.placement);
         //console.log(this.placement_options);
+    }
 
-
+    get_bitrix24_user_option () {
+        return this.bitrix24_user_option;
     }
 }
