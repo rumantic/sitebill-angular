@@ -125,7 +125,7 @@ export class ModelService {
                         const storage = JSON.parse(result) || [];
                         if (storage.user_id > 0) {
                             console.log('cms user_id = ' + storage.user_id);
-                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.storageService.setItem('currentUser', JSON.stringify(storage));
                             this.reinit_currentUser();
                             this.after_config_loaded();
                             return true;
@@ -258,7 +258,7 @@ export class ModelService {
                 this.router.navigate([refresh_url]);
             } else {
                 this.currentUser = result;
-                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.storageService.setItem('currentUser', JSON.stringify(this.currentUser));
                 this.enable_nobody_mode();
             }
         });
@@ -783,7 +783,7 @@ export class ModelService {
         this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request)
             .subscribe((result: any) => {
                 if ( result.success === 1 ) {
-                    localStorage.setItem('currentUser', JSON.stringify(result));
+                    this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
             });
     }

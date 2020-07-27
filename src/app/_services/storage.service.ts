@@ -10,9 +10,13 @@ export class StorageService {
     }
 
     getItem (key: string) {
-        //return localStorage.getItem(key);
+        return localStorage.getItem(key);
         //заглушка
         //console.log(this.bitrix24Service);
+        if ( key === 'api_url' && this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url') != null ) {
+            return this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url');
+        }
+
         if (
             this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key') != null &&
             key === 'currentUser'
@@ -22,5 +26,18 @@ export class StorageService {
         } else {
             return localStorage.getItem(key);
         }
+    }
+
+    setItem (key: string, value: any) {
+        if ( key === 'currentUser') {
+            console.log('Storage set currentUser');
+            this.bitrix24Service.user_option_set(value)
+                .subscribe((response: any) => {
+                        console.log(response);
+                    }
+                );
+        }
+        //Установка user_option
+        localStorage.setItem(key, value);
     }
 }

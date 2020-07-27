@@ -11,6 +11,7 @@ import {ViewModalComponent} from '../grid/view-modal/view-modal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
 import {ModelService} from '../../_services/model.service';
+import {StorageService} from "../../_services/storage.service";
 
 @Component({
     selector   : 'price',
@@ -34,6 +35,7 @@ export class PriceComponent
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private billingSerivce: BillingService,
         protected router: Router,
+        protected storageService: StorageService,
         protected dialog: MatDialog,
         public modelService: ModelService,
         private filterService: FilterService,
@@ -93,7 +95,7 @@ export class PriceComponent
             return;
         }
 
-        localStorage.setItem('cart_items', JSON.stringify(product));
+        this.storageService.setItem('cart_items', JSON.stringify(product));
         console.log(product);
         this.router.navigate(['/cart/buy/']);
     }

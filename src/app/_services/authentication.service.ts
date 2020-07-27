@@ -49,8 +49,8 @@ export class AuthenticationService {
                 if (user && user.session_key) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     try {
-                        localStorage.setItem('currentUser', JSON.stringify(user));
-                        localStorage.setItem('api_url', this.modelSerivce.get_api_url());
+                        this.storageService.setItem('currentUser', JSON.stringify(user));
+                        this.storageService.setItem('api_url', this.modelSerivce.get_api_url());
                     } catch (e) {
                         //console.log(e);
                     }

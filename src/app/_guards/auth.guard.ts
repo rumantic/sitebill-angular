@@ -60,7 +60,7 @@ export class AuthGuard implements CanActivate {
                         //console.log(storage);
 
                         if (storage.user_id > 0) {
-                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.storageService.setItem('currentUser', JSON.stringify(storage));
                             this.modelService.disable_need_reload();
                             if (this.check_permissions(route, state)) {
                                 //console.log('success_redirect start');

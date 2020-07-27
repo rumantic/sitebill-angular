@@ -114,7 +114,7 @@ export class FilterService {
             params_count_array = {};
         }
         params_count_array[app_name] = count;
-        localStorage.setItem('sitebill_params_count_' + this.get_postfix(), JSON.stringify(params_count_array));
+        this.storageService.setItem('sitebill_params_count_' + this.get_postfix(), JSON.stringify(params_count_array));
     }
 
     get_postfix ( app_name = 'global_options' ) {
@@ -152,7 +152,7 @@ export class FilterService {
 
         // console.log(share_array_local);
         // console.log(JSON.stringify(share_array_local));
-        localStorage.setItem(array_title, JSON.stringify(share_array_local));
+        this.storageService.setItem(array_title, JSON.stringify(share_array_local));
     }
 
 
