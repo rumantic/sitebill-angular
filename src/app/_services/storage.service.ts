@@ -13,19 +13,24 @@ export class StorageService {
         //return localStorage.getItem(key);
         //заглушка
         //console.log(this.bitrix24Service);
-        if ( key === 'api_url' && this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url') != null ) {
-            return this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url');
-        }
+        try {
+            if ( key === 'api_url' && this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url') != null ) {
+                return this.bitrix24Service.get_placement_options().get_user_option().get_value('api_url');
+            }
+            if (
+                this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key') != null &&
+                key === 'currentUser'
+            ) {
+                //console.log(this.bitrix24Service.get_bitrix24_user_option());
+                return this.bitrix24Service.get_bitrix24_user_option();
+            } else {
+                return localStorage.getItem(key);
+            }
 
-        if (
-            this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key') != null &&
-            key === 'currentUser'
-        ) {
-            //console.log(this.bitrix24Service.get_bitrix24_user_option());
-            return this.bitrix24Service.get_bitrix24_user_option();
-        } else {
-            return localStorage.getItem(key);
+        } catch (e) {
+
         }
+        return localStorage.getItem(key);
     }
 
     setItem (key: string, value: any) {
