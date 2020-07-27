@@ -210,6 +210,6 @@ export class Bitrix24Service {
     }
 
     get_bitrix24_user_option () {
-        return this.bitrix24_user_option;
+        return this.bitrix24_user_option.replace(/\'/g, '"');
     }
 }

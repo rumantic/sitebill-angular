@@ -6,6 +6,7 @@ import {SitebillEntity, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
+import {StorageService} from "./storage.service";
 
 
 @Injectable()
@@ -34,6 +35,7 @@ export class ModelService {
         private http: HttpClient,
         private router: Router,
         protected _fuseConfigService: FuseConfigService,
+        protected storageService: StorageService,
         private filterService: FilterService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
@@ -52,8 +54,8 @@ export class ModelService {
 
         this.current_user_profile = new UserProfile();
 
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        this.set_api_url(localStorage.getItem('api_url'));
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
+        this.set_api_url(this.storageService.getItem('api_url'));
     }
 
     set_api_url(api_url: string) {
@@ -287,7 +289,7 @@ export class ModelService {
     }
 
     model_logout() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
 
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.api_url}/apps/api/rest.php`;
@@ -319,10 +321,10 @@ export class ModelService {
     }
 
     reinit_currentUser() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
         this.disable_need_reload();
         // console.log('reinit current user');
-        // console.log(localStorage.getItem('currentUser'));
+        // console.log(this.storageService.getItem('currentUser'));
         // console.log(this.currentUser);
         // console.log('reinit complete');
     }
@@ -618,7 +620,7 @@ export class ModelService {
     }
 
     get_access (model_name, function_name) {
-        const storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        const storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
         if (storage['structure'] == null) {
             return false;
         }

@@ -10,13 +10,14 @@ export class StorageService {
     }
 
     getItem (key: string) {
-        return localStorage.getItem(key);
+        //return localStorage.getItem(key);
         //заглушка
-        console.log(this.bitrix24Service);
+        //console.log(this.bitrix24Service);
         if (
             this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key') != null &&
             key === 'currentUser'
         ) {
+            //console.log(this.bitrix24Service.get_bitrix24_user_option());
             return this.bitrix24Service.get_bitrix24_user_option();
         } else {
             return localStorage.getItem(key);

@@ -9,6 +9,7 @@ import 'rxjs-compat/add/operator/catch';
 import 'rxjs-compat/add/observable/of';
 import 'rxjs-compat/add/observable/empty';
 import {throwError} from 'rxjs';
+import {StorageService} from "./storage.service";
 
 
 
@@ -22,6 +23,7 @@ export class AuthenticationService {
     constructor(
         private http: HttpClient,
         protected modelSerivce: ModelService,
+        protected storageService: StorageService,
         @Inject(APP_CONFIG) private config: AppConfig
         ) {
         this.api_url = this.modelSerivce.get_api_url();
@@ -109,7 +111,7 @@ export class AuthenticationService {
 
 
     logout() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
 
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.api_url}/apps/api/rest.php`;

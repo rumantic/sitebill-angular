@@ -12,6 +12,7 @@ import { ModelService } from 'app/_services/model.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FilterService} from '../../_services/filter.service';
 import {BillingService} from '../../_services/billing.service';
+import {StorageService} from "../../_services/storage.service";
 
 @Component({
     selector   : 'cart',
@@ -43,6 +44,7 @@ export class CartComponent
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
         private billingSerivce: BillingService,
+        protected storageService: StorageService,
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
@@ -70,7 +72,7 @@ export class CartComponent
     }
     ngOnInit() {
         console.log('cart_items');
-        this.product = JSON.parse(localStorage.getItem('cart_items'));
+        this.product = JSON.parse(this.storageService.getItem('cart_items'));
         console.log(this.product);
         if ( this.step === 'success' ) {
             this.success();
