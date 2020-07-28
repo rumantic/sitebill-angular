@@ -159,7 +159,7 @@ export class ModelService {
 
     enable_need_reload( from = '') {
         if ( from !== '' ) {
-            console.log('enable_need_reload from ' + from);
+            // console.log('enable_need_reload from ' + from);
         }
         // console.log('enable_need_reload');
         this.need_reload = true;
@@ -637,7 +637,7 @@ export class ModelService {
     }
 
     load_config () {
-        console.log(this.get_api_url());
+        //console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
@@ -668,7 +668,7 @@ export class ModelService {
 
     after_config_loaded () {
         this.config_loaded_emitter.emit(true);
-        console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        //console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
         if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
             this.show_navbar();
         }
@@ -677,11 +677,11 @@ export class ModelService {
         }
 
         if ( this.getConfigValue('apps.realty.default_frontend_route') === null ) {
-            console.log('default route');
+            //console.log('default route');
             this.router.navigate(['grid/data']);
         } else {
-            console.log('config route');
-            console.log(this.getConfigValue('apps.realty.default_frontend_route'));
+            //console.log('config route');
+            //console.log(this.getConfigValue('apps.realty.default_frontend_route'));
             this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
         }
 

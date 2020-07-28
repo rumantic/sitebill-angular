@@ -113,7 +113,7 @@ export class AuthGuard implements CanActivate {
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
         let storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
-        console.log(storage);
+        // console.log(storage);
         if (storage['structure'] == null) {
             //console.log('structure null - logout');
             this.modelService.logout();

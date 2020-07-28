@@ -14,6 +14,7 @@ export class Bitrix24Service {
     private collections_count: number;
     private app_root_element: any;
     private bitrix24_user_option: string;
+    private params_inited: boolean;
 
     constructor(
         private http: HttpClient,
@@ -22,6 +23,8 @@ export class Bitrix24Service {
         this.collections_count = 0;
         this.entity = new Bitrix24Entity;
         this.placement_options = new Bitrix24PlacementOptions;
+        this.params_inited = false;
+        this.set_access_token(null);
     }
 
     get_client() {
@@ -157,7 +160,10 @@ export class Bitrix24Service {
     }
 
     init_input_parameters() {
-        console.log('Решить загрузку битрикс24 параметров один раз');
+        if ( this.params_inited ) {
+            return;
+        }
+        // console.log('Решить загрузку битрикс24 параметров один раз');
         let app_root_element;
         let elements = [];
         if (this.document.getElementById('angular_search')) {
@@ -190,17 +196,9 @@ export class Bitrix24Service {
             }
         }
         if (app_root_element.getAttribute('bitrix24_user_option')) {
-            try {
-                this.bitrix24_user_option = app_root_element.getAttribute('bitrix24_user_option');
-                let user_option = app_root_element.getAttribute('bitrix24_user_option').replace(/\'/g, '"');
-                // console.log(placement_options);
-                if (user_option != null) {
-                    let user_options_parsed = JSON.parse(user_option);
-                    this.placement_options.set_user_option(user_options_parsed);
-                }
-            } catch {
-            }
+            this.set_bitrix24_user_option(app_root_element.getAttribute('bitrix24_user_option'));
         }
+        this.params_inited = true;
 
 
         //console.log(this.access_token);
@@ -209,7 +207,27 @@ export class Bitrix24Service {
         //console.log(this.placement_options);
     }
 
+    set_bitrix24_user_option (user_option: string) {
+        try {
+            this.bitrix24_user_option = user_option;
+            let user_option_replaced = user_option.replace(/\'/g, '"');
+            // console.log(placement_options);
+            if (user_option_replaced != null) {
+                let user_options_parsed = JSON.parse(user_option_replaced);
+                this.placement_options.set_user_option(user_options_parsed);
+            }
+        } catch {
+        }
+    }
+
     get_bitrix24_user_option () {
         return this.bitrix24_user_option.replace(/\'/g, '"');
+    }
+
+    is_bitrix24_inited () {
+        if ( this.get_access_token() != null ) {
+            return true;
+        }
+        return false;
     }
 }
