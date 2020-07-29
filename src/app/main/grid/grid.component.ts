@@ -439,8 +439,7 @@ export class GridComponent implements OnInit, OnDestroy
         return null;
     }
 
-    load_grid_data(app_name, grid_columns: string[], params: any) {
-        // console.log('load_grid_data');
+    get_filter_params () {
         let filter_params_json = {};
 
 
@@ -465,9 +464,7 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
         }
-        if (params != null) {
-            Object.assign(filter_params_json, params);
-        }
+
         if (this.enable_collections) {
             filter_params_json['load_collections'] = true;
             filter_params_json['collections_domain'] = this.bitrix24Service.get_domain();
@@ -477,6 +474,16 @@ export class GridComponent implements OnInit, OnDestroy
             }
         }
         filter_params_json = this.extended_params(filter_params_json);
+        return filter_params_json;
+    }
+
+    load_grid_data(app_name, grid_columns: string[], params: any) {
+        // console.log('load_grid_data');
+        let filter_params_json = this.get_filter_params();
+
+        if (params != null) {
+            Object.assign(filter_params_json, params);
+        }
 
         let page_number = this.page.pageNumber + 1;
         // console.log(filter_params_json);
@@ -1081,4 +1088,9 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
 
+    save_search() {
+        console.log('save search');
+        let filter_params_json = this.get_filter_params();
+        console.log(filter_params_json);
+    }
 }
