@@ -472,6 +472,10 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    save_search(params) {
+        const body = {action: 'mysearch', do: 'save', params: params, session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
 
     new_empty_record(model_name) {
         const body = {action: 'model', do: 'new_empty_record', model_name: model_name, session_key: this.get_session_key_safe()};

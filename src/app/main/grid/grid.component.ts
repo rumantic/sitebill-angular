@@ -1092,5 +1092,8 @@ export class GridComponent implements OnInit, OnDestroy
         console.log('save search');
         let filter_params_json = this.get_filter_params();
         console.log(filter_params_json);
+        this.modelService.save_search(filter_params_json).subscribe((response: any) => {
+            console.log(response);
+        });
     }
 }
