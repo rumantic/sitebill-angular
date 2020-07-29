@@ -17,10 +17,9 @@
                     {{item.value}}
                 </mat-radio-button>
             </mat-radio-group>
-            <button mat-raised-button matStepperNext type="button" color="accent" (click)="submit()"  *ngIf="!declineProcessing">
+            <button mat-raised-button matStepperNext type="button" color="accent" (click)="submit()">
                 Пожаловаться
             </button>
-            <mat-spinner [diameter]="40" *ngIf="declineProcessing"></mat-spinner>
         </form>
 
     </div>
