@@ -124,9 +124,6 @@ export class ReportComponent implements OnInit {
     }
 
     submit () {
-        console.log('submit');
-        console.log(this.declineForm.controls.comment.value);
-        console.log(this.declineForm.controls.variant.value);
         this.declinePressed = true;
         this.declineProcessing = true;
 

@@ -39,7 +39,7 @@ export class DataComponent extends GridComponent {
         }
 
         try {
-            if (row.complaint_id.value === '1') {
+            if (row.complaint_id.value !== '0') {
                 return 'amber-100-bg';
             }
         } catch {
