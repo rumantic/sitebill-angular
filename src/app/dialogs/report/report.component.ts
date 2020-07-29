@@ -130,7 +130,7 @@ export class ReportComponent implements OnInit {
         this.declinePressed = true;
         this.declineProcessing = true;
 
-        this.modelService.report(this._data.get_table_name(), this._data.primary_key, this._data.get_key_value())
+        this.modelService.report(this._data.get_table_name(), this._data.primary_key, this._data.get_key_value(), this.declineForm.controls.variant.value)
             .subscribe((response: any) => {
                 console.log(response);
 

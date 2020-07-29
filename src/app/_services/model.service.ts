@@ -467,8 +467,8 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    report(model_name, primary_key, key_value) {
-        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, session_key: this.get_session_key_safe()};
+    report(model_name, primary_key, key_value, complaint_id) {
+        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, complaint_id:complaint_id, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
