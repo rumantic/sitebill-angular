@@ -51,6 +51,41 @@ export class Bitrix24Service {
         return this.http.post<any>(url, request);
     }
 
+    comment_add ( data_id, items, operation ) {
+        //Добавляем комментарий
+        try {
+            this.crm_timeline_comment_add (
+                this.get_entity_type(),
+                this.get_entity_id(),
+                '<b>Подборка:</b> ' +
+                (operation == 'add'? 'Добавлен':'Удален') +
+                ' объект ID = ' +
+                data_id + ', ' +
+                this.compose_comment(items))
+                .subscribe((response: any) => {
+                        // console.log(response);
+                    }
+                );
+        } catch (e) {
+
+        }
+    }
+
+    compose_comment ( row ) {
+        let result = '';
+        for (let key in row) {
+            if ( row[key].type != 'image' && row[key].type != 'primary_key' && row[key].name != 'date_added'  && row[key].value != ''  && row[key].value != 0  ) {
+                //console.log(row[key]);
+                if (row[key].value_string !== undefined) {
+                    result += ' | ' +row[key].value_string;
+                } else {
+                    result += ' | ' +row[key].value;
+                }
+            }
+        }
+        return result;
+    }
+
     crm_timeline_comment_list (type, id) {
         const url = `https://${this.get_domain()}/rest/crm.timeline.comment.list.json`;
         const request = { fields: {ENTITY_ID: id, ENTITY_TYPE: type}, auth: this.get_access_token() };

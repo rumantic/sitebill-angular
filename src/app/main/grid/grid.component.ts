@@ -914,24 +914,7 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         collections_count--;
                     }
-
-                    //Добавляем комментарий
-                    try {
-                        this.bitrix24Service.crm_timeline_comment_add (
-                            this.bitrix24Service.get_entity_type(),
-                            this.bitrix24Service.get_entity_id(),
-                            '<b>Подборка:</b> ' +
-                            (response.data.operation == 'add'? 'Добавлен':'Удален') +
-                            ' объект ID = ' +
-                            data_id + ', ' +
-                            this.compose_comment(event.row))
-                            .subscribe((response: any) => {
-                                    // console.log(response);
-                                }
-                            );
-                    } catch (e) {
-
-                    }
+                    this.bitrix24Service.comment_add(data_id, event.row, response.data.operation);
 
                     this.bitrix24Service.set_collections_count(collections_count);
 
@@ -942,23 +925,6 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
     }
-
-    compose_comment ( row ) {
-        let result = '';
-        for (let key in row) {
-            if ( row[key].type != 'image' && row[key].type != 'primary_key' && row[key].name != 'date_added'  && row[key].value != ''  && row[key].value != 0  ) {
-                //console.log(row[key]);
-                if (row[key].value_string !== undefined) {
-                    result += ' | ' +row[key].value_string;
-                } else {
-                    result += ' | ' +row[key].value;
-                }
-            }
-        }
-        return result;
-    }
-
-
 
     /**
        * Populate the table with new data based on the page number
