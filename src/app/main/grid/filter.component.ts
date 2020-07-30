@@ -38,7 +38,7 @@ export class FilterComponent {
     price_filter_enable: boolean = false;
     price_options: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
     price_min: number = 0;
-    price_max: number = 1000000;
+    price_max: number = 10000000;
     options_price_zero_10m: Options = {
         floor: 0,
         ceil: 10000000,
@@ -195,7 +195,6 @@ export class FilterComponent {
 
 
     selectItem(value) {
-        console.log(value);
         // console.log(this.selectedFilter);
         if (this.columnObject.type === 'checkbox') {
             if (value == null) {

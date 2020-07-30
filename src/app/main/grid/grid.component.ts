@@ -196,7 +196,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
-        private filterService: FilterService,
+        public filterService: FilterService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -1061,5 +1061,11 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelService.save_search(filter_params_json).subscribe((response: any) => {
             console.log(response);
         });
+    }
+
+    reset_filters () {
+        this.clear_search_text();
+        this.clear_selected_date_filter(this.date_range_key);
+        this.filterService.reset(this.entity);
     }
 }

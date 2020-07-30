@@ -25,7 +25,7 @@ import {ModelService} from "./_services/model.service";
 import {PublicGuard} from "./_guards/public.guard";
 import {MessageService} from "./message.service";
 import {AlertService, AuthenticationService} from "./_services";
-import {FilterService} from "./_services/filter.service";
+import {FilterIterator, FilterService} from "./_services/filter.service";
 import {SnackService} from "./_services/snack.service";
 import {Bitrix24Router} from "./integrations/bitrix24/bitrix24router";
 import {SnackBarComponent} from "./main/snackbar/snackbar.component";
@@ -203,6 +203,7 @@ const appRoutes: Routes = [
         PublicGuard,
         AlertService,
         AuthenticationService,
+        FilterIterator,
         FilterService,
         SnackService,
         Bitrix24Router

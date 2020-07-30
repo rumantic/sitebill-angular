@@ -4,6 +4,76 @@ import { SitebillEntity } from 'app/_models';
 import {StorageService} from "./storage.service";
 
 @Injectable()
+export class FilterIterator {
+    private counter: number;
+    constructor() {
+        this.counter = 0;
+    }
+
+    get_default_price_min () {
+        return 0;
+    }
+
+    get_default_price_max () {
+        return 10000000;
+    }
+
+
+    iterate (share_array, operation) {
+        let counter = 0;
+        for (let key in share_array) {
+            if ( share_array[key] !== null ) {
+                let type = typeof share_array[key];
+                // console.log(type);
+                switch (type) {
+                    case 'object':
+                        if (Object.keys(share_array[key]).length > 0) {
+                            if (this.do_operation(operation)) {
+                                counter++;
+                            }
+                        }
+                        break;
+                    case 'number':
+                        if ( key === 'price_min' && share_array[key] == this.get_default_price_min() ) {
+
+                        } else if ( key === 'price_max' && share_array[key] == this.get_default_price_max() ) {
+
+                        } else {
+                            this.do_operation(operation);
+                            counter++;
+                        }
+                        break;
+                    case 'string':
+                        if ( share_array[key].length > 0 ) {
+                            counter++;
+                        }
+                    default:
+                        // console.log(type);
+
+                }
+            }
+        }
+        return counter;
+        //return this.get_operation_result();
+    }
+
+    do_operation ( operation ) {
+        switch ( operation ) {
+            case 'counter':
+                return true;
+                //this.counter++;
+                break;
+
+        }
+        return false;
+    }
+
+    get_operation_result () {
+        return this.counter;
+    }
+}
+
+@Injectable()
 export class FilterService {
     private share_array = [];
     private params_count = [];
@@ -15,6 +85,7 @@ export class FilterService {
 
     constructor(
         protected storageService: StorageService,
+        protected filterIterator: FilterIterator
     ) {
         // this.share_array = [];
     }
@@ -139,6 +210,24 @@ export class FilterService {
         }
     }
 
+    count_share_array (app_name: string): number {
+        const share_array = this.get_share_array(app_name);
+        let counter = 0;
+        if (share_array !== null) {
+            counter = this.filterIterator.iterate(share_array, 'counter');
+        }
+        return counter;
+    }
+
+    reset (entity: SitebillEntity) {
+        const array_title = 'sitebill_share_array_' + this.get_postfix(entity.get_app_name());
+        const share_array_local = {};
+        this.storageService.setItem(array_title, JSON.stringify(share_array_local));
+        this.onInnerChange(entity);
+    }
+
+
+
     set_share_array(app_name: string, key: string, datas: any) {
         const array_title = 'sitebill_share_array_' + this.get_postfix(app_name);
 
@@ -154,7 +243,4 @@ export class FilterService {
         // console.log(JSON.stringify(share_array_local));
         this.storageService.setItem(array_title, JSON.stringify(share_array_local));
     }
-
-
-
 }
