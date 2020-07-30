@@ -34,8 +34,8 @@
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button
+                        class="amber ml-12"
                         *ngIf="filterService.count_share_array(entity.get_app_name()) > 0"
-                        class="hidden-lt-md"
                         mat-raised-button
                         (click)="reset_filters()"
                         color="teal"
