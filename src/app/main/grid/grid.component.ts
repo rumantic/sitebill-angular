@@ -1055,12 +1055,24 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     save_search() {
-        console.log('save search');
-        let filter_params_json = this.get_filter_params();
-        console.log(filter_params_json);
-        this.modelService.save_search(filter_params_json).subscribe((response: any) => {
-            console.log(response);
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
         });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Сохранить поиск?<br> На вашу почту будут отправляться объекты по вашей выборке за текущий день.';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                console.log('save search');
+                let filter_params_json = this.get_filter_params();
+                console.log(filter_params_json);
+                this.modelService.save_search(filter_params_json).subscribe((response: any) => {
+                    console.log(response);
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+
     }
 
     reset_filters () {
