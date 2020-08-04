@@ -472,8 +472,8 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    save_search(params) {
-        const body = {action: 'mysearch', do: 'save', params: params, session_key: this.get_session_key_safe()};
+    save_search(params, search_title) {
+        const body = {action: 'mysearch', do: 'save', params: params, search_title: search_title, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 

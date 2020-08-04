@@ -37,6 +37,7 @@ import {ResponseContentType} from '@angular/http';
 import {ReportComponent} from "../../dialogs/report/report.component";
 import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
+import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 registerLocaleData(localeRu, 'ru');
 
 moment.locale('ru', localization);
@@ -111,6 +112,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
     reportDialogRef: MatDialogRef<ReportComponent>;
+    saveSearchDialogRef: MatDialogRef<SaveSearchComponent>;
 
 
 
@@ -741,15 +743,6 @@ export class GridComponent implements OnInit, OnDestroy
         });
     }
 
-    report(item_id: any) {
-        this.entity.set_key_value(item_id);
-        this.reportDialogRef = this.dialog.open(ReportComponent, {
-            disableClose: false,
-            data: this.entity
-        });
-    }
-
-
     edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
@@ -1055,24 +1048,21 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     save_search() {
-        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
-            disableClose: false
+
+        this.saveSearchDialogRef = this.dialog.open(SaveSearchComponent, {
+            disableClose: false,
+            data: this.entity
         });
+        this.saveSearchDialogRef.componentInstance.filter_params_json = this.get_filter_params();
 
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Сохранить поиск?<br> На вашу почту будут отправляться объекты по вашей выборке за текущий день.';
+    }
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                console.log('save search');
-                let filter_params_json = this.get_filter_params();
-                console.log(filter_params_json);
-                this.modelService.save_search(filter_params_json).subscribe((response: any) => {
-                    console.log(response);
-                });
-            }
-            this.confirmDialogRef = null;
+    report(item_id: any) {
+        this.entity.set_key_value(item_id);
+        this.reportDialogRef = this.dialog.open(ReportComponent, {
+            disableClose: false,
+            data: this.entity
         });
-
     }
 
     reset_filters () {

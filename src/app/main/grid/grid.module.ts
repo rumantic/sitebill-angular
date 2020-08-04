@@ -82,6 +82,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ReportComponent} from "../../dialogs/report/report.component";
+import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 
 const routes = [
     {
@@ -282,6 +283,7 @@ const routes = [
         FilterComponent,
         DeclineClientComponent,
         ReportComponent,
+        SaveSearchComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
@@ -360,7 +362,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent]
+    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent, SaveSearchComponent]
 
 })
 
