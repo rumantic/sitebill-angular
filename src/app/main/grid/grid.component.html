@@ -53,14 +53,15 @@
                             <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                         </div>
                     </div>
-                </div>
-                <!-- / SEARCH -->
-                <!-- TOOLBAR -->
-                <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
                     <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1" mat-icon-button (click)="save_search()"
                             aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
                         <mat-icon>save</mat-icon>
                     </button>
+
+                </div>
+                <!-- / SEARCH -->
+                <!-- TOOLBAR -->
+                <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
 
                     <mat-form-field class="pt-12 pr-8 toolbar__daterange" *ngIf="date_range_enable">
                         <input autocomplete="off"

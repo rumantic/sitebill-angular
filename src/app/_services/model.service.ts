@@ -680,7 +680,7 @@ export class ModelService {
             this.show_toolbar();
         }
 
-        if ( this.getConfigValue('apps.realty.default_frontend_route') === null ) {
+        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
             //console.log('default route');
             this.router.navigate(['grid/data']);
         } else {
