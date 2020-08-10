@@ -80,18 +80,22 @@ export class Bitrix24Service {
     }
 
     compose_comment ( row ) {
-        let result = '';
+        let result = [];
         for (let key in row) {
-            if ( row[key].type != 'image' && row[key].type != 'primary_key' && row[key].name != 'date_added'  && row[key].value != ''  && row[key].value != 0  ) {
-                //console.log(row[key]);
-                if (row[key].value_string !== undefined) {
-                    result += ' | ' +row[key].value_string;
+            if ( row[key].type != 'image' &&
+                row[key].type != 'primary_key' &&
+                row[key].name != 'date_added'  &&
+                !Array.isArray(row[key].value) &&
+                row[key].value != ''  &&
+                row[key].value != 0  ) {
+                if (row[key].value_string !== undefined && row[key].value_string.length > 0) {
+                    result.push(row[key].value_string);
                 } else {
-                    result += ' | ' +row[key].value;
+                    result.push(row[key].value);
                 }
             }
         }
-        return result;
+        return result.join(' | ');
     }
 
     crm_timeline_comment_list (type, id) {

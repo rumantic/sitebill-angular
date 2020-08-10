@@ -57,7 +57,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
     ngOnInit(): void
     {
         this.user = this._chatService.user;
-        
+
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
@@ -150,7 +150,7 @@ export class ChatViewComponent implements OnInit, OnDestroy, AfterViewInit
     reply(): void
     {
         //console.log(this.replyForm.form.value.message);
-        if ( this.replyForm.form.value.message != null ) {
+        if ( this.replyForm.form.value.message != null && this.replyForm.form.value.message.trim() !== '' ) {
             // Update the server
             this._chatService.updateDialog(this.selectedChat.chatId, this.replyForm.form.value.message);
         }
