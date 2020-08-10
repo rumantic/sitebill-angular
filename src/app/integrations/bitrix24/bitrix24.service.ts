@@ -54,15 +54,23 @@ export class Bitrix24Service {
     comment_add ( data_id, items, operation ) {
         //Добавляем комментарий
         try {
-            this.crm_timeline_comment_add (
-                this.get_entity_type(),
-                this.get_entity_id(),
-                '<b>Подборка:</b> ' +
+            let compose_item = this.compose_comment(items);
+            if (compose_item === '') {
+                return false;
+            }
+
+            let comment = '<b>Подборка:</b> ' +
                 (operation == 'add'? 'Добавлен':'Удален') +
                 ' объект ID = ' +
                 data_id + ', ' +
-                this.compose_comment(items))
-                .subscribe((response: any) => {
+                compose_item;
+
+
+            this.crm_timeline_comment_add (
+                this.get_entity_type(),
+                this.get_entity_id(),
+                comment
+            ).subscribe((response: any) => {
                         // console.log(response);
                     }
                 );
