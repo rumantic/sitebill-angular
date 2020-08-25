@@ -173,6 +173,10 @@ export class UploaderComponent {
         this.modelSerivce.uppend_uploads(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
             .subscribe((result: UploadResult) => {
                 console.log(result);
+                if ( result.state === 'error' ) {
+                    this._snackService.message('Невозможно загрузить файл. Поддерживаются только jpg и png изображения.', 5000);
+                    return false;
+                }
 
                 let prefix = '';
                 if (this.entity.get_table_name() == 'user') {
