@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
+import {SnackService} from "./snack.service";
 
 
 @Injectable()
@@ -37,6 +38,7 @@ export class ModelService {
         protected _fuseConfigService: FuseConfigService,
         protected storageService: StorageService,
         private filterService: FilterService,
+        protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.navbar_hidden = false;
@@ -153,6 +155,7 @@ export class ModelService {
             }
         } else {
             console.log('guest mode not enabled');
+            this._snackService.message('Недостаточно прав доступа для просмотра этого раздела. Обратитесь к администратору.');
             this.router.navigate(['/login/']);
         }
     }
