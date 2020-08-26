@@ -702,7 +702,11 @@ export class GridComponent implements OnInit, OnDestroy
     date_range_change(event, column_name) {
         if (event.startDate != null && event.endDate != null) {
             this.selected_date_filter_has_values = true;
-            this.filterService.share_data(this.entity, column_name, event);
+            this.filterService.share_data(this.entity, column_name,
+                {
+                    'startDate':event.startDate.local().format('YYYY-MM-DD').toString(),
+                    'endDate':event.endDate.local().format('YYYY-MM-DD').toString()
+                });
         }
     }
     clear_selected_date_filter(column_name) {
