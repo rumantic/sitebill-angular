@@ -53,7 +53,12 @@
                             <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                         </div>
                     </div>
-                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1" mat-icon-button (click)="save_search()"
+                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
+                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                        <mat-icon>save</mat-icon>
+                    </button>
+
+                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()" mat-icon-button (click)="login_modal()"
                             aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
                         <mat-icon>save</mat-icon>
                     </button>

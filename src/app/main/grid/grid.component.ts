@@ -38,6 +38,7 @@ import {ReportComponent} from "../../dialogs/report/report.component";
 import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
+import {LoginModalComponent} from "../../login/modal/login-modal.component";
 registerLocaleData(localeRu, 'ru');
 
 moment.locale('ru', localization);
@@ -1073,5 +1074,13 @@ export class GridComponent implements OnInit, OnDestroy
         this.clear_search_text();
         this.clear_selected_date_filter(this.date_range_key);
         this.filterService.reset(this.entity);
+    }
+
+    login_modal () {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(LoginModalComponent, dialogConfig);
     }
 }
