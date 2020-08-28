@@ -171,20 +171,19 @@ export class FilterComponent {
         this.modelSerivce.get_max(entity.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                // console.log(result);
                 if ( result.state === 'success' ) {
                     this.price_max = result.message;
                     this.options_price_zero_10m.ceil = result.message;
                 }
                 if (this.filterService.get_share_array(this.entity.get_app_name()) !== null) {
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] ) {
                         this.price_min = this.filterService.get_share_array(this.entity.get_app_name())['price_min'];
                     }
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_max']) {
                         this.price_max = this.filterService.get_share_array(this.entity.get_app_name())['price_max'];
                     }
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ||
-                        this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] ||
+                        this.filterService.get_share_array(this.entity.get_app_name())['price_max']) {
                         this.price_selector = 5;
                     }
                 }
