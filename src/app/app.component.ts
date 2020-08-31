@@ -326,6 +326,9 @@ export class AppComponent implements OnInit, OnDestroy
     }
 
     showDemoMessage() {
+        if ( this.modelService.is_logged_in() ) {
+            return false;
+        }
         this.demoDialogRef = this.dialog.open(DemoBannerComponent, {
             disableClose: false,
             data: null
