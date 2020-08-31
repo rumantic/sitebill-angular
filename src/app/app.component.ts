@@ -6,7 +6,7 @@ import {PlatformLocation } from '@angular/common';
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import {Subject, Subscription, timer} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -20,6 +20,8 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
 import {ModelService} from './_services/model.service';
+import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector   : 'app',
@@ -34,6 +36,9 @@ export class AppComponent implements OnInit, OnDestroy
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    private demoTimerSubscribe: Subscription;
+    demoDialogRef: MatDialogRef<DemoBannerComponent>;
+    private firstRun: Boolean;
 
     /**
      * Constructor
@@ -60,9 +65,11 @@ export class AppComponent implements OnInit, OnDestroy
         private router: Router,
         private bitrix24Router: Bitrix24Router,
         public modelService: ModelService,
+        protected dialog: MatDialog,
         private _platform: Platform
     )
     {
+        this.firstRun = true;
         /*
         const conf = {
             layout: {
@@ -176,6 +183,7 @@ export class AppComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -208,7 +216,6 @@ export class AppComponent implements OnInit, OnDestroy
                 this.init_input_parameters();
             });
         this.init_parser_today_count();
-
     }
 
     init_parser_today_count() {
@@ -262,6 +269,11 @@ export class AppComponent implements OnInit, OnDestroy
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
         this.modelService.onSitebillStart();
+        this.modelService.config_loaded_emitter.subscribe((result: any) => {
+            if (!this.demoTimerSubscribe) {
+                this.switchTimer();
+            }
+        });
 
     }
 
@@ -288,5 +300,40 @@ export class AppComponent implements OnInit, OnDestroy
     toggleSidebarOpen(key): void
     {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
+    }
+
+    switchTimer() {
+        if (
+            this.modelService.getConfigValue('apps.realty.show_unreg_notify') === '1'
+            &&
+            !this.modelService.is_logged_in()
+        ) {
+            if ( this.demoTimerSubscribe ) {
+                this.demoTimerSubscribe.unsubscribe();
+            }
+            let timerPeriod = 30000;
+            if (!this.firstRun) {
+                timerPeriod = 300000;
+            }
+            const numbers = timer(timerPeriod);
+            this.demoTimerSubscribe = numbers.subscribe(x => this.showDemoMessage());
+
+            if ( this.firstRun ) {
+                this.firstRun = false;
+            }
+
+        }
+    }
+
+    showDemoMessage() {
+        this.demoDialogRef = this.dialog.open(DemoBannerComponent, {
+            disableClose: false,
+            data: null
+        });
+
+        this.demoDialogRef.afterClosed().subscribe(() => {
+            this.switchTimer();
+        });
+
     }
 }

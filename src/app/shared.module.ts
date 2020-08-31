@@ -76,6 +76,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {StorageService} from "./_services/storage.service";
+import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 
 @NgModule({
     imports: [
@@ -164,7 +165,8 @@ import {StorageService} from "./_services/storage.service";
         GatewaysComponent,
         GatewaysModalComponent,
         UserProfileComponent,
-        ContactInjectorComponent
+        ContactInjectorComponent,
+        DemoBannerComponent
     ],
     providers: [
         ChatService,
@@ -196,6 +198,7 @@ import {StorageService} from "./_services/storage.service";
         ProfileCardComponent,
         GatewaysComponent,
         GatewaysModalComponent,
+        DemoBannerComponent
     ]
 
 })
