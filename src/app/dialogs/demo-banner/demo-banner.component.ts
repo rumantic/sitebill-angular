@@ -9,6 +9,7 @@ import { ModelService } from 'app/_services/model.service';
 import {SnackService} from "../../_services/snack.service";
 import {SitebillEntity} from "../../_models";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -39,6 +40,7 @@ export class DemoBannerComponent implements OnInit {
         public modelService: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any,
+        private _router: Router,
         protected _snackService: SnackService,
         ) {
         // Set the private defaults
@@ -50,11 +52,8 @@ export class DemoBannerComponent implements OnInit {
 
 
     login() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.panelClass = 'login-form';
-        this.dialogRef.close();
-        this.dialog.open(LoginModalComponent, dialogConfig);
+        this.close();
+        this._router.navigate(['/frontend/prices']);
     }
 
     close() {

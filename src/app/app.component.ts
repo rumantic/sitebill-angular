@@ -305,8 +305,6 @@ export class AppComponent implements OnInit, OnDestroy
     switchTimer() {
         if (
             this.modelService.getConfigValue('apps.realty.show_unreg_notify') === '1'
-            &&
-            !this.modelService.is_logged_in()
         ) {
             if ( this.demoTimerSubscribe ) {
                 this.demoTimerSubscribe.unsubscribe();
@@ -326,7 +324,7 @@ export class AppComponent implements OnInit, OnDestroy
     }
 
     showDemoMessage() {
-        if ( this.modelService.is_logged_in() ) {
+        if ( this.modelService.get_current_user_profile().group_id.value === '1' ||  this.modelService.get_current_user_profile().group_id.value === '3' ) {
             return false;
         }
         this.demoDialogRef = this.dialog.open(DemoBannerComponent, {
