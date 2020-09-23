@@ -83,6 +83,7 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ReportComponent} from "../../dialogs/report/report.component";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
+import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 
 const routes = [
     {
@@ -256,8 +257,14 @@ const routes = [
         resolve: {
             chat: ChatService
         },
+    },
+    {
+        path: 'mysearch',
+        component: MysearchComponent,
+        resolve: {
+            chat: ChatService
+        },
     }
-
 ];
 
 @NgModule({
@@ -294,6 +301,7 @@ const routes = [
         ComposeModalComponent,
         FavoritesComponent,
         ParserComponent,
+        MysearchComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
