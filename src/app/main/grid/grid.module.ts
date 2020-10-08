@@ -84,6 +84,7 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ReportComponent} from "../../dialogs/report/report.component";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {MysearchComponent} from "./entity/mysearch/mysearch.component";
+import {EmailsComponent} from "./entity/emails/emails.component";
 
 const routes = [
     {
@@ -259,6 +260,13 @@ const routes = [
         },
     },
     {
+        path: 'emails',
+        component: EmailsComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
         path: 'mysearch',
         component: MysearchComponent,
         resolve: {
@@ -301,7 +309,8 @@ const routes = [
         ComposeModalComponent,
         FavoritesComponent,
         ParserComponent,
-        MysearchComponent
+        MysearchComponent,
+        EmailsComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
