@@ -85,6 +85,7 @@ import {ReportComponent} from "../../dialogs/report/report.component";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
+import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
 
 const routes = [
     {
@@ -272,7 +273,14 @@ const routes = [
         resolve: {
             chat: ChatService
         },
-    }
+    },
+    {
+        path: 'myclient',
+        component: MyGridClientComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
 ];
 
 @NgModule({
@@ -310,7 +318,8 @@ const routes = [
         FavoritesComponent,
         ParserComponent,
         MysearchComponent,
-        EmailsComponent
+        EmailsComponent,
+        MyGridClientComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
