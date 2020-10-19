@@ -522,7 +522,6 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         this.grid_columns_for_compose = result_f1.default_columns_list;
                     }
-                    //console.log(this.grid_columns_for_compose);
 
                     this.grid_meta = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
