@@ -120,8 +120,7 @@ export class CartComponent
         this.waiting_payment = true;
         // @todo: Анализировать оплату и редиректить в базу после оплаты
         console.log(this.waiting_payment);
-
-        window.open(this.gateways.interkassa.submit.url + '?' + params_array.join('&'), "_blank");
+        window.location.href = this.gateways.interkassa.submit.url + '?' + params_array.join('&');
     }
 
     got_it() {
