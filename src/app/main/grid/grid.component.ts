@@ -763,22 +763,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
-        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
-            this.billingService.get_user_limit('exclusive').subscribe(
-                (limit: any) => {
-                    if ( limit.data > 0 ) {
-                        this.open_form_with_check_access(dialogConfig);
-                        //this.dialog.open(FormComponent, dialogConfig);
-                    } else {
-                        this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
-                    }
-                }
-            );
-        } else {
-            this.open_form_with_check_access(dialogConfig);
-            //this.dialog.open(FormComponent, dialogConfig);
-        }
-
+        this.open_form_with_check_access(dialogConfig);
     }
 
     open_form_with_check_access (dialogConfig) {

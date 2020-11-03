@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
+import {MatDialogConfig} from "@angular/material/dialog";
 
 
 @Component({
@@ -20,6 +21,41 @@ export class DataComponent extends GridComponent {
         this.switch_collections(true);
         this.enable_date_range('date_added');
     }
+
+    edit_form(item_id: any) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '99vw';
+        dialogConfig.maxWidth = '99vw';
+        dialogConfig.height = '99vh';
+
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        this.entity.set_key_value(item_id);
+        if (this.only_collections) {
+            this.entity.set_hook('add_to_collections');
+        }
+        dialogConfig.data = this.entity;
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
+            this.billingService.get_user_limit('exclusive').subscribe(
+                (limit: any) => {
+                    if ( limit.data > 0 ) {
+                        this.open_form_with_check_access(dialogConfig);
+                        //this.dialog.open(FormComponent, dialogConfig);
+                    } else {
+                        this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
+                    }
+                }
+            );
+        } else {
+            this.open_form_with_check_access(dialogConfig);
+            //this.dialog.open(FormComponent, dialogConfig);
+        }
+
+    }
+
     getRowClass(row): string {
         try {
             if (row['id'].collections != null) {
