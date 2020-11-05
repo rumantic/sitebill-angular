@@ -95,9 +95,10 @@ export class PriceComponent
                     //console.log(user_products);
                     this.total_active_products = user_products.total_active_products;
                     const mapped = Object.keys(user_products.records).map(key => ({id: key, value: user_products.records[key]}));
+                    //console.log(mapped);
                     //const active = mapped.filter(item => item);
                     mapped.forEach(item => {
-                        if ( item.value.status.value === 'active' ) {
+                        if ( item.value.status.value === 'active' && item.value.billingcycle.value != 'once' ) {
                             this.has_active_tariff = true;
                         }
                     });
