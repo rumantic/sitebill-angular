@@ -37,6 +37,8 @@ import {ResponseContentType} from '@angular/http';
 import {ReportComponent} from "../../dialogs/report/report.component";
 import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
+import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
+import {LoginModalComponent} from "../../login/modal/login-modal.component";
 registerLocaleData(localeRu, 'ru');
 
 moment.locale('ru', localization);
@@ -111,6 +113,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
     reportDialogRef: MatDialogRef<ReportComponent>;
+    saveSearchDialogRef: MatDialogRef<SaveSearchComponent>;
 
 
 
@@ -196,7 +199,7 @@ export class GridComponent implements OnInit, OnDestroy
         @Inject(APP_CONFIG) private config: AppConfig,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
-        private filterService: FilterService,
+        public filterService: FilterService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -439,8 +442,7 @@ export class GridComponent implements OnInit, OnDestroy
         return null;
     }
 
-    load_grid_data(app_name, grid_columns: string[], params: any) {
-        // console.log('load_grid_data');
+    get_filter_params () {
         let filter_params_json = {};
 
 
@@ -465,9 +467,7 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
         }
-        if (params != null) {
-            Object.assign(filter_params_json, params);
-        }
+
         if (this.enable_collections) {
             filter_params_json['load_collections'] = true;
             filter_params_json['collections_domain'] = this.bitrix24Service.get_domain();
@@ -477,6 +477,16 @@ export class GridComponent implements OnInit, OnDestroy
             }
         }
         filter_params_json = this.extended_params(filter_params_json);
+        return filter_params_json;
+    }
+
+    load_grid_data(app_name, grid_columns: string[], params: any) {
+        // console.log('load_grid_data');
+        let filter_params_json = this.get_filter_params();
+
+        if (params != null) {
+            Object.assign(filter_params_json, params);
+        }
 
         let page_number = this.page.pageNumber + 1;
         // console.log(filter_params_json);
@@ -512,7 +522,6 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         this.grid_columns_for_compose = result_f1.default_columns_list;
                     }
-                    //console.log(this.grid_columns_for_compose);
 
                     this.grid_meta = result_f1.grid_columns.meta;
                     let model_compose = this.entity.model;
@@ -693,7 +702,11 @@ export class GridComponent implements OnInit, OnDestroy
     date_range_change(event, column_name) {
         if (event.startDate != null && event.endDate != null) {
             this.selected_date_filter_has_values = true;
-            this.filterService.share_data(this.entity, column_name, event);
+            this.filterService.share_data(this.entity, column_name,
+                {
+                    'startDate':event.startDate.local().format('YYYY-MM-DD').toString(),
+                    'endDate':event.endDate.local().format('YYYY-MM-DD').toString()
+                });
         }
     }
     clear_selected_date_filter(column_name) {
@@ -734,15 +747,6 @@ export class GridComponent implements OnInit, OnDestroy
         });
     }
 
-    report(item_id: any) {
-        this.entity.set_key_value(item_id);
-        this.reportDialogRef = this.dialog.open(ReportComponent, {
-            disableClose: false,
-            data: this.entity
-        });
-    }
-
-
     edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
@@ -759,22 +763,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
-        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
-            this.billingService.get_user_limit('exclusive').subscribe(
-                (limit: any) => {
-                    if ( limit.data > 0 ) {
-                        this.open_form_with_check_access(dialogConfig);
-                        //this.dialog.open(FormComponent, dialogConfig);
-                    } else {
-                        this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
-                    }
-                }
-            );
-        } else {
-            this.open_form_with_check_access(dialogConfig);
-            //this.dialog.open(FormComponent, dialogConfig);
-        }
-
+        this.open_form_with_check_access(dialogConfig);
     }
 
     open_form_with_check_access (dialogConfig) {
@@ -895,24 +884,6 @@ export class GridComponent implements OnInit, OnDestroy
         // console.log(this.bitrix24Service.get_placement());
         let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
 
-        this.bitrix24Service.user_option_get()
-            .subscribe((response: any) => {
-                    //console.log(response);
-                }
-            );
-
-        console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('mister'));
-        console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('mister_null'));
-        console.log(this.bitrix24Service.get_placement_options().get_user_option().get_value('session_key'));
-        //this.bitrix24Service.pla
-
-        let storage = JSON.parse(localStorage.getItem('currentUser')) || [];
-        this.bitrix24Service.user_option_set(storage)
-            .subscribe((response: any) => {
-                    console.log(response);
-                }
-            );
-
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
                 console.log(response);
@@ -925,24 +896,7 @@ export class GridComponent implements OnInit, OnDestroy
                     } else {
                         collections_count--;
                     }
-
-                    //Добавляем комментарий
-                    try {
-                        this.bitrix24Service.crm_timeline_comment_add (
-                            this.bitrix24Service.get_entity_type(),
-                            this.bitrix24Service.get_entity_id(),
-                            '<b>Подборка:</b> ' +
-                            (response.data.operation == 'add'? 'Добавлен':'Удален') +
-                            ' объект ID = ' +
-                            data_id + ', ' +
-                            this.compose_comment(event.row))
-                            .subscribe((response: any) => {
-                                    // console.log(response);
-                                }
-                            );
-                    } catch (e) {
-
-                    }
+                    this.bitrix24Service.comment_add(data_id, event.row, response.data.operation);
 
                     this.bitrix24Service.set_collections_count(collections_count);
 
@@ -953,23 +907,6 @@ export class GridComponent implements OnInit, OnDestroy
                 }
             });
     }
-
-    compose_comment ( row ) {
-        let result = '';
-        for (let key in row) {
-            if ( row[key].type != 'image' && row[key].type != 'primary_key' && row[key].name != 'date_added'  && row[key].value != ''  && row[key].value != 0  ) {
-                //console.log(row[key]);
-                if (row[key].value_string !== undefined) {
-                    result += ' | ' +row[key].value_string;
-                } else {
-                    result += ' | ' +row[key].value;
-                }
-            }
-        }
-        return result;
-    }
-
-
 
     /**
        * Populate the table with new data based on the page number
@@ -1099,4 +1036,35 @@ export class GridComponent implements OnInit, OnDestroy
         }
     }
 
+    save_search() {
+
+        this.saveSearchDialogRef = this.dialog.open(SaveSearchComponent, {
+            disableClose: false,
+            data: this.entity
+        });
+        this.saveSearchDialogRef.componentInstance.filter_params_json = this.get_filter_params();
+
+    }
+
+    report(item_id: any) {
+        this.entity.set_key_value(item_id);
+        this.reportDialogRef = this.dialog.open(ReportComponent, {
+            disableClose: false,
+            data: this.entity
+        });
+    }
+
+    reset_filters () {
+        this.clear_search_text();
+        this.clear_selected_date_filter(this.date_range_key);
+        this.filterService.reset(this.entity);
+    }
+
+    login_modal () {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(LoginModalComponent, dialogConfig);
+    }
 }

@@ -82,6 +82,10 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ReportComponent} from "../../dialogs/report/report.component";
+import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
+import {MysearchComponent} from "./entity/mysearch/mysearch.component";
+import {EmailsComponent} from "./entity/emails/emails.component";
+import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
 
 const routes = [
     {
@@ -255,8 +259,28 @@ const routes = [
         resolve: {
             chat: ChatService
         },
-    }
-
+    },
+    {
+        path: 'emails',
+        component: EmailsComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'mysearch',
+        component: MysearchComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'myclient',
+        component: MyGridClientComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
 ];
 
 @NgModule({
@@ -282,6 +306,7 @@ const routes = [
         FilterComponent,
         DeclineClientComponent,
         ReportComponent,
+        SaveSearchComponent,
         GridSettingsSidenavComponent,
         ReplacePipe,
         CommonTemplateComponent,
@@ -292,6 +317,9 @@ const routes = [
         ComposeModalComponent,
         FavoritesComponent,
         ParserComponent,
+        MysearchComponent,
+        EmailsComponent,
+        MyGridClientComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -360,7 +388,7 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent]
+    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent, SaveSearchComponent]
 
 })
 

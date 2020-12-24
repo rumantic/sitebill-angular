@@ -102,7 +102,6 @@ export class MortgageCalculatorComponent implements OnInit {
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

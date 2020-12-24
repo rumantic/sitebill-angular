@@ -6,6 +6,8 @@ import {SitebillEntity, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
+import {StorageService} from "./storage.service";
+import {SnackService} from "./snack.service";
 
 
 @Injectable()
@@ -34,7 +36,9 @@ export class ModelService {
         private http: HttpClient,
         private router: Router,
         protected _fuseConfigService: FuseConfigService,
+        protected storageService: StorageService,
         private filterService: FilterService,
+        protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.navbar_hidden = false;
@@ -52,8 +56,8 @@ export class ModelService {
 
         this.current_user_profile = new UserProfile();
 
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
-        this.set_api_url(localStorage.getItem('api_url'));
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
+        this.set_api_url(this.storageService.getItem('api_url'));
     }
 
     set_api_url(api_url: string) {
@@ -123,7 +127,7 @@ export class ModelService {
                         const storage = JSON.parse(result) || [];
                         if (storage.user_id > 0) {
                             console.log('cms user_id = ' + storage.user_id);
-                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.storageService.setItem('currentUser', JSON.stringify(storage));
                             this.reinit_currentUser();
                             this.after_config_loaded();
                             return true;
@@ -151,13 +155,14 @@ export class ModelService {
             }
         } else {
             console.log('guest mode not enabled');
+            this._snackService.message('Недостаточно прав доступа для просмотра этого раздела. Обратитесь к администратору.');
             this.router.navigate(['/login/']);
         }
     }
 
     enable_need_reload( from = '') {
         if ( from !== '' ) {
-            console.log('enable_need_reload from ' + from);
+            // console.log('enable_need_reload from ' + from);
         }
         // console.log('enable_need_reload');
         this.need_reload = true;
@@ -256,7 +261,7 @@ export class ModelService {
                 this.router.navigate([refresh_url]);
             } else {
                 this.currentUser = result;
-                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.storageService.setItem('currentUser', JSON.stringify(this.currentUser));
                 this.enable_nobody_mode();
             }
         });
@@ -287,7 +292,7 @@ export class ModelService {
     }
 
     model_logout() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
 
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.api_url}/apps/api/rest.php`;
@@ -319,10 +324,10 @@ export class ModelService {
     }
 
     reinit_currentUser() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
         this.disable_need_reload();
         // console.log('reinit current user');
-        // console.log(localStorage.getItem('currentUser'));
+        // console.log(this.storageService.getItem('currentUser'));
         // console.log(this.currentUser);
         // console.log('reinit complete');
     }
@@ -465,11 +470,15 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    report(model_name, primary_key, key_value) {
-        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, session_key: this.get_session_key_safe()};
+    report(model_name, primary_key, key_value, complaint_id) {
+        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, complaint_id:complaint_id, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    save_search(params, search_title) {
+        const body = {action: 'mysearch', do: 'save', params: params, search_title: search_title, session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
 
     new_empty_record(model_name) {
         const body = {action: 'model', do: 'new_empty_record', model_name: model_name, session_key: this.get_session_key_safe()};
@@ -618,7 +627,7 @@ export class ModelService {
     }
 
     get_access (model_name, function_name) {
-        const storage = JSON.parse(localStorage.getItem('currentUser')) || [];
+        const storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
         if (storage['structure'] == null) {
             return false;
         }
@@ -635,7 +644,7 @@ export class ModelService {
     }
 
     load_config () {
-        console.log(this.get_api_url());
+        //console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
@@ -666,7 +675,7 @@ export class ModelService {
 
     after_config_loaded () {
         this.config_loaded_emitter.emit(true);
-        console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        //console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
         if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
             this.show_navbar();
         }
@@ -674,12 +683,12 @@ export class ModelService {
             this.show_toolbar();
         }
 
-        if ( this.getConfigValue('apps.realty.default_frontend_route') === null ) {
-            console.log('default route');
+        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
+            //console.log('default route');
             this.router.navigate(['grid/data']);
         } else {
-            console.log('config route');
-            console.log(this.getConfigValue('apps.realty.default_frontend_route'));
+            //console.log('config route');
+            //console.log(this.getConfigValue('apps.realty.default_frontend_route'));
             this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
         }
 
@@ -781,7 +790,7 @@ export class ModelService {
         this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request)
             .subscribe((result: any) => {
                 if ( result.success === 1 ) {
-                    localStorage.setItem('currentUser', JSON.stringify(result));
+                    this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
             });
     }

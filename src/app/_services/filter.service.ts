@@ -1,6 +1,77 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SitebillEntity } from 'app/_models';
+import {StorageService} from "./storage.service";
+
+@Injectable()
+export class FilterIterator {
+    private counter: number;
+    constructor() {
+        this.counter = 0;
+    }
+
+    get_default_price_min () {
+        return 0;
+    }
+
+    get_default_price_max () {
+        return 10000000;
+    }
+
+
+    iterate (share_array, operation) {
+        let counter = 0;
+        for (let key in share_array) {
+            if ( share_array[key] !== null ) {
+                let type = typeof share_array[key];
+                // console.log(type);
+                switch (type) {
+                    case 'object':
+                        if (Object.keys(share_array[key]).length > 0) {
+                            if (this.do_operation(operation)) {
+                                counter++;
+                            }
+                        }
+                        break;
+                    case 'number':
+                        if ( key === 'price_min' && share_array[key] == this.get_default_price_min() ) {
+
+                        } else if ( key === 'price_max' && share_array[key] == this.get_default_price_max() ) {
+
+                        } else {
+                            this.do_operation(operation);
+                            counter++;
+                        }
+                        break;
+                    case 'string':
+                        if ( share_array[key].length > 0 ) {
+                            counter++;
+                        }
+                    default:
+                        // console.log(type);
+
+                }
+            }
+        }
+        return counter;
+        //return this.get_operation_result();
+    }
+
+    do_operation ( operation ) {
+        switch ( operation ) {
+            case 'counter':
+                return true;
+                //this.counter++;
+                break;
+
+        }
+        return false;
+    }
+
+    get_operation_result () {
+        return this.counter;
+    }
+}
 
 @Injectable()
 export class FilterService {
@@ -12,7 +83,10 @@ export class FilterService {
     @Output() share: EventEmitter<any> = new EventEmitter();
 
 
-    constructor() {
+    constructor(
+        protected storageService: StorageService,
+        protected filterIterator: FilterIterator
+    ) {
         // this.share_array = [];
     }
 
@@ -98,7 +172,7 @@ export class FilterService {
     }
 
     get_params_count_array() {
-        const params_count_array = JSON.parse(localStorage.getItem('sitebill_params_count_' + this.get_postfix()));
+        const params_count_array = JSON.parse(this.storageService.getItem('sitebill_params_count_' + this.get_postfix()));
         if (params_count_array !== null) {
             return params_count_array;
         }
@@ -111,11 +185,11 @@ export class FilterService {
             params_count_array = {};
         }
         params_count_array[app_name] = count;
-        localStorage.setItem('sitebill_params_count_' + this.get_postfix(), JSON.stringify(params_count_array));
+        this.storageService.setItem('sitebill_params_count_' + this.get_postfix(), JSON.stringify(params_count_array));
     }
 
     get_postfix ( app_name = 'global_options' ) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const currentUser = JSON.parse(this.storageService.getItem('currentUser'));
         let user_id = 0;
         if ( currentUser !== null ) {
             user_id = currentUser['user_id'];
@@ -127,7 +201,7 @@ export class FilterService {
     get_share_array(app_name: string): any {
         const array_title = 'sitebill_share_array_' + this.get_postfix(app_name);
 
-        const share_array_local = JSON.parse(localStorage.getItem(array_title));
+        const share_array_local = JSON.parse(this.storageService.getItem(array_title));
         try {
             return share_array_local;
         } catch (e) {
@@ -136,10 +210,28 @@ export class FilterService {
         }
     }
 
+    count_share_array (app_name: string): number {
+        const share_array = this.get_share_array(app_name);
+        let counter = 0;
+        if (share_array !== null) {
+            counter = this.filterIterator.iterate(share_array, 'counter');
+        }
+        return counter;
+    }
+
+    reset (entity: SitebillEntity) {
+        const array_title = 'sitebill_share_array_' + this.get_postfix(entity.get_app_name());
+        const share_array_local = {};
+        this.storageService.setItem(array_title, JSON.stringify(share_array_local));
+        this.onInnerChange(entity);
+    }
+
+
+
     set_share_array(app_name: string, key: string, datas: any) {
         const array_title = 'sitebill_share_array_' + this.get_postfix(app_name);
 
-        let share_array_local = JSON.parse(localStorage.getItem(array_title));
+        let share_array_local = JSON.parse(this.storageService.getItem(array_title));
         // console.log(share_array_local);
         if (share_array_local === null) {
             share_array_local = {};
@@ -149,9 +241,6 @@ export class FilterService {
 
         // console.log(share_array_local);
         // console.log(JSON.stringify(share_array_local));
-        localStorage.setItem(array_title, JSON.stringify(share_array_local));
+        this.storageService.setItem(array_title, JSON.stringify(share_array_local));
     }
-
-
-
 }

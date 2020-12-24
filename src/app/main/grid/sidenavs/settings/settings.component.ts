@@ -116,6 +116,10 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
             if (event.previousContainer === event.container) {
                 moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
             } else {
+                if ( this.active_columns.length <= 1 && (event.previousContainer.data.length === this.active_columns.length)) {
+                    return false;
+                }
+
                 transferArrayItem(
                     event.previousContainer.data,
                     event.container.data,

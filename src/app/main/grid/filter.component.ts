@@ -38,7 +38,7 @@ export class FilterComponent {
     price_filter_enable: boolean = false;
     price_options: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
     price_min: number = 0;
-    price_max: number = 1000000;
+    price_max: number = 10000000;
     options_price_zero_10m: Options = {
         floor: 0,
         ceil: 10000000,
@@ -171,20 +171,19 @@ export class FilterComponent {
         this.modelSerivce.get_max(entity.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                // console.log(result);
                 if ( result.state === 'success' ) {
                     this.price_max = result.message;
                     this.options_price_zero_10m.ceil = result.message;
                 }
                 if (this.filterService.get_share_array(this.entity.get_app_name()) !== null) {
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] ) {
                         this.price_min = this.filterService.get_share_array(this.entity.get_app_name())['price_min'];
                     }
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_max']) {
                         this.price_max = this.filterService.get_share_array(this.entity.get_app_name())['price_max'];
                     }
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] !== null ||
-                        this.filterService.get_share_array(this.entity.get_app_name())['price_max'] !== null) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] ||
+                        this.filterService.get_share_array(this.entity.get_app_name())['price_max']) {
                         this.price_selector = 5;
                     }
                 }
@@ -195,7 +194,6 @@ export class FilterComponent {
 
 
     selectItem(value) {
-        console.log(value);
         // console.log(this.selectedFilter);
         if (this.columnObject.type === 'checkbox') {
             if (value == null) {

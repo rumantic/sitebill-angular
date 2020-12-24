@@ -14,6 +14,7 @@ export class Bitrix24Service {
     private collections_count: number;
     private app_root_element: any;
     private bitrix24_user_option: string;
+    private params_inited: boolean;
 
     constructor(
         private http: HttpClient,
@@ -22,6 +23,8 @@ export class Bitrix24Service {
         this.collections_count = 0;
         this.entity = new Bitrix24Entity;
         this.placement_options = new Bitrix24PlacementOptions;
+        this.params_inited = false;
+        this.set_access_token(null);
     }
 
     get_client() {
@@ -46,6 +49,53 @@ export class Bitrix24Service {
         const url = `https://${this.get_domain()}/rest/crm.timeline.comment.add`;
         const request = { fields: {ENTITY_ID: id, ENTITY_TYPE: type, COMMENT: comment}, auth: this.get_access_token() };
         return this.http.post<any>(url, request);
+    }
+
+    comment_add ( data_id, items, operation ) {
+        //Добавляем комментарий
+        try {
+            let compose_item = this.compose_comment(items);
+            if (compose_item === '') {
+                return false;
+            }
+
+            let comment = '<b>Подборка:</b> ' +
+                (operation == 'add'? 'Добавлен':'Удален') +
+                ' объект ID = ' +
+                data_id + ', ' +
+                compose_item;
+
+
+            this.crm_timeline_comment_add (
+                this.get_entity_type(),
+                this.get_entity_id(),
+                comment
+            ).subscribe((response: any) => {
+                        // console.log(response);
+                    }
+                );
+        } catch (e) {
+
+        }
+    }
+
+    compose_comment ( row ) {
+        let result = [];
+        for (let key in row) {
+            if ( row[key].type != 'image' &&
+                row[key].type != 'primary_key' &&
+                row[key].name != 'date_added'  &&
+                !Array.isArray(row[key].value) &&
+                row[key].value != ''  &&
+                row[key].value != 0  ) {
+                if (row[key].value_string !== undefined && row[key].value_string.length > 0) {
+                    result.push(row[key].value_string);
+                } else {
+                    result.push(row[key].value);
+                }
+            }
+        }
+        return result.join(' | ');
     }
 
     crm_timeline_comment_list (type, id) {
@@ -157,7 +207,10 @@ export class Bitrix24Service {
     }
 
     init_input_parameters() {
-        console.log('Решить загрузку битрикс24 параметров один раз');
+        if ( this.params_inited ) {
+            return;
+        }
+        // console.log('Решить загрузку битрикс24 параметров один раз');
         let app_root_element;
         let elements = [];
         if (this.document.getElementById('angular_search')) {
@@ -190,17 +243,9 @@ export class Bitrix24Service {
             }
         }
         if (app_root_element.getAttribute('bitrix24_user_option')) {
-            try {
-                this.bitrix24_user_option = app_root_element.getAttribute('bitrix24_user_option');
-                let user_option = app_root_element.getAttribute('bitrix24_user_option').replace(/\'/g, '"');
-                // console.log(placement_options);
-                if (user_option != null) {
-                    let user_options_parsed = JSON.parse(user_option);
-                    this.placement_options.set_user_option(user_options_parsed);
-                }
-            } catch {
-            }
+            this.set_bitrix24_user_option(app_root_element.getAttribute('bitrix24_user_option'));
         }
+        this.params_inited = true;
 
 
         //console.log(this.access_token);
@@ -209,7 +254,27 @@ export class Bitrix24Service {
         //console.log(this.placement_options);
     }
 
+    set_bitrix24_user_option (user_option: string) {
+        try {
+            this.bitrix24_user_option = user_option;
+            let user_option_replaced = user_option.replace(/\'/g, '"');
+            // console.log(placement_options);
+            if (user_option_replaced != null) {
+                let user_options_parsed = JSON.parse(user_option_replaced);
+                this.placement_options.set_user_option(user_options_parsed);
+            }
+        } catch {
+        }
+    }
+
     get_bitrix24_user_option () {
-        return this.bitrix24_user_option;
+        return this.bitrix24_user_option.replace(/\'/g, '"');
+    }
+
+    is_bitrix24_inited () {
+        if ( this.get_access_token() != null ) {
+            return true;
+        }
+        return false;
     }
 }

@@ -131,6 +131,13 @@
                         <a href="tel:{{records[x].value}}">{{records[x].value}}</a>
                     </ng-container>
 
+                    <ng-container *ngSwitchCase="'price'">
+                        {{records[x].value}}
+                        <ng-container *ngIf="records[x].value != null">
+                            <span *ngIf="records[x].currency_id != null">{{records[x].currency_id.value_string}}</span>
+                        </ng-container>
+                    </ng-container>
+
                     <ng-container *ngSwitchDefault>
                         <ng-container [ngSwitch]="records[x].name">
                             <ng-container  *ngSwitchCase="'youtube'">

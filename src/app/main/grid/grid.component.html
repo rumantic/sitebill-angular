@@ -32,6 +32,17 @@
                         <mat-icon>add</mat-icon>
                     </button>
                 </div>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button
+                        class="amber ml-12"
+                        *ngIf="filterService.count_share_array(entity.get_app_name()) > 0"
+                        mat-raised-button
+                        (click)="reset_filters()"
+                        color="teal"
+                        matTooltip="Добавить запись">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
+                    </button>
+                </div>
+
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->
                 <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
@@ -42,10 +53,21 @@
                             <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                         </div>
                     </div>
+                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
+                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                        <mat-icon>save</mat-icon>
+                    </button>
+
+                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()" mat-icon-button (click)="login_modal()"
+                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                        <mat-icon>save</mat-icon>
+                    </button>
+
                 </div>
                 <!-- / SEARCH -->
                 <!-- TOOLBAR -->
                 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
+
                     <mat-form-field class="pt-12 pr-8 toolbar__daterange" *ngIf="date_range_enable">
                         <input autocomplete="off"
                                matTooltip="Выбрать период времени для отображения записей"

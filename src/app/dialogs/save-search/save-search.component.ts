@@ -1,49 +1,36 @@
 import {Component, Inject, OnInit, Input, Output, EventEmitter }  from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 import {Model} from 'app/model';
-import { ChatService } from 'app/main/apps/chat/chat.service';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import {SnackService} from "../../_services/snack.service";
 import {SitebillEntity} from "../../_models";
-import {FilterService} from "../../_services/filter.service";
 
 
 @Component({
-    selector: 'report-dialog',
-    templateUrl: './report.component.html',
-    styleUrls: ['./report.component.css']
+    selector: 'save-search',
+    templateUrl: './save-search.component.html',
+    styleUrls: ['./save-search.component.css']
 })
-export class ReportComponent implements OnInit {
-    favoriteSeason: string;
-
-    seasons = [
-        'Winter',
-        'Spring',
-        'Summer',
-        'Autumn',
-    ];
+export class SaveSearchComponent implements OnInit {
+    filter_params_json: any;
 
     form: FormGroup;
     formErrors: any;
-    declineFormErrors: any;
+    dialogFormErrors: any;
     comment: any;
     declinePressed: boolean;
     declineProcessing: boolean;
 
-    declineForm: FormGroup;
+    dialogForm: FormGroup;
 
     description:string;
     @Input() model: Model;
     @Input() data: SitebillEntity;
-    rows: any[];
-    records: any[];
-    api_url: string;
 
     private _unsubscribeAll: Subject<any>;
     loadingIndicator: boolean;
@@ -55,13 +42,10 @@ export class ReportComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<ReportComponent>,
-        private _httpClient: HttpClient,
+        private dialogRef: MatDialogRef<SaveSearchComponent>,
         public modelService: ModelService,
-        private _chatService: ChatService,
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private filterService: FilterService,
         protected _snackService: SnackService,
         ) {
         this.loadingIndicator = true;
@@ -69,27 +53,23 @@ export class ReportComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
-        this.declineFormErrors = {
-            comment: {}
+        this.dialogFormErrors = {
+            name: {}
         };
 
         this.declinePressed = false;
         this.declineProcessing = false;
-
-        this.description = '123';
-
     }
 
     ngOnInit() {
         // Horizontal Stepper form steps
-        this.declineForm = this.fb.group({
-            comment: [''],
-            variant: ['', Validators.required]
+        this.dialogForm = this.fb.group({
+            name: ['', Validators.required],
         });
 
 
 
-        this.declineForm.valueChanges
+        this.dialogForm.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
                 this.onFormValuesChanged();
@@ -126,20 +106,14 @@ export class ReportComponent implements OnInit {
     submit () {
         this.declinePressed = true;
         this.declineProcessing = true;
-
-        this.modelService.report(this._data.get_table_name(), this._data.primary_key, this._data.get_key_value(), this.declineForm.controls.variant.value)
-            .subscribe((response: any) => {
-                console.log(response);
-
-                if (response.state == 'error') {
-                    this._snackService.message(response.message);
-                    return null;
-                } else {
-                    this._snackService.message('Жалоба отправлена');
-                    this.filterService.empty_share(this._data);
-                    this.close();
-                }
+        if (this.dialogForm.valid) {
+            this.modelService.save_search(this.filter_params_json, this.dialogForm.controls.name.value).subscribe((response: any) => {
+                this._snackService.message('Поиск сохранен успешно');
+                this.dialogRef.close();
             });
+        } else {
+            this._snackService.message('Укажите название для поиска');
+        }
     }
 
     save() {
@@ -150,7 +124,6 @@ export class ReportComponent implements OnInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this.dialogRef.close();
-        this._chatService.closeChat();
     }
 
 }

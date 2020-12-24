@@ -63,8 +63,8 @@ export class SaleComponent extends GridComponent {
         }
 
         try {
-            if (row.complaint_id.value === '1') {
-                return 'amber-100-bg';
+            if (row.complaint_id.value !== '0') {
+                return 'pink-100-bg';
             }
         } catch {
         }

@@ -121,6 +121,15 @@ mat-sidenav-container {
 ::ng-deep .md-drppicker {
     color: black !important;
 }
+::ng-deep .md-drppicker td.in-range {
+    background-color: #eee;
+    border-color: #eee;
+    color: rgba(0,0,0,.87);
+}
+::ng-deep .md-drppicker td.active, .md-drppicker td.active:hover {
+    background-color: #3f51b5;
+    color: #fff;
+}
 
 #ngx-datatable {
     .header {

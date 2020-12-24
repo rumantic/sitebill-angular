@@ -64,7 +64,8 @@ export class GatewaysComponent
         this.waiting_payment = true;
         // @todo: Анализировать оплату и редиректить в базу после оплаты
         console.log(this.waiting_payment);
+        window.location.href = this.gateways.interkassa.submit.url + '?' + params_array.join('&');
 
-        window.open(this.gateways.interkassa.submit.url + '?' + params_array.join('&'), "_blank");
+        //window.open(this.gateways.interkassa.submit.url + '?' + params_array.join('&'), "_blank");
     }
 }

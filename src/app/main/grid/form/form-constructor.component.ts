@@ -544,7 +544,7 @@ export class FormConstructorComponent implements OnInit {
                     } else {
                         this._snackService.message('Запись создана успешно');
                         if (this._data.get_hook() === 'add_to_collections') {
-                            this.add_to_collections(response.data['new_record_id']);
+                            this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {
                             this.filterService.empty_share(this._data);
                             this.close();
@@ -601,13 +601,14 @@ export class FormConstructorComponent implements OnInit {
         return ql_items;
     }
 
-    add_to_collections(data_id) {
+    add_to_collections(data_id, items) {
         let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
                 } else {
+                    this.bitrix24Service.comment_add(data_id, items, 'add');
                     this.filterService.empty_share(this._data);
                     this.close();
                 }

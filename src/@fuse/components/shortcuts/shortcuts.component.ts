@@ -8,6 +8,7 @@ import { FuseMatchMediaService } from '@fuse/services/match-media.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import {ModelService} from '../../../app/_services/model.service';
 import {SitebillEntity} from '../../../app/_models';
+import {Bitrix24Service} from "../../../app/integrations/bitrix24/bitrix24.service";
 
 @Component({
     selector   : 'fuse-shortcuts',
@@ -54,6 +55,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         private _fuseNavigationService: FuseNavigationService,
         private _observableMedia: MediaObserver,
         private _renderer: Renderer2,
+        private bitrix24Service: Bitrix24Service,
         public modelService: ModelService,
         protected cdr: ChangeDetectorRef,
     )
@@ -147,7 +149,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         // console.log('reinit ' + entity.get_app_name());
         this.clear_shortcuts();
         this.set_default_shortcuts();
-        if ( entity.get_app_name() === 'data' ) {
+        if ( entity.get_app_name() === 'data' && !this.bitrix24Service.is_bitrix24_inited() ) {
             this.shortcutItems.push({
                 'title': 'Мои объекты',
                 'type' : 'item',

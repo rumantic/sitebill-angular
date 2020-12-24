@@ -60,7 +60,7 @@ export class AuthGuard implements CanActivate {
                         //console.log(storage);
 
                         if (storage.user_id > 0) {
-                            localStorage.setItem('currentUser', JSON.stringify(storage));
+                            this.storageService.setItem('currentUser', JSON.stringify(storage));
                             this.modelService.disable_need_reload();
                             if (this.check_permissions(route, state)) {
                                 //console.log('success_redirect start');
@@ -113,7 +113,7 @@ export class AuthGuard implements CanActivate {
         let navigation_origin = this._fuseNavigationService.getNavigation('main');
         let navigtaion_clone = navigation_origin.slice(0);
         let storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
-        console.log(storage);
+        // console.log(storage);
         if (storage['structure'] == null) {
             //console.log('structure null - logout');
             this.modelService.logout();

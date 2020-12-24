@@ -23,7 +23,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
 {
     timeline: any;
     selectedChat: any;
-    
+
     // Private
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
@@ -42,10 +42,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
+
         this.api_url = this.modelSerivce.get_api_url();
-        
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -58,19 +57,19 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         //console.log('init timeline');
-        
+
         //this._chatService.getChat('5725a680b3249760ea21de52');
-        
-        
+
+
         this._chatService.onChatSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(chatData => {
                 this.selectedChat = chatData;
             });
-        
+
     }
-    
-    
+
+
 
     /**
      * On destroy
@@ -81,5 +80,5 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
-    
+
 }

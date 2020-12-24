@@ -98,7 +98,6 @@ export class CarouselComponent implements OnInit {
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || [];
         this.api_url = this.modelSerivce.get_api_url();
 
         this._fuseConfigService.config = {
