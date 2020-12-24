@@ -55,7 +55,9 @@
                                 <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                             </div>
                         </div>
-                        <search-string-parser></search-string-parser>
+                        <ng-container *ngIf="entity.get_app_name()">
+                            <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
+                        </ng-container>
                     </div>
                     <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
                             aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
