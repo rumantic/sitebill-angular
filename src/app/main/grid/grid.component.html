@@ -46,12 +46,16 @@
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->
                 <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-                    <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
-                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                            <mat-icon color="primary">search</mat-icon>
-                            <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
-                            <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+
+                    <div fxLayout="column" *ngIf="!disable_wild_search">
+                        <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
+                            <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon color="primary">search</mat-icon>
+                                <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
+                                <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+                            </div>
                         </div>
+                        <search-string-parser></search-string-parser>
                     </div>
                     <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
                             aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">

@@ -86,6 +86,7 @@ import {SaveSearchComponent} from "../../dialogs/save-search/save-search.compone
 import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
+import {SearchStringParserComponent} from "./search-string-parser/search-string-parser.component";
 
 const routes = [
     {
@@ -319,7 +320,8 @@ const routes = [
         ParserComponent,
         MysearchComponent,
         EmailsComponent,
-        MyGridClientComponent
+        MyGridClientComponent,
+        SearchStringParserComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -388,7 +390,14 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent, SaveSearchComponent]
+    entryComponents: [
+        DeclineClientComponent,
+        CommonTemplateComponent,
+        ComposeModalComponent,
+        ReportComponent,
+        SaveSearchComponent,
+        SearchStringParserComponent
+    ]
 
 })
 
