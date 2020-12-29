@@ -86,7 +86,7 @@ import {SaveSearchComponent} from "../../dialogs/save-search/save-search.compone
 import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
-import {SearchStringParserComponent} from "./search-string-parser/search-string-parser.component";
+import {SharedModule} from "../../shared.module";
 
 const routes = [
     {
@@ -321,7 +321,6 @@ const routes = [
         MysearchComponent,
         EmailsComponent,
         MyGridClientComponent,
-        SearchStringParserComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -375,6 +374,7 @@ const routes = [
         NgxGalleryModule,
         ConfirmDialogModule,
         DragDropModule,
+        SharedModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
         }),
@@ -396,7 +396,6 @@ const routes = [
         ComposeModalComponent,
         ReportComponent,
         SaveSearchComponent,
-        SearchStringParserComponent
     ]
 
 })

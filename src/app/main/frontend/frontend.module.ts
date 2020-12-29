@@ -60,7 +60,7 @@ const routes = [
         FrontendComponent,
         PriceComponent,
         PageComponent,
-        FrontSearchComponent
+        FrontSearchComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -96,6 +96,8 @@ const routes = [
     ],
     providers: [
         BillingService
+    ],
+    entryComponents: [
     ]
 })
 

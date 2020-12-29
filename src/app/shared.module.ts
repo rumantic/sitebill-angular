@@ -77,6 +77,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {StorageService} from "./_services/storage.service";
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
+import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
 
 @NgModule({
     imports: [
@@ -166,7 +167,8 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         GatewaysModalComponent,
         UserProfileComponent,
         ContactInjectorComponent,
-        DemoBannerComponent
+        DemoBannerComponent,
+        SearchStringParserComponent
     ],
     providers: [
         ChatService,
@@ -186,6 +188,7 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         ProfileTimelineComponent,
         ProfileCardComponent,
         GatewaysComponent,
+        SearchStringParserComponent
     ],
     entryComponents: [
         LoginModalComponent,
@@ -198,7 +201,8 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         ProfileCardComponent,
         GatewaysComponent,
         GatewaysModalComponent,
-        DemoBannerComponent
+        DemoBannerComponent,
+        SearchStringParserComponent
     ]
 
 })

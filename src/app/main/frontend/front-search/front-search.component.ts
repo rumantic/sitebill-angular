@@ -10,6 +10,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
+import {SitebillEntity} from '../../../_models';
 
 @Component({
     selector   : 'front-search',
@@ -18,6 +19,8 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class FrontSearchComponent
 {
+    public entity: SitebillEntity;
+    input: any;
 
     /**
      * Constructor
@@ -33,6 +36,8 @@ export class FrontSearchComponent
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
+        this.entity = new SitebillEntity();
+
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
         this._fuseConfigService.config = {
             layout: {
@@ -50,4 +55,13 @@ export class FrontSearchComponent
     }
     ngOnInit() {
     }
+
+    setup_apps() {
+        this.input = 'тест';
+
+        this.entity.set_app_name('data');
+        this.entity.set_table_name('data');
+        this.entity.primary_key = 'id';
+    }
+
 }

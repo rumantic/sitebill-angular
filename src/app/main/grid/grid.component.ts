@@ -39,6 +39,7 @@ import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
+
 registerLocaleData(localeRu, 'ru');
 
 moment.locale('ru', localization);
