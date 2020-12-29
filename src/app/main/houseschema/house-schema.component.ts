@@ -13,6 +13,9 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class HouseSchemaComponent
 {
+    data_columns = [];
+    rows_data = [];
+
     /**
      * Constructor
      *
@@ -25,6 +28,19 @@ export class HouseSchemaComponent
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
     ngOnInit() {
+        let column = {
+            ngx_name: 'test',
+            title: 'test',
+            prop: 'Этаж'
+        }
+        this.data_columns.push(column);
+        for ( let i = 1; i < 23; i++ ) {
+            this.rows_data.push({'Этаж':i});
+        }
+
+        console.log(this.rows_data);
+
+
     }
 
 
