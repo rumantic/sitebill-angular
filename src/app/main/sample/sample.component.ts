@@ -28,7 +28,7 @@ export class SampleComponent
     constructor(
         private _httpClient: HttpClient,
         private elRef: ElementRef,
-        private modelSerivce: ModelService,
+        private modelService: ModelService,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -36,7 +36,7 @@ export class SampleComponent
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
-        this.api_url = this.modelSerivce.get_api_url();
+        this.api_url = this.modelService.get_api_url();
         this._fuseConfigService.config = {
             layout: {
                 navbar: {

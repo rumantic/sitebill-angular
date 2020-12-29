@@ -87,6 +87,7 @@ import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
 import {SharedModule} from "../../shared.module";
+import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 
 const routes = [
     {
@@ -282,6 +283,13 @@ const routes = [
             chat: ChatService
         },
     },
+    {
+        path: 'houseschema',
+        component: HouseSchemaComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
 ];
 
 @NgModule({
@@ -321,6 +329,7 @@ const routes = [
         MysearchComponent,
         EmailsComponent,
         MyGridClientComponent,
+        HouseSchemaComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
