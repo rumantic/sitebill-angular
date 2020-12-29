@@ -204,7 +204,9 @@ export class FrontComponent {
         this.modelService.load_dictionary_model_all('data', 'topic_id')
             .subscribe((response: any) => {
                 response.data.forEach((row, index) => {
-                    this.topic_columns[row.id] = row.columns_list.split(',');
+                    if ( row.columns_list ) {
+                        this.topic_columns[row.id] = row.columns_list.split(',');
+                    }
                 });
                 this.topics = response.data;
                 this.set_topic_id_value(this.topics[0].id);
