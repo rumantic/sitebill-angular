@@ -35,7 +35,17 @@ export class HouseSchemaComponent
         }
         this.data_columns.push(column);
         for ( let i = 1; i < 23; i++ ) {
-            this.rows_data.push({'Этаж':i});
+            this.rows_data.push(
+                {
+                    'NAME':i,
+                    'ID':i,
+                    '_id':i,
+                    'status':i,
+                    'final_destination':i,
+                    'name':i,
+                    'Этаж':i
+                }
+                );
         }
 
         console.log(this.rows_data);
