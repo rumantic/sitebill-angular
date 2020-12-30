@@ -5,6 +5,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
+import {Realty} from "../../_models/realty";
 
 @Component({
     selector   : 'house-schema',
@@ -35,6 +36,8 @@ export class HouseSchemaComponent
         }
         this.data_columns.push(column);
         for ( let i = 1; i < 23; i++ ) {
+            let realty = new Realty(i, '78');
+
             this.rows_data.push(
                 {
                     'NAME':i,
@@ -43,7 +46,8 @@ export class HouseSchemaComponent
                     'status':i,
                     'final_destination':i,
                     'name':i,
-                    'Этаж':i
+                    'Этаж':i,
+                    'realty': realty
                 }
                 );
         }
