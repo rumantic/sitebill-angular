@@ -6,11 +6,10 @@
 
         [headerHeight]="75"
         [footerHeight]="'auto'"
-        [columnMode]="'force'"
         [rows]="rows_data"
         [rowHeight]="undefined"
     >
-        <ngx-datatable-column [cellClass]="'header-cell'">
+        <ngx-datatable-column [cellClass]="'header-cell'" [width]="100">
             <ng-template let-row="row" ngx-datatable-header-template>
 
                 <strong>Этаж</strong>
@@ -26,7 +25,7 @@
 
         </ngx-datatable-column>
 
-        <ngx-datatable-column>
+        <ngx-datatable-column  [width]="300">
             <ng-template let-row="row" ngx-datatable-header-template>
 
                 <strong>Лестница 1</strong>
@@ -41,9 +40,8 @@
                 <ngx-datatable [rows]="[row]" [columnMode]="'force'" [headerHeight]="undefined" [rowHeight]="'auto'" [footerHeight]="undefined">
                     <ngx-datatable-column [prop]="'_id'">
                         <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{row.realty|json}}
+                            <realty-item [realty_item]="row.realty"></realty-item>
                         </ng-template>
-
                     </ngx-datatable-column>
                     <ngx-datatable-column [prop]="'status'"></ngx-datatable-column>
                 </ngx-datatable>

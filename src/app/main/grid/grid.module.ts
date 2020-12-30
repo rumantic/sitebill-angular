@@ -88,6 +88,7 @@ import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
 import {SharedModule} from "../../shared.module";
 import {HouseSchemaComponent} from "../houseschema/house-schema.component";
+import {RealtyItemComponent} from "../houseschema/realty-item/realty-item.component";
 
 const routes = [
     {
@@ -329,7 +330,8 @@ const routes = [
         MysearchComponent,
         EmailsComponent,
         MyGridClientComponent,
-        HouseSchemaComponent
+        HouseSchemaComponent,
+        RealtyItemComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -405,6 +407,7 @@ const routes = [
         ComposeModalComponent,
         ReportComponent,
         SaveSearchComponent,
+        RealtyItemComponent
     ]
 
 })

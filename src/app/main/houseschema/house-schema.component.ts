@@ -35,8 +35,8 @@ export class HouseSchemaComponent
             prop: 'Этаж'
         }
         this.data_columns.push(column);
-        for ( let i = 1; i < 23; i++ ) {
-            let realty = new Realty(i, '78');
+        for ( let i = 23; i > 0; i-- ) {
+            let realty = new Realty(i, '78', '1к');
 
             this.rows_data.push(
                 {
