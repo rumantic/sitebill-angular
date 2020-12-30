@@ -641,8 +641,11 @@ export class FormConstructorComponent implements OnInit {
     }
 
     valid_link (value) {
-        const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-        return !!value.match(reg);
+        if ( value !== null ) {
+            const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+            return !!value.match(reg);
+        }
+        return false;
     }
 
     get_flex_width ( size:string, form_type:string, record ) {

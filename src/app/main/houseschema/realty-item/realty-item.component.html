@@ -1,3 +1,3 @@
-<button mat-raised-button>
+<button mat-raised-button (click)="view(realty_item.get_id())">
     {{realty_item.get_type()}} | {{realty_item.get_square()}} | {{realty_item.get_room_count()}}
 </button>

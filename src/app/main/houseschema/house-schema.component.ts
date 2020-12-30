@@ -36,7 +36,7 @@ export class HouseSchemaComponent
         }
         this.data_columns.push(column);
         for ( let i = 23; i > 0; i-- ) {
-            let realty = new Realty(i, '78', '1к');
+            let realty = new Realty(123, i, '78', '1к');
 
             this.rows_data.push(
                 {

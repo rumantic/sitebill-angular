@@ -4,10 +4,15 @@ export class Realty {
     square: string;
     type: string;
 
-    constructor(room_count, square, type) {
+    constructor(id, room_count, square, type) {
+        this.id = id;
         this.room_count = room_count;
         this.square = square;
         this.type = type;
+    }
+
+    get_id () {
+        return this.id;
     }
 
     get_type () {
