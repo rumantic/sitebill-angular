@@ -1068,4 +1068,11 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(LoginModalComponent, dialogConfig);
     }
+
+    get_apps_realty_min_filter_reset_count() {
+        if ( this.modelService.getConfigValue('apps.realty.min_filter_reset_count') ) {
+            return this.modelService.getConfigValue('apps.realty.min_filter_reset_count');
+        }
+        return 0;
+    }
 }

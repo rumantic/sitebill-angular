@@ -35,11 +35,11 @@
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button
                         class="amber ml-12"
-                        *ngIf="filterService.count_share_array(entity.get_app_name()) > 0"
+                        *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
                         mat-raised-button
                         (click)="reset_filters()"
                         color="teal"
-                        matTooltip="Добавить запись">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
+                        matTooltip="Сбросить фильтры">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
                     </button>
                 </div>
 
