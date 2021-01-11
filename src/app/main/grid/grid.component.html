@@ -55,7 +55,7 @@
                                 <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                             </div>
                         </div>
-                        <ng-container *ngIf="entity.get_app_name()">
+                        <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
                             <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
                         </ng-container>
                     </div>
