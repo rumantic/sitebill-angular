@@ -79,7 +79,10 @@ export class FrontComponent {
         this.sale_entity.set_table_name('data');
         this.sale_entity.set_primary_key('id');
         // this.sale_entity.set_disable_comment();
-        this.sale_entity.set_default_params({ active: 1, optype: 5 });
+        this.sale_entity.set_default_params({
+            active: 1,
+            optype: 5
+        });
         const default_columns_list_sale = ['address_composed', 'topic_id', 'room_count', 'floor', 'floor_count', 'square_composed', 'price', 'owner_phone', 'date_added', 'image', 'complaint_id'];
         this.sale_entity.set_default_columns_list(default_columns_list_sale);
         this.sale_entity.hide_column_edit('user_id');
@@ -192,6 +195,10 @@ export class FrontComponent {
         this.form.controls['region_id'].setValue(value);
         this.form.controls['region_id'].patchValue(value);
         this.filterService.share_data(this.sale_entity, 'region_id', value.toString());
+        this.filterService.share_data(this.rent_entity, 'region_id', value.toString());
+        this.filterService.share_data(this.dayrent_entity, 'region_id', value.toString());
+        this.filterService.share_data(this.buy_entity, 'region_id', value.toString());
+        this.filterService.share_data(this.needrent_entity, 'region_id', value.toString());
     }
 
 
