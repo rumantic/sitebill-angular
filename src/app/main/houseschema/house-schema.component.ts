@@ -6,6 +6,8 @@ import { locale as english } from './i18n/en';
 import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {Realty} from "../../_models/realty";
+import {StairModel} from "./models/stair.model";
+import {SectionModel} from "./models/section.model";
 
 @Component({
     selector   : 'house-schema',
@@ -35,6 +37,32 @@ export class HouseSchemaComponent
             prop: 'Этаж'
         }
         this.data_columns.push(column);
+
+        const sections = [];
+        sections.push(new SectionModel({_id: 1, name: 'Ю'}));
+        sections.push(new SectionModel({_id: 2, name: 'С'}));
+
+        let stair = new StairModel({_id: 1, name: 'Лестница 1', sections: sections});
+        let stair2 = new StairModel({_id: 1, name: 'Лестница 2', sections: sections});
+
+        const stairs = [];
+        stairs.push(stair);
+        stairs.push(stair2);
+
+        console.log(stairs);
+
+        let realty = new Realty(123, 1, '78', '1к');
+        this.rows_data.push(
+            {
+                'floor':1,
+                'stair':'Лестница 1',
+                'section':'Ю',
+                'realty': realty
+            }
+        );
+
+
+        /*
         for ( let i = 23; i > 0; i-- ) {
             let realty = new Realty(123, i, '78', '1к');
 
@@ -51,6 +79,7 @@ export class HouseSchemaComponent
                 }
                 );
         }
+         */
 
         console.log(this.rows_data);
 
