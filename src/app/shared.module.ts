@@ -78,6 +78,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {StorageService} from "./_services/storage.service";
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
+import {HouseSchemaService} from "./main/houseschema/services/houseschema.service";
 
 @NgModule({
     imports: [
@@ -175,6 +176,7 @@ import {SearchStringParserComponent} from "./main/grid/search-string-parser/sear
         Bitrix24Service,
         BillingService,
         StorageService,
+        HouseSchemaService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [

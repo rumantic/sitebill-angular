@@ -8,6 +8,7 @@ import { ModelService } from 'app/_services/model.service';
 import {Realty} from "../../_models/realty";
 import {StairModel} from "./models/stair.model";
 import {SectionModel} from "./models/section.model";
+import {HouseSchemaService} from "./services/houseschema.service";
 
 @Component({
     selector   : 'house-schema',
@@ -26,6 +27,7 @@ export class HouseSchemaComponent
      */
     constructor(
         private modelService: ModelService,
+        private houseSchemaService: HouseSchemaService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
@@ -38,6 +40,9 @@ export class HouseSchemaComponent
             prop: 'Этаж'
         }
         this.data_columns.push(column);
+        this.houseSchemaService.get_schema().subscribe((result: any) => {
+            console.log(result);
+        });
 
         const sections = [];
         sections.push(new SectionModel({_id: 1, name: 'Ю'}));
