@@ -18,6 +18,7 @@ export class HouseSchemaComponent
 {
     data_columns = [];
     rows_data = [];
+    stairs: Array<StairModel> = [];
 
     /**
      * Constructor
@@ -45,11 +46,11 @@ export class HouseSchemaComponent
         let stair = new StairModel({_id: 1, name: 'Лестница 1', sections: sections});
         let stair2 = new StairModel({_id: 1, name: 'Лестница 2', sections: sections});
 
-        const stairs = [];
-        stairs.push(stair);
-        stairs.push(stair2);
+        this.stairs.push(stair);
+        this.stairs.push(stair2);
+        this.stairs.push(stair2);
 
-        console.log(stairs);
+        console.log(this.stairs);
 
         let realty = new Realty(123, 1, '78', '1к');
         this.rows_data.push(
@@ -81,7 +82,7 @@ export class HouseSchemaComponent
         }
          */
 
-        console.log(this.rows_data);
+        // console.log(this.rows_data);
 
 
     }

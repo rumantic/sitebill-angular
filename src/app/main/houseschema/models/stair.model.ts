@@ -9,6 +9,14 @@ export class StairModel {
         this.name = item.name;
         this.sections = item.sections
     }
+
+    getName() {
+        return this.name;
+    }
+
+    getSections():SectionModel[] {
+        return this.sections;
+    }
 }
 
 const clearStair = {

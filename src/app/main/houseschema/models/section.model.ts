@@ -5,6 +5,10 @@ export class SectionModel {
         this._id = item._id;
         this.name = item.name;
     }
+
+    getName() {
+        return this.name;
+    }
 }
 
 const clearSection = {
