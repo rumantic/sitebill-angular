@@ -38,7 +38,7 @@ export class SearchStringParserComponent implements OnInit, OnDestroy
      *
      */
     constructor(
-        private modelService: ModelService,
+        public modelService: ModelService,
         public filterService: FilterService,
     )
     {
@@ -250,11 +250,14 @@ export class SearchStringParserComponent implements OnInit, OnDestroy
         return svariants;
     }
 
-    parse() {
+    parse(testString = null) {
 
         let search = this.search_string;
-        
-        
+        if (testString !== null) {
+            search = testString;
+        }
+
+
         let svariants = this.getVariants();
 
         let found = {};
@@ -319,11 +322,12 @@ export class SearchStringParserComponent implements OnInit, OnDestroy
                 s.push('ID: ' + found[srtype].join(', '));
             }
         }
-        
-        
+
+
         //let parse_array = this.search_string.split(' ');
         //this.result_message = '1 комн, 50 м';
         this.result_message = s.join(' ');
+        return this.result_message;
         //console.log(parse_array);
     }
 
