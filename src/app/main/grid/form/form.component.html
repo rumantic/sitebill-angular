@@ -250,6 +250,7 @@
 
                                     <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
                                         <sb-booking *ngIf="records[x].name === 'booking'" [keyValue]="_data.key_value"></sb-booking>
+                                        <house-schema-builder *ngIf="records[x].name === 'house_schema_builder'" [keyValue]="_data.key_value"></house-schema-builder>
                                         <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="this.modelService.get_user_id()"></user-profile>
                                     </div>
 

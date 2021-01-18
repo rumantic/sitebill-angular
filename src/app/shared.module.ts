@@ -79,6 +79,7 @@ import {StorageService} from "./_services/storage.service";
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
 import {HouseSchemaService} from "./main/houseschema/services/houseschema.service";
+import {HouseSchemaBuilderComponent} from "./main/houseschema/builder/house-schema-builder.component";
 
 @NgModule({
     imports: [
@@ -169,7 +170,8 @@ import {HouseSchemaService} from "./main/houseschema/services/houseschema.servic
         UserProfileComponent,
         ContactInjectorComponent,
         DemoBannerComponent,
-        SearchStringParserComponent
+        SearchStringParserComponent,
+        HouseSchemaBuilderComponent
     ],
     providers: [
         ChatService,
@@ -190,7 +192,8 @@ import {HouseSchemaService} from "./main/houseschema/services/houseschema.servic
         ProfileTimelineComponent,
         ProfileCardComponent,
         GatewaysComponent,
-        SearchStringParserComponent
+        SearchStringParserComponent,
+        HouseSchemaBuilderComponent
     ],
     entryComponents: [
         LoginModalComponent,
@@ -204,7 +207,8 @@ import {HouseSchemaService} from "./main/houseschema/services/houseschema.servic
         GatewaysComponent,
         GatewaysModalComponent,
         DemoBannerComponent,
-        SearchStringParserComponent
+        SearchStringParserComponent,
+        HouseSchemaBuilderComponent
     ]
 
 })
