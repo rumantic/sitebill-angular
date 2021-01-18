@@ -106,8 +106,16 @@ export class SearchStringParserComponent implements OnInit, OnDestroy
                     return true;
                 },
                 _setValue: function (match) {
-                    this.value.push(parseInt(match[1]));
-                    this.value.push(parseInt(match[2]));
+                    if(!isNaN(parseInt(match[1]))){
+                        this.value.push(parseInt(match[1]));
+                    }else{
+                        this.value.push(0);
+                    }
+                    if(!isNaN(parseInt(match[2]))){
+                        this.value.push(parseInt(match[2]));
+                    }else{
+                        this.value.push(0);
+                    }
                 },
                 _getValue: function () {
                     return this.value;
@@ -308,12 +316,19 @@ export class SearchStringParserComponent implements OnInit, OnDestroy
                 }
             }
             if(srtype == 'floor'){
-                if(found[srtype].length == 1){
+                if(found[srtype][0] != 0 && found[srtype][1] != 0){
+                    s.push('Этаж: от ' + found[srtype][0] + ' до ' + found[srtype][1]);
+                }else if(found[srtype][0] != 0){
+                    s.push('Этаж: от ' + found[srtype][0]);
+                }else if(found[srtype][1] != 0){
+                    s.push('Этаж: до ' + found[srtype][1]);
+                }
+                /*if(found[srtype].length == 1){
                     s.push('Этаж: от ' + found[srtype][0]);
                 }else if(found[srtype].length > 1){
                     let ar = found[srtype].sort();
                     s.push('Этаж: от ' + ar[0] + ' до ' + ar[ar.length - 1]);
-                }
+                }*/
             }
             if(srtype == 'rooms'){
                 s.push('Комнат: ' + found[srtype].join(', '));
