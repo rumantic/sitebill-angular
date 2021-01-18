@@ -65,6 +65,7 @@ export class HouseSchemaComponent
         }
         this.data_columns.push(column);
         this.houseSchemaService.get_schema().subscribe((result: any) => {
+            console.log(result.data);
             this.stairs = this.mapSchemaModel(result.data);
         });
         /*
@@ -83,6 +84,9 @@ export class HouseSchemaComponent
 
         console.log(this.stairs);
         */
+
+        // Первый и последний этаж
+
 
         let realty = new Realty(123, 1, '78', '1к');
         this.rows_data.push(
