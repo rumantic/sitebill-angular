@@ -33,6 +33,30 @@ export class HouseSchemaComponent
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
+
+    mapSchemaModel(input:any) {
+
+        let new_stairs = [];
+
+        Object.entries(input).forEach(
+            ([key, stair]) => {
+                let new_sections = [];
+                if ( stair.sections ) {
+                    Object.entries(stair.sections).forEach(
+                        ([key, section]) => {
+                            let new_section = new SectionModel({_id: section._id, name: section.name});
+                            new_sections.push(new_section);
+                        }
+                    );
+                }
+                let new_stair = new StairModel({_id: stair._id, name: stair.name, sections: new_sections});
+                new_stairs.push(new_stair);
+            }
+        );
+        console.log(new_stairs);
+        return new_stairs;
+    }
+
     ngOnInit() {
         let column = {
             ngx_name: 'test',
@@ -41,8 +65,9 @@ export class HouseSchemaComponent
         }
         this.data_columns.push(column);
         this.houseSchemaService.get_schema().subscribe((result: any) => {
-            console.log(result);
+            this.stairs = this.mapSchemaModel(result.data);
         });
+        /*
 
         const sections = [];
         sections.push(new SectionModel({_id: 1, name: 'Ю'}));
@@ -55,7 +80,9 @@ export class HouseSchemaComponent
         this.stairs.push(stair2);
         this.stairs.push(stair2);
 
+
         console.log(this.stairs);
+        */
 
         let realty = new Realty(123, 1, '78', '1к');
         this.rows_data.push(
