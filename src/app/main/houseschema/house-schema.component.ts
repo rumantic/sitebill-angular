@@ -45,7 +45,7 @@ export class HouseSchemaComponent
                 if ( stair.sections ) {
                     Object.entries(stair.sections).forEach(
                         ([key, section]) => {
-                            console.log(section);
+                            // console.log(section);
                             let new_section = new SectionModel({_id: section._id, name: section.name});
                             new_sections.push(new_section);
                         }
@@ -55,7 +55,7 @@ export class HouseSchemaComponent
                 new_stairs.push(new_stair);
             }
         );
-        console.log(new_stairs);
+        // console.log(new_stairs);
         return new_stairs;
     }
 
@@ -66,14 +66,24 @@ export class HouseSchemaComponent
         let section_id = null;
 
         for ( let i = floor_count; i > 0; i-- ) {
+
+            const realty_array = [];
+
             if ( floor_hash[i] ) {
-                console.log(floor_hash[i][0]);
-                stair_id = floor_hash[i][0].stair_id;
-                section_id = floor_hash[i][0].section_id;
-                realty = new Realty(123, i, '78', '1к');
+                floor_hash[i].forEach(
+                    (element) => {
+                        stair_id = element.stair_id;
+                        section_id = element.section_id;
+                        realty = new Realty(element.id, i, '78', '1к', stair_id, section_id);
+                        realty_array.push(realty);
+                        //console.log(value);
+                    }
+                );
+                //console.log(floor_hash[i]);
             } else {
                 realty = null;
             }
+
 
             rows_data.push(
                 {
@@ -86,7 +96,8 @@ export class HouseSchemaComponent
                     'floor':i,
                     'stair_id':stair_id,
                     'section_id':section_id,
-                    'realty': realty
+                    'realty': realty,
+                    'realty_array': realty_array
                 }
             );
         }
