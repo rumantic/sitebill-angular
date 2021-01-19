@@ -34,7 +34,7 @@ export class HouseSchemaComponent
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
 
-    mapSchemaModel(input:any) {
+    mapSchemaModel(input:Array<StairModel>) {
 
         let new_stairs = [];
 
