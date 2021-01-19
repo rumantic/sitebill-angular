@@ -14,6 +14,10 @@ export class StairModel {
         return this.name;
     }
 
+    getId() {
+        return this._id;
+    }
+
     getSections():SectionModel[] {
         return this.sections;
     }

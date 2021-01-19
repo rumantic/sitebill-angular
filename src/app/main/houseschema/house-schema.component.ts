@@ -37,6 +37,7 @@ export class HouseSchemaComponent
     mapSchemaModel(input:Array<StairModel>) {
 
         let new_stairs = [];
+        let max_floor = 0;
 
         Object.entries(input).forEach(
             ([key, stair]) => {
@@ -44,6 +45,7 @@ export class HouseSchemaComponent
                 if ( stair.sections ) {
                     Object.entries(stair.sections).forEach(
                         ([key, section]) => {
+                            console.log(section);
                             let new_section = new SectionModel({_id: section._id, name: section.name});
                             new_sections.push(new_section);
                         }
@@ -57,6 +59,40 @@ export class HouseSchemaComponent
         return new_stairs;
     }
 
+    floor_data(floor_count, floor_hash) {
+        const rows_data = [];
+        let realty = null;
+        let stair_id = null;
+        let section_id = null;
+
+        for ( let i = floor_count; i > 0; i-- ) {
+            if ( floor_hash[i] ) {
+                console.log(floor_hash[i][0]);
+                stair_id = floor_hash[i][0].stair_id;
+                section_id = floor_hash[i][0].section_id;
+                realty = new Realty(123, i, '78', '1к');
+            } else {
+                realty = null;
+            }
+
+            rows_data.push(
+                {
+                    'NAME':i,
+                    'ID':i,
+                    '_id':i,
+                    'status':i,
+                    'final_destination':i,
+                    'name':i,
+                    'floor':i,
+                    'stair_id':stair_id,
+                    'section_id':section_id,
+                    'realty': realty
+                }
+            );
+        }
+        return rows_data;
+    }
+
     ngOnInit() {
         let column = {
             ngx_name: 'test',
@@ -66,62 +102,13 @@ export class HouseSchemaComponent
         this.data_columns.push(column);
         this.houseSchemaService.get_schema().subscribe((result: any) => {
             console.log(result.data);
-            this.stairs = this.mapSchemaModel(result.data);
+            this.stairs = this.mapSchemaModel(result.data.stairs);
+            this.rows_data = this.floor_data(result.data.floor_count, result.data.floor_hash);
         });
-        /*
-
-        const sections = [];
-        sections.push(new SectionModel({_id: 1, name: 'Ю'}));
-        sections.push(new SectionModel({_id: 2, name: 'С'}));
-
-        let stair = new StairModel({_id: 1, name: 'Лестница 1', sections: sections});
-        let stair2 = new StairModel({_id: 1, name: 'Лестница 2', sections: sections});
-
-        this.stairs.push(stair);
-        this.stairs.push(stair2);
-        this.stairs.push(stair2);
-
-
-        console.log(this.stairs);
-        */
-
-        // Первый и последний этаж
-
-
-        let realty = new Realty(123, 1, '78', '1к');
-        this.rows_data.push(
-            {
-                'floor':1,
-                'stair':'Лестница 1',
-                'section':'Ю',
-                'realty': realty
-            }
-        );
-
-
-        /*
-        for ( let i = 23; i > 0; i-- ) {
-            let realty = new Realty(123, i, '78', '1к');
-
-            this.rows_data.push(
-                {
-                    'NAME':i,
-                    'ID':i,
-                    '_id':i,
-                    'status':i,
-                    'final_destination':i,
-                    'name':i,
-                    'Этаж':i,
-                    'realty': realty
-                }
-                );
-        }
-         */
-
-        // console.log(this.rows_data);
-
-
     }
 
 
+    getRealtyId(section_id: number, stair_id: number, floor: number) {
+        // console.log('section_id = ' + section_id + ', stair_id = ' + stair_id + ', floor = ' + floor);
+    }
 }

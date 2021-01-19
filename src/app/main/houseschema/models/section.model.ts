@@ -9,6 +9,10 @@ export class SectionModel {
     getName() {
         return this.name;
     }
+    getId() {
+        return this._id;
+    }
+
 }
 
 const clearSection = {
