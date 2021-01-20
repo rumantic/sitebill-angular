@@ -29,6 +29,13 @@ export const navigation: FuseNavigation[] = [
         }
     },
     {
+        id: 'complex',
+        title: 'ЖК',
+        type: 'item',
+        icon: 'location_city',
+        url: 'grid/complex',
+    },
+    {
         id: 'client',
         title: 'Клиенты',
         type: 'item',

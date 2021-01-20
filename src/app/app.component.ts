@@ -270,6 +270,11 @@ export class AppComponent implements OnInit, OnDestroy
         this.document.body.classList.add(this.fuseConfig.colorTheme);
         this.modelService.onSitebillStart();
         this.modelService.config_loaded_emitter.subscribe((result: any) => {
+            if ( this.modelService.getConfigValue('apps.complex.api.enable') !== '1' ) {
+                this._fuseNavigationService.removeNavigationItem('complex');
+            }
+
+
             if (!this.demoTimerSubscribe) {
                 this.switchTimer();
             }

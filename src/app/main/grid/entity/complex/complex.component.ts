@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialogConfig} from "@angular/material/dialog";
-import {ViewModalComponent} from "../../view-modal/view-modal.component";
 import {HouseSchemaComponent} from "../../../houseschema/house-schema.component";
 
 @Component({
@@ -17,6 +16,7 @@ export class ComplexComponent extends GridComponent {
         this.entity.set_app_name('complex');
         this.entity.set_table_name('complex');
         this.entity.set_primary_key('complex_id');
+        this.disable_wild_search = true;
 
         let grid_fields = ['complex_id', 'name', 'is_ready', 'image', 'plan_flat'];
         this.define_grid_fields(grid_fields);
