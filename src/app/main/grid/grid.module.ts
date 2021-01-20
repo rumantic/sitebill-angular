@@ -90,6 +90,7 @@ import {SharedModule} from "../../shared.module";
 import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {RealtyItemComponent} from "../houseschema/realty-item/realty-item.component";
 import {SearchStringParserTestComponent} from "./search-string-parser/test/search-string-parser-test.component";
+import {ComplexComponent} from "./entity/complex/complex.component";
 
 const routes = [
     {
@@ -286,6 +287,13 @@ const routes = [
         },
     },
     {
+        path: 'complex',
+        component: ComplexComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
         path: 'houseschema',
         component: HouseSchemaComponent,
         resolve: {
@@ -340,7 +348,8 @@ const routes = [
         MyGridClientComponent,
         HouseSchemaComponent,
         RealtyItemComponent,
-        SearchStringParserTestComponent
+        SearchStringParserTestComponent,
+        ComplexComponent
     ],
     imports     : [
         RouterModule.forChild(routes),

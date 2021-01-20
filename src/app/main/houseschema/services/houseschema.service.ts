@@ -14,8 +14,8 @@ export class HouseSchemaService {
 
     }
 
-    get_schema() {
-        const request = { action: 'complex', do: 'get_schema', anonymous: true, session_key: this.modelService.get_session_key_safe() };
+    get_schema(complex_id: number) {
+        const request = { action: 'complex', do: 'get_schema', complex_id: complex_id, anonymous: true, session_key: this.modelService.get_session_key_safe() };
         return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, request);
     }
 
