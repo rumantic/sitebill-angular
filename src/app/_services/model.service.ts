@@ -2,7 +2,7 @@ import {Injectable, Inject, isDevMode, Output, EventEmitter} from '@angular/core
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {currentUser, UserProfile} from 'app/_models/currentuser';
-import {SitebillEntity, User} from 'app/_models';
+import {SitebillEntity, SitebillModelItem, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
@@ -414,6 +414,16 @@ export class ModelService {
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+    map_model (row_model: any) {
+        const good_model = [];
+        Object.entries(row_model).forEach(
+            (key, value) => {
+                good_model[key[0]] = new SitebillModelItem(key[1]);
+            }
+        );
+        return good_model;
     }
 
     validateKey(session_key) {

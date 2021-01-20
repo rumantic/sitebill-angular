@@ -74,7 +74,7 @@ export class HouseSchemaComponent
                     (element) => {
                         stair_id = element.stair_id;
                         section_id = element.section_id;
-                        realty = new Realty(element.id, i, '78', '1к', stair_id, section_id);
+                        realty = new Realty(element.realty_id, i, '78', '1к', stair_id, section_id);
                         realty_array.push(realty);
                         //console.log(value);
                     }

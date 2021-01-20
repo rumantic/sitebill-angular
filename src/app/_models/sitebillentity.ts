@@ -185,10 +185,89 @@ export class SitebillEntity {
     set_form_type(form_type: string) {
         this.form_type = FormType[form_type];
     }
+
+    get_model_value(key:string) {
+        if ( this.model[key] ) {
+            return this.model[key].getValue();
+        }
+        return null;
+    }
+
+    get_model_value_string(key:string) {
+        if ( this.model[key] ) {
+            return this.model[key].getValueString();
+        }
+        return null;
+    }
 }
 export class SitebillModelItem {
     action: string;
     active_in_topic: number[];
     name: string;
+    value: string;
+    value_string: string;
     select_data_indexed: any;
+    assign_to: string;
+    combo: string;
+    dbtype: string;
+    entity: string;
+    group_id: string;
+    hint: string;
+    primary_key: string;
+    primary_key_name: string;
+    primary_key_table: string;
+    primary_key_value: string;
+    query: string;
+    required: string;
+    tab: string;
+    table_name: string;
+    title: string;
+    title_default: string;
+    type: string;
+    unique: string;
+    value_default: string;
+    value_field: string;
+    value_name: string;
+    value_primary_key: string;
+    value_table: string;
+
+    constructor(item:any = null) {
+        this.action = item.action;
+        this.active_in_topic = item.active_in_topic;
+        this.name = item.name;
+        this.value = item.value;
+        this.value_string = item.value_string;
+        this.select_data_indexed = item.select_data_indexed;
+        this.assign_to = item.assign_to;
+        this.combo = item.combo;
+        this.dbtype = item.dbtype;
+        this.entity = item.entity;
+        this.group_id = item.group_id;
+        this.hint = item.hint;
+        this.primary_key = item.primary_key;
+        this.primary_key_name = item.primary_key_name;
+        this.primary_key_table = item.primary_key_table;
+        this.primary_key_value = item.primary_key_value;
+        this.query = item.query;
+        this.required = item.required;
+        this.tab = item.tab;
+        this.table_name = item.table_name;
+        this.title = item.title;
+        this.title_default = item.title_default;
+        this.type = item.type;
+        this.unique = item.unique;
+        this.value_default = item.value_default;
+        this.value_field = item.value_field;
+        this.value_name = item.value_name;
+        this.value_primary_key = item.value_primary_key;
+        this.value_table = item.value_table;
+    }
+
+    getValue() {
+        return this.value;
+    }
+
+    getValueString() {
+        return this.value_string;
+    }
 }

@@ -25,7 +25,7 @@
 
         </ngx-datatable-column>
 
-        <ngx-datatable-column *ngFor="let stair of stairs" [width]="300">
+        <ngx-datatable-column *ngFor="let stair of stairs" [width]="400">
             <ng-template let-row="row" ngx-datatable-header-template>
                 <strong>{{stair.getName()}}</strong>
                 <ngx-datatable [rows]="[row]"  [columnMode]="'force'" [headerHeight]="'auto'" [rowHeight]="undefined" [footerHeight]="undefined">
@@ -40,7 +40,6 @@
                             <ng-container *ngFor="let realty of row.realty_array">
                                 <ng-container *ngIf="realty.stair_id == stair.getId() && realty.section_id == section_floor.getId()">
                                     <ng-container *ngIf="realty">
-                                        {{realty.realty_id}}
                                         <realty-item *ngIf="realty" [realty_item]="realty"></realty-item>
                                     </ng-container>
                                 </ng-container>
