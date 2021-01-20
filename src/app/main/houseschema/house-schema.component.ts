@@ -10,7 +10,8 @@ import {StairModel} from "./models/stair.model";
 import {SectionModel} from "./models/section.model";
 import {HouseSchemaService} from "./services/houseschema.service";
 import {SitebillEntity} from "../../_models";
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {FormComponent} from "../grid/form/form.component";
 
 @Component({
     selector   : 'house-schema',
@@ -33,6 +34,7 @@ export class HouseSchemaComponent
     constructor(
         private modelService: ModelService,
         @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
+        protected dialogRef: MatDialogRef<FormComponent>,
         private houseSchemaService: HouseSchemaService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
@@ -134,5 +136,9 @@ export class HouseSchemaComponent
 
     getRealtyId(section_id: number, stair_id: number, floor: number) {
         // console.log('section_id = ' + section_id + ', stair_id = ' + stair_id + ', floor = ' + floor);
+    }
+
+    close() {
+        this.dialogRef.close();
     }
 }
