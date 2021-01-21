@@ -2,9 +2,10 @@ import { Component, OnInit, Input, ViewChild,TemplateRef, ElementRef, SimpleChan
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery-9';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
 import { SitebillEntity } from 'app/_models';
+import {HouseSchemaBuilderModalComponent} from "../houseschema/builder/modal/house-schema-builder-modal.component";
 
 
 @Component({
@@ -103,6 +104,7 @@ export class GalleryComponent implements OnInit {
                     { icon: 'fa fa-star fa-sm', onClick: this.moveToStart.bind(this), titleText: 'сделать главной' },
                     { icon: 'fa fa-undo fa-sm', onClick: this.rotateRight.bind(this), titleText: 'повернуть против часовой стрелки' },
                     { icon: 'fa fa-repeat fa-sm', onClick: this.rotateLeft.bind(this), titleText: 'повернуть по часовой стрелке' },
+                    { icon: 'fa fa-cog fa-sm', onClick: this.openOptions.bind(this), titleText: 'Настройки' },
                 ]
             },
             // max-width 800
@@ -167,6 +169,29 @@ export class GalleryComponent implements OnInit {
             }
             this.confirmDialogRef = null;
         });
+    }
+
+    openOptions(event, index) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '99vw';
+        dialogConfig.maxWidth = '99vw';
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        //this.entity.set_key_value(item_id);
+        dialogConfig.data = {
+            entity:this.entity,
+            image_field: this.image_field,
+            image_index: index,
+            galleryImages: this.galleryImages,
+        };
+        //console.log(dialogConfig.data);
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this._matDialog.open(HouseSchemaBuilderModalComponent, dialogConfig);
+
+
     }
 
 

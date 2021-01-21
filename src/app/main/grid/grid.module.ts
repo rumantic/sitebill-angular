@@ -91,6 +91,7 @@ import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {RealtyItemComponent} from "../houseschema/realty-item/realty-item.component";
 import {SearchStringParserTestComponent} from "./search-string-parser/test/search-string-parser-test.component";
 import {ComplexComponent} from "./entity/complex/complex.component";
+import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
 
 const routes = [
     {
@@ -296,6 +297,13 @@ const routes = [
     {
         path: 'houseschema',
         component: HouseSchemaComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'houseschemabuilder',
+        component: HouseSchemaBuilderComponent,
         resolve: {
             chat: ChatService
         },
