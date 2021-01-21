@@ -113,6 +113,7 @@ export class HouseSchemaBuilderComponent
                     width: 200, height: 100, left: 10, top: 10, angle: 0,
                     fill: '#3f51b5'
                 });
+                add.on('mousedblclick', function(opt){console.log('mousedblclick fired with opts: '); console.log(opt);});
                 break;
             case 'square':
                 add = new fabric.Rect({
