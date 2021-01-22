@@ -25,6 +25,7 @@ export class HouseSchemaBuilderComponent
         height: 1000
     };
     public OutputContent: string;
+    public label_entity: SitebillEntity;
 
     @Input("_data")
     _data: {
@@ -46,6 +47,14 @@ export class HouseSchemaBuilderComponent
         private houseSchemaService: HouseSchemaService,
     )
     {
+        this.initLabelEntity();
+    }
+
+    initLabelEntity() {
+        this.label_entity = new SitebillEntity();
+        this.label_entity.set_app_name('labels');
+        this.label_entity.set_table_name('labels');
+        this.label_entity.set_primary_key('id');
     }
 
 
@@ -135,7 +144,15 @@ export class HouseSchemaBuilderComponent
                     console.log('mousedblclick fired with opts: ');
                     console.log(opt);
                     this.editLabel();
+                    this.updateImageLevel(opt);
                 }.bind(this));
+
+                add.on('moved', function(opt){
+                    console.log('mouseout fired with opts: ');
+                    console.log(opt);
+                    this.updateImageLevel(opt);
+                }.bind(this));
+
                 break;
         }
         this.extend(add, this.randomId());
@@ -157,6 +174,10 @@ export class HouseSchemaBuilderComponent
         return '600' + postfix;
     }
 
+    updateImageLevel(opt: any) {
+        console.log('update image level');
+    }
+
     editLabel() {
         const dialogConfig = new MatDialogConfig();
 
@@ -166,9 +187,10 @@ export class HouseSchemaBuilderComponent
         //dialogConfig.maxWidth = '99vw';
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         //this.entity.set_key_value(item_id);
-        //dialogConfig.data = this.entity;
+        dialogConfig.data = this.label_entity;
         //console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
 
         this.dialog.open(LabelSelectorComponent, dialogConfig);
     }
