@@ -1,3 +1,16 @@
-<div id="canvas" [ngStyle]="{'background-image': 'url(' + schema_url + ')'}">
+<div id="ngx-datatable" class="page-layout simple fullwidth">
+    <button (click)="addFigure('rectangle')">Rectangle</button>
+
+
+
+    <button (click)="ExportToContent('json')">Generate Json</button>
+    <button (click)="ExportToContent('svg')">Generate SVG</button>
+    <br/>
+    <code>{{OutputContent}}</code>
+    <canvas id="canvas" [ngStyle]="{'background-image': 'url(' + schema_url + ')'}">
+    </canvas>
+
 </div>
+
+
 
