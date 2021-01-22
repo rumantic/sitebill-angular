@@ -3,12 +3,13 @@ import {Component, Inject, Input} from '@angular/core';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import {ModelService} from "../../../_services/model.service";
 import {HouseSchemaService} from "../services/houseschema.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {SitebillEntity} from "../../../_models";
 import {FormComponent} from "../../grid/form/form.component";
 import {NgxGalleryImage} from "ngx-gallery-9";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import { fabric } from "fabric";
+import {LabelSelectorComponent} from "./modal/label-selector/label-selector.component";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -41,6 +42,7 @@ export class HouseSchemaBuilderComponent
      */
     constructor(
         private modelService: ModelService,
+        protected dialog: MatDialog,
         private houseSchemaService: HouseSchemaService,
     )
     {
@@ -62,8 +64,8 @@ export class HouseSchemaBuilderComponent
             selectionBorderColor: 'blue'
         });
         this.textString = null;
-        this.canvas.setWidth(this.size.width);
-        this.canvas.setHeight(this.size.height);
+        this.canvas.setWidth(this.getWidth(''));
+        this.canvas.setHeight(this.getHeight(''));
         this.OutputContent = null;
     }
 
@@ -113,7 +115,6 @@ export class HouseSchemaBuilderComponent
                     width: 200, height: 100, left: 10, top: 10, angle: 0,
                     fill: '#3f51b5'
                 });
-                add.on('mousedblclick', function(opt){console.log('mousedblclick fired with opts: '); console.log(opt);});
                 break;
             case 'square':
                 add = new fabric.Rect({
@@ -128,8 +129,13 @@ export class HouseSchemaBuilderComponent
                 break;
             case 'circle':
                 add = new fabric.Circle({
-                    radius: 50, left: 10, top: 10, fill: '#ff5722'
+                    radius: 20, left: 10, top: 10, fill: '#ff5722'
                 });
+                add.on('mousedblclick', function(opt){
+                    console.log('mousedblclick fired with opts: ');
+                    console.log(opt);
+                    this.editLabel();
+                }.bind(this));
                 break;
         }
         this.extend(add, this.randomId());
@@ -143,5 +149,27 @@ export class HouseSchemaBuilderComponent
         }else if(input == 'svg'){
             this.OutputContent = this.canvas.toSVG();
         }
+    }
+    getWidth(postfix = 'px') {
+        return '1000' + postfix;
+    }
+    getHeight(postfix = 'px') {
+        return '600' + postfix;
+    }
+
+    editLabel() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        //dialogConfig.width = '99vw';
+        //dialogConfig.maxWidth = '99vw';
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        //this.entity.set_key_value(item_id);
+        //dialogConfig.data = this.entity;
+        //console.log(dialogConfig.data);
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this.dialog.open(LabelSelectorComponent, dialogConfig);
     }
 }

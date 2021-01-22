@@ -1,15 +1,37 @@
 <div id="ngx-datatable" class="page-layout simple fullwidth">
-    <button (click)="addFigure('rectangle')">Rectangle</button>
+    <!-- HEADER -->
+    <div class="header p-16 p-md-24 accent" fxLayout="column">
+        <div class="header-content" fxLayout="row wrap" fxLayoutAlign="center" fxFlex="1 0 auto">
+            <!-- BOARD SELECTION BUTTON -->
+            <div fxLayout="row" class="p-16" fxLayoutAlign="start center">
+                <button class="hidden-lt-md" mat-raised-button (click)="addFigure('circle')" color="fuse-white" matTooltip="Добавить метку">Добавить метку
+                </button>
+                <button class="hidden-gt-sm" mat-mini-fab (click)="addFigure('circle')" color="fuse-white" matTooltip="Добавить метку">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
 
+            <div fxLayout="row" class="p-16" fxLayoutAlign="start center">
+                <button class="hidden-lt-md" mat-raised-button (click)="ExportToContent('json')" color="fuse-white" matTooltip="JSON">JSON
+                </button>
+            </div>
 
-
-    <button (click)="ExportToContent('json')">Generate Json</button>
-    <button (click)="ExportToContent('svg')">Generate SVG</button>
-    <br/>
+        </div>
+    </div>
+    <!-- / HEADER -->
     <code>{{OutputContent}}</code>
-    <canvas id="canvas" [ngStyle]="{'background-image': 'url(' + schema_url + ')'}">
-    </canvas>
+    <!-- CONTENT -->
+    <div class="content" layout="row" fxLayoutAlign="center">
+            <canvas
+                id="canvas"
+                [ngStyle]="{
+                    'background-image': 'url(' + schema_url + ')',
+                    'width': getWidth(),
+                    'height': getHeight()
+                }">
+            </canvas>
 
+    </div>
 </div>
 
 

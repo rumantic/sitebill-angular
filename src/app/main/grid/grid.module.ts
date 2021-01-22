@@ -87,10 +87,11 @@ import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
 import {SharedModule} from "../../shared.module";
-import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {RealtyItemComponent} from "../houseschema/realty-item/realty-item.component";
 import {SearchStringParserTestComponent} from "./search-string-parser/test/search-string-parser-test.component";
 import {ComplexComponent} from "./entity/complex/complex.component";
+import {HouseSchemaModule} from "../houseschema/house-schema.module";
+import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
 
 const routes = [
@@ -354,7 +355,6 @@ const routes = [
         MysearchComponent,
         EmailsComponent,
         MyGridClientComponent,
-        HouseSchemaComponent,
         RealtyItemComponent,
         SearchStringParserTestComponent,
         ComplexComponent
@@ -417,6 +417,7 @@ const routes = [
         }),
 
         SbCalendarModule,
+        HouseSchemaModule
     ],
     exports: [
         NgxUploaderModule

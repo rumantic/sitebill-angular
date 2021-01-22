@@ -81,6 +81,7 @@ import {SearchStringParserComponent} from "./main/grid/search-string-parser/sear
 import {HouseSchemaService} from "./main/houseschema/services/houseschema.service";
 import {HouseSchemaBuilderComponent} from "./main/houseschema/builder/house-schema-builder.component";
 import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal/house-schema-builder-modal.component";
+import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 
 @NgModule({
     imports: [
@@ -141,6 +142,7 @@ import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal
         }),
         SbCalendarModule,
         FuseWidgetModule,
+        HouseSchemaModule
     ],
     declarations: [
         RegisterDomainModalComponent,
@@ -172,15 +174,12 @@ import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal
         ContactInjectorComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
-        HouseSchemaBuilderComponent,
-        HouseSchemaBuilderModalComponent
     ],
     providers: [
         ChatService,
         Bitrix24Service,
         BillingService,
         StorageService,
-        HouseSchemaService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
@@ -195,8 +194,6 @@ import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal
         ProfileCardComponent,
         GatewaysComponent,
         SearchStringParserComponent,
-        HouseSchemaBuilderComponent,
-        HouseSchemaBuilderModalComponent
     ],
     entryComponents: [
         LoginModalComponent,
@@ -211,8 +208,6 @@ import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal
         GatewaysModalComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
-        HouseSchemaBuilderComponent,
-        HouseSchemaBuilderModalComponent
     ]
 
 })
