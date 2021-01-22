@@ -10,6 +10,8 @@ import {NgxGalleryImage} from "ngx-gallery-9";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import { fabric } from "fabric";
 import {LabelSelectorComponent} from "./modal/label-selector/label-selector.component";
+import {LevelLocationModel} from "../models/level-location.model";
+import {LevelModel} from "../models/level.model";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -26,6 +28,7 @@ export class HouseSchemaBuilderComponent
     };
     public OutputContent: string;
     public label_entity: SitebillEntity;
+    public input_entity: SitebillEntity;
 
     @Input("_data")
     _data: {
@@ -64,6 +67,12 @@ export class HouseSchemaBuilderComponent
             this.schema_url = this._data.galleryImages[image_index].big;
             // console.log(this._data);
         } else {
+            this.input_entity = new SitebillEntity();
+            this.input_entity.set_app_name('complex');
+            this.input_entity.set_table_name('complex');
+            this.input_entity.set_primary_key('complex_id');
+            this.input_entity.set_key_value(17);
+
             this.schema_url = "https://qplan.sitebill.site/img/data/20210121/jpg_6008feb8a8b6e_1611202232_1.svg?1611206294340";
         }
 
@@ -149,7 +158,7 @@ export class HouseSchemaBuilderComponent
 
                 add.on('moved', function(opt){
                     console.log('mouseout fired with opts: ');
-                    console.log(opt);
+                    console.log(opt.target);
                     this.updateImageLevel(opt);
                 }.bind(this));
 
@@ -176,6 +185,32 @@ export class HouseSchemaBuilderComponent
 
     updateImageLevel(opt: any) {
         console.log('update image level');
+        const location = new LevelLocationModel({
+            id: '123',
+            title: '',
+            description: '',
+            category: '',
+            x: 1,
+            y: 2,
+        });
+        const locations = [];
+        locations.push(location);
+        locations.push(location);
+
+        const level = new LevelModel({
+            id: '234',
+            title: 'fdsdfs',
+            locations: locations
+        });
+
+        console.log(level);
+        let field_name = 'image';
+        let current_position = 1;
+
+        this.houseSchemaService.update_level(this.input_entity, field_name, current_position, level).subscribe((result: any) => {
+            console.log(result);
+        });
+
     }
 
     editLabel() {

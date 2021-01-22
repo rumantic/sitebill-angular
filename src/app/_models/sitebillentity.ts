@@ -193,6 +193,13 @@ export class SitebillEntity {
         return null;
     }
 
+    get_model_item(key:string) {
+        if ( this.model[key] ) {
+            return this.model[key];
+        }
+        return null;
+    }
+
     get_model_value_string(key:string) {
         if ( this.model[key] ) {
             return this.model[key].getValueString();
