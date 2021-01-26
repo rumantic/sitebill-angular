@@ -12,6 +12,9 @@ import { fabric } from "fabric";
 import {LabelSelectorComponent} from "./modal/label-selector/label-selector.component";
 import {LevelLocationModel} from "../models/level-location.model";
 import {LevelModel} from "../models/level.model";
+import {SectionModel} from "../models/section.model";
+import {StairModel} from "../models/stair.model";
+import {element} from "protractor";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -39,6 +42,9 @@ export class HouseSchemaBuilderComponent
     }
 
     schema_url: SafeResourceUrl;
+    private field_name: string;
+    private current_position: number;
+    private level: LevelModel;
 
     /**
      * Constructor
@@ -72,6 +78,8 @@ export class HouseSchemaBuilderComponent
             this.input_entity.set_table_name('complex');
             this.input_entity.set_primary_key('complex_id');
             this.input_entity.set_key_value(17);
+            this.field_name = 'image';
+            this.current_position = 1;
 
             this.schema_url = "https://qplan.sitebill.site/img/data/20210121/jpg_6008feb8a8b6e_1611202232_1.svg?1611206294340";
         }
@@ -85,6 +93,57 @@ export class HouseSchemaBuilderComponent
         this.canvas.setWidth(this.getWidth(''));
         this.canvas.setHeight(this.getHeight(''));
         this.OutputContent = null;
+        this.load_level();
+    }
+
+    load_level() {
+        this.level = new LevelModel({
+            id: '234',
+            title: 'fdsdfs',
+            locations: null
+        });
+
+
+        this.houseSchemaService.load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition()).subscribe((result: any) => {
+            if ( result.status === 'ok' ) {
+                console.log(result.level);
+                Object.entries(result.level.locations).forEach(
+                    ([key, location]) => {
+                        if ( location ) {
+                            console.log(location);
+                            if ( location.id ) {
+                                const current_location = new LevelLocationModel({
+                                    id: location.id,
+                                    title: '',
+                                    description: '',
+                                    category: '',
+                                    x: location.x,
+                                    y: location.y,
+                                });
+
+                                this.addLabel(current_location);
+                            }
+                        }
+
+                        /*
+                        let new_sections = [];
+                        if ( stair.sections ) {
+                            Object.entries(stair.sections).forEach(
+                                ([key, section]) => {
+                                    // console.log(section);
+                                    let new_section = new SectionModel({_id: section._id, name: section.name});
+                                    new_sections.push(new_section);
+                                }
+                            );
+                        }
+                        let new_stair = new StairModel({_id: stair._id, name: stair.name, sections: new_sections});
+                        new_stairs.push(new_stair);
+                         */
+                    }
+                );
+
+            }
+        });
     }
 
     addText() {
@@ -107,6 +166,7 @@ export class HouseSchemaBuilderComponent
     }
 
     extend(obj, id) {
+        console.log(id);
         obj.toObject = (function (toObject) {
             return function () {
                 return fabric.util.object.extend(toObject.call(this), {
@@ -125,6 +185,7 @@ export class HouseSchemaBuilderComponent
         this.canvas.setActiveObject(obj);
     }
 
+    /*
     addFigure(figure) {
         let add: any;
         switch (figure) {
@@ -168,6 +229,65 @@ export class HouseSchemaBuilderComponent
         this.canvas.add(add);
         this.selectItemAfterAdded(add);
     }
+     */
+
+    addLabel (location: LevelLocationModel) {
+        console.log(location);
+
+        let add: any;
+
+        add = new fabric.Circle({
+            radius: 20, left: location.x, top: location.y, fill: '#ff5722'
+        });
+        this.extend(add, location.getId());
+
+        add.on('mousedblclick', function(opt){
+            console.log('mousedblclick fired with opts: ');
+            //console.log(opt.canvas);
+            console.log(opt.target.toObject().id);
+            this.editLabel();
+            this.updateImageLevel();
+        }.bind(this));
+
+        add.on('moved', function(opt){
+            console.log('mouseout fired with opts: ');
+            //console.log(opt.target);
+            console.log(opt.target.toObject().id);
+            this.updateXY(opt.target.toObject().id, opt.target.left, opt.target.top);
+        }.bind(this));
+        // console.log(add);
+        this.canvas.add(add);
+        this.selectItemAfterAdded(add);
+        this.level.pushLocation(location);
+    }
+
+    updateXY( id, x, y ) {
+
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                element.x = x;
+                element.y = y;
+                console.log(element);
+            }
+        });
+
+
+        this.updateImageLevel();
+    }
+
+    addEmptyLabel(top = 10, left = 10) {
+        const current_location = new LevelLocationModel({
+            id: this.randomId(),
+            title: '',
+            description: '',
+            category: '',
+            x: left,
+            y: top,
+        });
+        this.addLabel(current_location);
+        this.updateImageLevel();
+
+    }
 
     ExportToContent(input) {
         if(input == 'json'){
@@ -183,31 +303,18 @@ export class HouseSchemaBuilderComponent
         return '600' + postfix;
     }
 
-    updateImageLevel(opt: any) {
+    private getFieldName() {
+        return this.field_name;
+    }
+
+    private getCurrentPosition() {
+        return this.current_position;
+    }
+
+
+    updateImageLevel() {
         console.log('update image level');
-        const location = new LevelLocationModel({
-            id: '123',
-            title: '',
-            description: '',
-            category: '',
-            x: 1,
-            y: 2,
-        });
-        const locations = [];
-        locations.push(location);
-        locations.push(location);
-
-        const level = new LevelModel({
-            id: '234',
-            title: 'fdsdfs',
-            locations: locations
-        });
-
-        console.log(level);
-        let field_name = 'image';
-        let current_position = 1;
-
-        this.houseSchemaService.update_level(this.input_entity, field_name, current_position, level).subscribe((result: any) => {
+        this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
             console.log(result);
         });
 
@@ -229,4 +336,5 @@ export class HouseSchemaBuilderComponent
 
         this.dialog.open(LabelSelectorComponent, dialogConfig);
     }
+
 }

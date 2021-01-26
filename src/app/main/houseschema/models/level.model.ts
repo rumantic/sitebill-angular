@@ -18,6 +18,13 @@ export class LevelModel {
         return this.id;
     }
 
+    pushLocation( location: LevelLocationModel ) {
+        if ( this.locations === null ) {
+            this.locations = [];
+        }
+        this.locations.push(location);
+    }
+
 }
 const clearLevel = {
     id: '',

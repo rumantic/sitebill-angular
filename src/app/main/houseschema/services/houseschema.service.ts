@@ -25,11 +25,26 @@ export class HouseSchemaService {
         const request = {
             action: 'uploads',
             do: 'update_level',
+            model_name: entity.get_table_name(),
             field_name: field_name,
             current_position: current_position,
             key: entity.get_primary_key(),
             key_value: entity.get_key_value(),
             level: level,
+            session_key: this.modelService.get_session_key_safe()
+        };
+        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, request);
+    }
+
+    load_level(entity: SitebillEntity, field_name, current_position) {
+        const request = {
+            action: 'uploads',
+            do: 'load_level',
+            model_name: entity.get_table_name(),
+            field_name: field_name,
+            current_position: current_position,
+            key: entity.get_primary_key(),
+            key_value: entity.get_key_value(),
             session_key: this.modelService.get_session_key_safe()
         };
         return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, request);

@@ -4,9 +4,9 @@
         <div class="header-content" fxLayout="row wrap" fxLayoutAlign="center" fxFlex="1 0 auto">
             <!-- BOARD SELECTION BUTTON -->
             <div fxLayout="row" class="p-16" fxLayoutAlign="start center">
-                <button class="hidden-lt-md" mat-raised-button (click)="addFigure('circle')" color="fuse-white" matTooltip="Добавить метку">Добавить метку
+                <button class="hidden-lt-md" mat-raised-button (click)="addEmptyLabel()" color="fuse-white" matTooltip="Добавить метку">Добавить метку
                 </button>
-                <button class="hidden-gt-sm" mat-mini-fab (click)="addFigure('circle')" color="fuse-white" matTooltip="Добавить метку">
+                <button class="hidden-gt-sm" mat-mini-fab (click)="addEmptyLabel()" color="fuse-white" matTooltip="Добавить метку">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>

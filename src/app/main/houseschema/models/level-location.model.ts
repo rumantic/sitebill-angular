@@ -1,5 +1,5 @@
 export class LevelLocationModel {
-    id: string;
+    id: number;
     title: string;
     description: string;
     category: string;
@@ -23,7 +23,7 @@ export class LevelLocationModel {
 
 }
 const clearLevelLocation = {
-    id: '',
+    id: 0,
     title: '',
     description: '',
     category: '',
