@@ -71,6 +71,9 @@ export class HouseSchemaBuilderComponent
         if ( this._data ) {
             const image_index = this._data.image_index;
             this.schema_url = this._data.galleryImages[image_index].big;
+            this.input_entity = this._data.entity;
+            this.field_name = this._data.image_field;
+            this.current_position = this._data.image_index;
             // console.log(this._data);
         } else {
             this.input_entity = new SitebillEntity();
@@ -106,11 +109,12 @@ export class HouseSchemaBuilderComponent
 
         this.houseSchemaService.load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition()).subscribe((result: any) => {
             if ( result.status === 'ok' ) {
-                console.log(result.level);
+                // console.log(result.level);
                 Object.entries(result.level.locations).forEach(
                     ([key, location]) => {
+
                         if ( location ) {
-                            console.log(location);
+                             console.log(location);
                             if ( location.id ) {
                                 const current_location = new LevelLocationModel({
                                     id: location.id,
@@ -119,6 +123,7 @@ export class HouseSchemaBuilderComponent
                                     category: '',
                                     x: location.x,
                                     y: location.y,
+                                    realty_id: (location.realty_id ? location.realty_id : 0)
                                 });
 
                                 this.addLabel(current_location);
@@ -166,7 +171,6 @@ export class HouseSchemaBuilderComponent
     }
 
     extend(obj, id) {
-        console.log(id);
         obj.toObject = (function (toObject) {
             return function () {
                 return fabric.util.object.extend(toObject.call(this), {
@@ -232,19 +236,27 @@ export class HouseSchemaBuilderComponent
      */
 
     addLabel (location: LevelLocationModel) {
-        console.log(location);
+        // console.log(location);
 
         let add: any;
 
         add = new fabric.Circle({
-            radius: 20, left: location.x, top: location.y, fill: '#ff5722'
+            radius: 20, left: location.x, top: location.y, fill: location.getColor()
         });
         this.extend(add, location.getId());
 
         add.on('mousedblclick', function(opt){
             console.log('mousedblclick fired with opts: ');
-            //console.log(opt.canvas);
+            console.log(opt.target);
+            console.log(opt.target.fill);
             console.log(opt.target.toObject().id);
+
+            opt.target.set("fill", '#00e676');
+            opt.target.set("fillColor", '#00e676');
+            this.setRealtyId(opt.target.toObject().id, 111);
+            this.canvas.renderAll();
+
+
             this.editLabel();
             this.updateImageLevel();
         }.bind(this));
@@ -259,6 +271,15 @@ export class HouseSchemaBuilderComponent
         this.canvas.add(add);
         this.selectItemAfterAdded(add);
         this.level.pushLocation(location);
+    }
+
+    setRealtyId ( id, realty_id ) {
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                element.setRealtyId(realty_id);
+            }
+        });
+        this.updateImageLevel();
     }
 
     updateXY( id, x, y ) {
