@@ -114,16 +114,17 @@ export class HouseSchemaBuilderComponent
                     ([key, location]) => {
 
                         if ( location ) {
+                            let nlocation = new LevelLocationModel(location);
                              console.log(location);
-                            if ( location.id ) {
+                            if ( nlocation.id ) {
                                 const current_location = new LevelLocationModel({
-                                    id: location.id,
+                                    id: nlocation.id,
                                     title: '',
                                     description: '',
                                     category: '',
-                                    x: location.x,
-                                    y: location.y,
-                                    realty_id: (location.realty_id ? location.realty_id : 0)
+                                    x: nlocation.x,
+                                    y: nlocation.y,
+                                    realty_id: (nlocation.realty_id ? nlocation.realty_id : 0)
                                 });
 
                                 this.addLabel(current_location);
