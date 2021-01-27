@@ -15,6 +15,7 @@ import {LevelModel} from "../models/level.model";
 import {SectionModel} from "../models/section.model";
 import {StairModel} from "../models/stair.model";
 import {element} from "protractor";
+import {SnackService} from "../../../_services/snack.service";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -54,6 +55,7 @@ export class HouseSchemaBuilderComponent
         private modelService: ModelService,
         protected dialog: MatDialog,
         private houseSchemaService: HouseSchemaService,
+        protected _snackService: SnackService,
     )
     {
         this.initLabelEntity();
@@ -335,9 +337,10 @@ export class HouseSchemaBuilderComponent
 
 
     updateImageLevel() {
-        console.log('update image level');
         this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
-            console.log(result);
+            if ( result.status === 'error' ) {
+                this._snackService.message(result.message, 5000);
+            }
         });
 
     }
