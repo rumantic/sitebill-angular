@@ -48,15 +48,6 @@ export class LabelSelectorComponent extends FormComponent
             cdr,
         );
     }
-    save() {
-        console.log('save');
-        let ql_items = {};
-        ql_items = this.get_ql_items_from_form();
-        console.log(ql_items);
-        this.close();
-
-        // super.save();
-    }
 
     close() {
         super.close();

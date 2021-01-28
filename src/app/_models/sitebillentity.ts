@@ -21,6 +21,8 @@ export class SitebillEntity {
     private app_session_key: string;
     private title: string;
     private form_type: string;
+    private ql_items: any;
+    private params: {};
 
     constructor() {
         this.columns = [];
@@ -37,6 +39,7 @@ export class SitebillEntity {
         this.app_session_key = null;
         this.title = null;
         this.form_type = FormType.simple;
+        this.params = {};
     }
 
     get_app_name() {
@@ -121,6 +124,24 @@ export class SitebillEntity {
     set_hook(hook: string) {
         this.hook = hook;
     }
+
+    get_ql_items() {
+        return this.ql_items;
+    }
+
+    set_ql_items(ql_items: any) {
+        this.ql_items = ql_items;
+    }
+
+    get_param(key:string) {
+        return this.params[key];
+    }
+
+    set_param(key: string, value: string) {
+        this.params[key] = value;
+    }
+
+
 
     get_readonly() {
         return this.readonly;

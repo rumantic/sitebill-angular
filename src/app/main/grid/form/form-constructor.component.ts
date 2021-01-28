@@ -589,6 +589,7 @@ export class FormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
+        this._data.set_ql_items(ql_items);
 
 
         if (this._data.key_value == null) {

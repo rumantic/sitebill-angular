@@ -16,6 +16,7 @@ import {SectionModel} from "../models/section.model";
 import {StairModel} from "../models/stair.model";
 import {element} from "protractor";
 import {SnackService} from "../../../_services/snack.service";
+import {FilterService} from "../../../_services/filter.service";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -56,6 +57,7 @@ export class HouseSchemaBuilderComponent
         protected dialog: MatDialog,
         private houseSchemaService: HouseSchemaService,
         protected _snackService: SnackService,
+        public filterService: FilterService,
     )
     {
         this.initLabelEntity();
@@ -99,6 +101,19 @@ export class HouseSchemaBuilderComponent
         this.canvas.setHeight(this.getHeight(''));
         this.OutputContent = null;
         this.load_level();
+
+        this.filterService.share.subscribe((entity: SitebillEntity) => {
+            if (entity.get_app_name() == this.label_entity.get_app_name()) {
+                console.log(entity);
+                console.log(entity.get_ql_items());
+                if (entity.get_ql_items() && entity.get_param('canvas_id')) {
+                    this.setRealtyId(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                }
+
+                //console.log(entity);
+            }
+        });
+
     }
 
     load_level() {
@@ -239,13 +254,35 @@ export class HouseSchemaBuilderComponent
      */
 
     addLabel (location: LevelLocationModel) {
+        console.log('add label');
         // console.log(location);
 
-        let add: any;
+        let circle: any;
 
-        add = new fabric.Circle({
+        circle = new fabric.Circle({
             radius: 20, left: location.x, top: location.y, fill: location.getColor()
         });
+
+        console.log(location.realty_id);
+
+        let circle_label = (location.realty_id ? location.realty_id : '?')
+
+
+        var t = new fabric.Text(circle_label.toString(), {
+            fontFamily: 'Calibri',
+            fontSize: 12,
+            fill: '#000000',
+            textAlign: 'center',
+            originX: 'center',
+            originY: 'center',
+            left: location.x + circle.radius,
+            top: location.y + circle.radius
+        });
+
+        var add = new fabric.Group([circle, t],{
+            // any group attributes here
+        });
+
         this.extend(add, location.getId());
 
         add.on('mousedblclick', function(opt){
@@ -253,10 +290,12 @@ export class HouseSchemaBuilderComponent
             console.log(opt.target);
             console.log(opt.target.fill);
             console.log(opt.target.toObject().id);
-
+            /*
             opt.target.set("fill", '#00e676');
             opt.target.set("fillColor", '#00e676');
-            this.setRealtyId(opt.target.toObject().id, 111);
+             */
+
+            this.label_entity.set_param('canvas_id', opt.target.toObject().id);
             this.canvas.renderAll();
 
 
