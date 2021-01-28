@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@an
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, takeUntil} from 'rxjs/operators';
 import {FormType, SitebillEntity} from '../../../_models';
 import {Subject} from 'rxjs';
 import * as moment from 'moment';
@@ -10,6 +10,7 @@ import {ConfirmComponent} from '../../../dialogs/confirm/confirm.component';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {switchMap} from "rxjs-compat/operator/switchMap";
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -30,6 +31,15 @@ export class FormConstructorComponent implements OnInit {
 
     public text_area_editor_storage = {};
     public options_storage = {};
+    public options_storage_buffer = {};
+    public loading: Boolean;
+    private selectBufferSize = 100;
+    private numberOfItemsFromEndBeforeFetchingMore = 10;
+    input$ = new Subject<string>();
+    private termsearch = false;
+
+
+
     form_submitted: boolean = false;
     form_inited: boolean = false;
     rows: any[];
@@ -401,19 +411,65 @@ export class FormConstructorComponent implements OnInit {
 
     init_select_by_query_options(columnName) {
         // console.log(this._data.get_default_params());
+        this.termsearch = false;
         this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
         // this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    // console.log(result);
                     this.options_storage[columnName] = result.data;
+                    this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
                     this.cdr.markForCheck();
                 }
-
             });
 
     }
+
+    onScrollToEnd(columnName:string) {
+        this.fetchMore(columnName);
+    }
+
+    onScroll({ end }, columnName:string) {
+        if (this.loading || this.options_storage[columnName].length <= this.options_storage_buffer[columnName].length) {
+            return;
+        }
+
+        if (end + this.numberOfItemsFromEndBeforeFetchingMore >= this.options_storage_buffer[columnName].length) {
+            this.fetchMore(columnName);
+        }
+    }
+
+    private fetchMore(columnName:string) {
+        if ( this.termsearch ) {
+            return;
+        }
+        const len = this.options_storage_buffer[columnName].length;
+        const more = this.options_storage[columnName].slice(len, this.selectBufferSize + len);
+        this.loading = true;
+        // using timeout here to simulate backend API delay
+        setTimeout(() => {
+            this.loading = false;
+            this.options_storage_buffer[columnName] = this.options_storage_buffer[columnName].concat(more);
+        }, 200)
+    }
+
+    onSearch(columnName:string) {
+        this.input$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map(term => {
+                this.options_storage_buffer[columnName] = this.options_storage[columnName]
+                    .filter(item => item.value.includes(term))
+                    .slice(0, this.selectBufferSize);
+
+                this.termsearch = true;
+            }),
+            //map(term => this.options_storage[columnName].filter((x: { title: string }) => x.title.includes(term)))
+        ).subscribe(data => {
+            //this.options_storage_buffer[columnName] = data.slice(0, this.selectBufferSize);
+        })
+    }
+
     is_date_type(type: string) {
         if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime' || type == 'date') {
             return true;

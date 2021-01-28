@@ -86,7 +86,7 @@ export class HouseSchemaBuilderComponent
             this.field_name = 'image';
             this.current_position = 1;
 
-            this.schema_url = "https://qplan.sitebill.site/img/data/20210121/jpg_6008feb8a8b6e_1611202232_1.svg?1611206294340";
+            this.schema_url = "https://qplan.sitebill.site/img/data/20210127/jpg_60113a808f75e_1611741824_1.svg";
         }
 
         this.canvas = new fabric.Canvas('canvas', {
