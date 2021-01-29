@@ -6,6 +6,8 @@ export class LevelLocationModel {
     x: number;
     y: number;
     realty_id: number;
+    private label_id: number;
+
     constructor(item: any = clearLevelLocation) {
         this.id = item.id;
         this.title = item.title;
@@ -14,6 +16,7 @@ export class LevelLocationModel {
         this.x = item.x;
         this.y = item.y;
         this.realty_id = item.realty_id;
+        this.label_id = item.label_id;
     }
 
     getTitle() {
@@ -29,10 +32,17 @@ export class LevelLocationModel {
         this.realty_id = realty_id;
     }
     getColor() {
-        if ( this.realty_id === 0 ) {
-            return '#ff5722';
+        if ( this.getLabelId() ) {
+            return '#00e676';
         }
-        return '#00e676';
+        return '#ff5722';
+    }
+
+    setLabelId(label_id:number) {
+        this.label_id = label_id;
+    }
+    getLabelId() {
+        return this.label_id;
     }
 }
 const clearLevelLocation = {
@@ -42,5 +52,6 @@ const clearLevelLocation = {
     category: '',
     x: '',
     y: '',
-    realty_id: 0
+    realty_id: 0,
+    label_id: null
 };

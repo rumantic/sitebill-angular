@@ -262,7 +262,7 @@ export class FormConstructorComponent implements OnInit {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
             if (this.records[this.rows[i]].type == 'select_by_query') {
-                this.init_select_by_query_options(this.records[this.rows[i]].name);
+                this.init_select_by_query_options(this.records[this.rows[i]].name, i);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
@@ -409,7 +409,7 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    init_select_by_query_options(columnName) {
+    init_select_by_query_options(columnName, rowIndex = 0) {
         // console.log(this._data.get_default_params());
         this.termsearch = false;
         this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
@@ -419,6 +419,10 @@ export class FormConstructorComponent implements OnInit {
                 if (result) {
                     this.options_storage[columnName] = result.data;
                     this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
+
+                    if (this.records[this.rows[rowIndex]].value_string) {
+                        this.initial_select_list(this.records[this.rows[rowIndex]].name, this.records[this.rows[rowIndex]].value_string);
+                    }
                     this.cdr.markForCheck();
                 }
             });
@@ -451,6 +455,12 @@ export class FormConstructorComponent implements OnInit {
             this.loading = false;
             this.options_storage_buffer[columnName] = this.options_storage_buffer[columnName].concat(more);
         }, 200)
+    }
+
+    initial_select_list (columnName:string, term:string) {
+        this.options_storage_buffer[columnName] = this.options_storage[columnName]
+            .filter(item => item.value.includes(term))
+            .slice(0, this.selectBufferSize);
     }
 
     onSearch(columnName:string) {
@@ -600,6 +610,7 @@ export class FormConstructorComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись создана успешно');
+                        this._data.set_key_value(response.data['new_record_id']);
                         if (this._data.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {

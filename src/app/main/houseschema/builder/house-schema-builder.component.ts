@@ -94,7 +94,7 @@ export class HouseSchemaBuilderComponent
         this.canvas = new fabric.Canvas('canvas', {
             hoverCursor: 'pointer',
             selection: true,
-            selectionBorderColor: 'blue'
+            selectionBorderColor: 'blue',
         });
         this.textString = null;
         this.canvas.setWidth(this.getWidth(''));
@@ -104,16 +104,46 @@ export class HouseSchemaBuilderComponent
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
             if (entity.get_app_name() == this.label_entity.get_app_name()) {
-                console.log(entity);
-                console.log(entity.get_ql_items());
+                // console.log(entity);
+                // console.log(entity.get_ql_items());
                 if (entity.get_ql_items() && entity.get_param('canvas_id')) {
                     this.setRealtyId(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                    this.setLabelId(entity.get_param('canvas_id'), entity.get_key_value());
+                    this.changeCanvasText(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                    this.updateImageLevel();
                 }
 
                 //console.log(entity);
             }
         });
 
+    }
+
+    changeCanvasText( id:number, text:string ) {
+        this.canvas.getObjects().forEach(item => {
+            if (item.toObject().id === id) {
+                item._objects[0].set("fillColor", '#00e676');
+                item._objects[0].set("fill", '#00e676');
+                item._objects[0].set("radius", 21);
+                item._objects[1].set("text", text);
+            }
+        })
+        this.refreshLabel(id);
+    }
+
+    refreshLabel(id:number) {
+        this.canvas.getObjects().forEach(item => {
+            if (item.toObject().id === id) {
+                item._objects[0].set("radius", this.getRadius()+1);
+            }
+        })
+        this.canvas.renderAll();
+        this.canvas.getObjects().forEach(item => {
+            if (item.toObject().id === id) {
+                item._objects[0].set("radius", this.getRadius());
+            }
+        })
+        this.canvas.renderAll();
     }
 
     load_level() {
@@ -132,7 +162,8 @@ export class HouseSchemaBuilderComponent
 
                         if ( location ) {
                             let nlocation = new LevelLocationModel(location);
-                             console.log(location);
+                            // console.log(location);
+                            // console.log(nlocation.getLabelId());
                             if ( nlocation.id ) {
                                 const current_location = new LevelLocationModel({
                                     id: nlocation.id,
@@ -141,7 +172,8 @@ export class HouseSchemaBuilderComponent
                                     category: '',
                                     x: nlocation.x,
                                     y: nlocation.y,
-                                    realty_id: (nlocation.realty_id ? nlocation.realty_id : 0)
+                                    realty_id: (nlocation.realty_id ? nlocation.realty_id : 0),
+                                    label_id: (nlocation.getLabelId() ? nlocation.getLabelId() : null),
                                 });
 
                                 this.addLabel(current_location);
@@ -154,55 +186,18 @@ export class HouseSchemaBuilderComponent
         });
     }
 
-    addText() {
-        let textString = this.textString;
-        let text = new fabric.IText(textString, {
-            left: 10,
-            top: 10,
-            fontFamily: 'helvetica',
-            angle: 0,
-            fill: '#000000',
-            scaleX: 0.5,
-            scaleY: 0.5,
-            fontWeight: '',
-            hasRotatingPoint: true
-        });
-        this.extend(text, this.randomId());
-        this.canvas.add(text);
-        this.selectItemAfterAdded(text);
-        this.textString = '';
-    }
-
-    extend(obj, id) {
-        obj.toObject = (function (toObject) {
-            return function () {
-                return fabric.util.object.extend(toObject.call(this), {
-                    id: id
-                });
-            };
-        })(obj.toObject);
-    }
-    //======= this is used to generate random id of every object ===========
-    randomId() {
-        return Math.floor(Math.random() * 999999) + 1;
-    }
-    //== this function is used to active the object after creation ==========
-    selectItemAfterAdded(obj) {
-        this.canvas.discardActiveObject().renderAll();
-        this.canvas.setActiveObject(obj);
-    }
 
     addLabel (location: LevelLocationModel) {
-        console.log('add label');
+        // console.log('add label');
         // console.log(location);
 
         let circle: any;
 
         circle = new fabric.Circle({
-            radius: 20, left: location.x, top: location.y, fill: location.getColor()
+            radius: this.getRadius(), left: location.x, top: location.y, fill: location.getColor()
         });
 
-        console.log(location.realty_id);
+        // console.log(location.realty_id);
 
         let circle_label = (location.realty_id ? location.realty_id : '?')
 
@@ -225,16 +220,18 @@ export class HouseSchemaBuilderComponent
         this.extend(add, location.getId());
 
         add.on('mousedblclick', function(opt){
-            console.log('mousedblclick fired with opts: ');
-            console.log(opt.target);
-            console.log(opt.target.fill);
-            console.log(opt.target.toObject().id);
+            // console.log('mousedblclick fired with opts: ');
+            // console.log(opt.target);
+            // console.log(opt.target.fill);
+            // console.log(opt.target.toObject().id);
             /*
             opt.target.set("fill", '#00e676');
             opt.target.set("fillColor", '#00e676');
              */
-
+            console.log(this.getLabelId(opt.target.toObject().id));
+            this.label_entity.set_key_value(this.getLabelId(opt.target.toObject().id));
             this.label_entity.set_param('canvas_id', opt.target.toObject().id);
+            this.label_entity.set_param('realty_id', this.getRealtyId(opt.target.toObject().id));
             this.canvas.renderAll();
 
 
@@ -243,9 +240,9 @@ export class HouseSchemaBuilderComponent
         }.bind(this));
 
         add.on('moved', function(opt){
-            console.log('mouseout fired with opts: ');
+            //console.log('mouseout fired with opts: ');
             //console.log(opt.target);
-            console.log(opt.target.toObject().id);
+            //console.log(opt.target.toObject().id);
             this.updateXY(opt.target.toObject().id, opt.target.left, opt.target.top);
         }.bind(this));
         // console.log(add);
@@ -260,22 +257,39 @@ export class HouseSchemaBuilderComponent
                 element.setRealtyId(realty_id);
             }
         });
-        this.updateImageLevel();
     }
 
-    updateXY( id, x, y ) {
-
+    setLabelId ( id, label_id ) {
         this.level.locations.forEach((element) => {
             if (id === element.id) {
-                element.x = x;
-                element.y = y;
-                console.log(element);
+                element.setLabelId(label_id);
             }
         });
-
-
-        this.updateImageLevel();
     }
+
+
+    getRealtyId ( id ) {
+        let realty_id = 0;
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                realty_id = element.getRealtyId();
+            }
+        });
+        return realty_id;
+    }
+
+    getLabelId ( id ) {
+        let label_id = 0;
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                label_id = element.getLabelId();
+            }
+        });
+        return label_id;
+    }
+
+
+
 
     addEmptyLabel(top = 10, left = 10) {
         const current_location = new LevelLocationModel({
@@ -291,30 +305,10 @@ export class HouseSchemaBuilderComponent
 
     }
 
-    ExportToContent(input) {
-        if(input == 'json'){
-            this.OutputContent = JSON.stringify(this.canvas);
-        }else if(input == 'svg'){
-            this.OutputContent = this.canvas.toSVG();
-        }
-    }
-    getWidth(postfix = 'px') {
-        return '1000' + postfix;
-    }
-    getHeight(postfix = 'px') {
-        return '600' + postfix;
-    }
-
-    private getFieldName() {
-        return this.field_name;
-    }
-
-    private getCurrentPosition() {
-        return this.current_position;
-    }
 
 
     updateImageLevel() {
+        console.log(this.level);
         this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
             if ( result.status === 'error' ) {
                 this._snackService.message(result.message, 5000);
@@ -336,8 +330,59 @@ export class HouseSchemaBuilderComponent
         //console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
+        console.log(this.label_entity);
+
 
         this.dialog.open(LabelSelectorComponent, dialogConfig);
     }
 
+    extend(obj, id) {
+        obj.toObject = (function (toObject) {
+            return function () {
+                return fabric.util.object.extend(toObject.call(this), {
+                    id: id
+                });
+            };
+        })(obj.toObject);
+    }
+    //======= this is used to generate random id of every object ===========
+    randomId() {
+        return Math.floor(Math.random() * 999999) + 1;
+    }
+    //== this function is used to active the object after creation ==========
+    selectItemAfterAdded(obj) {
+        this.canvas.discardActiveObject().renderAll();
+        this.canvas.setActiveObject(obj);
+    }
+
+    updateXY( id, x, y ) {
+
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                element.x = x;
+                element.y = y;
+                console.log(element);
+            }
+        });
+
+
+        this.updateImageLevel();
+    }
+    getWidth(postfix = 'px') {
+        return '1000' + postfix;
+    }
+    getHeight(postfix = 'px') {
+        return '600' + postfix;
+    }
+    getRadius() {
+        return 20;
+    }
+
+    private getFieldName() {
+        return this.field_name;
+    }
+
+    private getCurrentPosition() {
+        return this.current_position;
+    }
 }
