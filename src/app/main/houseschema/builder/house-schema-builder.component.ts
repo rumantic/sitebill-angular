@@ -17,6 +17,7 @@ import {StairModel} from "../models/stair.model";
 import {element} from "protractor";
 import {SnackService} from "../../../_services/snack.service";
 import {FilterService} from "../../../_services/filter.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -48,6 +49,9 @@ export class HouseSchemaBuilderComponent
     private current_position: number;
     private level: LevelModel;
 
+    form: FormGroup;
+
+
     /**
      * Constructor
      *
@@ -58,6 +62,7 @@ export class HouseSchemaBuilderComponent
         private houseSchemaService: HouseSchemaService,
         protected _snackService: SnackService,
         public filterService: FilterService,
+        private _formBuilder: FormBuilder
     )
     {
         this.initLabelEntity();
@@ -100,6 +105,7 @@ export class HouseSchemaBuilderComponent
         this.canvas.setWidth(this.getWidth(''));
         this.canvas.setHeight(this.getHeight(''));
         this.OutputContent = null;
+        this.initForm();
         this.load_level();
 
         this.filterService.share.subscribe((entity: SitebillEntity) => {
@@ -116,7 +122,16 @@ export class HouseSchemaBuilderComponent
                 //console.log(entity);
             }
         });
+    }
 
+    initForm () {
+        this.form = this._formBuilder.group({
+            level_name : ['', Validators.required],
+        });
+
+        this.form.valueChanges.subscribe(val => {
+            this.updateImageLevel();
+        });
     }
 
     changeCanvasText( id:number, text:string ) {
@@ -148,8 +163,8 @@ export class HouseSchemaBuilderComponent
 
     load_level() {
         this.level = new LevelModel({
-            id: '234',
-            title: 'fdsdfs',
+            id: this.current_position,
+            title: '',
             locations: null
         });
 
@@ -157,6 +172,8 @@ export class HouseSchemaBuilderComponent
         this.houseSchemaService.load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition()).subscribe((result: any) => {
             if ( result.status === 'ok' ) {
                 // console.log(result.level);
+                this.level.title = result.level.title;
+                this.form.controls['level_name'].patchValue(this.level.title);
                 Object.entries(result.level.locations).forEach(
                     ([key, location]) => {
 
@@ -228,7 +245,7 @@ export class HouseSchemaBuilderComponent
             opt.target.set("fill", '#00e676');
             opt.target.set("fillColor", '#00e676');
              */
-            console.log(this.getLabelId(opt.target.toObject().id));
+            //console.log(this.getLabelId(opt.target.toObject().id));
             this.label_entity.set_key_value(this.getLabelId(opt.target.toObject().id));
             this.label_entity.set_param('canvas_id', opt.target.toObject().id);
             this.label_entity.set_param('realty_id', this.getRealtyId(opt.target.toObject().id));
@@ -308,7 +325,7 @@ export class HouseSchemaBuilderComponent
 
 
     updateImageLevel() {
-        console.log(this.level);
+        this.level.title = this.form.controls['level_name'].value;
         this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
             if ( result.status === 'error' ) {
                 this._snackService.message(result.message, 5000);
