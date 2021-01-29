@@ -147,21 +147,6 @@ export class HouseSchemaBuilderComponent
                                 this.addLabel(current_location);
                             }
                         }
-
-                        /*
-                        let new_sections = [];
-                        if ( stair.sections ) {
-                            Object.entries(stair.sections).forEach(
-                                ([key, section]) => {
-                                    // console.log(section);
-                                    let new_section = new SectionModel({_id: section._id, name: section.name});
-                                    new_sections.push(new_section);
-                                }
-                            );
-                        }
-                        let new_stair = new StairModel({_id: stair._id, name: stair.name, sections: new_sections});
-                        new_stairs.push(new_stair);
-                         */
                     }
                 );
 
@@ -206,52 +191,6 @@ export class HouseSchemaBuilderComponent
         this.canvas.discardActiveObject().renderAll();
         this.canvas.setActiveObject(obj);
     }
-
-    /*
-    addFigure(figure) {
-        let add: any;
-        switch (figure) {
-            case 'rectangle':
-                add = new fabric.Rect({
-                    width: 200, height: 100, left: 10, top: 10, angle: 0,
-                    fill: '#3f51b5'
-                });
-                break;
-            case 'square':
-                add = new fabric.Rect({
-                    width: 100, height: 100, left: 10, top: 10, angle: 0,
-                    fill: '#4caf50'
-                });
-                break;
-            case 'triangle':
-                add = new fabric.Triangle({
-                    width: 100, height: 100, left: 10, top: 10, fill: '#2196f3'
-                });
-                break;
-            case 'circle':
-                add = new fabric.Circle({
-                    radius: 20, left: 10, top: 10, fill: '#ff5722'
-                });
-                add.on('mousedblclick', function(opt){
-                    console.log('mousedblclick fired with opts: ');
-                    console.log(opt);
-                    this.editLabel();
-                    this.updateImageLevel(opt);
-                }.bind(this));
-
-                add.on('moved', function(opt){
-                    console.log('mouseout fired with opts: ');
-                    console.log(opt.target);
-                    this.updateImageLevel(opt);
-                }.bind(this));
-
-                break;
-        }
-        this.extend(add, this.randomId());
-        this.canvas.add(add);
-        this.selectItemAfterAdded(add);
-    }
-     */
 
     addLabel (location: LevelLocationModel) {
         console.log('add label');
