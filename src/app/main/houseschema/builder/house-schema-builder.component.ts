@@ -173,32 +173,33 @@ export class HouseSchemaBuilderComponent
             if ( result.status === 'ok' ) {
                 // console.log(result.level);
                 this.level.title = result.level.title;
-                this.form.controls['level_name'].patchValue(this.level.title);
-                Object.entries(result.level.locations).forEach(
-                    ([key, location]) => {
+                if ( result.level.locations ) {
+                    Object.entries(result.level.locations).forEach(
+                        ([key, location]) => {
 
-                        if ( location ) {
-                            let nlocation = new LevelLocationModel(location);
-                            // console.log(location);
-                            // console.log(nlocation.getLabelId());
-                            if ( nlocation.id ) {
-                                const current_location = new LevelLocationModel({
-                                    id: nlocation.id,
-                                    title: '',
-                                    description: '',
-                                    category: '',
-                                    x: nlocation.x,
-                                    y: nlocation.y,
-                                    realty_id: (nlocation.realty_id ? nlocation.realty_id : 0),
-                                    label_id: (nlocation.getLabelId() ? nlocation.getLabelId() : null),
-                                });
+                            if ( location ) {
+                                let nlocation = new LevelLocationModel(location);
+                                // console.log(location);
+                                // console.log(nlocation.getLabelId());
+                                if ( nlocation.id ) {
+                                    const current_location = new LevelLocationModel({
+                                        id: nlocation.id,
+                                        title: '',
+                                        description: '',
+                                        category: '',
+                                        x: nlocation.x,
+                                        y: nlocation.y,
+                                        realty_id: (nlocation.realty_id ? nlocation.realty_id : 0),
+                                        label_id: (nlocation.getLabelId() ? nlocation.getLabelId() : null),
+                                    });
 
-                                this.addLabel(current_location);
+                                    this.addLabel(current_location);
+                                }
                             }
                         }
-                    }
-                );
-
+                    );
+                }
+                this.form.controls['level_name'].patchValue(this.level.title);
             }
         });
     }
@@ -347,7 +348,7 @@ export class HouseSchemaBuilderComponent
         //console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
-        console.log(this.label_entity);
+        //console.log(this.label_entity);
 
 
         this.dialog.open(LabelSelectorComponent, dialogConfig);
@@ -378,7 +379,7 @@ export class HouseSchemaBuilderComponent
             if (id === element.id) {
                 element.x = x;
                 element.y = y;
-                console.log(element);
+                // console.log(element);
             }
         });
 

@@ -120,10 +120,11 @@
 
                                     <span *ngSwitchCase="'select_by_query'"  [hidden]="records[x].hidden">
                                         <div fxLayout="row">
-                                            <div fxFlex="90">
+                                            <div fxFlex="90" class="min-select">
                                                 <ng-select [formControlName]="records[x].name"
                                                            [required]="records[x].required_boolean"
                                                            appendTo="body"
+                                                           class="auto-grow"
                                                            bindValue="id"
                                                            bindLabel="value"
                                                            [items]="options_storage_buffer[records[x].name]"
