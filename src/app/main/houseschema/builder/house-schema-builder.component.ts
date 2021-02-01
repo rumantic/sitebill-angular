@@ -101,6 +101,9 @@ export class HouseSchemaBuilderComponent
             selection: true,
             selectionBorderColor: 'blue',
         });
+        this.canvas.setWidth(this.getWidth(''));
+        this.canvas.setHeight(this.getHeight(''));
+
         this.textString = null;
         this.OutputContent = null;
         this.initForm();
@@ -171,16 +174,17 @@ export class HouseSchemaBuilderComponent
             if ( result.status === 'ok' ) {
                 console.log(result.level);
                 this.level.title = result.level.title;
-                if ( result.level.locations ) {
-                    if ( result.level.mapwidth ) {
-                        this.size.width = result.level.mapwidth;
-                    }
-                    if (result.level.mapheight) {
-                        this.size.height = result.level.mapheight;
-                    }
+                if ( result.level.mapwidth ) {
+                    this.size.width = result.level.mapwidth;
+                }
+                if (result.level.mapheight) {
+                    this.size.height = result.level.mapheight;
+                }
 
-                    this.canvas.setWidth(this.getWidth(''));
-                    this.canvas.setHeight(this.getHeight(''));
+                this.canvas.setWidth(this.getWidth(''));
+                this.canvas.setHeight(this.getHeight(''));
+
+                if ( result.level.locations ) {
 
 
                     Object.entries(result.level.locations).forEach(
