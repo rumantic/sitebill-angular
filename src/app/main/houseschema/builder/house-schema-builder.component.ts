@@ -29,8 +29,8 @@ export class HouseSchemaBuilderComponent
     public canvas: any;
     public textString: string;
     private size: any = {
-        width: 1200,
-        height: 1000
+        width: 1000,
+        height: 600
     };
     public OutputContent: string;
     public label_entity: SitebillEntity;
@@ -102,8 +102,6 @@ export class HouseSchemaBuilderComponent
             selectionBorderColor: 'blue',
         });
         this.textString = null;
-        this.canvas.setWidth(this.getWidth(''));
-        this.canvas.setHeight(this.getHeight(''));
         this.OutputContent = null;
         this.initForm();
         this.load_level();
@@ -171,9 +169,20 @@ export class HouseSchemaBuilderComponent
 
         this.houseSchemaService.load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition()).subscribe((result: any) => {
             if ( result.status === 'ok' ) {
-                // console.log(result.level);
+                console.log(result.level);
                 this.level.title = result.level.title;
                 if ( result.level.locations ) {
+                    if ( result.level.mapwidth ) {
+                        this.size.width = result.level.mapwidth;
+                    }
+                    if (result.level.mapheight) {
+                        this.size.height = result.level.mapheight;
+                    }
+
+                    this.canvas.setWidth(this.getWidth(''));
+                    this.canvas.setHeight(this.getHeight(''));
+
+
                     Object.entries(result.level.locations).forEach(
                         ([key, location]) => {
 
@@ -387,10 +396,10 @@ export class HouseSchemaBuilderComponent
         this.updateImageLevel();
     }
     getWidth(postfix = 'px') {
-        return '1000' + postfix;
+        return this.size.width + postfix;
     }
     getHeight(postfix = 'px') {
-        return '600' + postfix;
+        return this.size.height + postfix;
     }
     getRadius() {
         return 20;
