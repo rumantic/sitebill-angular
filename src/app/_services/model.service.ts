@@ -8,6 +8,7 @@ import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
+import {timer} from "rxjs";
 
 
 @Injectable()
@@ -155,8 +156,10 @@ export class ModelService {
             }
         } else {
             console.log('guest mode not enabled');
-            this._snackService.message('Недостаточно прав доступа для просмотра этого раздела. Обратитесь к администратору.');
-            this.router.navigate(['/login/']);
+            this._snackService.message('Для работы с разделом вы должны авторизоваться.');
+            let timerPeriod = 1000;
+            const numbers = timer(timerPeriod);
+            numbers.subscribe(x => this.router.navigate(['/login/']));
         }
     }
 
