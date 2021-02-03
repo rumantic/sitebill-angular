@@ -30,6 +30,7 @@ export class ModelService {
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     private dom_sitebill_config: any;
     private install_mode: boolean;
+    private nobody_first_login = false;
 
 
 
@@ -156,10 +157,13 @@ export class ModelService {
             }
         } else {
             console.log('guest mode not enabled');
-            this._snackService.message('Для работы с разделом вы должны авторизоваться.');
-            let timerPeriod = 1000;
-            const numbers = timer(timerPeriod);
-            numbers.subscribe(x => this.router.navigate(['/login/']));
+            if ( !this.nobody_first_login ) {
+                this._snackService.message('Для работы с разделом вы должны авторизоваться.');
+                let timerPeriod = 1000;
+                const numbers = timer(timerPeriod);
+                numbers.subscribe(x => this.router.navigate(['/login/']));
+                this.nobody_first_login = true;
+            }
         }
     }
 

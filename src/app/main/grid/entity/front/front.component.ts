@@ -203,8 +203,10 @@ export class FrontComponent {
 
 
     enable_guest_mode () {
-        this.switch_off_grid_controls();
-        this.modelService.enable_guest_mode();
+        if ( this.modelService.get_user_id() === null ) {
+            this.switch_off_grid_controls();
+            this.modelService.enable_guest_mode();
+        }
     }
 
     load_topics () {
