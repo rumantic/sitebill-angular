@@ -39,6 +39,7 @@ import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
+import {StringParserService} from "../../_services/string-parser.service";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -201,6 +202,7 @@ export class GridComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
         public filterService: FilterService,
+        protected stringParserService: StringParserService
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -445,6 +447,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     get_filter_params () {
         let filter_params_json = {};
+        let concatenate_search_string = null;
 
 
         if (this.filterService.get_params_count(this.entity.get_app_name()) > 0) {
@@ -456,9 +459,14 @@ export class GridComponent implements OnInit, OnDestroy
             var mapped = Object.keys(obj);
             // console.log(mapped);
             var self = this;
+
             mapped.forEach(function (item, i, arr) {
-                if ( item === 'concatenate_search' && self.entity.get_app_name() === 'data' ) {
-                    self.parse_params_from_string(obj[item]);
+                if (
+                    self.modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1' &&
+                    item === 'concatenate_search' &&
+                    self.entity.get_app_name() === 'data'
+                ) {
+                    concatenate_search_string = obj[item];
                 } else {
                     //console.log(obj[item].length);
                     //console.log(typeof obj[item]);
@@ -482,11 +490,18 @@ export class GridComponent implements OnInit, OnDestroy
             }
         }
         filter_params_json = this.extended_params(filter_params_json);
+        if ( concatenate_search_string !== null ) {
+            filter_params_json = {...filter_params_json, ...self.parse_params_from_string(concatenate_search_string)};
+        }
+        console.log(filter_params_json);
         return filter_params_json;
     }
 
     parse_params_from_string (input:string) {
-        console.log(input);
+        const parser_result = this.stringParserService.parse(input);
+        // console.log(input);
+        // console.log(parser_result);
+        return parser_result.params;
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {

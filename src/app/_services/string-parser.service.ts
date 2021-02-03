@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
 
 
 @Injectable()
 export class StringParserService {
-    private subject = new Subject<any>();
-
     constructor() {
     }
 
@@ -42,6 +39,12 @@ export class StringParserService {
         //console.log(found);
 
         let s = [];
+
+        let params_return = {
+            //price_min: 1000000,
+            //price_max: 2000000,
+        };
+
         for(var srtype in found){
             if(srtype == 'area'){
                 if(found[srtype].length == 1){
@@ -76,13 +79,30 @@ export class StringParserService {
             }
             if(srtype == 'rooms'){
                 s.push('Комнат: ' + found[srtype].join(', '));
+                params_return = {...params_return, ...{room_count:found[srtype]}};
             }
             if(srtype == 'id'){
                 s.push('ID: ' + found[srtype].join(', '));
             }
         }
 
-        const result = {s:s};
+        let example_return = {
+            price_min: 1000000,
+            price_max: 3500000,
+            area_min: 30,
+            area_max: 50,
+            room_count: [1,2,3],
+            floor_min: 1,
+            floor_max: 9,
+        };
+
+
+
+        const result = {
+            s:s,
+            params: params_return
+        };
+
         return result;
     }
 
