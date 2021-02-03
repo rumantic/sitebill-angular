@@ -14,7 +14,7 @@ export class StringParserService {
         let anymatch = false;
 
         while(search.length > 0){
-
+            //console.log('строка: '+search);
             //console.log('строка: '+search);
             var match = null;
             //anymatch = false;
@@ -36,7 +36,7 @@ export class StringParserService {
             }
         }
 
-        //console.log(found);
+
 
         let s = [];
 
@@ -54,28 +54,30 @@ export class StringParserService {
                     s.push('Площадь, м: от ' + ar[0] + ' до ' + ar[ar.length - 1]);
                 }
             }
+            if(srtype == 'price'){
+                if(found[srtype].length == 1){
+                    s.push('Цена: до ' + found[srtype][0]);
+                }else if(found[srtype].length > 1){
+                    let ar = found[srtype].sort(this.numbersSort)
+                    s.push('Цена, : от ' + ar[0] + ' до ' + ar[ar.length - 1]);
+                }
+            }
             if(srtype == 'kitchen'){
                 if(found[srtype].length == 1){
                     s.push('Кухня, м: от ' + found[srtype][0]);
                 }else if(found[srtype].length > 1){
-                    let ar = found[srtype].sort();
+                    let ar = found[srtype].sort(this.numbersSort);
                     s.push('Кухня, м: от ' + ar[0] + ' до ' + ar[ar.length - 1]);
                 }
             }
             if(srtype == 'floor'){
-                if(found[srtype][0] != 0 && found[srtype][1] != 0){
-                    s.push('Этаж: от ' + found[srtype][0] + ' до ' + found[srtype][1]);
-                }else if(found[srtype][0] != 0){
-                    s.push('Этаж: от ' + found[srtype][0]);
-                }else if(found[srtype][1] != 0){
-                    s.push('Этаж: до ' + found[srtype][1]);
+                if(found[srtype].min != 0 && found[srtype].max != 0){
+                    s.push('Этаж: от ' + found[srtype].min + ' до ' + found[srtype].max);
+                }else if(found[srtype].min != 0){
+                    s.push('Этаж: от ' + found[srtype].min);
+                }else if(found[srtype].max != 0){
+                    s.push('Этаж: до ' + found[srtype].max);
                 }
-                /*if(found[srtype].length == 1){
-                    s.push('Этаж: от ' + found[srtype][0]);
-                }else if(found[srtype].length > 1){
-                    let ar = found[srtype].sort();
-                    s.push('Этаж: от ' + ar[0] + ' до ' + ar[ar.length - 1]);
-                }*/
             }
             if(srtype == 'rooms'){
                 s.push('Комнат: ' + found[srtype].join(', '));
@@ -85,6 +87,8 @@ export class StringParserService {
                 s.push('ID: ' + found[srtype].join(', '));
             }
         }
+
+
 
         let example_return = {
             price_min: 1000000,
@@ -104,6 +108,10 @@ export class StringParserService {
         };
 
         return result;
+    }
+
+    numbersSort(a, b){
+        return a - b;
     }
 
 
@@ -142,7 +150,7 @@ export class StringParserService {
                 }
             },
             {
-                value: [],
+                value: {'min': 0, 'max': 0},
                 type: 'floor',
                 pattern: /^(\d*)-(\d*)(\s?)этаж/,
                 varname: 'floor',
@@ -151,6 +159,29 @@ export class StringParserService {
                     return true;
                 },
                 _setValue: function (match) {
+
+                    if(!isNaN(parseInt(match[1])) && !isNaN(parseInt(match[2]))){
+                        var minval = Math.min(parseInt(match[1]), parseInt(match[2]));
+                        var maxval = Math.max(parseInt(match[1]), parseInt(match[2]));
+
+                        if(this.value.min > minval){
+                            this.value.min = minval;
+                        }
+                        if(this.value.max < maxval){
+                            this.value.max = maxval;
+                        }
+                    }else if(!isNaN(parseInt(match[1]))){
+                        var minval = parseInt(match[1]);
+                        if(this.value.min > minval){
+                            this.value.min = minval;
+                        }
+                    }else if(!isNaN(parseInt(match[2]))){
+                        var maxval = parseInt(match[2]);
+                        if(this.value.max < maxval){
+                            this.value.max = maxval;
+                        }
+                    }
+                    /*
                     if(!isNaN(parseInt(match[1]))){
                         this.value.push(parseInt(match[1]));
                     }else{
@@ -160,7 +191,7 @@ export class StringParserService {
                         this.value.push(parseInt(match[2]));
                     }else{
                         this.value.push(0);
-                    }
+                    }*/
                 },
                 _getValue: function () {
                     return this.value;
@@ -210,8 +241,6 @@ export class StringParserService {
                 pattern: /^(\-)?(\d+[.,]?\d*)(\-)?[мm](\-)?/,
                 varname: 'cheight',
                 _isMatchSuccess: function (match) {
-                    console.log(match);
-
                     return true;
                 },
                 _setValue: function (match) {
@@ -267,12 +296,45 @@ export class StringParserService {
             },
             {
                 value: [],
+                type: 'price',
+                _match: '',
+                pattern: /^(\d{3,})(?:\s|$)/,
+                varname: 'price',
+                _isMatchSuccess: function (match) {
+                    console.log('----');
+                    var value = parseInt(match[1]);
+                    return value >= 200;
+                },
+                _setValue: function (match) {
+                    var value = parseInt(match[1]);
+                    if(value >= 200 && value < 200000){
+                        this.value.push(value * 1000);
+                    }else if(value >= 200000){
+                        this.value.push(value);
+                    }
+                },
+                _getValue: function () {
+                    return this.value;
+                },
+                _isMatch: function(search){
+                    let k = new RegExp(this.pattern);
+                    var match = k.exec(search);
+                    if(match && this._isMatchSuccess(match)){
+                        this._setValue(match);
+                        this._match = match[0];
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            {
+                value: [],
                 type: 'rooms',
                 _match: '',
                 pattern: /^(\d{1}|ст(?=[^а-яА-ЯёЁa-zA-Z0-9])(?:\s|$))/,
                 varname: 'rooms',
                 _isMatchSuccess: function (match) {
-                    console.log(match);
+                    //console.log(match);
                     if (match[1].trim() == "ст") return true;
                     var value = parseInt(match[1]);
                     return value >= 1 && value <= 8;

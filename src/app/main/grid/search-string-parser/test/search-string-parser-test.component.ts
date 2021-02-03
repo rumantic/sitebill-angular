@@ -45,6 +45,10 @@ export class SearchStringParserTestComponent extends SearchStringParserComponent
     ngOnInit(): void
     {
         const test_input = [
+            {input: '200 1500 201', expected: 'Площадь, м: от 53 до 96 Этаж: от 8 до 11 Комнат: 3, 7 ID: 10348'},
+            {input: '200 1500 3m 96 3 8-11 этаж #10348 3m 53 7', expected: 'Площадь, м: от 53 до 96 Этаж: от 8 до 11 Комнат: 3, 7 ID: 10348'},
+            {input: '1-5 этаж -12 этаж -4 этаж', expected: 'Этаж: 1-12'},
+            {input: '-4 этаж -12 этаж', expected: 'Этаж: до 12'},
             /*{input: '1 1', expected: 'Комнат: 1, 1'},
             {input: '1 1 1', expected: 'Комнат: 1, 1, 1'},
             {input: '1 1 50', expected: 'Комнат: 1, 1 Площадь, м: от 501'},*/
