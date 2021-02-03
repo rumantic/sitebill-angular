@@ -123,6 +123,16 @@
                     </button>
                     <!-- / PDF BUTTON -->
 
+                    <!-- SHARE MEMORYLIST BUTTON -->
+                    <button *ngIf="only_collections &&
+                    this.modelService.getConfigValue('apps.memorylist.link_access') == 1"
+                            mat-icon-button (click)="share_memorylist()"
+                            aria-label="Ссылка на подборку" matTooltip="Ссылка на подборку" class="mb-4">
+                        <mat-icon>share</mat-icon>
+                    </button>
+                    <!-- / SHARE MEMORYLIST BUTTON -->
+
+
 
                 </div>
                 <!-- / TOOLBAR -->

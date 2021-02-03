@@ -1098,4 +1098,13 @@ export class GridComponent implements OnInit, OnDestroy
         }
         return 0;
     }
+
+    share_memorylist() {
+        const deal_id = this.bitrix24Service.get_entity_id();
+        const domain = this.bitrix24Service.get_domain();
+
+        console.log('share memory list');
+        console.log('deal_id = ' + deal_id);
+        console.log('domain = ' + domain);
+    }
 }
