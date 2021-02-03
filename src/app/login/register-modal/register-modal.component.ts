@@ -92,10 +92,9 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
 
     get_user_model () {
         // console.log('get_user_model');
-        this.modelService.load_only_model('user')
+        this.modelService.load_only_model('user', true)
             .subscribe((result: any) => {
                 if (result) {
-                    // console.log(result);
                     const columns = this.cleanup_columns(result.data.user, result.columns);
                     // const columns = result.data.user;
                     this.records = columns;

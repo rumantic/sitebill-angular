@@ -396,11 +396,12 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    load_only_model(model_name) {
+    load_only_model(model_name, anonymous = false) {
         const load_data_request = {
             action: 'model',
             do: 'load_only_model',
             model_name: model_name,
+            anonymous: (anonymous ? 1:''),
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
