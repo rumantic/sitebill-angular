@@ -4,6 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ModelService } from 'app/_services/model.service';
 import {SearchStringParserComponent} from "../search-string-parser.component";
 import {FilterService} from "../../../../_services/filter.service";
+import {StringParserService} from "../../../../_services/string-parser.service";
 
 
 @Component({
@@ -24,11 +25,13 @@ export class SearchStringParserTestComponent extends SearchStringParserComponent
     constructor(
         public modelService: ModelService,
         public filterService: FilterService,
+        protected stringParserService: StringParserService
     )
     {
         super(
             modelService,
-            filterService
+            filterService,
+            stringParserService
         );
     }
 

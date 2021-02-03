@@ -455,15 +455,19 @@ export class GridComponent implements OnInit, OnDestroy
             var obj = this.filterService.get_share_array(this.entity.get_app_name());
             var mapped = Object.keys(obj);
             // console.log(mapped);
+            var self = this;
             mapped.forEach(function (item, i, arr) {
-                //console.log(obj[item]);
-                //console.log(obj[item].length);
-                //console.log(typeof obj[item]);
-                if (obj[item] != null ) {
-                    if (obj[item].length != 0) {
-                        filter_params_json[item] = obj[item];
-                    } else if (typeof obj[item] === 'object' && obj[item].length != 0) {
-                        filter_params_json[item] = obj[item];
+                if ( item === 'concatenate_search' && self.entity.get_app_name() === 'data' ) {
+                    self.parse_params_from_string(obj[item]);
+                } else {
+                    //console.log(obj[item].length);
+                    //console.log(typeof obj[item]);
+                    if (obj[item] != null ) {
+                        if (obj[item].length != 0) {
+                            filter_params_json[item] = obj[item];
+                        } else if (typeof obj[item] === 'object' && obj[item].length != 0) {
+                            filter_params_json[item] = obj[item];
+                        }
                     }
                 }
             });
@@ -479,6 +483,10 @@ export class GridComponent implements OnInit, OnDestroy
         }
         filter_params_json = this.extended_params(filter_params_json);
         return filter_params_json;
+    }
+
+    parse_params_from_string (input:string) {
+        console.log(input);
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {

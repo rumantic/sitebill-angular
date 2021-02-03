@@ -82,6 +82,7 @@ import {HouseSchemaService} from "./main/houseschema/services/houseschema.servic
 import {HouseSchemaBuilderComponent} from "./main/houseschema/builder/house-schema-builder.component";
 import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal/house-schema-builder-modal.component";
 import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
+import {StringParserService} from "./_services/string-parser.service";
 
 @NgModule({
     imports: [
@@ -180,6 +181,7 @@ import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
         Bitrix24Service,
         BillingService,
         StorageService,
+        StringParserService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
