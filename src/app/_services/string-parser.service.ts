@@ -57,9 +57,14 @@ export class StringParserService {
             if(srtype == 'price'){
                 if(found[srtype].length == 1){
                     s.push('Цена: до ' + found[srtype][0]);
+                    params_return = {...params_return, ...{price_max:found[srtype][0]}};
                 }else if(found[srtype].length > 1){
                     let ar = found[srtype].sort(this.numbersSort)
                     s.push('Цена, : от ' + ar[0] + ' до ' + ar[ar.length - 1]);
+                    params_return = {...params_return, ...{
+                        price_min:ar[0],
+                        price_max:ar[ar.length - 1],
+                    }};
                 }
             }
             if(srtype == 'kitchen'){
