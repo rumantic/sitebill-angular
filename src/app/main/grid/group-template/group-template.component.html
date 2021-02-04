@@ -1,0 +1,109 @@
+<div>
+    <h3>
+        Row Grouping
+        <small>
+            <a
+                href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/basic/row-grouping.component.ts"
+                target="_blank"
+            >
+                Source
+            </a>
+        </small>
+    </h3>
+    <ngx-datatable
+        #myTable
+        class="material expandable"
+        [rows]="rows"
+        [groupRowsBy]="'age'"
+        [columnMode]="ColumnMode.force"
+        [scrollbarH]="true"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="40"
+        [limit]="4"
+        [groupExpansionDefault]="true"
+    >
+        <!-- Group Header Template -->
+        <ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+            <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
+                <div style="padding-left:5px;">
+                    <a
+                        href="#"
+                        [class.datatable-icon-right]="!expanded"
+                        [class.datatable-icon-down]="expanded"
+                        title="Expand/Collapse Group"
+                        (click)="toggleExpandGroup(group)"
+                    >
+                        <b>Age: {{ group.value[0].age }}</b>
+                    </a>
+                </div>
+            </ng-template>
+        </ngx-datatable-group-header>
+        <!-- Row Column Template -->
+        <ngx-datatable-column name="Exp. Pay." prop="" editable="true" frozenLeft="True">
+            <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-row="row"
+                let-group="group"
+            >
+                <label for="ep1{{ rowIndex }}" class="datatable-checkbox">
+                    <input
+                        type="checkbox"
+                        id="ep1{{ rowIndex }}"
+                        name="{{ rowIndex }}"
+                        value="0"
+                        class="expectedpayment"
+                        (change)="checkGroup($event, row, rowIndex, group)"
+                        [checked]="row.exppayyes === 1"
+                    />
+                </label>
+                <label for="ep2{{ rowIndex }}" class="datatable-checkbox">
+                    <input
+                        type="checkbox"
+                        id="ep2{{ rowIndex }}"
+                        name="{{ rowIndex }}"
+                        value="1"
+                        class="expectedpayment2"
+                        (change)="checkGroup($event, row, rowIndex, group)"
+                        [checked]="row.exppayno === 1"
+                    />
+                </label>
+                <label for="ep3{{ rowIndex }}" class="datatable-checkbox">
+                    <input
+                        type="checkbox"
+                        id="ep3{{ rowIndex }}"
+                        name="{{ rowIndex }}"
+                        value="2"
+                        class="expectedpayment3"
+                        (change)="checkGroup($event, row, rowIndex, group)"
+                        [checked]="row.exppaypending === 1"
+                    />
+                </label>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Source" prop="source" editable="false" frozenLeft="True"></ngx-datatable-column>
+        <ngx-datatable-column name="Name" prop="name" editable="true"></ngx-datatable-column>
+        <ngx-datatable-column name="Gender" prop="gender"></ngx-datatable-column>
+        <ngx-datatable-column name="Age" prop="age"></ngx-datatable-column>
+        <ngx-datatable-column name="Comment" prop="comment">
+            <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-row="row"
+                let-group="group"
+                let-rowHeight="rowHeight"
+            >
+                <input
+                    autofocus
+                    (blur)="updateValue($event, 'comment', rowIndex)"
+                    type="text"
+                    name="comment"
+                    [value]="value"
+                />
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

@@ -94,6 +94,7 @@ import {HouseSchemaModule} from "../houseschema/house-schema.module";
 import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
 import {ShareModalComponent} from "./share-modal/share-modal.component";
+import {GroupTemplateComponent} from "./group-template/group-template.component";
 
 const routes = [
     {
@@ -317,6 +318,13 @@ const routes = [
             chat: ChatService
         },
     },
+    {
+        path: 'grouptemplate',
+        component: GroupTemplateComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
 ];
 
 @NgModule({
@@ -359,7 +367,8 @@ const routes = [
         RealtyItemComponent,
         SearchStringParserTestComponent,
         ComplexComponent,
-        ShareModalComponent
+        ShareModalComponent,
+        GroupTemplateComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
