@@ -93,6 +93,7 @@ import {ComplexComponent} from "./entity/complex/complex.component";
 import {HouseSchemaModule} from "../houseschema/house-schema.module";
 import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
+import {ShareModalComponent} from "./share-modal/share-modal.component";
 
 const routes = [
     {
@@ -357,7 +358,8 @@ const routes = [
         MyGridClientComponent,
         RealtyItemComponent,
         SearchStringParserTestComponent,
-        ComplexComponent
+        ComplexComponent,
+        ShareModalComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -417,10 +419,10 @@ const routes = [
         }),
 
         SbCalendarModule,
-        HouseSchemaModule
+        HouseSchemaModule,
     ],
     exports: [
-        NgxUploaderModule
+        NgxUploaderModule,
     ],
     providers: [
         FilterService,

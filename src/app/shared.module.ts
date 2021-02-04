@@ -78,9 +78,6 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {StorageService} from "./_services/storage.service";
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
-import {HouseSchemaService} from "./main/houseschema/services/houseschema.service";
-import {HouseSchemaBuilderComponent} from "./main/houseschema/builder/house-schema-builder.component";
-import {HouseSchemaBuilderModalComponent} from "./main/houseschema/builder/modal/house-schema-builder-modal.component";
 import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 import {StringParserService} from "./_services/string-parser.service";
 
@@ -143,7 +140,7 @@ import {StringParserService} from "./_services/string-parser.service";
         }),
         SbCalendarModule,
         FuseWidgetModule,
-        HouseSchemaModule
+        HouseSchemaModule,
     ],
     declarations: [
         RegisterDomainModalComponent,

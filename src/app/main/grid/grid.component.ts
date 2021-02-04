@@ -40,6 +40,7 @@ import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
 import {StringParserService} from "../../_services/string-parser.service";
+import {ShareModalComponent} from "./share-modal/share-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -1106,5 +1107,10 @@ export class GridComponent implements OnInit, OnDestroy
         console.log('share memory list');
         console.log('deal_id = ' + deal_id);
         console.log('domain = ' + domain);
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(ShareModalComponent, dialogConfig);
     }
 }
