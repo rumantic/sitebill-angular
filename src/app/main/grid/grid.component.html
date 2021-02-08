@@ -154,8 +154,9 @@
                             {{error_message}}
                         </div>
                         <ngx-datatable
+                            #gridTable
                             *ngIf="compose_complete"
-                            class="material"
+                            class="material expandable"
                             [rows]="rows_data"
                             [columns]="data_columns"
                             [loadingIndicator]="loadingIndicator"
@@ -176,7 +177,26 @@
                             (resize)="onResize($event)"
                             (page)="setPage($event)"
                             (select)="onSelect($event)"
+                            [groupedRows]="grouped"
+                            [groupExpansionDefault]="true"
                         >
+
+                            <!-- Group Header Template -->
+                            <ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+                                <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
+                                    <div style="padding-left:5px;">
+                                        <button mat-button
+                                                [class.datatable-icon-right]="!expanded"
+                                                [class.datatable-icon-down]="expanded"
+                                                title="Expand/Collapse Group"
+                                                (click)="toggleExpandGroup(group)"
+                                        >
+                                            <b>{{group.value[0].street_id.value_string|json}}</b>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-group-header>
+
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->

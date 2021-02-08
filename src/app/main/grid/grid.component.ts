@@ -90,6 +90,9 @@ export class GridComponent implements OnInit, OnDestroy
     error_message: string;
     selectionType = '';
 
+    @ViewChild('gridTable') table: any;
+
+
     date_range_enable: boolean = false;
     date_range_key: string;
     selected_date_filter;
@@ -554,7 +557,10 @@ export class GridComponent implements OnInit, OnDestroy
 
                     //console.log(this.item_model);
                     this.rows_data = result_f1.rows;
+                    console.log(this.rows_data);
                     this.data_all = result_f1.rows.length;
+                    this.group();
+
 
                     //this.init_selected_rows(this.rows, selected);
                     //this.loadingIndicator = false;
@@ -1112,5 +1118,121 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.panelClass = 'login-form';
 
         this.dialog.open(ShareModalComponent, dialogConfig);
+    }
+
+    toggleExpandGroup(group) {
+        console.log('Toggled Expand Group!', group);
+        this.table.groupHeader.toggleExpandGroup(group);
+    }
+
+    onDetailToggle(event) {
+        console.log('Detail Toggled', event);
+    }
+
+    checkGroup(event, row, rowIndex, group) {
+        console.log(event);
+    }
+
+    data_gr: any[] = [{
+        a: 1,
+        b: 1,
+        value: 'A'
+    }, {
+        a: 1,
+        b: 2,
+        value: 'B'
+    }];
+
+    grouped: any;
+
+    //groupBy: string = 'street_id';
+
+    groupBy(list, keyGetter) {
+        const map = new Map();
+        list.forEach((item) => {
+            const key = keyGetter(item);
+            const collection = map.get(key);
+            if (!collection) {
+                map.set(key, [item]);
+            } else {
+                collection.push(item);
+            }
+        });
+        return map;
+    }
+
+
+    private group() {
+        //const groups: any[] = _.groupBy(this.rows_data, this.groupBy);
+        //console.log(groups);
+
+        let test_g = [
+            {
+                key: 'street_id1',
+                value: [
+                    this.rows_data[0],
+                    this.rows_data[1]
+                ]
+            },
+            {
+                key: 'street_id2',
+                value: [
+                    this.rows_data[2],
+                    this.rows_data[3]
+                ]
+            },
+        ];
+
+        console.log(test_g);
+
+        // https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+        test_g = this.groupBy(this.rows_data, item => item.street_id.value_string);
+
+        console.log(test_g.entries());
+        //console.log(test_g.next().value);
+
+        this.grouped = test_g.entries();
+        return;
+
+        /*
+        this.grouped = {
+            key: 'street_id',
+            value: this.rows_data[0]
+
+        };
+         */
+
+        /*
+         */
+
+        this.grouped = Object.keys(groups)
+            .map(key => {
+                return {
+                    key: 'street_id',
+                    value: groups[key]
+                };
+            });
+        console.log(this.grouped);
+
+    }
+
+    changeGrouping(): void {
+        if (this.groupBy === 'a') {
+            this.groupBy = 'b';
+        } else {
+            this.groupBy = 'a';
+        }
+
+        this.group();
+        this.data_gr = this.data_gr.slice(); // Otherwise no update is triggered
+    }
+
+    getGroupRowsBy() {
+        return null;
+        let result = {street_id:{
+                value: 31,
+                value_string: 'Войсковая ул.'
+            }};
+        return result;
     }
 }
