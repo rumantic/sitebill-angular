@@ -164,7 +164,7 @@
                             [headerHeight]="ngxHeaderHeight"
                             [footerHeight]="56"
                             [rowHeight]="'auto'"
-                            [scrollbarH]="true"
+                            [scrollbarH]="scrollbarH"
                             [reorderable]="reorderable"
                             [externalPaging]="true"
                             [count]="page.totalElements"
@@ -182,16 +182,16 @@
                         >
 
                             <!-- Group Header Template -->
-                            <ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+                            <ngx-datatable-group-header *ngIf="enable_grouping" [rowHeight]="50" #myGroupHeader>
                                 <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
                                     <div style="padding-left:5px;">
                                         <button mat-button
-                                                [class.datatable-icon-right]="!expanded"
-                                                [class.datatable-icon-down]="expanded"
                                                 title="Expand/Collapse Group"
                                                 (click)="toggleExpandGroup(group)"
                                         >
-                                            <b>{{group.value[0].street_id.value_string|json}}</b>
+                                            <mat-icon *ngIf="expanded">keyboard_arrow_down</mat-icon>
+                                            <mat-icon *ngIf="!expanded">keyboard_arrow_right</mat-icon>
+                                            <b>ЖК {{group.value[0][group_key].value_string}}</b>
                                         </button>
                                     </div>
                                 </ng-template>

@@ -89,6 +89,8 @@ export class GridComponent implements OnInit, OnDestroy
     error: boolean = false;
     error_message: string;
     selectionType = '';
+    grouped: any;
+
 
     @ViewChild('gridTable') table: any;
 
@@ -183,6 +185,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     private after_compose_complete_checked: boolean;
     private params_filter: string;
+    public enable_grouping: boolean;
+    public group_key: string;
+    public scrollbarH: boolean = true;
 
 
 
@@ -557,7 +562,6 @@ export class GridComponent implements OnInit, OnDestroy
 
                     //console.log(this.item_model);
                     this.rows_data = result_f1.rows;
-                    console.log(this.rows_data);
                     this.data_all = result_f1.rows.length;
                     this.group();
 
@@ -1126,29 +1130,13 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     onDetailToggle(event) {
-        console.log('Detail Toggled', event);
+        // console.log('Detail Toggled', event);
     }
 
-    checkGroup(event, row, rowIndex, group) {
-        console.log(event);
-    }
-
-    data_gr: any[] = [{
-        a: 1,
-        b: 1,
-        value: 'A'
-    }, {
-        a: 1,
-        b: 2,
-        value: 'B'
-    }];
-
-    grouped: any;
-
-    //groupBy: string = 'street_id';
 
     groupBy(list, keyGetter) {
         const map = new Map();
+        const result = [];
         list.forEach((item) => {
             const key = keyGetter(item);
             const collection = map.get(key);
@@ -1158,81 +1146,29 @@ export class GridComponent implements OnInit, OnDestroy
                 collection.push(item);
             }
         });
-        return map;
+
+        for (let group_key of map.keys()) {
+            result.push({key:group_key, value:map.get(group_key)});
+        }
+        return result;
     }
 
 
     private group() {
-        //const groups: any[] = _.groupBy(this.rows_data, this.groupBy);
-        //console.log(groups);
+        if ( this.modelService.getConfigValue('apps.realty.grid.enable_grouping') === '1'
+            && this.entity.get_table_name() === 'data' ) {
+            if ( this.get_grid_items(null).includes('complex_id') ) {
+                this.enable_grouping = true;
+                //this.scrollbarH = false;
+                this.group_key = 'complex_id';
+                this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
 
-        let test_g = [
-            {
-                key: 'street_id1',
-                value: [
-                    this.rows_data[0],
-                    this.rows_data[1]
-                ]
-            },
-            {
-                key: 'street_id2',
-                value: [
-                    this.rows_data[2],
-                    this.rows_data[3]
-                ]
-            },
-        ];
-
-        console.log(test_g);
-
-        // https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
-        test_g = this.groupBy(this.rows_data, item => item.street_id.value_string);
-
-        console.log(test_g.entries());
-        //console.log(test_g.next().value);
-
-        this.grouped = test_g.entries();
-        return;
-
-        /*
-        this.grouped = {
-            key: 'street_id',
-            value: this.rows_data[0]
-
-        };
-         */
-
-        /*
-         */
-
-        this.grouped = Object.keys(groups)
-            .map(key => {
-                return {
-                    key: 'street_id',
-                    value: groups[key]
-                };
-            });
-        console.log(this.grouped);
-
-    }
-
-    changeGrouping(): void {
-        if (this.groupBy === 'a') {
-            this.groupBy = 'b';
-        } else {
-            this.groupBy = 'a';
+                return true;
+            }
         }
-
-        this.group();
-        this.data_gr = this.data_gr.slice(); // Otherwise no update is triggered
+        this.group_key = this.entity.get_primary_key();
+        this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
+        return false;
     }
 
-    getGroupRowsBy() {
-        return null;
-        let result = {street_id:{
-                value: 31,
-                value_string: 'Войсковая ул.'
-            }};
-        return result;
-    }
 }
