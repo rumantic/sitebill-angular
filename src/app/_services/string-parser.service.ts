@@ -306,7 +306,7 @@ export class StringParserService {
                 pattern: /^(\d{3,})(?:\s|$)/,
                 varname: 'price',
                 _isMatchSuccess: function (match) {
-                    console.log('----');
+                    // console.log('----');
                     var value = parseInt(match[1]);
                     return value >= 200;
                 },
