@@ -71,7 +71,7 @@
             <img *ngIf="value[0].remote !== 'true'" width="50"
                  src="{{api_url}}/img/data/{{value[0].preview}}" />
         </div>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls &&  get_permission(row, 'D')">image_search</mat-icon>
+        <mat-icon aria-label="Добавить фото" matTooltip="Добавить фото" *ngIf="value.length == 0 && !disable_gallery_controls &&  get_permission(row, 'D')">image_search</mat-icon>
     </button>
 </ng-template>
 
@@ -81,7 +81,7 @@
             <img width="50"
                  src="{{api_url}}/img/data/user/{{value}}" />
         </ng-container>
-        <mat-icon aria-label="Добавить изображения" matTooltip="Добавить изображения" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
+        <mat-icon aria-label="Добавить фото" matTooltip="Добавить фото" *ngIf="value.length == 0 && !disable_gallery_controls">image_search</mat-icon>
     </button>
 </ng-template>
 
