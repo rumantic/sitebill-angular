@@ -3,7 +3,10 @@
 <div id="course-dialog" class="dialog-content-wrapper">
     <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title" *ngIf="_data.get_title() === null">Форма</span>
+            <span class="title dialog-title" *ngIf="_data.get_title() === null">
+                <ng-container *ngIf="_data.get_key_value()">Редактировать запись</ng-container>
+                <ng-container *ngIf="!_data.get_key_value()">Создать запись</ng-container>
+            </span>
             <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
             <button mat-icon-button (click)="close()" aria-label="Закрыть">
                 <mat-icon>close</mat-icon>
