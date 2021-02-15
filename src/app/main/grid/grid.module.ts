@@ -417,7 +417,7 @@ const routes = [
         Ng5SliderModule,
 
         FuseSharedModule,
-        QuillModule,
+        QuillModule.forRoot(),
         NgxUploaderModule,
         NgxGalleryModule,
         ConfirmDialogModule,

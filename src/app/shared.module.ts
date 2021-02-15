@@ -134,7 +134,7 @@ import {StringParserService} from "./_services/string-parser.service";
         NgxGalleryModule,
         NgxUploaderModule,
         NgSelectModule,
-        QuillModule,
+        QuillModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
         }),
