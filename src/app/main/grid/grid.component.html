@@ -98,7 +98,7 @@
                     <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
                     <!--                    </button>-->
 
-                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
+                    <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
                         <mat-icon>autorenew</mat-icon>
                     </button>
 

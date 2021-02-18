@@ -163,6 +163,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('disable_delete_button')
     disable_delete_button: boolean;
 
+    @Input('disable_refresh_button')
+    disable_refresh_button: boolean;
+
     @Input('disable_activation_button')
     disable_activation_button: boolean;
 
@@ -264,6 +267,15 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [];
         //console.log('init');
         this.params_filter = this.route.snapshot.paramMap.get('params_filter');
+
+        if ( this.modelService.getConfigValue('apps.realty.data.global_freeze_default_columns_list') === '1' ) {
+            this.freeze_default_columns_list = true;
+        }
+
+        if ( this.modelService.getConfigValue('apps.realty.data.global_disable_refresh_button') === '1' ) {
+            this.disable_refresh_button = true;
+        }
+
 
         this.refresh();
 
