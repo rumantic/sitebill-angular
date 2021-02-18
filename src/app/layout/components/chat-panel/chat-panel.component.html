@@ -34,7 +34,7 @@
 <div class="content">
 
     <!-- Contacts -->
-    <div id="contacts-list" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+    <div id="contacts-list" [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
 
         <div *ngFor="let contact of contacts"
              class="contacts-list-item"
@@ -56,7 +56,7 @@
     <!-- Chat -->
     <div id="chat" fxLayout="column" fxFlex="1 1 auto">
 
-        <div id="messages" class="messages" fxFlex="1 1 auto" fusePerfectScrollbar>
+        <div id="messages" class="messages" fxFlex="1 1 auto">
 
             <ng-container *ngIf="chat && chat.dialog && chat.dialog.length > 0">
 

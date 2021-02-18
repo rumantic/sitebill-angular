@@ -15,7 +15,7 @@
         </ng-template>
 
         <ng-container *ngIf="rows; else loggedOut">
-            <div class="modal-content__data" fusePerfectScrollbar>
+            <div class="modal-content__data">
                 <form class="example-container" [formGroup]="form" (ngSubmit)="save()">
                     <ng-container *ngIf="tabs_keys.length > 1">
                         <mat-tab-group dynamicHeight *ngIf="tabs_keys && form_inited">
@@ -100,7 +100,7 @@
 
 
                     <ng-container *ngSwitchCase="'textarea_editor'">
-                        <div class="data-table__cell-value data-table__cell-value_overflow text-left" fusePerfectScrollbar>
+                        <div class="data-table__cell-value data-table__cell-value_overflow text-left">
                             {{records[x].title}}
                             <div [innerHTML]="records[x].value|safehtml"></div>
                         </div>

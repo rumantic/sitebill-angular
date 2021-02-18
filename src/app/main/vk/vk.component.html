@@ -1,5 +1,5 @@
 <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
-<div class="page-layout blank p-24" fusePerfectScrollbar>
+<div class="page-layout blank p-24">
 
     <h2>{{'SAMPLE.HELLO' | translate}}</h2>
     vk 1
@@ -16,7 +16,7 @@
           alert("Authorization doen't denied");
         }
       }
-      
+
       VK.Api.call('friends.get', {fields: 'uid,first_name'}, function(data) {
         alert(data.response.length);
         if (data.error) {
@@ -30,7 +30,7 @@
           }
         }
       });
-      VK.UI.button('login_button');    
-    </script>    
-    
+      VK.UI.button('login_button');
+    </script>
+
 </div>
