@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
         if ( this.modelService.is_logged_in() ) {
             this.logout();
         } else {
+            console.log('login component login model');
             this.login_modal();
         }
     }

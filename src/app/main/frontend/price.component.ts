@@ -66,9 +66,10 @@ export class PriceComponent
 
     }
     ngOnInit() {
-        this.modelService.enable_guest_mode();
-
-
+        this.modelService.config_loaded_emitter.subscribe((result: any) => {
+            console.log('price enable guest mode');
+            this.modelService.enable_guest_mode();
+        });
     }
 
     ngAfterViewChecked () {
@@ -122,6 +123,7 @@ export class PriceComponent
 
     add_to_cart(product) {
         if ( this.modelService.get_nobody_mode() ) {
+            console.log('price login model');
             this.login_modal();
             return;
         }

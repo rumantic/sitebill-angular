@@ -52,6 +52,7 @@ export class FrontendComponent
     ngOnInit() {
         console.log('run frontend');
         if ( !this.modelService.is_logged_in() ) {
+            console.log('frontend login model (after localstorage)');
             this.login_modal();
         }
 
