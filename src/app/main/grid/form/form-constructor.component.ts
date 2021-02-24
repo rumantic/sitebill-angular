@@ -21,7 +21,6 @@ export function forbiddenNullValue(): ValidatorFn {
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./form.component.css']
 })
 export class FormConstructorComponent implements OnInit {

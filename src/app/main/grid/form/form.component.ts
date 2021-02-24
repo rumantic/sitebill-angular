@@ -16,7 +16,6 @@ import {FormConstructorComponent} from './form-constructor.component';
     selector: 'form-selector',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent extends FormConstructorComponent implements OnInit {
 
