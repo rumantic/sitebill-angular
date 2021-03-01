@@ -95,6 +95,7 @@ import {HouseSchemaComponent} from "../houseschema/house-schema.component";
 import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
 import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {GroupTemplateComponent} from "./group-template/group-template.component";
+import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 
 const routes = [
     {
@@ -368,6 +369,7 @@ const routes = [
         SearchStringParserTestComponent,
         ComplexComponent,
         ShareModalComponent,
+        CollectionModalComponent,
         GroupTemplateComponent
     ],
     imports     : [

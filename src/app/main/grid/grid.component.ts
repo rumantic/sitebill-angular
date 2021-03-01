@@ -41,6 +41,7 @@ import {SaveSearchComponent} from "../../dialogs/save-search/save-search.compone
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
 import {StringParserService} from "../../_services/string-parser.service";
 import {ShareModalComponent} from "./share-modal/share-modal.component";
+import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -923,6 +924,12 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     toggle_collection(event) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(CollectionModalComponent, dialogConfig);
+
         // console.log(event);
         // console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
         // console.log('domain = ' + this.bitrix24Service.get_domain());

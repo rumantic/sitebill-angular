@@ -26,6 +26,12 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
     @Input("disable_form_title_bar")
     disable_form_title_bar: boolean;
 
+    @Input("disable_save_button")
+    disable_save_button: boolean;
+
+    @Input("disable_cancel_button")
+    disable_cancel_button: boolean;
+
     @Output() onClose = new EventEmitter();
     @Output() save_output = new EventEmitter();
 

@@ -64,6 +64,8 @@ export class FormConstructorComponent implements OnInit {
 
     disable_delete: boolean;
     disable_form_title_bar: boolean;
+    disable_save_button: boolean = false;
+    disable_cancel_button: boolean = false;
 
     quillConfig = {
         toolbar: {

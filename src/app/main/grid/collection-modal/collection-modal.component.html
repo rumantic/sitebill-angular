@@ -1,0 +1,33 @@
+<div id="login" fxLayout="column">
+    <mat-toolbar>
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Выберите список для сохранения</span>
+            <button mat-icon-button (click)="close()" aria-label="Закрыть">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div fxLayout="row">
+        <div class="p-12">
+            <form-static
+                [entity]="entity_memorylist_user"
+                [disable_delete]="true"
+                [disable_save_button]="true"
+                [disable_cancel_button]="true"
+                [disable_form_title_bar]="true"
+                (onClose)="close()">
+            </form-static>
+        </div>
+        <div class="p-12">
+            <form-static
+                [entity]="entity"
+                [disable_delete]="true"
+                [disable_save_button]="true"
+                [disable_cancel_button]="true"
+                [disable_form_title_bar]="true"
+                (onClose)="close()">
+            </form-static>
+        </div>
+    </div>
+
+</div>
