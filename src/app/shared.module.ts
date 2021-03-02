@@ -80,6 +80,7 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
 import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 import {StringParserService} from "./_services/string-parser.service";
+import {EntityStorageService} from "./_services/entity-storage.service";
 
 @NgModule({
     imports: [
@@ -179,6 +180,7 @@ import {StringParserService} from "./_services/string-parser.service";
         BillingService,
         StorageService,
         StringParserService,
+        EntityStorageService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [

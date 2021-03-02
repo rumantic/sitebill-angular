@@ -4,6 +4,7 @@ import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SitebillEntity} from "../../../_models";
+import {EntityStorageService} from "../../../_services/entity-storage.service";
 
 @Component({
     selector: 'collection-modal',
@@ -21,6 +22,7 @@ export class CollectionModalComponent  implements OnInit {
         protected modelService: ModelService,
         private dialogRef: MatDialogRef<CollectionModalComponent>,
         protected _snackService: SnackService,
+        private entityStorageService: EntityStorageService,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
     }
@@ -35,13 +37,20 @@ export class CollectionModalComponent  implements OnInit {
 
         this.entity.set_hidden('domain');
         this.entity.set_default_value('domain', 'localhost');
+
         this.entity.set_hidden('deal_id');
         this.entity.set_default_value('deal_id', 555);
+
+        this.entity.set_hidden('user_id');
+        this.entity.set_default_value('user_id', this.modelService.get_user_id());
+
+        this.entityStorageService.set_entity('memorylist', this.entity);
 
         this.entity_memorylist_user = new SitebillEntity();
         this.entity_memorylist_user.set_app_name('memorylist_user');
         this.entity_memorylist_user.set_table_name('memorylist_user');
         this.entity_memorylist_user.set_primary_key('id');
+        this.entity_memorylist_user.set_hidden('id');
 
         //this.entity.set_key_value(0);
     }

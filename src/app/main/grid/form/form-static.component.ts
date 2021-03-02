@@ -1,14 +1,16 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {FormBuilder} from '@angular/forms';
 
 import {ModelService} from 'app/_services/model.service';
-import {SitebillEntity} from 'app/_models';
+import {FormType, SitebillEntity} from 'app/_models';
 
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {FormConstructorComponent} from './form-constructor.component';
+import {FormComponent} from "./form.component";
+import {EntityStorageService} from "../../../_services/entity-storage.service";
 
 
 @Component({
@@ -42,6 +44,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
+        private entityStorageService: EntityStorageService,
         protected cdr: ChangeDetectorRef
     ) {
         super(
@@ -62,5 +65,37 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         super.close();
         this.onClose.emit(true);
     }
+
+    inline_create(record) {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        //dialogConfig.width = '99vw';
+        //dialogConfig.maxWidth = '99vw';
+        //dialogConfig.height = '99vh';
+
+        let entity = new SitebillEntity();
+        if ( this.entityStorageService.get_entity(record.primary_key_table) ) {
+            entity = this.entityStorageService.get_entity(record.primary_key_table);
+        } else {
+            entity.set_table_name(record.primary_key_table);
+            entity.set_app_name(record.primary_key_table);
+            entity.set_primary_key(record.primary_key_name);
+            entity.set_title(record.title);
+        }
+        entity.set_form_type(FormType.inline);
+
+        dialogConfig.data = entity;
+        dialogConfig.panelClass = 'inline-dialog';
+        //console.log(model_name);
+
+        if (this.modelService.get_access(entity.get_table_name(), 'access')) {
+            this._matDialog.open(FormComponent, dialogConfig);
+        } else {
+            this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
+        }
+    }
+
 }
 

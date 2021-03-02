@@ -8,21 +8,11 @@
         </mat-toolbar-row>
     </mat-toolbar>
     <div fxLayout="row">
-        <div class="p-12">
+        <div class="p-12 form-item">
             <form-static
                 [entity]="entity_memorylist_user"
                 [disable_delete]="true"
                 [disable_save_button]="true"
-                [disable_cancel_button]="true"
-                [disable_form_title_bar]="true"
-                (onClose)="close()">
-            </form-static>
-        </div>
-        <div class="p-12">
-            <form-static
-                [entity]="entity"
-                [disable_delete]="true"
-                [disable_save_button]="false"
                 [disable_cancel_button]="true"
                 [disable_form_title_bar]="true"
                 (onClose)="close()">
