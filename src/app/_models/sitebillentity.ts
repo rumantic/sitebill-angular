@@ -23,6 +23,8 @@ export class SitebillEntity {
     private form_type: string;
     private ql_items: any;
     private params: {};
+    private hidden_items: {};
+    private default_values: {};
 
     constructor() {
         this.columns = [];
@@ -40,6 +42,8 @@ export class SitebillEntity {
         this.title = null;
         this.form_type = FormType.simple;
         this.params = {};
+        this.hidden_items = {};
+        this.default_values = {};
     }
 
     get_app_name() {
@@ -224,6 +228,28 @@ export class SitebillEntity {
     get_model_value_string(key:string) {
         if ( this.model[key] ) {
             return this.model[key].getValueString();
+        }
+        return null;
+    }
+
+    set_hidden(key: string) {
+        this.hidden_items[key] = true;
+    }
+
+    is_hidden (key: string) {
+        if ( this.hidden_items[key] ) {
+            return true;
+        }
+        return false;
+    }
+
+    set_default_value(key: string, value: any) {
+        this.default_values[key] = value;
+    }
+
+    get_default_value(key: string) {
+        if ( this.default_values[key] ) {
+            return this.default_values[key];
         }
         return null;
     }

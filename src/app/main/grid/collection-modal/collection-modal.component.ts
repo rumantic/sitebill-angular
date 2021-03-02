@@ -31,6 +31,12 @@ export class CollectionModalComponent  implements OnInit {
         this.entity.set_app_name('memorylist');
         this.entity.set_table_name('memorylist');
         this.entity.set_primary_key('memorylist_id');
+        this.entity.set_hidden('memorylist_id');
+
+        this.entity.set_hidden('domain');
+        this.entity.set_default_value('domain', 'localhost');
+        this.entity.set_hidden('deal_id');
+        this.entity.set_default_value('deal_id', 555);
 
         this.entity_memorylist_user = new SitebillEntity();
         this.entity_memorylist_user.set_app_name('memorylist_user');

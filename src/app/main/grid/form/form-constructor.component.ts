@@ -323,6 +323,14 @@ export class FormConstructorComponent implements OnInit {
                 }
 
             }
+            if (this._data.is_hidden(this.rows[i])) {
+                this.hide_row(this.rows[i]);
+            }
+            if (this._data.get_default_value(this.rows[i])) {
+                this.records[this.rows[i]].value = this._data.get_default_value(this.rows[i]);
+                this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
+            }
+
         }
 
 
@@ -334,6 +342,10 @@ export class FormConstructorComponent implements OnInit {
     }
 
     hide_dadata(row) {
+        this.hide_row(row);
+    }
+
+    hide_row(row) {
         this.records[row].hidden = true;
         this.records[row].type = 'hidden';
     }
@@ -600,6 +612,7 @@ export class FormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
+        // console.log(ql_items);
         this._data.set_ql_items(ql_items);
 
 
