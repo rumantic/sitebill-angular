@@ -12,9 +12,11 @@
             <form-static
                 [entity]="entity_memorylist_user"
                 [disable_delete]="true"
-                [disable_save_button]="true"
-                [disable_cancel_button]="true"
+                [disable_save_button]="false"
+                [disable_cancel_button]="false"
                 [disable_form_title_bar]="true"
+                [fake_save]="true"
+                (onSave)="save($event)"
                 (onClose)="close()">
             </form-static>
         </div>

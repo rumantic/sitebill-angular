@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
@@ -17,6 +17,7 @@ export class CollectionModalComponent  implements OnInit {
     entity: SitebillEntity;
 
     entity_memorylist_user: SitebillEntity;
+    onSave = new EventEmitter();
 
     constructor(
         protected modelService: ModelService,
@@ -39,7 +40,7 @@ export class CollectionModalComponent  implements OnInit {
         this.entity.set_default_value('domain', 'localhost');
 
         this.entity.set_hidden('deal_id');
-        this.entity.set_default_value('deal_id', 555);
+        this.entity.set_default_value('deal_id', 1);
 
         this.entity.set_hidden('user_id');
         this.entity.set_default_value('user_id', this.modelService.get_user_id());
@@ -67,4 +68,9 @@ export class CollectionModalComponent  implements OnInit {
     }
 
 
+    save(event) {
+        //console.log(event);
+        this.onSave.emit(event);
+
+    }
 }

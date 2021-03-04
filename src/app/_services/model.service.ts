@@ -606,9 +606,18 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    toggle_collections(domain, deal_id, title, data_id) {
+    toggle_collections(domain, deal_id, title, data_id, memorylist_id = 0) {
         let body = {};
-        body = {action: 'memorylist', do: 'toggle', domain: domain, deal_id: deal_id, title: title, data_id: data_id, session_key: this.get_session_key_safe()};
+        body = {
+            action: 'memorylist',
+            do: 'toggle',
+            domain: domain,
+            deal_id: deal_id,
+            memorylist_id: memorylist_id,
+            title: title,
+            data_id: data_id,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 

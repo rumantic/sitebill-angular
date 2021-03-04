@@ -66,6 +66,7 @@ export class FormConstructorComponent implements OnInit {
     disable_form_title_bar: boolean;
     disable_save_button: boolean = false;
     disable_cancel_button: boolean = false;
+    fake_save: boolean = false;
 
     quillConfig = {
         toolbar: {
@@ -614,6 +615,9 @@ export class FormConstructorComponent implements OnInit {
         ql_items = this.get_ql_items_from_form();
         // console.log(ql_items);
         this._data.set_ql_items(ql_items);
+        if ( this.fake_save ) {
+            return;
+        }
 
 
         if (this._data.key_value == null) {

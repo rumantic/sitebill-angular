@@ -34,8 +34,12 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
     @Input("disable_cancel_button")
     disable_cancel_button: boolean;
 
+    @Input("fake_save")
+    fake_save: boolean;
+
     @Output() onClose = new EventEmitter();
     @Output() save_output = new EventEmitter();
+    @Output() onSave = new EventEmitter();
 
     constructor(
         protected modelService: ModelService,
@@ -59,7 +63,10 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
     }
     save() {
         super.save();
-        this.onClose.emit(true);
+        this.onSave.emit(this._data.get_ql_items());
+        if ( this.form.valid ) {
+            this.onClose.emit(true);
+        }
     }
     close() {
         super.close();

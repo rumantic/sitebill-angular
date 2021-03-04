@@ -923,22 +923,41 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    toggle_collection(event) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = false;
-        dialogConfig.panelClass = 'login-form';
-
-        this.dialog.open(CollectionModalComponent, dialogConfig);
-
-        // console.log(event);
-        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
-        // console.log('domain = ' + this.bitrix24Service.get_domain());
-        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_entity_id());
+    toggle_collection_b24(event) {
         let data_id = event.value;
-        // console.log(this.bitrix24Service.get_placement());
         let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+        this.model_service_toggle_collections(
+            this.bitrix24Service.get_domain(),
+            this.bitrix24Service.get_entity_id(),
+            title,
+            data_id
+        );
+    }
 
-        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
+    toggle_collection_modal_select_list(event) {
+        const domain = this.bitrix24Service.get_domain();
+        const title = '';
+        const data_id = event.value;
+        let deal_id = 1;
+
+        if (event.row && event.row['id'] && !event.row['id'].collections) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.disableClose = false;
+            dialogConfig.panelClass = 'login-form';
+
+            const modalRef = this.dialog.open(CollectionModalComponent, dialogConfig);
+            modalRef.componentInstance.onSave.subscribe((result) => {
+                this.model_service_toggle_collections(domain, deal_id, title, data_id, result.memorylist_id);
+            });
+        } else {
+            deal_id = event.row['id'].collections;
+            const memorylist_id = event.row['id'].memorylist_id;
+            this.model_service_toggle_collections(domain, deal_id, title, data_id, memorylist_id);
+        }
+    }
+
+    model_service_toggle_collections( domain, deal_id, title, data_id, memorylist_id = 0 ) {
+        this.modelService.toggle_collections(domain, deal_id, title, data_id, memorylist_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
@@ -957,9 +976,16 @@ export class GridComponent implements OnInit, OnDestroy
 
                     this.filterService.empty_share(this.entity);
                     this.refresh();
-                    // this.cdr.markForCheck();
                 }
             });
+    }
+
+    toggle_collection(event) {
+        if ( this.bitrix24Service.get_domain() !== 'localhost' ) {
+            this.toggle_collection_b24(event);
+        } else {
+            this.toggle_collection_modal_select_list(event);
+        }
     }
 
     /**
