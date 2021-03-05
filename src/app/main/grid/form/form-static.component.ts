@@ -98,7 +98,11 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         //console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {
-            this._matDialog.open(FormComponent, dialogConfig);
+            const modalRef = this._matDialog.open(FormComponent, dialogConfig);
+            modalRef.componentInstance.afterSave.subscribe((result:SitebillEntity) => {
+                this.init_select_by_query_options(record.name);
+                this.form.controls[record.name].patchValue(result.get_key_value());
+            });
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
         }

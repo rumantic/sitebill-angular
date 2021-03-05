@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit} from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
@@ -67,6 +67,10 @@ export class FormConstructorComponent implements OnInit {
     disable_save_button: boolean = false;
     disable_cancel_button: boolean = false;
     fake_save: boolean = false;
+
+    onSave = new EventEmitter();
+    afterSave = new EventEmitter();
+
 
     quillConfig = {
         toolbar: {
@@ -615,6 +619,8 @@ export class FormConstructorComponent implements OnInit {
         ql_items = this.get_ql_items_from_form();
         // console.log(ql_items);
         this._data.set_ql_items(ql_items);
+        this.onSave.emit(ql_items);
+
         if ( this.fake_save ) {
             return;
         }
@@ -629,6 +635,7 @@ export class FormConstructorComponent implements OnInit {
                     } else {
                         this._snackService.message('Запись создана успешно');
                         this._data.set_key_value(response.data['new_record_id']);
+                        this.afterSave.emit(this._data);
                         if (this._data.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {
@@ -645,6 +652,7 @@ export class FormConstructorComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись сохранена успешно');
+                        this.afterSave.emit(this._data);
                         this.filterService.empty_share(this._data);
                         this.close();
                     }
