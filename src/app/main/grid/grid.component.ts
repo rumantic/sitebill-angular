@@ -927,6 +927,7 @@ export class GridComponent implements OnInit, OnDestroy
         let data_id = event.value;
         let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
         this.model_service_toggle_collections(
+            event,
             this.bitrix24Service.get_domain(),
             this.bitrix24Service.get_entity_id(),
             title,
@@ -947,16 +948,16 @@ export class GridComponent implements OnInit, OnDestroy
 
             const modalRef = this.dialog.open(CollectionModalComponent, dialogConfig);
             modalRef.componentInstance.onSave.subscribe((result) => {
-                this.model_service_toggle_collections(domain, deal_id, title, data_id, result.memorylist_id);
+                this.model_service_toggle_collections(event, domain, deal_id, title, data_id, result.memorylist_id);
             });
         } else {
             deal_id = event.row['id'].collections;
             const memorylist_id = event.row['id'].memorylist_id;
-            this.model_service_toggle_collections(domain, deal_id, title, data_id, memorylist_id);
+            this.model_service_toggle_collections(event, domain, deal_id, title, data_id, memorylist_id);
         }
     }
 
-    model_service_toggle_collections( domain, deal_id, title, data_id, memorylist_id = 0 ) {
+    model_service_toggle_collections( event, domain, deal_id, title, data_id, memorylist_id = 0 ) {
         this.modelService.toggle_collections(domain, deal_id, title, data_id, memorylist_id)
             .subscribe((response: any) => {
                 console.log(response);
