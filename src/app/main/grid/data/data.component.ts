@@ -27,9 +27,9 @@ export class DataComponent extends GridComponent {
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.width = '99vw';
-        dialogConfig.maxWidth = '99vw';
-        dialogConfig.height = '99vh';
+        //dialogConfig.width = '99vw';
+        dialogConfig.minWidth = '85vw';
+        //dialogConfig.height = '99vh';
 
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
@@ -37,7 +37,7 @@ export class DataComponent extends GridComponent {
             this.entity.set_hook('add_to_collections');
         }
         dialogConfig.data = this.entity;
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.panelClass = 'regular-modal';
         if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
             this.billingService.get_user_limit('exclusive').subscribe(
                 (limit: any) => {

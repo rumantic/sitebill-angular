@@ -160,6 +160,7 @@ export class FormConstructorComponent implements OnInit {
             }
         }
     };
+    private visible_items_counter: number;
 
 
     constructor (
@@ -342,8 +343,21 @@ export class FormConstructorComponent implements OnInit {
         this.apply_topic_activity();
         this.form_inited = true;
         this.after_form_inted();
+        this.count_visible_items();
         //console.log(this.records);
 
+    }
+
+    count_visible_items () {
+        this.visible_items_counter = 0;
+        for (var i = 0; i < this.rows.length; i++) {
+            if ( !this.records[this.rows[i]].hidden && this.records[this.rows[i]].type !== 'hidden') {
+                this.visible_items_counter ++;
+            }
+        }
+    }
+    get_visible_items_counter () {
+        return this.visible_items_counter;
     }
 
     hide_dadata(row) {
@@ -746,12 +760,18 @@ export class FormConstructorComponent implements OnInit {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
+        if ( this.get_visible_items_counter() === 1 ) {
+            return 'auto';
+        }
         var width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
         if ( width_100.indexOf(record.type) > -1 ) {
             return 100;
         }
         if ( form_type == FormType.inline ) {
             return 100;
+        }
+        if ( size == 'lg' ) {
+            return 33;
         }
         if ( size == 'xl' ) {
             return 20;
@@ -763,7 +783,7 @@ export class FormConstructorComponent implements OnInit {
             return 100;
         }
 
-        return 33;
+        return 'auto';
     }
     get_flex_padding ( size:string, form_type:string, record ) {
         if ( record.type == 'hidden' || record.hidden == true ) {

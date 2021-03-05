@@ -93,7 +93,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         entity.set_form_type(FormType.inline);
 
         dialogConfig.data = entity;
-        dialogConfig.panelClass = 'inline-dialog';
+        dialogConfig.panelClass = 'regular-modal';
         //console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {

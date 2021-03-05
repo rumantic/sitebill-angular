@@ -25,19 +25,42 @@ mat-sidenav-container {
         padding: 0 !important;
     }
     .example-container .mat-dialog-content {
-        min-height: 75vh !important;
+        //min-height: 75vh !important;
+        //height: auto;
+        border: 3px solid red;
     }
 }
-
 
 ::ng-deep .form-ngrx-compose-dialog {
 
     .mat-dialog-container {
         padding: 0;
-        width: 99vw;
-        height: 95vh;
-        max-width: none;
-        min-height: 95vh !important;
+
+    }
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+::ng-deep .regular-modal {
+    .mat-dialog-container {
+        padding: 0;
+
+    }
+}
+
+
+::ng-deep .form-ngrx-compose-dialog1 {
+
+    .mat-dialog-container {
+        padding: 0;
+        width: 90%;
+        //height: 99vh;
+        //max-width: 95vw;
+        //min-height: 99vh !important;
 
 
         .compose-form {
@@ -67,13 +90,13 @@ mat-sidenav-container {
         }
     }
     .dialog-content {
-        height: 95vh;
-        max-height: 95vh;
+        //height: 95vh;
+        //max-height: 95vh;
     }
 
     .dialog-content-wrapper {
-        height: 95vh;
-        max-height: 95vh;
+        //height: 95vh;
+        max-height: 85vh;
         display: flex;
         flex-direction: column;
     }

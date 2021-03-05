@@ -63,7 +63,7 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         entity.set_title(record.title);
         entity.set_form_type(FormType.inline);
         dialogConfig.data = entity;
-        dialogConfig.panelClass = 'inline-dialog';
+        dialogConfig.panelClass = 'regular-modal';
         //console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {
