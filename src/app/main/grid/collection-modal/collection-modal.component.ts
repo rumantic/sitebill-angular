@@ -53,7 +53,7 @@ export class CollectionModalComponent  implements OnInit {
         this.entity_memorylist_user.set_table_name('memorylist_user');
         this.entity_memorylist_user.set_primary_key('id');
         this.entity_memorylist_user.set_hidden('id');
-        this.entity_memorylist_user.set_default_value('user_id', this.modelService.get_user_id());
+        //this.entity_memorylist_user.set_default_value('user_id', this.modelService.get_user_id());
 
         //this.entity.set_key_value(0);
     }
