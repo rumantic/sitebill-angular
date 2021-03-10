@@ -46,7 +46,7 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
 
         // Set the defaults
         this.view = 'main';
-        this.page_options = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        this.page_options = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 250, 500, 1000];
     }
 
     // -----------------------------------------------------------------------------------------------------

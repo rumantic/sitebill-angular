@@ -35,23 +35,29 @@
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button
                         class="amber ml-12"
-                        *ngIf="filterService.count_share_array(entity.get_app_name()) > 0"
+                        *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
                         mat-raised-button
                         (click)="reset_filters()"
                         color="teal"
-                        matTooltip="Добавить запись">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
+                        matTooltip="Сбросить фильтры">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
                     </button>
                 </div>
 
                 <!-- / BOARD SELECTION BUTTON -->
                 <!-- SEARCH -->
                 <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-                    <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
-                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                            <mat-icon color="primary">search</mat-icon>
-                            <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
-                            <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+
+                    <div fxLayout="column" *ngIf="!disable_wild_search">
+                        <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
+                            <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon color="primary">search</mat-icon>
+                                <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
+                                <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+                            </div>
                         </div>
+                        <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
+                            <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
+                        </ng-container>
                     </div>
                     <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
                             aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
@@ -92,7 +98,7 @@
                     <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
                     <!--                    </button>-->
 
-                    <button mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
+                    <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
@@ -117,6 +123,16 @@
                     </button>
                     <!-- / PDF BUTTON -->
 
+                    <!-- SHARE MEMORYLIST BUTTON -->
+                    <button *ngIf="only_collections &&
+                    this.modelService.getConfigValue('apps.memorylist.link_access') == 1"
+                            mat-icon-button (click)="share_memorylist()"
+                            aria-label="Ссылка на подборку" matTooltip="Ссылка на подборку" class="mb-4">
+                        <mat-icon>share</mat-icon>
+                    </button>
+                    <!-- / SHARE MEMORYLIST BUTTON -->
+
+
 
                 </div>
                 <!-- / TOOLBAR -->
@@ -138,8 +154,9 @@
                             {{error_message}}
                         </div>
                         <ngx-datatable
+                            #gridTable
                             *ngIf="compose_complete"
-                            class="material"
+                            class="material expandable"
                             [rows]="rows_data"
                             [columns]="data_columns"
                             [loadingIndicator]="loadingIndicator"
@@ -147,7 +164,7 @@
                             [headerHeight]="ngxHeaderHeight"
                             [footerHeight]="56"
                             [rowHeight]="'auto'"
-                            [scrollbarH]="true"
+                            [scrollbarH]="scrollbarH"
                             [reorderable]="reorderable"
                             [externalPaging]="true"
                             [count]="page.totalElements"
@@ -160,7 +177,26 @@
                             (resize)="onResize($event)"
                             (page)="setPage($event)"
                             (select)="onSelect($event)"
+                            [groupedRows]="grouped"
+                            [groupExpansionDefault]="true"
                         >
+
+                            <!-- Group Header Template -->
+                            <ngx-datatable-group-header *ngIf="enable_grouping" [rowHeight]="50" #myGroupHeader>
+                                <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
+                                    <div style="padding-left:5px;">
+                                        <button mat-button
+                                                title="Expand/Collapse Group"
+                                                (click)="toggleExpandGroup(group)"
+                                        >
+                                            <mat-icon *ngIf="expanded">keyboard_arrow_down</mat-icon>
+                                            <mat-icon *ngIf="!expanded">keyboard_arrow_right</mat-icon>
+                                            <b>ЖК {{group.value[0][group_key].value_string}}</b>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-group-header>
+
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->

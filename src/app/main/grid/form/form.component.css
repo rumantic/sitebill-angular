@@ -51,3 +51,9 @@ textarea {
 ::ng-deep .flex_wrap {
     flex-wrap: wrap !important;
 }
+::ng-deep .min-select {
+    min-width: 100px;
+}
+::ng-deep .regular-modal .mat-dialog-container{
+    padding: 0;
+}

@@ -53,9 +53,6 @@
             </form>
 
             <ng-container *ngIf="!hide_domain">
-                <div class="separator">
-                    <span class="text">или</span>
-                </div>
                 <div class="register" fxLayout="column" fxLayoutAlign="center center">
                     <span class="text">Еще нет аккаунта?</span>
                     <button mat-button color="accent" (click)="show_register_domain_form()">Создать сайт</button>
@@ -63,9 +60,6 @@
             </ng-container>
 
             <ng-container *ngIf="this.modelSerivce.getConfigValue('allow_register_account') == 1 && hide_domain">
-                <div class="separator">
-                    <span class="text">или</span>
-                </div>
                 <div class="register" fxLayout="column" fxLayoutAlign="center center">
                     <span class="text">Еще нет аккаунта?</span>
                     <button mat-button color="accent" (click)="show_register_form()">Зарегистрироваться</button>
@@ -97,9 +91,6 @@
         </register-domain-modal>
 
         <ng-container *ngIf="(show_register || show_remind || show_register_domain) && !modelService.get_install_mode()">
-            <div class="separator">
-                <span class="text">или</span>
-            </div>
             <div class="register" fxLayout="column" fxLayoutAlign="center center">
                 <button mat-button color="accent" (click)="show_login_form()">Войти в существующий аккаунт</button>
             </div>

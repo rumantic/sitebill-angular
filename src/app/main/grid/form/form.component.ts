@@ -16,7 +16,6 @@ import {FormConstructorComponent} from './form-constructor.component';
     selector: 'form-selector',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent extends FormConstructorComponent implements OnInit {
 
@@ -64,40 +63,18 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         entity.set_title(record.title);
         entity.set_form_type(FormType.inline);
         dialogConfig.data = entity;
-        dialogConfig.panelClass = 'inline-dialog';
+        dialogConfig.panelClass = 'regular-modal';
         //console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {
-            this._matDialog.open(FormComponent, dialogConfig);
+            const modalRef = this._matDialog.open(FormComponent, dialogConfig);
+            modalRef.componentInstance.afterSave.subscribe((result:SitebillEntity) => {
+                this.init_select_by_query_options(record.name);
+                this.form.controls[record.name].patchValue(result.get_key_value());
+            });
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
         }
-
-
-        /*
-        this.entity.set_key_value(item_id);
-        if (this.only_collections) {
-            this.entity.set_hook('add_to_collections');
-        }
-        dialogConfig.data = this.entity;
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
-        if ( this.modelService.getConfigValue('apps.products.limit_add_data') === '1') {
-            this.billingService.get_user_limit('exclusive').subscribe(
-                (limit: any) => {
-                    if ( limit.data > 0 ) {
-                        this.open_form_with_check_access(dialogConfig);
-                    } else {
-                        this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
-                    }
-                }
-            );
-        } else {
-            this.open_form_with_check_access(dialogConfig);
-            //this.dialog.open(FormComponent, dialogConfig);
-        }
-         */
-
-
     }
 
 }

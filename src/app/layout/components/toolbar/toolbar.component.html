@@ -33,7 +33,7 @@
                 </ng-container>
             </ng-container>
 
-            <button *ngIf="modelService.getConfigValue('apps.products.contacts_market') == 1" mat-menu-item (click)="show_price()">
+            <!--button *ngIf="modelService.getConfigValue('apps.products.contacts_market') == 1" mat-menu-item (click)="show_price()">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <ng-container *ngIf="has_contacts_access()">
                         <mat-icon class="light-green-A700-fg">lock_open</mat-icon>
@@ -44,7 +44,7 @@
                         <span class="iso red-400-fg">Контакты скрыты</span>
                     </ng-container>
                 </div>
-            </button>
+            </button-->
             <button mat-menu-item class="" (click)="login_modal()" *ngIf="!modelService.is_logged_in()">
                 <mat-icon>person</mat-icon>
                 <span>Вход</span>

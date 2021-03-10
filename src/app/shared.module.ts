@@ -77,6 +77,10 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {StorageService} from "./_services/storage.service";
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
+import {SearchStringParserComponent} from "./main/grid/search-string-parser/search-string-parser.component";
+import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
+import {StringParserService} from "./_services/string-parser.service";
+import {EntityStorageService} from "./_services/entity-storage.service";
 
 @NgModule({
     imports: [
@@ -131,12 +135,13 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         NgxGalleryModule,
         NgxUploaderModule,
         NgSelectModule,
-        QuillModule,
+        QuillModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
         }),
         SbCalendarModule,
         FuseWidgetModule,
+        HouseSchemaModule,
     ],
     declarations: [
         RegisterDomainModalComponent,
@@ -166,13 +171,16 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         GatewaysModalComponent,
         UserProfileComponent,
         ContactInjectorComponent,
-        DemoBannerComponent
+        DemoBannerComponent,
+        SearchStringParserComponent,
     ],
     providers: [
         ChatService,
         Bitrix24Service,
         BillingService,
         StorageService,
+        StringParserService,
+        EntityStorageService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
@@ -186,6 +194,7 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         ProfileTimelineComponent,
         ProfileCardComponent,
         GatewaysComponent,
+        SearchStringParserComponent,
     ],
     entryComponents: [
         LoginModalComponent,
@@ -198,7 +207,8 @@ import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
         ProfileCardComponent,
         GatewaysComponent,
         GatewaysModalComponent,
-        DemoBannerComponent
+        DemoBannerComponent,
+        SearchStringParserComponent,
     ]
 
 })

@@ -39,6 +39,10 @@ import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
+import {StringParserService} from "../../_services/string-parser.service";
+import {ShareModalComponent} from "./share-modal/share-modal.component";
+import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
+
 registerLocaleData(localeRu, 'ru');
 
 moment.locale('ru', localization);
@@ -86,6 +90,11 @@ export class GridComponent implements OnInit, OnDestroy
     error: boolean = false;
     error_message: string;
     selectionType = '';
+    grouped: any;
+
+
+    @ViewChild('gridTable') table: any;
+
 
     date_range_enable: boolean = false;
     date_range_key: string;
@@ -155,6 +164,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('disable_delete_button')
     disable_delete_button: boolean;
 
+    @Input('disable_refresh_button')
+    disable_refresh_button: boolean;
+
     @Input('disable_activation_button')
     disable_activation_button: boolean;
 
@@ -177,6 +189,9 @@ export class GridComponent implements OnInit, OnDestroy
 
     private after_compose_complete_checked: boolean;
     private params_filter: string;
+    public enable_grouping: boolean;
+    public group_key: string;
+    public scrollbarH: boolean = true;
 
 
 
@@ -200,6 +215,7 @@ export class GridComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
         public filterService: FilterService,
+        protected stringParserService: StringParserService
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -252,6 +268,15 @@ export class GridComponent implements OnInit, OnDestroy
         this.rows_my = [];
         //console.log('init');
         this.params_filter = this.route.snapshot.paramMap.get('params_filter');
+
+        if ( this.modelService.getConfigValue('apps.realty.data.global_freeze_default_columns_list') === '1' ) {
+            this.freeze_default_columns_list = true;
+        }
+
+        if ( this.modelService.getConfigValue('apps.realty.data.global_disable_refresh_button') === '1' ) {
+            this.disable_refresh_button = true;
+        }
+
 
         this.refresh();
 
@@ -444,6 +469,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     get_filter_params () {
         let filter_params_json = {};
+        let concatenate_search_string = null;
 
 
         if (this.filterService.get_params_count(this.entity.get_app_name()) > 0) {
@@ -454,15 +480,24 @@ export class GridComponent implements OnInit, OnDestroy
             var obj = this.filterService.get_share_array(this.entity.get_app_name());
             var mapped = Object.keys(obj);
             // console.log(mapped);
+            var self = this;
+
             mapped.forEach(function (item, i, arr) {
-                //console.log(obj[item]);
-                //console.log(obj[item].length);
-                //console.log(typeof obj[item]);
-                if (obj[item] != null ) {
-                    if (obj[item].length != 0) {
-                        filter_params_json[item] = obj[item];
-                    } else if (typeof obj[item] === 'object' && obj[item].length != 0) {
-                        filter_params_json[item] = obj[item];
+                if (
+                    self.modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1' &&
+                    item === 'concatenate_search' &&
+                    self.entity.get_app_name() === 'data'
+                ) {
+                    concatenate_search_string = obj[item];
+                } else {
+                    //console.log(obj[item].length);
+                    //console.log(typeof obj[item]);
+                    if (obj[item] != null ) {
+                        if (obj[item].length != 0) {
+                            filter_params_json[item] = obj[item];
+                        } else if (typeof obj[item] === 'object' && obj[item].length != 0) {
+                            filter_params_json[item] = obj[item];
+                        }
                     }
                 }
             });
@@ -477,7 +512,18 @@ export class GridComponent implements OnInit, OnDestroy
             }
         }
         filter_params_json = this.extended_params(filter_params_json);
+        if ( concatenate_search_string !== null ) {
+            filter_params_json = {...filter_params_json, ...self.parse_params_from_string(concatenate_search_string)};
+        }
+        // console.log(filter_params_json);
         return filter_params_json;
+    }
+
+    parse_params_from_string (input:string) {
+        const parser_result = this.stringParserService.parse(input);
+        // console.log(input);
+        // console.log(parser_result);
+        return parser_result.params;
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
@@ -530,6 +576,8 @@ export class GridComponent implements OnInit, OnDestroy
                     //console.log(this.item_model);
                     this.rows_data = result_f1.rows;
                     this.data_all = result_f1.rows.length;
+                    this.group();
+
 
                     //this.init_selected_rows(this.rows, selected);
                     //this.loadingIndicator = false;
@@ -752,9 +800,9 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.width = '99vw';
-        dialogConfig.maxWidth = '99vw';
-        dialogConfig.height = '99vh';
+        //dialogConfig.width = '99vw';
+        //dialogConfig.maxWidth = '99vw';
+        //dialogConfig.height = '99vh';
 
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
@@ -762,7 +810,7 @@ export class GridComponent implements OnInit, OnDestroy
             this.entity.set_hook('add_to_collections');
         }
         dialogConfig.data = this.entity;
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.panelClass = 'regular-modal';
         this.open_form_with_check_access(dialogConfig);
     }
 
@@ -875,16 +923,42 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
-    toggle_collection(event) {
-        // console.log(event);
-        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_placement_options_id());
-        // console.log('domain = ' + this.bitrix24Service.get_domain());
-        // console.log('get_placement_options_id = ' + this.bitrix24Service.get_entity_id());
+    toggle_collection_b24(event) {
         let data_id = event.value;
-        // console.log(this.bitrix24Service.get_placement());
         let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+        this.model_service_toggle_collections(
+            event,
+            this.bitrix24Service.get_domain(),
+            this.bitrix24Service.get_entity_id(),
+            title,
+            data_id
+        );
+    }
 
-        this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
+    toggle_collection_modal_select_list(event) {
+        const domain = this.bitrix24Service.get_domain();
+        const title = '';
+        const data_id = event.value;
+        let deal_id = 1;
+
+        if (event.row && event.row['id'] && !event.row['id'].collections) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.disableClose = false;
+            dialogConfig.panelClass = 'regular-modal';
+
+            const modalRef = this.dialog.open(CollectionModalComponent, dialogConfig);
+            modalRef.componentInstance.onSave.subscribe((result) => {
+                this.model_service_toggle_collections(event, domain, deal_id, title, data_id, result.memorylist_id);
+            });
+        } else {
+            deal_id = event.row['id'].collections;
+            const memorylist_id = event.row['id'].memorylist_id;
+            this.model_service_toggle_collections(event, domain, deal_id, title, data_id, memorylist_id);
+        }
+    }
+
+    model_service_toggle_collections( event, domain, deal_id, title, data_id, memorylist_id = 0 ) {
+        this.modelService.toggle_collections(domain, deal_id, title, data_id, memorylist_id)
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
@@ -903,9 +977,16 @@ export class GridComponent implements OnInit, OnDestroy
 
                     this.filterService.empty_share(this.entity);
                     this.refresh();
-                    // this.cdr.markForCheck();
                 }
             });
+    }
+
+    toggle_collection(event) {
+        if ( this.bitrix24Service.get_domain() !== 'localhost' ) {
+            this.toggle_collection_b24(event);
+        } else {
+            this.toggle_collection_modal_select_list(event);
+        }
     }
 
     /**
@@ -1067,4 +1148,73 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(LoginModalComponent, dialogConfig);
     }
+
+    get_apps_realty_min_filter_reset_count() {
+        if ( this.modelService.getConfigValue('apps.realty.min_filter_reset_count') ) {
+            return this.modelService.getConfigValue('apps.realty.min_filter_reset_count');
+        }
+        return 0;
+    }
+
+    share_memorylist() {
+        const deal_id = this.bitrix24Service.get_entity_id();
+        const domain = this.bitrix24Service.get_domain();
+
+        console.log('share memory list');
+        console.log('deal_id = ' + deal_id);
+        console.log('domain = ' + domain);
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(ShareModalComponent, dialogConfig);
+    }
+
+    toggleExpandGroup(group) {
+        console.log('Toggled Expand Group!', group);
+        this.table.groupHeader.toggleExpandGroup(group);
+    }
+
+    onDetailToggle(event) {
+        // console.log('Detail Toggled', event);
+    }
+
+
+    groupBy(list, keyGetter) {
+        const map = new Map();
+        const result = [];
+        list.forEach((item) => {
+            const key = keyGetter(item);
+            const collection = map.get(key);
+            if (!collection) {
+                map.set(key, [item]);
+            } else {
+                collection.push(item);
+            }
+        });
+
+        for (let group_key of map.keys()) {
+            result.push({key:group_key, value:map.get(group_key)});
+        }
+        return result;
+    }
+
+
+    private group() {
+        if ( this.modelService.getConfigValue('apps.realty.grid.enable_grouping') === '1'
+            && this.entity.get_table_name() === 'data' ) {
+            if ( this.get_grid_items(null).includes('complex_id') ) {
+                this.enable_grouping = true;
+                //this.scrollbarH = false;
+                this.group_key = 'complex_id';
+                this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
+
+                return true;
+            }
+        }
+        this.group_key = this.entity.get_primary_key();
+        this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
+        return false;
+    }
+
 }

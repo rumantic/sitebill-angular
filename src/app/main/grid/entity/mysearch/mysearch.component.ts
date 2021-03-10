@@ -16,6 +16,8 @@ export class MysearchComponent extends GridComponent {
         this.entity.primary_key = 'mysearch_id';
         this.entity.set_default_params({ user_id: this.modelService.get_user_id() });
         this.disable_add_button = true;
+        this.disable_edit_button = true;
+        this.disable_view_button = true;
 
 
         let grid_fields = ['mysearch_id', 'name', 'parameters'];

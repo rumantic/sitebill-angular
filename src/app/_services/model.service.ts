@@ -2,12 +2,13 @@ import {Injectable, Inject, isDevMode, Output, EventEmitter} from '@angular/core
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {currentUser, UserProfile} from 'app/_models/currentuser';
-import {SitebillEntity, User} from 'app/_models';
+import {SitebillEntity, SitebillModelItem, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
+import {timer} from "rxjs";
 
 
 @Injectable()
@@ -29,6 +30,7 @@ export class ModelService {
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     private dom_sitebill_config: any;
     private install_mode: boolean;
+    private nobody_first_login = false;
 
 
 
@@ -155,8 +157,13 @@ export class ModelService {
             }
         } else {
             console.log('guest mode not enabled');
-            this._snackService.message('Недостаточно прав доступа для просмотра этого раздела. Обратитесь к администратору.');
-            this.router.navigate(['/login/']);
+            if ( !this.nobody_first_login ) {
+                this._snackService.message('Для работы с разделом вы должны авторизоваться.');
+                let timerPeriod = 1000;
+                const numbers = timer(timerPeriod);
+                numbers.subscribe(x => this.router.navigate(['/login/']));
+                this.nobody_first_login = true;
+            }
         }
     }
 
@@ -393,11 +400,12 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    load_only_model(model_name) {
+    load_only_model(model_name, anonymous = false) {
         const load_data_request = {
             action: 'model',
             do: 'load_only_model',
             model_name: model_name,
+            anonymous: (anonymous ? 1:''),
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
@@ -414,6 +422,16 @@ export class ModelService {
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
+
+    map_model (row_model: any) {
+        const good_model = [];
+        Object.entries(row_model).forEach(
+            (key, value) => {
+                good_model[key[0]] = new SitebillModelItem(key[1]);
+            }
+        );
+        return good_model;
     }
 
     validateKey(session_key) {
@@ -588,9 +606,18 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    toggle_collections(domain, deal_id, title, data_id) {
+    toggle_collections(domain, deal_id, title, data_id, memorylist_id = 0) {
         let body = {};
-        body = {action: 'memorylist', do: 'toggle', domain: domain, deal_id: deal_id, title: title, data_id: data_id, session_key: this.get_session_key_safe()};
+        body = {
+            action: 'memorylist',
+            do: 'toggle',
+            domain: domain,
+            deal_id: deal_id,
+            memorylist_id: memorylist_id,
+            title: title,
+            data_id: data_id,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 

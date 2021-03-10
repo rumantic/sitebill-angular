@@ -85,7 +85,7 @@ export class FilterService {
 
     constructor(
         protected storageService: StorageService,
-        protected filterIterator: FilterIterator
+        protected filterIterator: FilterIterator,
     ) {
         // this.share_array = [];
     }
@@ -221,8 +221,22 @@ export class FilterService {
 
     reset (entity: SitebillEntity) {
         const array_title = 'sitebill_share_array_' + this.get_postfix(entity.get_app_name());
+        const prev_share_array = this.get_share_array(entity.get_app_name());
         const share_array_local = {};
-        this.storageService.setItem(array_title, JSON.stringify(share_array_local));
+        if ( prev_share_array.topic_id && prev_share_array.region_id) {
+            const share_array_local_uniq = {
+                topic_id: null,
+                region_id: null
+            };
+
+            share_array_local_uniq.topic_id = prev_share_array.topic_id;
+            share_array_local_uniq.region_id = prev_share_array.region_id;
+            this.storageService.setItem(array_title, JSON.stringify(share_array_local_uniq));
+        } else {
+            this.storageService.setItem(array_title, JSON.stringify(share_array_local));
+        }
+
+
         this.onInnerChange(entity);
     }
 

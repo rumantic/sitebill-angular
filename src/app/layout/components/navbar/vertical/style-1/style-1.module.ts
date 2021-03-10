@@ -9,7 +9,7 @@ import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
     declarations: [
-        NavbarVerticalStyle1Component
+        NavbarVerticalStyle1Component,
     ],
     imports     : [
         MatButtonModule,

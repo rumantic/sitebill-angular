@@ -123,7 +123,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
             });
 
             this.shortcutItems.push({
-                'title': 'Цены',
+                'title': 'Пакеты услуг и тарифы',
                 'type' : 'item',
                 'icon' : 'monetization_on',
                 'url'  : '/frontend/prices'

@@ -34,11 +34,16 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {FrontSearchComponent} from "./front-search/front-search.component";
 
 const routes = [
     {
         path     : 'prices',
         component: PriceComponent
+    },
+    {
+        path     : 'search',
+        component: FrontSearchComponent
     },
     {
         path     : 'content/:slug',
@@ -54,7 +59,8 @@ const routes = [
     declarations: [
         FrontendComponent,
         PriceComponent,
-        PageComponent
+        PageComponent,
+        FrontSearchComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -90,6 +96,8 @@ const routes = [
     ],
     providers: [
         BillingService
+    ],
+    entryComponents: [
     ]
 })
 

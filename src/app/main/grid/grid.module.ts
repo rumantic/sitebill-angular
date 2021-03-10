@@ -86,6 +86,16 @@ import {SaveSearchComponent} from "../../dialogs/save-search/save-search.compone
 import {MysearchComponent} from "./entity/mysearch/mysearch.component";
 import {EmailsComponent} from "./entity/emails/emails.component";
 import {MyGridClientComponent} from "./entity/mygridclient/mygridclient.component";
+import {SharedModule} from "../../shared.module";
+import {RealtyItemComponent} from "../houseschema/realty-item/realty-item.component";
+import {SearchStringParserTestComponent} from "./search-string-parser/test/search-string-parser-test.component";
+import {ComplexComponent} from "./entity/complex/complex.component";
+import {HouseSchemaModule} from "../houseschema/house-schema.module";
+import {HouseSchemaComponent} from "../houseschema/house-schema.component";
+import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-builder.component";
+import {ShareModalComponent} from "./share-modal/share-modal.component";
+import {GroupTemplateComponent} from "./group-template/group-template.component";
+import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 
 const routes = [
     {
@@ -281,6 +291,41 @@ const routes = [
             chat: ChatService
         },
     },
+    {
+        path: 'complex',
+        component: ComplexComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'houseschema',
+        component: HouseSchemaComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'houseschemabuilder',
+        component: HouseSchemaBuilderComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'testparser',
+        component: SearchStringParserTestComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
+    {
+        path: 'grouptemplate',
+        component: GroupTemplateComponent,
+        resolve: {
+            chat: ChatService
+        },
+    },
 ];
 
 @NgModule({
@@ -319,7 +364,13 @@ const routes = [
         ParserComponent,
         MysearchComponent,
         EmailsComponent,
-        MyGridClientComponent
+        MyGridClientComponent,
+        RealtyItemComponent,
+        SearchStringParserTestComponent,
+        ComplexComponent,
+        ShareModalComponent,
+        CollectionModalComponent,
+        GroupTemplateComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -368,19 +419,21 @@ const routes = [
         Ng5SliderModule,
 
         FuseSharedModule,
-        QuillModule,
+        QuillModule.forRoot(),
         NgxUploaderModule,
         NgxGalleryModule,
         ConfirmDialogModule,
         DragDropModule,
+        SharedModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
         }),
 
         SbCalendarModule,
+        HouseSchemaModule,
     ],
     exports: [
-        NgxUploaderModule
+        NgxUploaderModule,
     ],
     providers: [
         FilterService,
@@ -388,7 +441,14 @@ const routes = [
         SnackService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
-    entryComponents: [ DeclineClientComponent, CommonTemplateComponent, ComposeModalComponent, ReportComponent, SaveSearchComponent]
+    entryComponents: [
+        DeclineClientComponent,
+        CommonTemplateComponent,
+        ComposeModalComponent,
+        ReportComponent,
+        SaveSearchComponent,
+        RealtyItemComponent
+    ]
 
 })
 

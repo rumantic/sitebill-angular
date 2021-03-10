@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit} from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, takeUntil} from 'rxjs/operators';
 import {FormType, SitebillEntity} from '../../../_models';
 import {Subject} from 'rxjs';
 import * as moment from 'moment';
@@ -10,6 +10,7 @@ import {ConfirmComponent} from '../../../dialogs/confirm/confirm.component';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {switchMap} from "rxjs-compat/operator/switchMap";
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -20,7 +21,6 @@ export function forbiddenNullValue(): ValidatorFn {
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./form.component.css']
 })
 export class FormConstructorComponent implements OnInit {
@@ -30,6 +30,15 @@ export class FormConstructorComponent implements OnInit {
 
     public text_area_editor_storage = {};
     public options_storage = {};
+    public options_storage_buffer = {};
+    public loading: Boolean;
+    private selectBufferSize = 100;
+    private numberOfItemsFromEndBeforeFetchingMore = 10;
+    input$ = new Subject<string>();
+    private termsearch = false;
+
+
+
     form_submitted: boolean = false;
     form_inited: boolean = false;
     rows: any[];
@@ -55,6 +64,13 @@ export class FormConstructorComponent implements OnInit {
 
     disable_delete: boolean;
     disable_form_title_bar: boolean;
+    disable_save_button: boolean = false;
+    disable_cancel_button: boolean = false;
+    fake_save: boolean = false;
+
+    onSave = new EventEmitter();
+    afterSave = new EventEmitter();
+
 
     quillConfig = {
         toolbar: {
@@ -144,6 +160,7 @@ export class FormConstructorComponent implements OnInit {
             }
         }
     };
+    private visible_items_counter: number;
 
 
     constructor (
@@ -252,7 +269,7 @@ export class FormConstructorComponent implements OnInit {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
             if (this.records[this.rows[i]].type == 'select_by_query') {
-                this.init_select_by_query_options(this.records[this.rows[i]].name);
+                this.init_select_by_query_options(this.records[this.rows[i]].name, i);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
@@ -312,17 +329,42 @@ export class FormConstructorComponent implements OnInit {
                 }
 
             }
+            if (this._data.is_hidden(this.rows[i])) {
+                this.hide_row(this.rows[i]);
+            }
+            if (this._data.get_default_value(this.rows[i])) {
+                this.records[this.rows[i]].value = this._data.get_default_value(this.rows[i]);
+                this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
+            }
+
         }
 
 
         this.apply_topic_activity();
         this.form_inited = true;
         this.after_form_inted();
+        this.count_visible_items();
         //console.log(this.records);
 
     }
 
+    count_visible_items () {
+        this.visible_items_counter = 0;
+        for (var i = 0; i < this.rows.length; i++) {
+            if ( !this.records[this.rows[i]].hidden && this.records[this.rows[i]].type !== 'hidden') {
+                this.visible_items_counter ++;
+            }
+        }
+    }
+    get_visible_items_counter () {
+        return this.visible_items_counter;
+    }
+
     hide_dadata(row) {
+        this.hide_row(row);
+    }
+
+    hide_row(row) {
         this.records[row].hidden = true;
         this.records[row].type = 'hidden';
     }
@@ -399,21 +441,77 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    init_select_by_query_options(columnName) {
+    init_select_by_query_options(columnName, rowIndex = 0) {
         // console.log(this._data.get_default_params());
+        this.termsearch = false;
         this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
         // this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    // console.log(result);
                     this.options_storage[columnName] = result.data;
+                    this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
+
+                    if (this.records[this.rows[rowIndex]].value_string) {
+                        this.initial_select_list(this.records[this.rows[rowIndex]].name, this.records[this.rows[rowIndex]].value_string);
+                    }
                     this.cdr.markForCheck();
                 }
-
             });
 
     }
+
+    onScrollToEnd(columnName:string) {
+        this.fetchMore(columnName);
+    }
+
+    onScroll({ end }, columnName:string) {
+        if (this.loading || this.options_storage[columnName].length <= this.options_storage_buffer[columnName].length) {
+            return;
+        }
+
+        if (end + this.numberOfItemsFromEndBeforeFetchingMore >= this.options_storage_buffer[columnName].length) {
+            this.fetchMore(columnName);
+        }
+    }
+
+    private fetchMore(columnName:string) {
+        if ( this.termsearch ) {
+            return;
+        }
+        const len = this.options_storage_buffer[columnName].length;
+        const more = this.options_storage[columnName].slice(len, this.selectBufferSize + len);
+        this.loading = true;
+        // using timeout here to simulate backend API delay
+        setTimeout(() => {
+            this.loading = false;
+            this.options_storage_buffer[columnName] = this.options_storage_buffer[columnName].concat(more);
+        }, 200)
+    }
+
+    initial_select_list (columnName:string, term:string) {
+        this.options_storage_buffer[columnName] = this.options_storage[columnName]
+            .filter(item => item.value.includes(term))
+            .slice(0, this.selectBufferSize);
+    }
+
+    onSearch(columnName:string) {
+        this.input$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map(term => {
+                this.options_storage_buffer[columnName] = this.options_storage[columnName]
+                    .filter(item => item.value.includes(term))
+                    .slice(0, this.selectBufferSize);
+
+                this.termsearch = true;
+            }),
+            //map(term => this.options_storage[columnName].filter((x: { title: string }) => x.title.includes(term)))
+        ).subscribe(data => {
+            //this.options_storage_buffer[columnName] = data.slice(0, this.selectBufferSize);
+        })
+    }
+
     is_date_type(type: string) {
         if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime' || type == 'date') {
             return true;
@@ -533,6 +631,13 @@ export class FormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
+        // console.log(ql_items);
+        this._data.set_ql_items(ql_items);
+        this.onSave.emit(ql_items);
+
+        if ( this.fake_save ) {
+            return;
+        }
 
 
         if (this._data.key_value == null) {
@@ -543,6 +648,8 @@ export class FormConstructorComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись создана успешно');
+                        this._data.set_key_value(response.data['new_record_id']);
+                        this.afterSave.emit(this._data);
                         if (this._data.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {
@@ -559,6 +666,7 @@ export class FormConstructorComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись сохранена успешно');
+                        this.afterSave.emit(this._data);
                         this.filterService.empty_share(this._data);
                         this.close();
                     }
@@ -641,13 +749,19 @@ export class FormConstructorComponent implements OnInit {
     }
 
     valid_link (value) {
-        const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-        return !!value.match(reg);
+        if ( value !== null ) {
+            const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+            return !!value.match(reg);
+        }
+        return false;
     }
 
     get_flex_width ( size:string, form_type:string, record ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
+        }
+        if ( this.get_visible_items_counter() === 1 ) {
+            return 'auto';
         }
         var width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
         if ( width_100.indexOf(record.type) > -1 ) {
@@ -655,6 +769,9 @@ export class FormConstructorComponent implements OnInit {
         }
         if ( form_type == FormType.inline ) {
             return 100;
+        }
+        if ( size == 'lg' ) {
+            return 33;
         }
         if ( size == 'xl' ) {
             return 20;
@@ -666,7 +783,7 @@ export class FormConstructorComponent implements OnInit {
             return 100;
         }
 
-        return 33;
+        return 'auto';
     }
     get_flex_padding ( size:string, form_type:string, record ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
