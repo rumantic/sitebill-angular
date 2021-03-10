@@ -54,7 +54,6 @@ import {SaleComponent} from './entity/front/sale.component';
 import {SbCalendarModule} from '../sb-calendar/sb-calendar.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
-import {FavoritesComponent} from './entity/favorites/favorites.component';
 import {ParserComponent} from './entity/parser/parser.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
@@ -96,6 +95,7 @@ import {HouseSchemaBuilderComponent} from "../houseschema/builder/house-schema-b
 import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {GroupTemplateComponent} from "./group-template/group-template.component";
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
+import {FavoritesComponent} from "./entity/favorites/favorites";
 
 const routes = [
     {
@@ -115,12 +115,8 @@ const routes = [
 
     },
     {
-        path     : 'favorites',
-        component: FavoritesComponent,
-        resolve: {
-            chat: ChatService
-        }
-
+        path        : 'favorites',
+        loadChildren: () => import('app/main/grid/memorylist-client/memorylist-client.module').then(m => m.MemorylistClientModule),
     },
     {
         path     : 'data/:params_filter',
@@ -360,7 +356,6 @@ const routes = [
         FrontComponent,
         SaleComponent,
         ComposeModalComponent,
-        FavoritesComponent,
         ParserComponent,
         MysearchComponent,
         EmailsComponent,
@@ -370,7 +365,8 @@ const routes = [
         ComplexComponent,
         ShareModalComponent,
         CollectionModalComponent,
-        GroupTemplateComponent
+        GroupTemplateComponent,
+        FavoritesComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -434,6 +430,7 @@ const routes = [
     ],
     exports: [
         NgxUploaderModule,
+        FavoritesComponent,
     ],
     providers: [
         FilterService,

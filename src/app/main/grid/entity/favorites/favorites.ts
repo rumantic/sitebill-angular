@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { Component} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -13,6 +13,7 @@ export class FavoritesComponent extends GridComponent {
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
+        this.disable_add_button = true;
         this.switch_collections(true);
         this.switch_only_collections(true);
         this.enable_date_range('date_added');
