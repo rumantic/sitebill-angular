@@ -146,6 +146,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('only_collections')
     only_collections: boolean;
 
+    @Input('memorylist_id')
+    memorylist_id: number;
+
     @Input('disable_menu')
     disable_menu: boolean;
 
@@ -509,6 +512,9 @@ export class GridComponent implements OnInit, OnDestroy
             filter_params_json['collections_deal_id'] = this.bitrix24Service.get_entity_id();
             if (this.only_collections) {
                 filter_params_json['only_collections'] = true;
+                if ( this.memorylist_id ) {
+                    filter_params_json['memorylist_id'] = this.memorylist_id;
+                }
             }
         }
         filter_params_json = this.extended_params(filter_params_json);

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import {ActivatedRoute, ParamMap} from "@angular/router";
+import {FilterService} from "../../../_services/filter.service";
+import {SitebillEntity} from "../../../_models";
 
 @Component({
     selector: 'memorylist-client',
@@ -9,14 +11,24 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
     animations: fuseAnimations
 })
 export class MemorylistClientComponent {
-    constructor(private route: ActivatedRoute) {
+    public memorylist_id: any;
+    private entity: SitebillEntity;
+    constructor(
+        private route: ActivatedRoute,
+        public filterService: FilterService,
+        ) {
     }
 
     ngOnInit() {
+        this.entity = new SitebillEntity();
+        this.entity.set_app_name('data');
+        this.entity.set_table_name('data');
+        this.entity.primary_key = 'id';
+
 
         this.route.paramMap.subscribe((params: ParamMap) => {
-            const memorylist_id = params.get('memorylist_id');
-            console.log(memorylist_id);
+            this.memorylist_id = params.get('memorylist_id');
+            this.filterService.empty_share(this.entity);
         });
     }
 }
