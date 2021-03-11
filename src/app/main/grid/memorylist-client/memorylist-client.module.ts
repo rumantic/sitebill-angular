@@ -7,9 +7,13 @@ import {SharedModule} from "../../../shared.module";
 
 const routes = [
     {
+        path     : ':memorylist_id',
+        component: MemorylistClientComponent,
+    },
+    {
         path     : '**',
         component: MemorylistClientComponent,
-    }
+    },
 ];
 
 @NgModule({
