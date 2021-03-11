@@ -788,11 +788,12 @@ export class ModelService {
         return false;
     }
 
-    export_collections_pdf(domain, deal_id, report_type: string = 'client') {
+    export_collections_pdf(domain, deal_id, report_type: string = 'client', memorylist_id = null) {
         const request = {
             action: 'pdfreport',
             do: 'export_collections_pdf',
             deal_id: deal_id,
+            memorylist_id: memorylist_id,
             domain: domain,
             report_type: report_type,
             session_key: this.get_session_key_safe()
