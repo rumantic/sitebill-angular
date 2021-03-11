@@ -1,19 +1,16 @@
 <!-- SIDEBAR CONTENT -->
 <div class="content" fusePerfectScrollbar>
 
-    <div class="nav material2">
+    <div class="nav material2" *ngIf="memorylist_user">
 
-        <div class="nav-subheader">folders</div>
+        <div class="nav-subheader">Мои списки</div>
 
-        <div class="nav-item" >
-            <a class="nav-link" matRipple>
-                <mat-icon class="nav-link-icon" >home</mat-icon>
-                <span>title</span>
+        <div class="nav-item" *ngFor="let item of memorylist_user">
+            <a class="nav-link" [routerLink]="'/grid/favorites/' + item['id']" matRipple>
+                <mat-icon class="nav-link-icon" >label</mat-icon>
+                <span>{{item['value']}}</span>
             </a>
         </div>
-
-        <div class="nav-subheader">filters</div>
-
     </div>
 
 </div>

@@ -4,6 +4,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import {MemorylistSidebarComponent} from "./memorylist-sidebar.component";
 import {SharedModule} from "../../../../shared.module";
 import {MatIconModule} from "@angular/material/icon";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {MatIconModule} from "@angular/material/icon";
         TranslateModule,
         FuseSharedModule,
         SharedModule,
-        MatIconModule
+        MatIconModule,
+        RouterModule
     ]
 })
 
