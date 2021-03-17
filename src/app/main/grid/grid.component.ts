@@ -902,6 +902,7 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.autoFocus = true;
         dialogConfig.data = { entity: this.entity, galleryImages: galleryImages, image_field: image_field, disable_gallery_controls: disable_gallery_controls };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.width = '99vw';
 
         this.dialog.open(GalleryModalComponent, dialogConfig);
 
