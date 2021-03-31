@@ -146,6 +146,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('only_collections')
     only_collections: boolean;
 
+    @Input('memorylist_id')
+    memorylist_id: number;
+
     @Input('disable_menu')
     disable_menu: boolean;
 
@@ -509,6 +512,9 @@ export class GridComponent implements OnInit, OnDestroy
             filter_params_json['collections_deal_id'] = this.bitrix24Service.get_entity_id();
             if (this.only_collections) {
                 filter_params_json['only_collections'] = true;
+                if ( this.memorylist_id ) {
+                    filter_params_json['memorylist_id'] = this.memorylist_id;
+                }
             }
         }
         filter_params_json = this.extended_params(filter_params_json);
@@ -896,6 +902,7 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.autoFocus = true;
         dialogConfig.data = { entity: this.entity, galleryImages: galleryImages, image_field: image_field, disable_gallery_controls: disable_gallery_controls };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.width = '99vw';
 
         this.dialog.open(GalleryModalComponent, dialogConfig);
 
@@ -1077,7 +1084,7 @@ export class GridComponent implements OnInit, OnDestroy
     export_collections_pdf(report_type = 'client') {
         const deal_id = this.bitrix24Service.get_entity_id();
         const domain = this.bitrix24Service.get_domain();
-        this.modelService.export_collections_pdf(domain, deal_id, report_type)
+        this.modelService.export_collections_pdf(domain, deal_id, report_type, this.memorylist_id)
             .subscribe((response: any) => {
                 this.saveAsProject(response);
             });

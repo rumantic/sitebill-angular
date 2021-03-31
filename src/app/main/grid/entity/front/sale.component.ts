@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, TemplateRef, ViewChild} from '@angular/core';
-import { GridComponent } from 'app/main/grid/grid.component';
+import { Component } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
+import { DataComponent } from "../../data/data.component";
 
 @Component({
     selector: 'sale-grid',
@@ -8,7 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
     styleUrls: ['../../grid.component.scss'],
     animations: fuseAnimations
 })
-export class SaleComponent extends GridComponent {
+export class SaleComponent extends DataComponent {
     private setup_complete: boolean;
 
     setup_apps() {
