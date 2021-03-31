@@ -61,14 +61,7 @@ import {Error404Component} from "./main/pages/errors/404/error-404.component";
 import {Error500Component} from "./main/pages/errors/500/error-500.component";
 
 const appRoutes: Routes = [
-    {path: '', redirectTo: 'frontend', pathMatch: 'full'},
-    {path: 'login', component: LoginComponent},
-    {path: 'logout', component: LoginComponent},
-    {
-        path: 'control/:model_name/:id/:control_name',
-        component: ControlElementsComponent,
-        canActivate: [AuthGuard]
-    },
+    {path: '', component: CalculatorMiniComponent},
     {
         path: 'calculator',
         component: MortgageCalculatorComponent
@@ -77,73 +70,13 @@ const appRoutes: Routes = [
         path: 'calculator-mini',
         component: CalculatorMiniComponent
     },
-    {
-        path: 'sample',
-        loadChildren: () => import('app/main/sample/sample.module').then(m => m.SampleModule),
-    },
-    {
-        path: 'grid',
-        loadChildren: () => import('app/main/grid/grid.module').then(m => m.GridModule),
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'public',
-        loadChildren: () => import('app/main/grid/grid.module').then(m => m.GridModule),
-        canActivate: [PublicGuard],
-        runGuardsAndResolvers: 'always'
-    },
-    {
-        path: 'profile',
-        loadChildren: () => import('app/main/profile/profile.module').then(m => m.ProfileModule),
-        canActivate: [PublicGuard],
-    },
-    {
-        path: 'frontend',
-        loadChildren: () => import('app/main/frontend/frontend.module').then(m => m.FrontendModule),
-    },
-    {
-        path: 'dashboard',
-        loadChildren: () => import('app/main/dashboard/dashboard.module').then(m => m.DashboardModule),
-        canActivate: [PublicGuard],
-    },
-    {
-        path: 'cart/:step/:item_id',
-        loadChildren: () => import('app/main/cart/cart.module').then(m => m.CartModule),
-    },
-    {
-        path: 'cart/:step',
-        loadChildren: () => import('app/main/cart/cart.module').then(m => m.CartModule),
-    },
-    {
-        path: 'calendar',
-        loadChildren: () => import('app/main/sb-calendar/sb-calendar.module').then(m => m.SbCalendarModuleWithRoutes),
-    },
-    /*
-    {
-        path: 'client/my',
-        component: DocsComponentsThirdPartyNgxDatatableComponent,
-        //component: './main/documentation/documentation.module#DocumentationModule',
-        canActivate: [AuthGuard],
-        resolve: {
-            chat: ChatService
-        }
-
-    },
-    */
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
-        SnackBarComponent,
-        ControlElementsComponent,
-        LoginComponent,
-        AlertComponent,
         MortgageCalculatorComponent,
         CalculatorMiniComponent,
-        Error404Component,
-        Error500Component,
-        SnackBarComponent,
         Bitrix24Router,
     ],
     imports     : [
@@ -192,7 +125,6 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule,
         SharedModule,
         AppConfigModule,
     ],
@@ -210,7 +142,7 @@ const appRoutes: Routes = [
         // provider used to create fake backend
         // fakeBackendProvider
     ],
-    entryComponents: [AppComponent, SnackBarComponent],
+    entryComponents: [AppComponent, CalculatorMiniComponent, MortgageCalculatorComponent],
     bootstrap   : [
         AppComponent
     ]

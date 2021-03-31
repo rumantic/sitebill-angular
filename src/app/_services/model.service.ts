@@ -69,8 +69,8 @@ export class ModelService {
     onSitebillStart () {
         if ( !this.sitebill_started ) {
             console.log('Sitebill started');
-            this.init_config();
-            this.init_permissions();
+            //this.init_config();
+            //this.init_permissions();
             this.sitebill_started = true;
         }
     }

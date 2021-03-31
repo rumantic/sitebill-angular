@@ -115,33 +115,10 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         MatTableModule,
         MatDialogModule,
         MatButtonToggleModule,
-        MatBadgeModule,
-        MatProgressBarModule,
         Ng5SliderModule,
 
-        ConfirmDialogModule,
-        DragDropModule,
-
-
-        MatProgressSpinnerModule,
         FuseSharedModule,
         RouterModule,
-        MatToolbarModule,
-        MatTabsModule,
-        MatExpansionModule,
-        MatDatepickerModule,
-        NgxDaterangepickerMd.forRoot(),
-        NgxMaterialTimepickerModule,
-        NgxGalleryModule,
-        NgxUploaderModule,
-        NgSelectModule,
-        QuillModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyDRh-zcFa78SH-njTu5V6-zrvfIsgqTJPQ'
-        }),
-        SbCalendarModule,
-        FuseWidgetModule,
-        HouseSchemaModule,
     ],
     declarations: [
         RegisterDomainModalComponent,
@@ -184,31 +161,8 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [
-        RegisterDomainModalComponent,
-        RegisterModalComponent,
-        RemindModalComponent,
-        NgxUploaderModule,
-        FormComponent,
-        FormStaticComponent,
-        ViewStaticComponent,
-        ProfileTimelineComponent,
-        ProfileCardComponent,
-        GatewaysComponent,
-        SearchStringParserComponent,
     ],
     entryComponents: [
-        LoginModalComponent,
-        FormComponent,
-        GalleryModalComponent,
-        ViewModalComponent,
-        CourseDialogComponent,
-        FormStaticComponent,
-        ViewStaticComponent,
-        ProfileCardComponent,
-        GatewaysComponent,
-        GatewaysModalComponent,
-        DemoBannerComponent,
-        SearchStringParserComponent,
     ]
 
 })

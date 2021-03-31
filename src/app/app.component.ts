@@ -233,52 +233,9 @@ export class AppComponent implements OnInit, OnDestroy
 
     init_input_parameters() {
         let app_root_element;
-        if (this.document.getElementById('angular_search')) {
-            app_root_element = this.document.getElementById('angular_search');
-        } else if (this.document.getElementById('angular_search_ankonsul')) {
-            app_root_element = this.document.getElementById('angular_search_ankonsul');
-        } else if (this.document.getElementById('app_root')) {
-            app_root_element = this.document.getElementById('app_root');
-        }
-        if (app_root_element.getAttribute('theme')) {
-            let theme = app_root_element.getAttribute('theme');
-            //this.document.getElementById('fuse-app').classList.add(this.fuseConfig.colorTheme);
-            //this.fuseConfig.colorTheme = 'theme-red-light';
-            this.fuseConfig.colorTheme = theme;
-            //this.fuseConfig.colorTheme = 'theme-default';
-            //this.fuseConfig.colorTheme = 'theme-purple-green';
-            if (theme == 'theme-red-light') {
-                require("style-loader!app/custom-theme/ng_select_red.css");
-            }
-        } else {
-            this.fuseConfig.colorTheme = 'theme-default';
-        }
-
-        if (app_root_element.getAttribute('bitrix24_placement')) {
-            this.bitrix24Router.route(app_root_element.getAttribute('bitrix24_placement'));
-        }
-        if (app_root_element.getAttribute('disable_default_frontend_route')) {
-            // console.log('set disable_default_frontend_route');
-            this.modelService.setDomConfigValue('disable_default_frontend_route', true);
-        }
-        if (app_root_element.getAttribute('parser_disable') === 'true') {
-            // console.log('set disable_default_frontend_route');
-            this.modelService.setDomConfigValue('parser_disable', true);
-        }
 
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
-        this.modelService.onSitebillStart();
-        this.modelService.config_loaded_emitter.subscribe((result: any) => {
-            if ( this.modelService.getConfigValue('apps.complex.api.enable') !== '1' ) {
-                this._fuseNavigationService.removeNavigationItem('complex');
-            }
-
-
-            if (!this.demoTimerSubscribe) {
-                this.switchTimer();
-            }
-        });
 
     }
 
