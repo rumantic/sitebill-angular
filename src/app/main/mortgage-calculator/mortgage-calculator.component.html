@@ -11,17 +11,17 @@
             <a class="back-link" href="https://www.sitebill.ru/mortgage-calculator/" target="_blank">Купить | Buy</a>
         </div>
 
-    </div>    
+    </div>
 </div>
 <div id="mortgage-calculator" *ngIf="license_check_true">
     <mat-card class="result">
         <mat-card-content>
             <div fxlayoutalign="center center">
-                <div>{{top_text}}</div> от <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб    
+                <div class="bold_text">{{top_text}}</div> от <span class="light-blue-fg font-size-32"> {{month_payment|number:'1.0-0':'ru'}} </span> руб
                 <div class="orange-fg font-size-20">{{bottom_text}}</div>
             </div>
         </mat-card-content>
-    </mat-card>    
+    </mat-card>
     <mat-card>
         <mat-card-content>
             <section class="example-section">
@@ -37,7 +37,7 @@
                         [min]="min_realty_price"
                         [step]="step_realty_price"
                         [thumbLabel]="thumbLabel"
-                        [displayWith]="formatLabel"                        
+                        [displayWith]="formatLabel"
                         [tickInterval]="tickInterval"
                         [(ngModel)]="realty_price"
                         (ngModelChange)="calculate($event)"
@@ -57,7 +57,7 @@
                         [step]="step_down_payment"
                         [thumbLabel]="thumbLabel"
                         [tickInterval]="tickInterval"
-                        [displayWith]="displayFnDown.bind(this)"                        
+                        [displayWith]="displayFnDown.bind(this)"
                         [(ngModel)]="down_payment"
                         (ngModelChange)="calculate($event)"
                         [vertical]="vertical">
@@ -120,7 +120,7 @@
                 <button mat-button color="accent" (click)="order_form()">Оформить заявку</button>
             </div-->
         </mat-card-content>
-    </mat-card>    
+    </mat-card>
 
 </div>
 

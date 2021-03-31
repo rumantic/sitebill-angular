@@ -19,18 +19,24 @@
   height: 300px;
 }
 ::ng-deep .mat-accent .mat-slider-thumb-label {
-    width: 70px !important; 
-    height: 70px !important; 
+    width: 70px !important;
+    height: 70px !important;
     top: -85px !important;
     right: -33px !important;
-} 
+}
 
 ::ng-deep .mat-slider-horizontal .mat-slider-thumb-label {
-    
+
 }
 .error_content {
     padding: 10px;
 }
 .order_button_div {
     padding-top: 10px;
+}
+.orange-fg {
+    color: orange;
+}
+.bold_text {
+    font-weight: bold;
 }
