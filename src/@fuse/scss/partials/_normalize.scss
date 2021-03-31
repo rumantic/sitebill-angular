@@ -9,11 +9,6 @@
  *    IE on Windows Phone and in iOS.
  */
 
-html {
-    line-height: 1.15; /* 1 */
-    -ms-text-size-adjust: 100%; /* 2 */
-    -webkit-text-size-adjust: 100%; /* 2 */
-}
 
 /* Sections
    ========================================================================== */
@@ -22,9 +17,6 @@ html {
  * Remove the margin in all browsers (opinionated).
  */
 
-body {
-    margin: 0;
-}
 
 /**
  * Add the correct display in IE 9-.
@@ -44,10 +36,6 @@ section {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
-h1 {
-    font-size: 2em;
-    margin: 0.67em 0;
-}
 
 /* Grouping content
    ========================================================================== */
@@ -100,7 +88,7 @@ pre {
  * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
  */
 
-a {
+.angular a {
     background-color: transparent; /* 1 */
     -webkit-text-decoration-skip: objects; /* 2 */
 }
