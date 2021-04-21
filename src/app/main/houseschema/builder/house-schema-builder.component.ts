@@ -18,6 +18,8 @@ import {element} from "protractor";
 import {SnackService} from "../../../_services/snack.service";
 import {FilterService} from "../../../_services/filter.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Subject} from "rxjs";
+import {delay, takeUntil} from "rxjs/operators";
 
 @Component({
     selector   : 'house-schema-builder',
@@ -50,6 +52,7 @@ export class HouseSchemaBuilderComponent
     private level: LevelModel;
 
     form: FormGroup;
+    private _unsubscribeAll: Subject<any>;
 
 
     /**
@@ -65,6 +68,8 @@ export class HouseSchemaBuilderComponent
         private _formBuilder: FormBuilder
     )
     {
+        this._unsubscribeAll = new Subject();
+
         this.initLabelEntity();
     }
 
@@ -82,18 +87,10 @@ export class HouseSchemaBuilderComponent
             this.schema_url = this._data.galleryImages[image_index].big;
             this.input_entity = this._data.entity;
             this.field_name = this._data.image_field;
-            this.current_position = this._data.image_index;
+            this.setCurrentPosition(this._data.image_index);
             // console.log(this._data);
         } else {
-            this.input_entity = new SitebillEntity();
-            this.input_entity.set_app_name('complex');
-            this.input_entity.set_table_name('complex');
-            this.input_entity.set_primary_key('complex_id');
-            this.input_entity.set_key_value(17);
-            this.field_name = 'image';
-            this.current_position = 1;
-
-            this.schema_url = "https://qplan.sitebill.site/img/data/20210127/jpg_60113a808f75e_1611741824_1.svg";
+            console.error('SitebillEntity undefined');
         }
 
         this.canvas = new fabric.Canvas('canvas', {
@@ -109,18 +106,23 @@ export class HouseSchemaBuilderComponent
         this.initForm();
         this.load_level();
 
-        this.filterService.share.subscribe((entity: SitebillEntity) => {
+        this.filterService.share
+            .pipe(
+                delay(500),
+                takeUntil(this._unsubscribeAll)
+            )
+            .subscribe((entity: SitebillEntity) => {
             if (entity.get_app_name() == this.label_entity.get_app_name()) {
                 // console.log(entity);
                 // console.log(entity.get_ql_items());
-                if (entity.get_ql_items() && entity.get_param('canvas_id')) {
+                if (entity.get_hook() === 'afterDelete' && entity.get_param('canvas_id')) {
+                    this.removeCanvasLabel(entity.get_param('canvas_id'));
+                } else if (entity.get_ql_items() && entity.get_param('canvas_id')) {
                     this.setRealtyId(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
                     this.setLabelId(entity.get_param('canvas_id'), entity.get_key_value());
                     this.changeCanvasText(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
-                    this.updateImageLevel();
+                    this.updateImageLevel('after subscribe to save');
                 }
-
-                //console.log(entity);
             }
         });
     }
@@ -130,8 +132,13 @@ export class HouseSchemaBuilderComponent
             level_name : ['', Validators.required],
         });
 
-        this.form.valueChanges.subscribe(val => {
-            this.updateImageLevel();
+        this.form.valueChanges
+            .pipe(
+                delay(500),
+                takeUntil(this._unsubscribeAll)
+            )
+            .subscribe(val => {
+            this.updateImageLevel('subscribe to initForm');
         });
     }
 
@@ -164,15 +171,20 @@ export class HouseSchemaBuilderComponent
 
     load_level() {
         this.level = new LevelModel({
-            id: this.current_position,
+            id: this.getCurrentPosition(),
             title: '',
             locations: null
         });
 
 
-        this.houseSchemaService.load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition()).subscribe((result: any) => {
+        this.houseSchemaService
+            .load_level(this.input_entity, this.getFieldName(), this.getCurrentPosition())
+            .pipe(
+                delay(500),
+                takeUntil(this._unsubscribeAll)
+            )
+            .subscribe((result: any) => {
             if ( result.status === 'ok' ) {
-                console.log(result.level);
                 this.level.title = result.level.title;
                 if ( result.level.mapwidth ) {
                     this.size.width = result.level.mapwidth;
@@ -215,6 +227,23 @@ export class HouseSchemaBuilderComponent
                 this.form.controls['level_name'].patchValue(this.level.title);
             }
         });
+    }
+
+    removeCanvasLabel (object_id) {
+        this.canvas.getObjects().forEach(item => {
+            if (item.toObject().id === object_id) {
+                this.canvas.remove(item);
+            }
+        })
+        this.canvas.renderAll();
+        if ( this.level.locations ) {
+            this.level.locations = this.level.locations.filter((element) => {
+                if (object_id !== element.id) {
+                    return true;
+                }
+            });
+        }
+        this.updateImageLevel('removeCanvasLabel');
     }
 
 
@@ -267,13 +296,13 @@ export class HouseSchemaBuilderComponent
 
 
             this.editLabel();
-            this.updateImageLevel();
         }.bind(this));
 
         add.on('moved', function(opt){
             //console.log('mouseout fired with opts: ');
             //console.log(opt.target);
             //console.log(opt.target.toObject().id);
+            //this.removeCanvasLabel(opt.target.toObject().id);
             this.updateXY(opt.target.toObject().id, opt.target.left, opt.target.top);
         }.bind(this));
         // console.log(add);
@@ -283,19 +312,23 @@ export class HouseSchemaBuilderComponent
     }
 
     setRealtyId ( id, realty_id ) {
-        this.level.locations.forEach((element) => {
-            if (id === element.id) {
-                element.setRealtyId(realty_id);
-            }
-        });
+        if ( this.level.locations ) {
+            this.level.locations.forEach((element) => {
+                if (id === element.id) {
+                    element.setRealtyId(realty_id);
+                }
+            });
+        }
     }
 
     setLabelId ( id, label_id ) {
-        this.level.locations.forEach((element) => {
-            if (id === element.id) {
-                element.setLabelId(label_id);
-            }
-        });
+        if ( this.level.locations ) {
+            this.level.locations.forEach((element) => {
+                if (id === element.id) {
+                    element.setLabelId(label_id);
+                }
+            });
+        }
     }
 
 
@@ -332,17 +365,19 @@ export class HouseSchemaBuilderComponent
             y: top,
         });
         this.addLabel(current_location);
-        this.updateImageLevel();
+        this.updateImageLevel('addEmptyLabel');
 
     }
 
 
 
-    updateImageLevel() {
+    updateImageLevel(source) {
         this.level.title = this.form.controls['level_name'].value;
+        this.setCurrentPosition(this.getCurrentPosition());
         this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
             if ( result.status === 'error' ) {
                 this._snackService.message(result.message, 5000);
+            } else {
             }
         });
 
@@ -365,6 +400,7 @@ export class HouseSchemaBuilderComponent
 
 
         this.dialog.open(LabelSelectorComponent, dialogConfig);
+        this.updateImageLevel('editLabel');
     }
 
     extend(obj, id) {
@@ -397,7 +433,7 @@ export class HouseSchemaBuilderComponent
         });
 
 
-        this.updateImageLevel();
+        this.updateImageLevel('updateXY');
     }
     getWidth(postfix = 'px') {
         return this.size.width + postfix;
@@ -413,7 +449,17 @@ export class HouseSchemaBuilderComponent
         return this.field_name;
     }
 
+    private setCurrentPosition( position ) {
+        this.current_position = position;
+    }
+
     private getCurrentPosition() {
         return this.current_position;
+    }
+
+    ngOnDestroy () {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }

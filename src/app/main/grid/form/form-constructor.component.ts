@@ -604,6 +604,7 @@ export class FormConstructorComponent implements OnInit {
                             return null;
                         } else {
                             this._snackService.message('Запись удалена успешно');
+                            this._data.set_hook('afterDelete');
                             this.filterService.empty_share(this._data);
                             this.close();
                         }
@@ -653,6 +654,7 @@ export class FormConstructorComponent implements OnInit {
                         if (this._data.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {
+                            this._data.set_hook('afterSuccessCreate');
                             this.filterService.empty_share(this._data);
                             this.close();
                         }
@@ -665,6 +667,7 @@ export class FormConstructorComponent implements OnInit {
                         this._snackService.message(response.message);
                         return null;
                     } else {
+                        this._data.set_hook('afterSuccessSave');
                         this._snackService.message('Запись сохранена успешно');
                         this.afterSave.emit(this._data);
                         this.filterService.empty_share(this._data);
