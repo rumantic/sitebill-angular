@@ -30,6 +30,9 @@
         <button mat-icon-button *ngIf="complaint_mode">
             <mat-icon (click)="report(value)" aria-label="Пожаловаться" matTooltip="Пожаловаться">report</mat-icon>
         </button>
+        <button mat-icon-button *ngIf="this.modelSerivce.getConfigValue('enable_coworker_mode') && get_permission(row, 'U')">
+            <mat-icon (click)="coworkers(value)" aria-label="Ко-воркеры" matTooltip="Ко-воркеры">group</mat-icon>
+        </button>
 
     </div>
 </ng-template>

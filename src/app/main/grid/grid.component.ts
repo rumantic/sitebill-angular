@@ -42,6 +42,7 @@ import {LoginModalComponent} from "../../login/modal/login-modal.component";
 import {StringParserService} from "../../_services/string-parser.service";
 import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
+import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -1139,6 +1140,18 @@ export class GridComponent implements OnInit, OnDestroy
         this.reportDialogRef = this.dialog.open(ReportComponent, {
             disableClose: false,
             data: this.entity
+        });
+    }
+
+    coworkers(item_id: any) {
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'regular-modal';
+
+        const modalRef = this.dialog.open(CoworkerModalComponent, dialogConfig);
+        modalRef.componentInstance.onSave.subscribe((result) => {
+            console.log(result);
         });
     }
 

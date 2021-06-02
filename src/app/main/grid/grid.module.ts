@@ -96,6 +96,7 @@ import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {GroupTemplateComponent} from "./group-template/group-template.component";
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 import {FavoritesComponent} from "./entity/favorites/favorites";
+import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 
 const routes = [
     {
@@ -365,6 +366,7 @@ const routes = [
         ComplexComponent,
         ShareModalComponent,
         CollectionModalComponent,
+        CoworkerModalComponent,
         GroupTemplateComponent,
         FavoritesComponent
     ],
