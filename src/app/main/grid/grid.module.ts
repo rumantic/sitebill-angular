@@ -97,6 +97,7 @@ import {GroupTemplateComponent} from "./group-template/group-template.component"
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 import {FavoritesComponent} from "./entity/favorites/favorites";
 import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
+import {CoworkComponent} from "./entity/cowork/cowork.component";
 
 const routes = [
     {
@@ -345,6 +346,8 @@ const routes = [
         ComponentComponent,
         FunctionComponent,
         UserComponent,
+        CoworkComponent,
+
         FilterComponent,
         DeclineClientComponent,
         ReportComponent,
@@ -433,6 +436,7 @@ const routes = [
     exports: [
         NgxUploaderModule,
         FavoritesComponent,
+        CoworkComponent
     ],
     providers: [
         FilterService,
@@ -446,7 +450,7 @@ const routes = [
         ComposeModalComponent,
         ReportComponent,
         SaveSearchComponent,
-        RealtyItemComponent
+        RealtyItemComponent,
     ]
 
 })

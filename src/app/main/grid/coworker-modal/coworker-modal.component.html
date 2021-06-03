@@ -9,17 +9,16 @@
     </mat-toolbar>
     <div fxLayout="row">
         <div class="p-12 form-item">
-            <form-static
-                [entity]="entity"
-                [disable_delete]="true"
-                [disable_save_button]="false"
-                [disable_cancel_button]="false"
-                [disable_form_title_bar]="true"
-                [fake_save]="true"
-                (onSave)="save($event)"
-                (onClose)="close()">
-            </form-static>
+            <cowork-grid
+                [disable_header]="false"
+                [disable_wild_search]="true"
+                [freeze_default_columns_list]="true"
+                [disable_view_button]="true"
+                [cowork_object_id]="entity.get_default_value('id')"
+                [cowork_object_type]="entity.get_default_value('object_type')">
+            </cowork-grid>
         </div>
+
     </div>
 
 </div>

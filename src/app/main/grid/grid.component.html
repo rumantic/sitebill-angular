@@ -4,6 +4,7 @@
     [disable_delete_button]="disable_delete_button"
     [disable_edit_button]="disable_edit_button"
     [disable_view_button]="disable_view_button"
+    [enable_coworker_button]="enable_coworker_button"
     [disable_gallery_controls]="disable_gallery_controls"
     [complaint_mode]="complaint_mode"
     (viewEvent)="view($event)"
@@ -23,7 +24,7 @@
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header p-16 p-md-24 accent" fxLayout="column">
+        <div class="header p-16 p-md-24 accent" fxLayout="column"  *ngIf="!disable_header">
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">

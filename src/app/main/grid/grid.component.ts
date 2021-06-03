@@ -156,11 +156,17 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('disable_add_button')
     disable_add_button: boolean;
 
+    @Input('disable_header')
+    disable_header: boolean;
+
     @Input('disable_wild_search')
     disable_wild_search: boolean;
 
     @Input('disable_view_button')
     disable_view_button: boolean;
+
+    @Input('enable_coworker_button')
+    enable_coworker_button: boolean;
 
     @Input('disable_edit_button')
     disable_edit_button: boolean;
@@ -404,6 +410,7 @@ export class GridComponent implements OnInit, OnDestroy
             this.entity.set_app_name('client');
             this.entity.set_table_name('client');
             this.entity.primary_key = 'client_id';
+            this.enable_coworker_button = true;
         }
     }
 
@@ -1148,6 +1155,10 @@ export class GridComponent implements OnInit, OnDestroy
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '400px';
+        //this.entity.set_key_value(item_id);
+        this.entity.set_param('id', item_id);
+        dialogConfig.data = this.entity;
 
         const modalRef = this.dialog.open(CoworkerModalComponent, dialogConfig);
         modalRef.componentInstance.onSave.subscribe((result) => {

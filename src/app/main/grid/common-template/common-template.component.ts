@@ -39,6 +39,9 @@ export class CommonTemplateComponent {
     @Input("disable_view_button")
     disable_view_button: boolean;
 
+    @Input("enable_coworker_button")
+    enable_coworker_button: boolean;
+
     @Input("disable_edit_button")
     disable_edit_button: boolean;
 
