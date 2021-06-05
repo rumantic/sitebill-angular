@@ -20,6 +20,7 @@ export class DataComponent extends GridComponent {
         }
         this.switch_collections(true);
         this.enable_date_range('date_added');
+        this.enable_coworker_button = true;
     }
 
     edit_form(item_id: any) {
