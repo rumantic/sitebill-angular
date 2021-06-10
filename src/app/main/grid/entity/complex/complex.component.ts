@@ -17,6 +17,7 @@ export class ComplexComponent extends GridComponent {
         this.entity.set_table_name('complex');
         this.entity.set_primary_key('complex_id');
         this.disable_wild_search = true;
+        this.enable_building_blocks_button = true;
 
     }
 

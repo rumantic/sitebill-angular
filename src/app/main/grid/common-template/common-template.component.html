@@ -35,6 +35,11 @@
             *ngIf="enable_coworker_button && this.modelSerivce.getConfigValue('enable_coworker_mode') && get_permission(row, 'U')">
             <mat-icon (click)="coworkers(value)" aria-label="Ко-воркеры" matTooltip="Ко-воркеры">group</mat-icon>
         </button>
+        <button
+            mat-icon-button
+            *ngIf="enable_building_blocks_button && get_permission(row, 'U')">
+            <mat-icon (click)="building_blocks(value)" aria-label="Строения" matTooltip="Строения">business</mat-icon>
+        </button>
 
     </div>
 </ng-template>

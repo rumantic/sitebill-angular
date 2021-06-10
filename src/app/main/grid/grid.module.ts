@@ -98,6 +98,8 @@ import {CollectionModalComponent} from "./collection-modal/collection-modal.comp
 import {FavoritesComponent} from "./entity/favorites/favorites";
 import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 import {CoworkComponent} from "./entity/cowork/cowork.component";
+import {BuildingBlocksComponent} from "./entity/building-blocks/building-blocks.component";
+import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
 
 const routes = [
     {
@@ -347,6 +349,7 @@ const routes = [
         FunctionComponent,
         UserComponent,
         CoworkComponent,
+        BuildingBlocksComponent,
 
         FilterComponent,
         DeclineClientComponent,
@@ -370,6 +373,7 @@ const routes = [
         ShareModalComponent,
         CollectionModalComponent,
         CoworkerModalComponent,
+        BuildingBlocksModalComponent,
         GroupTemplateComponent,
         FavoritesComponent
     ],
@@ -436,7 +440,8 @@ const routes = [
     exports: [
         NgxUploaderModule,
         FavoritesComponent,
-        CoworkComponent
+        CoworkComponent,
+        BuildingBlocksComponent
     ],
     providers: [
         FilterService,
