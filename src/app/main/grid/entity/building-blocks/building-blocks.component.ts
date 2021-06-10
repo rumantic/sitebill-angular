@@ -23,7 +23,8 @@ export class BuildingBlocksComponent extends GridComponent {
         this.entity.set_hidden('object_id');
         this.entity.set_hidden('object_type');
         const default_columns_list = [
-            'plan'
+            'title',
+            'plan',
         ];
         this.define_grid_fields(default_columns_list);
 
