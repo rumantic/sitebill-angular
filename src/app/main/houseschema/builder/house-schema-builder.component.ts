@@ -10,7 +10,7 @@ import {NgxGalleryImage} from "ngx-gallery-9";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import { fabric } from "fabric";
 import {LabelSelectorComponent} from "./modal/label-selector/label-selector.component";
-import {LevelLocationModel} from "../models/level-location.model";
+import {labelColors, LevelLocationModel} from "../models/level-location.model";
 import {LevelModel} from "../models/level.model";
 import {SectionModel} from "../models/section.model";
 import {StairModel} from "../models/stair.model";
@@ -118,9 +118,21 @@ export class HouseSchemaBuilderComponent
                 if (entity.get_hook() === 'afterDelete' && entity.get_param('canvas_id')) {
                     this.removeCanvasLabel(entity.get_param('canvas_id'));
                 } else if (entity.get_ql_items() && entity.get_param('canvas_id')) {
-                    this.setRealtyId(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
                     this.setLabelId(entity.get_param('canvas_id'), entity.get_key_value());
-                    this.changeCanvasText(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                    if (entity.get_ql_items().building_blocks_id) {
+                        this.setBuildingBlocksId(
+                            entity.get_param('canvas_id'),
+                            entity.get_ql_items().building_blocks_id
+                        );
+                        this.changeCanvasText(
+                            entity.get_param('canvas_id'),
+                            entity.get_ql_items().building_blocks_id,
+                            labelColors.building_blocks
+                        );
+                    } else if(entity.get_ql_items().realty_id) {
+                        this.setRealtyId(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                        this.changeCanvasText(entity.get_param('canvas_id'), entity.get_ql_items().realty_id);
+                    }
                     this.updateImageLevel('after subscribe to save');
                 }
             }
@@ -142,11 +154,11 @@ export class HouseSchemaBuilderComponent
         });
     }
 
-    changeCanvasText( id:number, text:string ) {
+    changeCanvasText( id:number, text:string, color = labelColors.realty ) {
         this.canvas.getObjects().forEach(item => {
             if (item.toObject().id === id) {
-                item._objects[0].set("fillColor", '#00e676');
-                item._objects[0].set("fill", '#00e676');
+                item._objects[0].set("fillColor", color);
+                item._objects[0].set("fill", color);
                 item._objects[0].set("radius", 21);
                 item._objects[1].set("text", text);
             }
@@ -215,6 +227,7 @@ export class HouseSchemaBuilderComponent
                                         x: nlocation.x,
                                         y: nlocation.y,
                                         realty_id: (nlocation.realty_id ? nlocation.realty_id : 0),
+                                        building_blocks_id: (nlocation.building_blocks_id ? nlocation.building_blocks_id : 0),
                                         label_id: (nlocation.getLabelId() ? nlocation.getLabelId() : null),
                                     });
 
@@ -259,7 +272,12 @@ export class HouseSchemaBuilderComponent
 
         // console.log(location.realty_id);
 
-        let circle_label = (location.realty_id ? location.realty_id : '?')
+        let circle_label;
+        if ( location.building_blocks_id ) {
+            circle_label = location.building_blocks_id;
+        } else {
+            circle_label = (location.realty_id ? location.realty_id : '?');
+        }
 
 
         var t = new fabric.Text(circle_label.toString(), {
@@ -321,6 +339,17 @@ export class HouseSchemaBuilderComponent
         }
     }
 
+    setBuildingBlocksId ( id, building_blocks_id ) {
+        if ( this.level.locations ) {
+            this.level.locations.forEach((element) => {
+                if (id === element.id) {
+                    element.setBuildingBlocksId(building_blocks_id);
+                }
+            });
+        }
+    }
+
+
     setLabelId ( id, label_id ) {
         if ( this.level.locations ) {
             this.level.locations.forEach((element) => {
@@ -340,6 +369,16 @@ export class HouseSchemaBuilderComponent
             }
         });
         return realty_id;
+    }
+
+    getBuildingBlocksId ( id ) {
+        let building_blocks_id = 0;
+        this.level.locations.forEach((element) => {
+            if (id === element.id) {
+                building_blocks_id = element.getBuildingBlocksId();
+            }
+        });
+        return building_blocks_id;
     }
 
     getLabelId ( id ) {
@@ -374,7 +413,12 @@ export class HouseSchemaBuilderComponent
     updateImageLevel(source) {
         this.level.title = this.form.controls['level_name'].value;
         this.setCurrentPosition(this.getCurrentPosition());
-        this.houseSchemaService.update_level(this.input_entity, this.getFieldName(), this.getCurrentPosition(), this.level).subscribe((result: any) => {
+        this.houseSchemaService.update_level(
+            this.input_entity,
+            this.getFieldName(),
+            this.getCurrentPosition(),
+            this.level
+        ).subscribe((result: any) => {
             if ( result.status === 'error' ) {
                 this._snackService.message(result.message, 5000);
             } else {

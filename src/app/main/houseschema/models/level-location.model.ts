@@ -6,6 +6,7 @@ export class LevelLocationModel {
     x: number;
     y: number;
     realty_id: number;
+    building_blocks_id: number;
     private label_id: number;
 
     constructor(item: any = clearLevelLocation) {
@@ -16,6 +17,7 @@ export class LevelLocationModel {
         this.x = item.x;
         this.y = item.y;
         this.realty_id = item.realty_id;
+        this.building_blocks_id = item.building_blocks_id;
         this.label_id = item.label_id;
     }
 
@@ -31,11 +33,21 @@ export class LevelLocationModel {
     setRealtyId(realty_id:number) {
         this.realty_id = realty_id;
     }
+    getBuildingBlocksId() {
+        return this.building_blocks_id;
+    }
+    setBuildingBlocksId(building_blocks_id:number) {
+        this.building_blocks_id = building_blocks_id;
+    }
     getColor() {
         if ( this.getLabelId() ) {
-            return '#00e676';
+            if ( this.getBuildingBlocksId() ) {
+                return labelColors.building_blocks;
+            } else {
+                return labelColors.realty;
+            }
         }
-        return '#ff5722';
+        return labelColors.empty;
     }
 
     setLabelId(label_id:number) {
@@ -53,5 +65,12 @@ const clearLevelLocation = {
     x: '',
     y: '',
     realty_id: 0,
+    building_blocks_id: 0,
     label_id: null
 };
+
+export const labelColors = {
+    empty: '#ff5722',
+    realty: '#00e676',
+    building_blocks: '#00a7fd'
+}
