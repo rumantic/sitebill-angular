@@ -428,6 +428,7 @@ export class HouseSchemaBuilderComponent
     }
 
     editLabel() {
+        this.label_entity.set_default_value('object_id', this.input_entity.get_key_value());
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
