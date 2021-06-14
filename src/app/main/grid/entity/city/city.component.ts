@@ -14,5 +14,6 @@ export class CityComponent extends GridComponent {
         this.entity.set_app_name('city');
         this.entity.set_table_name('city');
         this.entity.primary_key = 'city_id';
+        this.enable_coworker_button = true;
     }
 }
