@@ -102,6 +102,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/main/frontend/frontend.module').then(m => m.FrontendModule),
     },
     {
+        path: 'standalone',
+        loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
+    },
+    {
         path: 'dashboard',
         loadChildren: () => import('app/main/dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [PublicGuard],

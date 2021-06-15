@@ -50,12 +50,19 @@ export class FrontendComponent
         };
     }
     ngOnInit() {
-        console.log('run frontend');
-        if ( !this.modelService.is_logged_in() ) {
-            console.log('frontend login model (after localstorage)');
-            this.login_modal();
-        }
-
+        this.modelService.sitebill_loaded_complete_emitter.subscribe((result: any) => {
+            if ( this.modelService.getDomConfigValue('standalone_mode') ) {
+                console.log('standalone');
+                this.router.navigate(['/standalone']);
+            } else {
+                console.log('run frontend');
+                console.log('standalone_mode = ' + this.modelService.getDomConfigValue('standalone_mode'));
+                if ( !this.modelService.is_logged_in() ) {
+                    console.log('frontend login model (after localstorage!)');
+                    this.login_modal();
+                }
+            }
+        });
         // this.modelService.get_session_key_safe();
         // console.log(this.modelService.getConfigValue('default_frontend_route'));
     }

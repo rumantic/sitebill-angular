@@ -265,6 +265,12 @@ export class AppComponent implements OnInit, OnDestroy
             // console.log('set disable_default_frontend_route');
             this.modelService.setDomConfigValue('parser_disable', true);
         }
+        if (app_root_element.getAttribute('standalone_mode') === 'true') {
+            this.initAllAttributes(app_root_element);
+            this.modelService.disable_model_redirect();
+            this.modelService.setDomConfigValue('standalone_mode', true);
+            this.fuseConfig.layout.style = 'standalone';
+        }
 
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
@@ -280,6 +286,18 @@ export class AppComponent implements OnInit, OnDestroy
             }
         });
 
+    }
+
+    initAllAttributes (node) {
+        if (node.getAttributeNames()) {
+            node.getAttributeNames().forEach((item) => {
+                try {
+                    this.modelService.setDomConfigValue(item, node.getAttribute(item));
+                } catch (e){
+
+                }
+            });
+        }
     }
 
 
