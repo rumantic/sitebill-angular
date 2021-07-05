@@ -5,12 +5,14 @@ import { VerticalLayout2Module } from 'app/layout/vertical/layout-2/layout-2.mod
 import { VerticalLayout3Module } from 'app/layout/vertical/layout-3/layout-3.module';
 
 import { HorizontalLayout1Module } from 'app/layout/horizontal/layout-1/layout-1.module';
+import {StandaloneModule} from "./vertical/standalone/standalone.module";
 
 @NgModule({
     imports: [
         VerticalLayout1Module,
         VerticalLayout2Module,
         VerticalLayout3Module,
+        StandaloneModule,
 
         HorizontalLayout1Module
     ],
@@ -18,6 +20,7 @@ import { HorizontalLayout1Module } from 'app/layout/horizontal/layout-1/layout-1
         VerticalLayout1Module,
         VerticalLayout2Module,
         VerticalLayout3Module,
+        StandaloneModule,
 
         HorizontalLayout1Module
     ]

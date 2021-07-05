@@ -1,0 +1,13 @@
+<div id="ngx-datatable" class="page-layout simple fullwidth">
+    <ng-container *ngIf="this.modelService.getDomConfigValue('object_id') && this.modelService.getDomConfigValue('object_type')">
+        <cowork-grid
+            [disable_header]="false"
+            [disable_wild_search]="true"
+            [freeze_default_columns_list]="true"
+            [disable_view_button]="true"
+            [cowork_object_id]="this.modelService.getDomConfigValue('object_id')"
+            [cowork_object_type]="this.modelService.getDomConfigValue('object_type')">
+        </cowork-grid>
+    </ng-container>
+</div>
+

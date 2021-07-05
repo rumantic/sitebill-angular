@@ -26,8 +26,10 @@ export class ModelService {
     private current_entity: SitebillEntity;
     private navbar_hidden: boolean;
     private toolbar_hidden: boolean;
+    private model_redirect: boolean = true;
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() sitebill_loaded_complete_emitter: EventEmitter<any> = new EventEmitter();
     private dom_sitebill_config: any;
     private install_mode: boolean;
     private nobody_first_login = false;
@@ -228,17 +230,22 @@ export class ModelService {
         if (!this.is_validated_session_key()) {
             this.validateKey(session_key).subscribe((result: any) => {
                 if (result.error === 'check_session_key_failed') {
-                    this.reset_local_user_storage();
-                    let refresh_url = this.router.url;
-                    this.enable_need_reload('get_session_key_safe');
-                    this.router.navigate([refresh_url]);
+                    if ( this.is_model_redirect_enabled() ) {
+                        this.reset_local_user_storage();
+                        let refresh_url = this.router.url;
+                        this.enable_need_reload('get_session_key_safe');
+                        this.router.navigate([refresh_url]);
+                    }
                 } else {
                     this.session_key_validate();
                 }
             });
         }
         if (session_key == null) {
-            this.logout();
+            if ( this.is_model_redirect_enabled() ) {
+                this.logout();
+            }
+
         }
         return session_key;
     }
@@ -690,21 +697,25 @@ export class ModelService {
         return this.config_loaded;
     }
 
-    init_config () {
+    init_config() {
         this.load_config()
             .subscribe((result: any) => {
-                if (result.state === 'success') {
-                    this.sitebill_config = result.data;
-                    this.config_loaded = true;
-                    this.after_config_loaded();
-                } else {
-                    console.log('load config failed');
-                    this.router.navigate(['grid/data']);
-                }
-            },
-                    error => {
-                        console.log('load config failed, bad request');
+                    if (result.state === 'success') {
+                        this.sitebill_config = result.data;
+                        this.config_loaded = true;
+                        this.after_config_loaded();
+                    } else {
+                        console.log('load config failed');
+                        if (this.is_model_redirect_enabled()) {
+                            this.router.navigate(['grid/data']);
+                        }
+                    }
+                },
+                error => {
+                    console.log('load config failed, bad request');
+                    if ( this.is_model_redirect_enabled() ) {
                         this.router.navigate(['grid/data']);
+                    }
                 });
 
     }
@@ -721,11 +732,15 @@ export class ModelService {
 
         if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
             //console.log('default route');
-            this.router.navigate(['grid/data']);
+            if ( this.is_model_redirect_enabled() ) {
+                this.router.navigate(['grid/data']);
+            }
         } else {
             //console.log('config route');
             //console.log(this.getConfigValue('apps.realty.default_frontend_route'));
-            this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
+            if ( this.is_model_redirect_enabled() ) {
+                this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
+            }
         }
 
     }
@@ -829,6 +844,7 @@ export class ModelService {
                 if ( result.success === 1 ) {
                     this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
+                this.sitebill_loaded_complete_emitter.emit(true);
             });
     }
 
@@ -886,5 +902,15 @@ export class ModelService {
 
     get_install_mode () {
         return this.install_mode;
+    }
+
+    disable_model_redirect () {
+        this.model_redirect = false;
+    }
+    enable_model_redirect () {
+        this.model_redirect = true;
+    }
+    is_model_redirect_enabled () {
+        return this.model_redirect;
     }
 }
