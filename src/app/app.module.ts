@@ -61,7 +61,16 @@ import {Error404Component} from "./main/pages/errors/404/error-404.component";
 import {Error500Component} from "./main/pages/errors/500/error-500.component";
 
 const appRoutes: Routes = [
-    {path: '', redirectTo: 'frontend', pathMatch: 'full'},
+    //Для обычного angular этот маршрут для корня
+    //{path: '', redirectTo: 'frontend', pathMatch: 'full'},
+
+    //Для standalone
+    {
+        path: '',
+        loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
+    },
+
+
     {path: 'login', component: LoginComponent},
     {path: 'logout', component: LoginComponent},
     {

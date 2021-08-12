@@ -441,7 +441,9 @@ const routes = [
         NgxUploaderModule,
         FavoritesComponent,
         CoworkComponent,
-        BuildingBlocksComponent
+        BuildingBlocksComponent,
+        DataComponent,
+        CityComponent
     ],
     providers: [
         FilterService,
