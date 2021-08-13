@@ -2,8 +2,6 @@
     <ng-container [ngSwitch]="this.modelService.getDomConfigValue('component')">
         <data-grid *ngSwitchCase="'data'">
         </data-grid>
-        <city-grid *ngSwitchCase="'city'">
-        </city-grid>
         <cowork-grid  *ngSwitchCase="'coworker'"
             [disable_header]="false"
             [disable_wild_search]="true"
@@ -12,9 +10,11 @@
             [cowork_object_id]="this.modelService.getDomConfigValue('object_id')"
             [cowork_object_type]="this.modelService.getDomConfigValue('object_type')">
         </cowork-grid>
-        <span *ngSwitchDefault>
-            component <strong>{{this.modelService.getDomConfigValue('component')}}</strong> not found
-        </span>
+        <auto-resolver-grid *ngSwitchDefault
+                            [app_name]="this.modelService.getDomConfigValue('component')"
+                            [table_name]="this.modelService.getDomConfigValue('table_name')"
+                            [primary_key]="this.modelService.getDomConfigValue('primary_key')">
+        </auto-resolver-grid>
     </ng-container>
 </div>
 

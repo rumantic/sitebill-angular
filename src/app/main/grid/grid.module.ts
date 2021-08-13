@@ -100,6 +100,8 @@ import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component"
 import {CoworkComponent} from "./entity/cowork/cowork.component";
 import {BuildingBlocksComponent} from "./entity/building-blocks/building-blocks.component";
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
+import {ClientComponent} from "./entity/client/client.component";
+import {AutoResolverComponent} from "./entity/autoresolver/auto-resolver.component";
 
 const routes = [
     {
@@ -350,6 +352,8 @@ const routes = [
         UserComponent,
         CoworkComponent,
         BuildingBlocksComponent,
+        ClientComponent,
+        AutoResolverComponent,
 
         FilterComponent,
         DeclineClientComponent,
@@ -443,7 +447,9 @@ const routes = [
         CoworkComponent,
         BuildingBlocksComponent,
         DataComponent,
-        CityComponent
+        CityComponent,
+        ClientComponent,
+        AutoResolverComponent
     ],
     providers: [
         FilterService,
