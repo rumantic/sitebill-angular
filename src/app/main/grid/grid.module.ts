@@ -449,7 +449,8 @@ const routes = [
         DataComponent,
         CityComponent,
         ClientComponent,
-        AutoResolverComponent
+        AutoResolverComponent,
+        FrontComponent
     ],
     providers: [
         FilterService,
