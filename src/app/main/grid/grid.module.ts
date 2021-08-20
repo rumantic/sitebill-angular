@@ -102,6 +102,8 @@ import {BuildingBlocksComponent} from "./entity/building-blocks/building-blocks.
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
 import {ClientComponent} from "./entity/client/client.component";
 import {AutoResolverComponent} from "./entity/autoresolver/auto-resolver.component";
+import {CloudTestimonialsComponent} from "./entity/cloud/testimonials/cloud-testimonials.component";
+import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 
 const routes = [
     {
@@ -354,6 +356,7 @@ const routes = [
         BuildingBlocksComponent,
         ClientComponent,
         AutoResolverComponent,
+        CloudTestimonialsComponent,
 
         FilterComponent,
         DeclineClientComponent,
@@ -377,6 +380,7 @@ const routes = [
         ShareModalComponent,
         CollectionModalComponent,
         CoworkerModalComponent,
+        TestimonialsModalComponent,
         BuildingBlocksModalComponent,
         GroupTemplateComponent,
         FavoritesComponent
@@ -450,6 +454,7 @@ const routes = [
         CityComponent,
         ClientComponent,
         AutoResolverComponent,
+        CloudTestimonialsComponent,
         FrontComponent
     ],
     providers: [

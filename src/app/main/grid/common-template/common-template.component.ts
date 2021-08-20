@@ -42,6 +42,9 @@ export class CommonTemplateComponent {
     @Input("enable_coworker_button")
     enable_coworker_button: boolean;
 
+    @Input("enable_testimonials_button")
+    enable_testimonials_button: boolean;
+
     @Input("enable_building_blocks_button")
     enable_building_blocks_button: boolean;
 
@@ -65,6 +68,7 @@ export class CommonTemplateComponent {
     @Output() deleteEvent = new EventEmitter<number>();
     @Output() reportEvent = new EventEmitter<number>();
     @Output() coworkersEvent = new EventEmitter<number>();
+    @Output() testimonialsEvent = new EventEmitter<number>();
     @Output() building_blocksEvent = new EventEmitter<number>();
     @Output() toggle_activeEvent = new EventEmitter<any>();
     @Output() view_galleryEvent = new EventEmitter<any>();
@@ -129,6 +133,10 @@ export class CommonTemplateComponent {
 
     coworkers(item_id: number) {
         this.coworkersEvent.next(item_id);
+    }
+
+    testimonials(item_id: number) {
+        this.testimonialsEvent.next(item_id);
     }
 
     building_blocks(item_id: number) {

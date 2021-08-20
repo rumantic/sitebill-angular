@@ -44,6 +44,7 @@ import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
+import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -168,6 +169,10 @@ export class GridComponent implements OnInit, OnDestroy
 
     @Input('enable_coworker_button')
     enable_coworker_button: boolean;
+
+    @Input('enable_testimonials_button')
+    enable_testimonials_button: boolean;
+
 
     @Input('enable_building_blocks_button')
     enable_building_blocks_button: boolean;
@@ -1185,6 +1190,23 @@ export class GridComponent implements OnInit, OnDestroy
             console.log(result);
         });
     }
+
+    testimonials(item_id: any) {
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '400px';
+        //this.entity.set_key_value(item_id);
+        this.entity.set_param('id', item_id);
+        dialogConfig.data = this.entity;
+
+        const modalRef = this.dialog.open(TestimonialsModalComponent, dialogConfig);
+        modalRef.componentInstance.onSave.subscribe((result) => {
+            console.log(result);
+        });
+    }
+
 
     reset_filters () {
         this.clear_search_text();
