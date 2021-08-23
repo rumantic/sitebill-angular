@@ -455,7 +455,8 @@ const routes = [
         ClientComponent,
         AutoResolverComponent,
         CloudTestimonialsComponent,
-        FrontComponent
+        FrontComponent,
+        UserComponent
     ],
     providers: [
         FilterService,

@@ -16,6 +16,9 @@
         <front-component *ngSwitchCase="'front'">
         </front-component>
 
+        <user-grid *ngSwitchCase="'user'">
+        </user-grid>
+
         <cloud-testimonials-grid *ngSwitchCase="'cloud-testimonials'"
                                  [api_key]="this.modelService.getDomConfigValue('api_key')"
                                  [object_id]="this.modelService.getDomConfigValue('object_id')"

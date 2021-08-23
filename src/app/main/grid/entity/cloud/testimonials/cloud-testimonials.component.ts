@@ -19,9 +19,9 @@ export class CloudTestimonialsComponent extends GridComponent {
     api_key: string;
 
     setup_apps() {
-        this.entity.set_app_name('testimonials');
-        this.entity.set_table_name('testimonials');
-        this.entity.primary_key = 'id';
+        this.entity.set_app_name('review');
+        this.entity.set_table_name('review');
+        this.entity.primary_key = 'review_id';
 
         this.entity.set_default_value('object_id', this.object_id);
         this.entity.set_default_value('object_type', this.object_type);
