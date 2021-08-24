@@ -46,10 +46,17 @@ mat-sidenav-container {
 }
 
 ::ng-deep .regular-modal {
+    .cdk-overlay-pane{
+        width: unset !important;
+        height: unset !important;
+        max-width: 100% !important;
+    }
+
     .mat-dialog-container {
         padding: 0;
-
+        resize: both;
     }
+
 }
 
 
