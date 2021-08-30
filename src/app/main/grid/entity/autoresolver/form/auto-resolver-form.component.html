@@ -1,0 +1,21 @@
+<div fxLayout="row">
+    <div class="p-12 form-item" *ngIf="show_form">
+        <form-static
+            [entity]="entity"
+            [disable_delete]="true"
+            [disable_save_button]="false"
+            [disable_cancel_button]="true"
+            [disable_form_title_bar]="true"
+        >
+        </form-static>
+    </div>
+    <div class="p-12 form-item" *ngIf="!show_form">
+        <div *ngIf="success_message else default">
+            {{success_message}}
+        </div>
+
+        <ng-template #default>
+            <div>Данные сохранены успешно</div>
+        </ng-template>
+    </div>
+</div>

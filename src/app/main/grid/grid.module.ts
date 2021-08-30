@@ -104,6 +104,7 @@ import {ClientComponent} from "./entity/client/client.component";
 import {AutoResolverComponent} from "./entity/autoresolver/auto-resolver.component";
 import {CloudTestimonialsComponent} from "./entity/cloud/testimonials/cloud-testimonials.component";
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
+import {AutoResolverFormComponent} from "./entity/autoresolver/form/auto-resolver-form.component";
 
 const routes = [
     {
@@ -356,6 +357,7 @@ const routes = [
         BuildingBlocksComponent,
         ClientComponent,
         AutoResolverComponent,
+        AutoResolverFormComponent,
         CloudTestimonialsComponent,
 
         FilterComponent,
@@ -456,7 +458,8 @@ const routes = [
         AutoResolverComponent,
         CloudTestimonialsComponent,
         FrontComponent,
-        UserComponent
+        UserComponent,
+        AutoResolverFormComponent
     ],
     providers: [
         FilterService,
