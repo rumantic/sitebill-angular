@@ -31,6 +31,9 @@ export class ModelService {
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     @Output() sitebill_loaded_complete_emitter: EventEmitter<any> = new EventEmitter();
     @Output() need_reload_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() valid_user_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() init_permissions_complete_emitter: EventEmitter<any> = new EventEmitter();
+
     private dom_sitebill_config: any;
     private install_mode: boolean;
     private nobody_first_login = false;
@@ -203,8 +206,8 @@ export class ModelService {
     }
 
     session_key_validate() {
-        // console.log('session_key_validate');
         if ( !this.session_key_validated ) {
+            console.log('session_key_validate');
             this.load_current_user_profile();
         }
         this.session_key_validated = true;
@@ -716,6 +719,26 @@ export class ModelService {
         return this.config_loaded;
     }
 
+    init_config_standalone() {
+        console.log('start init config standalone');
+        this.load_config()
+            .subscribe((result: any) => {
+                    console.log('config standalone data loaded');
+                    if (result.state === 'success') {
+                        this.sitebill_config = result.data;
+                        this.config_loaded = true;
+                        this.config_loaded_emitter.emit(true);
+                    } else {
+                        console.log('load config failed');
+                    }
+                },
+                error => {
+                    console.log('load config failed, bad request');
+                });
+
+    }
+
+
     init_config() {
         console.log('start init config');
         this.load_config()
@@ -791,6 +814,9 @@ export class ModelService {
                 if ( result.data.imgfile != null ) {
                     this.current_user_profile.imgfile.value = result.data.imgfile.value;
                 }
+                this.valid_user_emitter.emit(true);
+            } else {
+                console.log('get_oauth_user_profile failed');
             }
         });
     }
@@ -856,7 +882,7 @@ export class ModelService {
         return this.current_entity;
     }
 
-    private init_permissions() {
+    public init_permissions() {
         console.log('init_permissions');
 
         const request = {
@@ -870,6 +896,7 @@ export class ModelService {
                     this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
                 this.sitebill_loaded_complete_emitter.emit(true);
+                this.init_permissions_complete_emitter.emit(true);
                 this.init_permissions_complete = true;
             });
     }

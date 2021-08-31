@@ -59,6 +59,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {AlertComponent} from "./_directives";
 import {Error404Component} from "./main/pages/errors/404/error-404.component";
 import {Error500Component} from "./main/pages/errors/500/error-500.component";
+import {SitebillAuthService} from "./_services/sitebill-auth.service";
 
 const appRoutes: Routes = [
     //Для обычного angular этот маршрут для корня
@@ -213,6 +214,7 @@ const appRoutes: Routes = [
         MessageService,
         AuthGuard,
         ModelService,
+        SitebillAuthService,
         PublicGuard,
         AlertService,
         AuthenticationService,

@@ -10,6 +10,7 @@ import {fuseAnimations} from '../../../@fuse/animations';
 import {Router} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {SitebillAuthService} from "../../_services/sitebill-auth.service";
 
 @Component({
     selector   : 'standalone-runner',
@@ -28,6 +29,7 @@ export class StandaloneRunnerComponent
      */
     constructor(
         public modelService: ModelService,
+        public sitebillAuthService: SitebillAuthService,
         private _fuseConfigService: FuseConfigService,
         protected router: Router,
         protected dialog: MatDialog,
@@ -36,8 +38,36 @@ export class StandaloneRunnerComponent
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
+
+    run () {
+        console.log('ready for standalone components');
+        this.config_loaded = true;
+    }
+
     ngOnInit() {
         console.log('run standalone ...');
+        this.sitebillAuthService.init();
+
+        if ( this.sitebillAuthService.get_state() == 'ready' ) {
+            console.log('sitebillAuthService has ready state')
+            this.run();
+        }
+        this.sitebillAuthService.complete_emitter.subscribe(
+            (result: any) => {
+                if ( result ) {
+                    console.log('sitebillAuthService.complete() result = true')
+                    this.run();
+                }
+            },
+            error => {
+                console.log('error');
+                console.log(error);
+            },
+            complete => {
+                console.log('sitebillAuthService.complete() complete')
+            }
+        );
+        /*
         // this.modelService.enable_model_redirect();
         if ( this.modelService.all_checks_passes() ) {
             this.config_loaded = true;
@@ -62,6 +92,11 @@ export class StandaloneRunnerComponent
                 }
             );
         }
+         */
+
+    }
+
+    check_session () {
 
     }
 
