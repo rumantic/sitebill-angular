@@ -20,6 +20,7 @@ import {LoginModalComponent} from '../../login/modal/login-modal.component';
 export class StandaloneRunnerComponent
 {
     loading = false;
+    config_loaded = false;
 
     /**
      * Constructor
@@ -36,18 +37,41 @@ export class StandaloneRunnerComponent
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
     ngOnInit() {
-        console.log('run standalone...');
-        this.modelService.config_loaded_emitter.subscribe((result: any) => {
-            if ( result === true ) {
-                this.enable_guest_mode();
-            }
-        });
+        console.log('run standalone ...');
+        // this.modelService.enable_model_redirect();
+        if ( this.modelService.all_checks_passes() ) {
+            this.config_loaded = true;
+        } else if (this.modelService.final_state()) {
+            this.config_loaded = true;
+        } else {
+            this.modelService.sitebill_loaded_complete_emitter.subscribe(
+                (result: any) => {
+                    this.config_loaded = true;
+                    if ( result === true ) {
+                        this.enable_guest_mode();
+                    } else {
+                        console.log('config loaded result = false');
+                    }
+                },
+                error => {
+                    console.log('error');
+                    console.log(error);
+                },
+                complete => {
+                    console.log('config_loaded_emitter complete')
+                }
+            );
+        }
 
     }
 
     enable_guest_mode () {
-        if ( this.modelService.get_user_id() === null ) {
+        console.log('guest mode check');
+        if ( this.modelService.get_user_id() === null || this.modelService.get_user_id() === undefined ) {
             this.modelService.enable_guest_mode();
+        } else {
+            console.log('session_key = ' + this.modelService.get_session_key_safe());
+            console.log('this.modelService.get_user_id() = ' + this.modelService.get_user_id());
         }
     }
 

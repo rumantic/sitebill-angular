@@ -30,9 +30,12 @@ export class ModelService {
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     @Output() sitebill_loaded_complete_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() need_reload_emitter: EventEmitter<any> = new EventEmitter();
     private dom_sitebill_config: any;
     private install_mode: boolean;
     private nobody_first_login = false;
+    public init_permissions_complete: boolean = false;
+    public init_config_complete: boolean = false;
 
 
 
@@ -104,6 +107,15 @@ export class ModelService {
 
     all_checks_passes () {
         if ( this.get_nobody_mode() || this.get_user_id() > 0 ) {
+            console.log('all_checks_passes success');
+            return true;
+        }
+        return false;
+    }
+
+    final_state () {
+        if ( this.init_config_complete && this.init_permissions_complete ) {
+            console.log('final_state true');
             return true;
         }
         return false;
@@ -175,6 +187,7 @@ export class ModelService {
         }
         // console.log('enable_need_reload');
         this.need_reload = true;
+
     }
 
     disable_need_reload() {
@@ -230,11 +243,17 @@ export class ModelService {
         if (!this.is_validated_session_key()) {
             this.validateKey(session_key).subscribe((result: any) => {
                 if (result.error === 'check_session_key_failed') {
+                    console.log('check_session_key_failed need reload');
                     if ( this.is_model_redirect_enabled() ) {
+                        console.log('reset storage');
                         this.reset_local_user_storage();
                         let refresh_url = this.router.url;
                         this.enable_need_reload('get_session_key_safe');
                         this.router.navigate([refresh_url]);
+                    }
+                    if ( this.getDomConfigValue('standalone_mode' ) ) {
+                        this.reset_local_user_storage();
+                        this.need_reload_emitter.emit(true);
                     }
                 } else {
                     this.session_key_validate();
@@ -698,8 +717,10 @@ export class ModelService {
     }
 
     init_config() {
+        console.log('start init config');
         this.load_config()
             .subscribe((result: any) => {
+                console.log('config data loaded');
                     if (result.state === 'success') {
                         this.sitebill_config = result.data;
                         this.config_loaded = true;
@@ -721,7 +742,9 @@ export class ModelService {
     }
 
     after_config_loaded () {
+        console.log('after_config_loaded');
         this.config_loaded_emitter.emit(true);
+        this.init_config_complete = true;
         //console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
         if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
             this.show_navbar();
@@ -834,6 +857,8 @@ export class ModelService {
     }
 
     private init_permissions() {
+        console.log('init_permissions');
+
         const request = {
             action: 'oauth',
             do: 'check_session_key',
@@ -845,6 +870,7 @@ export class ModelService {
                     this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
                 this.sitebill_loaded_complete_emitter.emit(true);
+                this.init_permissions_complete = true;
             });
     }
 

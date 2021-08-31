@@ -274,6 +274,25 @@ export class AppComponent implements OnInit, OnDestroy
 
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
+        this.modelService.need_reload_emitter.subscribe(
+            (result: any) => {
+                if ( result === true ) {
+                    console.log('start reload window');
+                    if ( localStorage.getItem('sitebill_reloaded')  !== 'true') {
+                        localStorage.setItem('sitebill_reloaded', 'true');
+                        //this.document.location.reload();
+                    }
+                }
+            },
+            error => {
+                console.log('error');
+                console.log(error);
+            },
+            complete => {
+                console.log('need_reload_emitter complete')
+            }
+        );
+
         this.modelService.onSitebillStart();
         this.modelService.config_loaded_emitter.subscribe((result: any) => {
             if ( this.modelService.getConfigValue('apps.complex.api.enable') !== '1' ) {

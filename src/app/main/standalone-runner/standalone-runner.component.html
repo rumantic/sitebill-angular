@@ -1,4 +1,4 @@
-<div id="ngx-datatable" class="page-layout simple fullwidth">
+<div id="ngx-datatable" class="page-layout simple fullwidth" *ngIf="config_loaded">
     <ng-container *ngIf="this.modelService.getDomConfigValue('form_mode')">
         <auto-resolver-form
                             [app_name]="this.modelService.getDomConfigValue('component')"
