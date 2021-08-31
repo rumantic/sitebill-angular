@@ -37,5 +37,19 @@ export class StandaloneRunnerComponent
     }
     ngOnInit() {
         console.log('run standalone...');
+        this.modelService.config_loaded_emitter.subscribe((result: any) => {
+            if ( result === true ) {
+                this.enable_guest_mode();
+            }
+        });
+
     }
+
+    enable_guest_mode () {
+        if ( this.modelService.get_user_id() === null ) {
+            this.modelService.enable_guest_mode();
+        }
+    }
+
+
 }
