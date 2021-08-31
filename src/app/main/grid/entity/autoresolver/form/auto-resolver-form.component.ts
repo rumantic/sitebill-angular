@@ -43,6 +43,7 @@ export class AutoResolverFormComponent {
         this.entity.set_app_name(this.app_name);
         this.entity.set_table_name(this.table_name);
         this.entity.primary_key = this.primary_key;
+        this.entity.set_hidden(this.primary_key);
 
         this.filterService.share
             .pipe(

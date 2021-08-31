@@ -1,5 +1,6 @@
-<div fxLayout="row">
-    <div class="p-12 form-item" *ngIf="show_form">
+
+<div fxLayout="row" fxLayoutAlign="center center" class="auto-resolver-form">
+    <div class="p-12" *ngIf="show_form">
         <form-static
             [entity]="entity"
             [disable_delete]="true"
@@ -9,7 +10,7 @@
         >
         </form-static>
     </div>
-    <div class="p-12 form-item" *ngIf="!show_form">
+    <div class="p-12" *ngIf="!show_form">
         <div *ngIf="success_message else default">
             {{success_message}}
         </div>

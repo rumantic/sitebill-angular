@@ -1,63 +1,66 @@
 <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css">
 
-
-<div class="dialog-content-wrapper12">
-    <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
-        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+<ng-container *ngIf="!rows">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <div fxFlex="100">
+            <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="rows">
+    <div class="dialog-content-wrapper12 reducer">
+        <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title" *ngIf="_data.get_title() === null">
                 <ng-container *ngIf="_data.get_key_value()">Редактировать запись</ng-container>
                 <ng-container *ngIf="!_data.get_key_value()">Создать запись</ng-container>
             </span>
-            <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
-            <button mat-icon-button (click)="close()" aria-label="Закрыть">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
-    <form  [formGroup]="form" (ngSubmit)="save()">
-
-        <!--h2 mat-dialog-title>Объект</h2-->
-        <div mat-dialog-content class="p-24 m-0">
-            <div *ngIf="rows; else loggedOut">
-                <ng-container *ngIf="tabs_keys && form_inited">
-                    <ng-container *ngIf="tabs_keys.length > 1">
-                        <mat-tab-group dynamicHeight>
-                            <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
-                                <ng-template matTabContent>
-                                    <ng-container *ngTemplateOutlet="tab_item; context: {tab:tab, form:form}">
-                                    </ng-container>
-                                </ng-template>
-                            </mat-tab>
-                        </mat-tab-group>
-                    </ng-container>
-                    <ng-container *ngIf="tabs_keys.length == 1">
-                        <ng-container *ngTemplateOutlet="tab_item; context: {tab:tabs_keys[0], form:form}">
+                <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
+                <button mat-icon-button (click)="close()" aria-label="Закрыть">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <form  [formGroup]="form" (ngSubmit)="save()">
+            <!--h2 mat-dialog-title>Объект</h2-->
+            <div mat-dialog-content class="p-12 m-0">
+                <div *ngIf="rows">
+                    <ng-container *ngIf="tabs_keys && form_inited">
+                        <ng-container *ngIf="tabs_keys.length > 1">
+                            <mat-tab-group dynamicHeight>
+                                <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
+                                    <ng-template matTabContent>
+                                        <ng-container *ngTemplateOutlet="tab_item; context: {tab:tab, form:form}">
+                                        </ng-container>
+                                    </ng-template>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </ng-container>
+                        <ng-container *ngIf="tabs_keys.length == 1">
+                            <ng-container *ngTemplateOutlet="tab_item; context: {tab:tabs_keys[0], form:form}">
+                            </ng-container>
                         </ng-container>
                     </ng-container>
-                </ng-container>
+                </div>
             </div>
-        </div>
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>
-                <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
-                    Сохранить
-                </button>
-                <button *ngIf="!disable_cancel_button" mat-raised-button type="button" (click)="close()" aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
-                    Отмена
-                </button>
+            <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                    <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
+                        Сохранить
+                    </button>
+                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button" (click)="close()" aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
+                        Отмена
+                    </button>
 
+                </div>
+                <button *ngIf="_data.key_value != null && !disable_delete" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
-            <button *ngIf="_data.key_value != null && !disable_delete" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
-    </form>
+        </form>
+    </div>
+</ng-container>
 
-    <ng-template #loggedOut>
-        <mat-spinner></mat-spinner>
-    </ng-template>
-
-</div>
 
 <ng-template #tab_item let-tab="tab" let-form="form">
     <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap">
