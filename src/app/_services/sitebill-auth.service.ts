@@ -56,7 +56,7 @@ export class SitebillAuthService {
             this.modelService.get_session_key() === 'nobody' &&
             this.modelService.getConfigValue('apps.realty.enable_guest_mode') === '1'
         ) {
-            this.init_nobody_user();
+            this.init_user_from_cms();
         } else if (
             this.modelService.get_session_key()
         ) {
@@ -72,6 +72,7 @@ export class SitebillAuthService {
             (result: any) => {
                 if ( result ) {
                     console.log('this.init_user_from_cms_emitter.subscribe result = true');
+                    this.init_permissions();
                 } else {
                     console.log('this.init_user_from_cms_emitter.subscribe result = false');
                     this.init_nobody_user();
@@ -153,47 +154,6 @@ export class SitebillAuthService {
         }
     }
 
-    init_nobody_user1 () {
-        console.log('try init nobody user');
-        console.log('apps.realty.enable_guest_mode ' + this.modelService.getConfigValue('apps.realty.enable_guest_mode'));
-        if ( this.modelService.getConfigValue('apps.realty.enable_guest_mode') === '1') {
-            this.modelService.get_cms_session().subscribe((result: any) => {
-                console.log(result);
-                let finaly_need_guest = false;
-                try {
-                    const storage = JSON.parse(result) || [];
-                    if (storage.user_id > 0) {
-                        console.log('cms user_id = ' + storage.user_id);
-                        this.modelService.storageService.setItem('currentUser', JSON.stringify(storage));
-                        this.modelService.reinit_currentUser();
-                        return true;
-                    } else {
-                        finaly_need_guest = true;
-                    }
-                } catch (e) {
-                    finaly_need_guest = true;
-                }
-
-                if (finaly_need_guest) {
-                    console.log('need guest mode');
-                    if ( this.modelService.get_session_key() === null ) {
-                        this.modelService.init_nobody_user_storage();
-                    } else if ( this.modelService.get_session_key() === 'nobody' ) {
-                        this.modelService.enable_nobody_mode();
-                    } else if ( this.modelService.get_session_key() === undefined ) {
-                        this.modelService.init_nobody_user_storage();
-                    } else {
-                        this.modelService.enable_nobody_mode();
-                    }
-                }
-
-            });
-        } else {
-            console.log('guest mode not enabled');
-        }
-
-    }
-
     init_valid_user () {
         console.log('try init valid user');
         this.check_session_key_safe();
@@ -221,7 +181,6 @@ export class SitebillAuthService {
     }
 
     init_permissions () {
-        this.modelService.init_permissions();
         this.modelService.init_permissions_complete_emitter.subscribe(
             (result: any) => {
                 if ( result ) {
@@ -239,6 +198,8 @@ export class SitebillAuthService {
                 this.auth_failed();
             }
         );
+
+        this.modelService.init_permissions();
 
     }
 
