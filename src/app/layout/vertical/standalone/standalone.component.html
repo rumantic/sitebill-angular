@@ -1,7 +1,19 @@
-<div id="angular-main" [fusePerfectScrollbar]="true"
-     >
-    <!-- CONTENT -->
-    <angular-content></angular-content>
-    <!-- / CONTENT -->
+<div id="angular-main">
+    <div id="container-1" class="container">
+
+        <div id="container-2" class="container">
+
+            <div id="container-3" class="container" [fusePerfectScrollbar]="true"
+                 [fusePerfectScrollbarOptions]="{suppressScrollX: true, updateOnRouteChange : true}">
+                <!-- CONTENT -->
+                <angular-content></angular-content>
+                <!-- / CONTENT -->
+            </div>
+
+        </div>
+
+
+    </div>
+
 </div>
 
