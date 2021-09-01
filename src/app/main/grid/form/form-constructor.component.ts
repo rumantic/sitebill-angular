@@ -26,6 +26,7 @@ export function forbiddenNullValue(): ValidatorFn {
 export class FormConstructorComponent implements OnInit {
     form: FormGroup;
     public _data: SitebillEntity;
+    public error_message: string = null;
     protected _unsubscribeAll: Subject<any>;
 
     public text_area_editor_storage = {};
@@ -207,6 +208,7 @@ export class FormConstructorComponent implements OnInit {
                     if (result.state == 'error') {
                         this._snackService.message(result.message);
                         this.close();
+                        this.error_message = result.message;
                         return false;
                     } else {
                         // console.log(result);

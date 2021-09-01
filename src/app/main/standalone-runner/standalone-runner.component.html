@@ -45,3 +45,10 @@
     </ng-container>
 </div>
 
+<div class="page-layout simple fullwidth" *ngIf="access_denied_state">
+    <div fxLayout="row" fxLayoutAlign="center center" class="auto-resolver-form">
+        <div class="p-12">
+            Доступ запрещен
+        </div>
+    </div>
+</div>

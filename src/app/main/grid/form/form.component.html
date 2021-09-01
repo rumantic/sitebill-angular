@@ -1,12 +1,21 @@
 <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css">
 
-<ng-container *ngIf="!rows">
+<ng-container *ngIf="!rows && !error_message">
     <div fxLayout="row" fxLayoutAlign="end center">
         <div fxFlex="100">
             <mat-spinner [diameter]="50"></mat-spinner>
         </div>
     </div>
 </ng-container>
+
+<ng-container *ngIf="error_message">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <div fxFlex="100">
+            {{error_message}}
+        </div>
+    </div>
+</ng-container>
+
 <ng-container *ngIf="rows">
     <div class="dialog-content-wrapper12 reducer">
         <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">

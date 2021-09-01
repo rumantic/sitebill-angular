@@ -21,6 +21,7 @@ export class StandaloneRunnerComponent
 {
     loading = false;
     config_loaded = false;
+    access_denied_state = false;
 
     /**
      * Constructor
@@ -43,6 +44,11 @@ export class StandaloneRunnerComponent
         this.config_loaded = true;
     }
 
+    access_denied () {
+        console.log('access denied');
+        this.access_denied_state = true;
+    }
+
     ngOnInit() {
         console.log('run standalone ...');
         this.sitebillAuthService.complete_emitter.subscribe(
@@ -52,16 +58,18 @@ export class StandaloneRunnerComponent
                     console.log('user_id = ' + this.modelService.get_user_id());
                     this.run();
                 } else {
-                    console.log('sitebillAuthService.complete() result = false')
-
+                    console.log('sitebillAuthService.complete() result = false');
+                    this.access_denied();
                 }
             },
             error => {
                 console.log('error');
                 console.log(error);
+                this.access_denied();
             },
             complete => {
-                console.log('sitebillAuthService.complete() complete')
+                console.log('sitebillAuthService.complete() complete');
+                this.access_denied();
             }
         );
 

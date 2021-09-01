@@ -5,6 +5,7 @@ import {delay, takeUntil} from "rxjs/operators";
 import {labelColors} from "../../../../houseschema/models/level-location.model";
 import {FilterService} from "../../../../../_services/filter.service";
 import {Subject} from "rxjs";
+import {ModelService} from "../../../../../_services/model.service";
 
 @Component({
     selector: 'auto-resolver-form',
@@ -33,6 +34,7 @@ export class AutoResolverFormComponent {
 
     constructor(
         public filterService: FilterService,
+        public modelService: ModelService,
     ) {
         this._unsubscribeAll = new Subject();
     }
@@ -44,6 +46,10 @@ export class AutoResolverFormComponent {
         this.entity.set_table_name(this.table_name);
         this.entity.primary_key = this.primary_key;
         this.entity.set_hidden(this.primary_key);
+        this.entity.set_default_value('object_id', this.modelService.getDomConfigValue('object_id'));
+        this.entity.set_default_value('object_type', this.modelService.getDomConfigValue('object_type'));
+
+
 
         this.filterService.share
             .pipe(
