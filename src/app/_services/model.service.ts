@@ -46,7 +46,7 @@ export class ModelService {
         private http: HttpClient,
         private router: Router,
         protected _fuseConfigService: FuseConfigService,
-        protected storageService: StorageService,
+        public storageService: StorageService,
         private filterService: FilterService,
         protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -357,6 +357,11 @@ export class ModelService {
                 }
             }
         };
+    }
+
+    reinit_currentUser_standalone(storage) {
+        this.storageService.setItem('currentUser', JSON.stringify(storage));
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
     }
 
     reinit_currentUser() {
@@ -715,13 +720,21 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    load_config_anonymous () {
+        //console.log(this.get_api_url());
+        let body = {};
+        body = {action: 'model', do: 'load_config', anonymous: true, session_key: ''};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+
     is_config_loaded () {
         return this.config_loaded;
     }
 
     init_config_standalone() {
         console.log('start init config standalone');
-        this.load_config()
+        this.load_config_anonymous()
             .subscribe((result: any) => {
                     console.log('config standalone data loaded');
                     if (result.state === 'success') {
@@ -817,6 +830,7 @@ export class ModelService {
                 this.valid_user_emitter.emit(true);
             } else {
                 console.log('get_oauth_user_profile failed');
+                this.valid_user_emitter.emit(false);
             }
         });
     }
