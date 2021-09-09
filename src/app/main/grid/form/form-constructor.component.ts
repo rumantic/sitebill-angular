@@ -202,6 +202,10 @@ export class FormConstructorComponent implements OnInit {
         this.modelService.entity.set_table_name(this._data.get_table_name());
         this.modelService.entity.primary_key = primary_key;
         this.modelService.entity.key_value = key_value;
+        if ( this.predefined_ql_items ) {
+            this._data.set_hidden(primary_key);
+            this.modelService.entity.set_hidden(primary_key);
+        }
 
 
         this.modelService.loadById(model_name, primary_key, key_value, this.predefined_ql_items)
