@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
@@ -68,6 +68,9 @@ export class FormConstructorComponent implements OnInit {
     disable_save_button: boolean = false;
     disable_cancel_button: boolean = false;
     fake_save: boolean = false;
+
+    @Input("predefined_ql_items")
+    predefined_ql_items: any;
 
     onSave = new EventEmitter();
     afterSave = new EventEmitter();
@@ -201,7 +204,7 @@ export class FormConstructorComponent implements OnInit {
         this.modelService.entity.key_value = key_value;
 
 
-        this.modelService.loadById(model_name, primary_key, key_value)
+        this.modelService.loadById(model_name, primary_key, key_value, this.predefined_ql_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
@@ -644,7 +647,11 @@ export class FormConstructorComponent implements OnInit {
 
 
         if (this._data.key_value == null) {
-            this.modelService.native_insert(this._data.get_table_name(), ql_items)
+            this.modelService.native_insert(
+                this._data.get_table_name(),
+                ql_items,
+                this.predefined_ql_items ? 'true': null
+            )
                 .subscribe((response: any) => {
                     if (response.state === 'error') {
                         this._snackService.message(response.message);
@@ -663,8 +670,12 @@ export class FormConstructorComponent implements OnInit {
                     }
                 });
         } else {
-            this.modelService.native_update(this._data.get_table_name(), this._data.key_value, ql_items)
-                .subscribe((response: any) => {
+            this.modelService.native_update(
+                this._data.get_table_name(),
+                this._data.key_value,
+                ql_items,
+                this.predefined_ql_items ? 'true': null
+            ).subscribe((response: any) => {
                     if (response.state === 'error') {
                         this._snackService.message(response.message);
                         return null;

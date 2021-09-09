@@ -28,6 +28,17 @@ export class AutoResolverFormComponent {
     @Input('success_message')
     success_message: string;
 
+    @Input('entity_uri')
+    entity_uri: string;
+
+    @Input('only_field_name')
+    only_field_name: string;
+
+    predefined_ql_items: any;
+
+
+
+
     private _unsubscribeAll: Subject<any>;
     show_form: boolean = true;
 
@@ -41,13 +52,26 @@ export class AutoResolverFormComponent {
 
 
     ngOnInit() {
-        this.entity = new SitebillEntity();
-        this.entity.set_app_name(this.app_name);
-        this.entity.set_table_name(this.table_name);
-        this.entity.primary_key = this.primary_key;
-        this.entity.set_hidden(this.primary_key);
-        this.entity.set_default_value('object_id', this.modelService.getDomConfigValue('object_id'));
-        this.entity.set_default_value('object_type', this.modelService.getDomConfigValue('object_type'));
+        if ( this.entity_uri ) {
+            this.modelService.loadByUri(this.app_name, this.entity_uri).pipe(
+                takeUntil(this._unsubscribeAll)
+            ).subscribe( (result: any) => {
+                    if ( result.state == 'success' ) {
+                        this.init_slice_entity(result);
+                    } else {
+                        console.log(result);
+                    }
+                }
+            );
+        } else {
+            this.entity = new SitebillEntity();
+            this.entity.set_app_name(this.app_name);
+            this.entity.set_table_name(this.table_name);
+            this.entity.primary_key = this.primary_key;
+            this.entity.set_hidden(this.primary_key);
+            this.entity.set_default_value('object_id', this.modelService.getDomConfigValue('object_id'));
+            this.entity.set_default_value('object_type', this.modelService.getDomConfigValue('object_type'));
+        }
 
 
 
@@ -65,6 +89,18 @@ export class AutoResolverFormComponent {
                     }
                 }
             });
+
+    }
+
+    init_slice_entity ( data:any ) {
+        this.predefined_ql_items = {};
+        this.predefined_ql_items[this.only_field_name] = true;
+        this.entity = new SitebillEntity();
+        this.entity.set_app_name(this.app_name);
+        this.entity.set_table_name(data.table_name);
+        this.entity.primary_key = data.primary_key;
+        this.entity.set_hidden(this.primary_key);
+        this.entity.set_key_value(data[data.primary_key]);
 
     }
 

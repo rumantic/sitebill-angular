@@ -454,14 +454,25 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
+    loadByUri(model_name, entity_uri ) {
+        const load_data_request = {
+            action: 'model',
+            do: 'load_data',
+            model_name: model_name,
+            entity_uri: entity_uri,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
 
-    loadById(model_name, primary_key, key_value) {
+    loadById(model_name, primary_key, key_value, ql_items = null ) {
         const load_data_request = {
             action: 'model',
             do: 'load_data',
             model_name: model_name,
             primary_key: primary_key,
             key_value: key_value,
+            ql_items: ql_items,
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
@@ -485,13 +496,28 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
-    native_insert(model_name, ql_items) {
-        const body = {action: 'model', do: 'native_insert', model_name: model_name, ql_items: ql_items, session_key: this.get_session_key_safe()};
+    native_insert(model_name, ql_items, only_ql = null) {
+        const body = {
+            action: 'model',
+            do: 'native_insert',
+            model_name: model_name,
+            ql_items: ql_items,
+            only_ql: only_ql,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    native_update(model_name, key_value, ql_items) {
-        const body = {action: 'model', do: 'native_update', model_name: model_name, key_value: key_value, ql_items: ql_items, session_key: this.get_session_key_safe()};
+    native_update(model_name, key_value, ql_items, only_ql = null) {
+        const body = {
+            action: 'model',
+            do: 'native_update',
+            model_name: model_name,
+            key_value: key_value,
+            ql_items: ql_items,
+            only_ql: only_ql,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
