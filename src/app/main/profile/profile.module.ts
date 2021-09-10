@@ -12,7 +12,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 
 const routes = [
     {
-        path     : '**',
+        path     : 'profile',
         component: ProfileComponent
     }
 ];
@@ -30,6 +30,9 @@ const routes = [
         MatIconModule,
         MatGridListModule,
         SharedModule,
+    ],
+    exports: [
+        ProfileComponent
     ],
     providers: [
         BillingService

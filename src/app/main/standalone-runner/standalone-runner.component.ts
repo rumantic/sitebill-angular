@@ -8,8 +8,9 @@ import { locale as russian } from './i18n/ru';
 import { ModelService } from 'app/_services/model.service';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {SitebillAuthService} from "../../_services/sitebill-auth.service";
+import {LoginModalComponent} from "../../login/modal/login-modal.component";
 
 @Component({
     selector   : 'standalone-runner',
@@ -78,8 +79,12 @@ export class StandaloneRunnerComponent
             console.log('sitebillAuthService has ready state')
             this.run();
         }
-
-
     }
+    login_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
 
+        this.dialog.open(LoginModalComponent, dialogConfig);
+    }
 }
