@@ -51,7 +51,6 @@ export class LoginModalComponent  implements OnInit {
         public _matDialog: MatDialog,
         private authenticationService: AuthenticationService,
         private _formBuilder: FormBuilder,
-        private modelSerivce: ModelService,
         private _fuseConfigService: FuseConfigService,
         private alertService: AlertService,
         public snackBar: MatSnackBar,
@@ -142,9 +141,9 @@ export class LoginModalComponent  implements OnInit {
                 return false;
             }
 
-            this.modelSerivce.set_api_url(this.convert_to_https_domain(domain));
+            this.modelService.set_api_url(this.convert_to_https_domain(domain));
         } else {
-            this.modelSerivce.set_api_url('');
+            this.modelService.set_api_url('');
         }
 
         //console.log(this.loginForm.value.domain);
@@ -189,7 +188,7 @@ export class LoginModalComponent  implements OnInit {
         this._snackService.message('Авторизация успешна!');
         this.modelService.disable_nobody_mode();
         this.modelService.load_current_user_profile();
-        this.modelSerivce.init_config();
+        this.modelService.init_config();
         this._fuseConfigService.broadcast_refresh();
         this.dialogRef.close();
     }
