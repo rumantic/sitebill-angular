@@ -76,7 +76,7 @@ const routes = [
         GridModule,
         FuseSharedModule,
         SharedModule,
-        ProfileModule
+        ProfileModule,
     ],
     providers: [
         BillingService

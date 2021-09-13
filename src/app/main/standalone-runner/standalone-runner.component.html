@@ -13,6 +13,9 @@
     <ng-container *ngIf="!this.modelService.getDomConfigValue('form_mode')">
         <ng-container [ngSwitch]="this.modelService.getDomConfigValue('component')">
 
+            <login-standalone *ngSwitchCase="'authorization'">
+            </login-standalone>
+
             <data-grid *ngSwitchCase="'data'">
             </data-grid>
             <profile *ngSwitchCase="'profile'">
@@ -60,5 +63,6 @@
 <ng-container *ngIf="this.modelService.getDomConfigValue('enable_login_button')">
     <a *ngIf="!modelService.is_logged_in()" mat-button color="accent" (click)="login_modal()">Войти</a>
     <span *ngIf="modelService.is_logged_in()">Logged in as: {{modelService.get_current_user_profile().email.value}}</span>
+    <a *ngIf="modelService.is_logged_in()" mat-button color="accent" (click)="logout()">Выйти</a>
 
 </ng-container>

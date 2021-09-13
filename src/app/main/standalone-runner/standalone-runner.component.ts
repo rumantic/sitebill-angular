@@ -87,4 +87,8 @@ export class StandaloneRunnerComponent
 
         this.dialog.open(LoginModalComponent, dialogConfig);
     }
+
+    logout() {
+        this.modelService.logout();
+    }
 }

@@ -81,6 +81,7 @@ import {SearchStringParserComponent} from "./main/grid/search-string-parser/sear
 import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 import {StringParserService} from "./_services/string-parser.service";
 import {EntityStorageService} from "./_services/entity-storage.service";
+import {LoginStandaloneComponent} from "./login/standalone/login/login-standalone.component";
 
 @NgModule({
     imports: [
@@ -173,6 +174,7 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         ContactInjectorComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
+        LoginStandaloneComponent,
     ],
     providers: [
         ChatService,
@@ -195,6 +197,8 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         ProfileCardComponent,
         GatewaysComponent,
         SearchStringParserComponent,
+        LoginModalComponent,
+        LoginStandaloneComponent,
     ],
     entryComponents: [
         LoginModalComponent,
