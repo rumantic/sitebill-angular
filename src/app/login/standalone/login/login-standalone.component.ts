@@ -165,7 +165,7 @@ export class LoginStandaloneComponent  implements OnInit {
                         } else if (data.success == 1) {
                             this.after_success_login();
                         } else {
-                            let error = 'Доступ запрещен';
+                            let error = 'Доступ запрещен!';
                             this.alertService.error(error);
                             this.loading = false;
                             this.snackBar.open(error, 'ok', {

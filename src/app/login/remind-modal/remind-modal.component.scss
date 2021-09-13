@@ -16,6 +16,7 @@
                 max-width: 384px;
                 background: #FFFFFF;
                 text-align: center;
+                padding: 12px;
 
                 @include media-breakpoint('xs') {
                     padding: 24px;

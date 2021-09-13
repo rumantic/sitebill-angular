@@ -167,6 +167,7 @@ export class LoginModalComponent  implements OnInit {
                         } else if (data.success == 1) {
                             this.after_success_login();
                         } else {
+                            console.log('Доступ запрещен');
                             let error = 'Доступ запрещен';
                             this.alertService.error(error);
                             this.loading = false;

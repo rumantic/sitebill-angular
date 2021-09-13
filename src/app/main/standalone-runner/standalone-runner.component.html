@@ -1,4 +1,4 @@
-<div id="ngx-datatable" class="page-layout simple fullwidth" *ngIf="config_loaded">
+<div id="ngx-datatable" class="page-layout simple fullwidth" *ngIf="config_loaded  && modelService.getDomConfigValue('component') !== 'authorization'">
     <ng-container *ngIf="this.modelService.getDomConfigValue('form_mode')">
         <auto-resolver-form
                             [app_name]="this.modelService.getDomConfigValue('component')"
@@ -12,9 +12,6 @@
     </ng-container>
     <ng-container *ngIf="!this.modelService.getDomConfigValue('form_mode')">
         <ng-container [ngSwitch]="this.modelService.getDomConfigValue('component')">
-
-            <login-standalone *ngSwitchCase="'authorization'">
-            </login-standalone>
 
             <data-grid *ngSwitchCase="'data'">
             </data-grid>
@@ -53,13 +50,23 @@
     </ng-container>
 </div>
 
-<div class="page-layout simple fullwidth" *ngIf="access_denied_state">
+<div class="page-layout simple fullwidth" *ngIf="access_denied_state && modelService.getDomConfigValue('component') !== 'authorization'">
     <div fxLayout="row" fxLayoutAlign="center center" class="auto-resolver-form">
         <div class="p-12">
             Доступ запрещен
         </div>
     </div>
 </div>
+
+<div class="page-layout simple fullwidth" *ngIf="config_loaded && modelService.getDomConfigValue('component') == 'authorization'">
+    <div fxLayout="row" fxLayoutAlign="center center" class="auto-resolver-form">
+        <div class="p-12">
+            <login-standalone>
+            </login-standalone>
+        </div>
+    </div>
+</div>
+
 <ng-container *ngIf="this.modelService.getDomConfigValue('enable_login_button')">
     <a *ngIf="!modelService.is_logged_in()" mat-button color="accent" (click)="login_modal()">Войти</a>
     <span *ngIf="modelService.is_logged_in()">Logged in as: {{modelService.get_current_user_profile().email.value}}</span>
