@@ -28,7 +28,7 @@
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header-standalone p-16 p-md-24 accent" fxLayout="column"  *ngIf="!disable_header">
+        <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
@@ -162,15 +162,17 @@
                         <ngx-datatable
                             #gridTable
                             *ngIf="compose_complete"
-                            class="material expandable"
+                            class="table-height material expandable"
                             [rows]="rows_data"
                             [columns]="data_columns"
                             [loadingIndicator]="loadingIndicator"
                             [columnMode]="'force'"
                             [headerHeight]="ngxHeaderHeight"
                             [footerHeight]="56"
-                            [rowHeight]="'auto'"
+                            [rowHeight]="50"
                             [scrollbarH]="scrollbarH"
+                            [scrollbarV]="true"
+                            [virtualization]="false"
                             [reorderable]="reorderable"
                             [externalPaging]="true"
                             [count]="page.totalElements"
@@ -183,8 +185,6 @@
                             (resize)="onResize($event)"
                             (page)="setPage($event)"
                             (select)="onSelect($event)"
-                            [groupedRows]="grouped"
-                            [groupExpansionDefault]="true"
                         >
 
                             <!-- Group Header Template -->
