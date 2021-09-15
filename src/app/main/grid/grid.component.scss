@@ -254,7 +254,7 @@ mat-sidenav-container {
         }
     }
 
-    .content {
+    .content1 {
         overflow: hidden;
 
         .sidebar {
@@ -298,8 +298,24 @@ mat-sidenav-container {
             width: 100%;
         }
     }
+
+}
+::ng-deep ngx-datatable {
+    .datatable-footer-inner {
+        @include media-breakpoint('lt-md') {
+        }
+    }
 }
 .table-height {
-    height: calc(80vh - 110px);
+    max-height: calc(70vh);
+    @include media-breakpoint('lt-sm') {
+        max-height: calc(60vh);
+    }
+}
+
+.date-range {
+    @include media-breakpoint('lt-sm') {
+        display: none;
+    }
 }
 

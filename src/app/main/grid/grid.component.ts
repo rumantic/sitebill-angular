@@ -94,6 +94,7 @@ export class GridComponent implements OnInit, OnDestroy
     error_message: string;
     selectionType = '';
     grouped: any;
+    footerHeight: number;
 
 
     @ViewChild('gridTable') table: any;
@@ -254,7 +255,18 @@ export class GridComponent implements OnInit, OnDestroy
         this.after_compose_complete_checked = false;
         this.loadingIndicator = true;
     }
+
+    initFooterHeight () {
+        console.log(window.innerWidth);
+        if ( window.innerWidth < 959 ) {
+            this.footerHeight = 100;
+        } else {
+            this.footerHeight = 50;
+        }
+    }
+
     ngOnInit() {
+        this.initFooterHeight();
         this.entity.set_app_url(null);
         if (this.disable_menu) {
             //console.log(this.disable_menu);
@@ -1289,5 +1301,4 @@ export class GridComponent implements OnInit, OnDestroy
         this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
         return false;
     }
-
 }

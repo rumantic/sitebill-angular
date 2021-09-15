@@ -80,7 +80,7 @@
                 <!-- TOOLBAR -->
                 <div class="angular-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
 
-                    <mat-form-field class="pt-12 pr-8 toolbar__daterange" *ngIf="date_range_enable">
+                    <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
                         <input autocomplete="off"
                                matTooltip="Выбрать период времени для отображения записей"
                                matInput
@@ -146,7 +146,7 @@
         </div>
         <!-- / HEADER -->
         <!-- CONTENT -->
-        <div class="content" layout="row">
+        <div class="content1" layout="row">
             <!-- WIDGET GROUP -->
             <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                  [@animateStagger]="{value:'50'}">
@@ -168,7 +168,7 @@
                             [loadingIndicator]="loadingIndicator"
                             [columnMode]="'force'"
                             [headerHeight]="ngxHeaderHeight"
-                            [footerHeight]="56"
+                            [footerHeight]="footerHeight"
                             [rowHeight]="50"
                             [scrollbarH]="scrollbarH"
                             [scrollbarV]="true"
