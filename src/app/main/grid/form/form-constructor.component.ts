@@ -357,6 +357,11 @@ export class FormConstructorComponent implements OnInit {
 
     }
 
+    onChangeTextarea(newValue: string, name: string) {
+        this.form.controls[name].patchValue(newValue);
+    }
+
+
     count_visible_items () {
         this.visible_items_counter = 0;
         for (var i = 0; i < this.rows.length; i++) {
@@ -641,7 +646,7 @@ export class FormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
-        // console.log(ql_items);
+        //console.log(ql_items);
         this._data.set_ql_items(ql_items);
         this.onSave.emit(ql_items);
 

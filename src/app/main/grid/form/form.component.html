@@ -251,7 +251,11 @@
                 >{{records[x].title}}</mat-checkbox>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
-                    <quill-editor [(ngModel)]="text_area_editor_storage[records[x].name]" [modules]="quillConfig" [ngModelOptions]="{standalone: true}"></quill-editor>
+                    <quill-editor
+                        [(ngModel)]="text_area_editor_storage[records[x].name]"
+                        (ngModelChange)="onChangeTextarea($event, records[x].name)"
+                        [modules]="quillConfig"
+                        [ngModelOptions]="{standalone: true}"></quill-editor>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                 </mat-form-field>
