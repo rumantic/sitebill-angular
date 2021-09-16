@@ -42,6 +42,7 @@ standalone {
                     overflow-x: hidden;
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
+                    max-height: 85vh;
 
                     // Content component
                     content {
