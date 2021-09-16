@@ -4,7 +4,7 @@
 
         <div id="container-2" class="container-fluid2">
 
-            <div id="container-3" class="container-fluid3" [fusePerfectScrollbar]="true"
+            <div id="container-3" class="container-fluid3 {{get_max_height_class()}}" [fusePerfectScrollbar]="true"
                  [fusePerfectScrollbarOptions]="{suppressScrollX: true, updateOnRouteChange : true}">
                 <!-- CONTENT -->
                 <angular-content></angular-content>

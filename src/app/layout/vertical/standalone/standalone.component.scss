@@ -16,6 +16,10 @@ standalone {
         z-index: 1;
         min-width: 0;
 
+        .max-vh-85 {
+            max-height: 85vh;
+        }
+
         // Container 1
         > .container-fluid1 {
             position: relative;
@@ -42,7 +46,6 @@ standalone {
                     overflow-x: hidden;
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
-                    max-height: 85vh;
 
                     // Content component
                     content {
