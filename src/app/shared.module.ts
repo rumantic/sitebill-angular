@@ -83,6 +83,7 @@ import {StringParserService} from "./_services/string-parser.service";
 import {EntityStorageService} from "./_services/entity-storage.service";
 import {LoginStandaloneComponent} from "./login/standalone/login/login-standalone.component";
 import {ConfigComponent} from "./main/config/config.component";
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
     imports: [
@@ -144,6 +145,7 @@ import {ConfigComponent} from "./main/config/config.component";
         SbCalendarModule,
         FuseWidgetModule,
         HouseSchemaModule,
+        MatListModule,
     ],
     declarations: [
         RegisterDomainModalComponent,
