@@ -257,7 +257,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     initFooterHeight () {
-        console.log(window.innerWidth);
         if ( window.innerWidth < 959 ) {
             this.footerHeight = 100;
         } else {
