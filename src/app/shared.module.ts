@@ -82,6 +82,7 @@ import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 import {StringParserService} from "./_services/string-parser.service";
 import {EntityStorageService} from "./_services/entity-storage.service";
 import {LoginStandaloneComponent} from "./login/standalone/login/login-standalone.component";
+import {ConfigComponent} from "./main/config/config.component";
 
 @NgModule({
     imports: [
@@ -175,6 +176,7 @@ import {LoginStandaloneComponent} from "./login/standalone/login/login-standalon
         DemoBannerComponent,
         SearchStringParserComponent,
         LoginStandaloneComponent,
+        ConfigComponent
     ],
     providers: [
         ChatService,
@@ -199,6 +201,7 @@ import {LoginStandaloneComponent} from "./login/standalone/login/login-standalon
         SearchStringParserComponent,
         LoginModalComponent,
         LoginStandaloneComponent,
+        ConfigComponent,
     ],
     entryComponents: [
         LoginModalComponent,

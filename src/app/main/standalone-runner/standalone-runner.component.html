@@ -19,6 +19,10 @@
 
             </profile>
 
+            <app-config *ngSwitchCase="'config'">
+
+            </app-config>
+
             <cowork-grid  *ngSwitchCase="'coworker'"
                           [disable_header]="false"
                           [disable_wild_search]="true"
