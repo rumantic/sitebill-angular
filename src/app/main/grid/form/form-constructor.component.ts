@@ -43,7 +43,7 @@ export class FormConstructorComponent implements OnInit {
     form_submitted: boolean = false;
     form_inited: boolean = false;
     rows: any[];
-    tabs: any[];
+    tabs: any;
     tabs_keys: any[];
     records: any[];
     api_url: string;

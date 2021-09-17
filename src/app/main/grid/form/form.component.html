@@ -72,7 +72,7 @@
 
 
 <ng-template #tab_item let-tab="tab" let-form="form">
-    <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap">
+    <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap" *ngIf="tabs">
 
         <span
             *ngFor="let x of tabs[tab]"

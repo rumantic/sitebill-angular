@@ -753,6 +753,11 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    system_config () {
+        let body = {};
+        body = {action: 'config', do: 'system_config', session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
 
     is_config_loaded () {
         return this.config_loaded;

@@ -48,7 +48,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        private entityStorageService: EntityStorageService,
+        protected entityStorageService: EntityStorageService,
         protected cdr: ChangeDetectorRef
     ) {
         super(

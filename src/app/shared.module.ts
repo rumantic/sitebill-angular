@@ -84,6 +84,7 @@ import {EntityStorageService} from "./_services/entity-storage.service";
 import {LoginStandaloneComponent} from "./login/standalone/login/login-standalone.component";
 import {ConfigComponent} from "./main/config/config.component";
 import {MatListModule} from "@angular/material/list";
+import {ConfigFormComponent} from "./main/config/config-form/config-form.component";
 
 @NgModule({
     imports: [
@@ -178,7 +179,8 @@ import {MatListModule} from "@angular/material/list";
         DemoBannerComponent,
         SearchStringParserComponent,
         LoginStandaloneComponent,
-        ConfigComponent
+        ConfigComponent,
+        ConfigFormComponent
     ],
     providers: [
         ChatService,
@@ -204,6 +206,7 @@ import {MatListModule} from "@angular/material/list";
         LoginModalComponent,
         LoginStandaloneComponent,
         ConfigComponent,
+        ConfigFormComponent,
     ],
     entryComponents: [
         LoginModalComponent,
@@ -218,6 +221,7 @@ import {MatListModule} from "@angular/material/list";
         GatewaysModalComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
+        ConfigFormComponent
     ]
 
 })
