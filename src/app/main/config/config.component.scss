@@ -10,12 +10,16 @@
 
 h1.example-app-name {
     margin-left: 8px;
+    color: white;
 }
 
 .example-sidenav-container {
     /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
        causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
     flex: 1;
+
+}
+.mat-sidenav {
 }
 
 .example-is-mobile .example-sidenav-container {
@@ -26,4 +30,6 @@ h1.example-app-name {
 .mat-sidenav-content {
     max-height: 70vh;
     min-height: 70vh;
+    max-width: 70vw;
+    background-color: white;
 }

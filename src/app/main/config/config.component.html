@@ -1,11 +1,12 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="accent" class="example-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+        <h1 class="example-app-name">{{this.itemsList.title}}</h1>
     </mat-toolbar>
 
     <mat-sidenav-container class="example-sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+        <mat-sidenav class="mat-sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [opened]="mobileQuery.matches ? false : true"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
@@ -17,7 +18,15 @@
 
         <mat-sidenav-content class="mat-sidenav-content">
             <ng-container *ngIf="itemsList">
-                <config-form-selector [entity]="entity" [config_items]="itemsList.data" [disable_delete]="true" [disable_form_title_bar]="true">
+                <config-form-selector
+                    [entity]="entity"
+                    [config_items]="itemsList.data"
+                    [disable_delete]="true"
+                    [disable_cancel_button]="true"
+                    [column_mode]="100"
+                    [fake_save]="true"
+                    (onSave)="save($event)"
+                    [disable_form_title_bar]="true">
 
                 </config-form-selector>
             </ng-container>

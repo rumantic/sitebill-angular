@@ -4,7 +4,7 @@ import {
     Component,
     EventEmitter,
     Inject,
-    Input,
+    Input, OnChanges,
     OnInit,
     Output
 } from '@angular/core';
@@ -28,7 +28,7 @@ import {takeUntil} from "rxjs/operators";
     templateUrl: '../../grid/form/form.component.html',
     styleUrls: ['../../grid/form/form.component.css'],
 })
-export class ConfigFormComponent extends FormStaticComponent implements OnInit {
+export class ConfigFormComponent extends FormStaticComponent implements OnInit,OnChanges  {
     @Input("config_items")
     config_items: any;
 
@@ -67,13 +67,24 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit {
             this._data.set_hidden(primary_key);
             this.modelService.entity.set_hidden(primary_key);
         }
+        this.updateForm();
+    }
 
+    updateForm() {
         this.records = this.config_items;
         this.rows = Object.keys(this.config_items);
         this.tabs = {'Основное':this.rows};
         this.tabs_keys = ['Основное'];
         this.init_form();
     }
+
+    ngOnChanges (changes) {
+        if ( changes.config_items ) {
+            this.updateForm();
+
+        }
+    }
+
 
 
 

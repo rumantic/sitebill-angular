@@ -56,6 +56,11 @@ export class ConfigComponent implements OnInit {
             });
     }
 
+    save(event) {
+        console.log(event);
+    }
+
+
     OnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();

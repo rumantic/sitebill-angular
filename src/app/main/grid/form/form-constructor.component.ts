@@ -72,6 +72,9 @@ export class FormConstructorComponent implements OnInit {
     @Input("predefined_ql_items")
     predefined_ql_items: any;
 
+    @Input("column_mode")
+    column_mode: number;
+
     onSave = new EventEmitter();
     afterSave = new EventEmitter();
 
@@ -190,6 +193,10 @@ export class FormConstructorComponent implements OnInit {
         this.form = this._formBuilder.group({});
         this._data.set_readonly(false);
         this.getModel();
+        this.initSubscribers();
+    }
+
+    initSubscribers() {
 
     }
 
@@ -784,6 +791,9 @@ export class FormConstructorComponent implements OnInit {
     get_flex_width ( size:string, form_type:string, record ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
+        }
+        if ( this.column_mode ) {
+            return this.column_mode;
         }
         if ( this.get_visible_items_counter() === 1 ) {
             return 'auto';
