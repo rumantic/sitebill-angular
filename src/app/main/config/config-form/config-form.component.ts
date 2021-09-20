@@ -1,19 +1,15 @@
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     EventEmitter,
-    Inject,
     Input, OnChanges,
     OnInit,
     Output
 } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {FormBuilder} from '@angular/forms';
 
-import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {ModelService} from 'app/_services/model.service';
-import {FormType, SitebillEntity} from 'app/_models';
 
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
@@ -31,6 +27,7 @@ import {takeUntil} from "rxjs/operators";
 export class ConfigFormComponent extends FormStaticComponent implements OnInit,OnChanges  {
     @Input("config_items")
     config_items: any;
+    @Output() formChanged = new EventEmitter<boolean>();
 
     constructor(
         protected modelService: ModelService,
@@ -68,6 +65,15 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit,O
             this.modelService.entity.set_hidden(primary_key);
         }
         this.updateForm();
+    }
+
+    initSubscribers() {
+        super.initSubscribers();
+        this.form.valueChanges
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((status) => {
+                this.formChanged.emit(true);
+            });
     }
 
     updateForm() {

@@ -1,7 +1,8 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="itemsList">
     <mat-toolbar color="accent" class="example-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="example-app-name">{{this.itemsList.title}}</h1>
+        <h1 class="example-app-name">{{itemsList.title}}</h1>
+        <button mat-raised-button color="indigo" (click)="save(null)" *ngIf="saveButton"><mat-icon>save</mat-icon> Сохранить</button>
     </mat-toolbar>
 
     <mat-sidenav-container class="example-sidenav-container"
@@ -16,16 +17,18 @@
 
         </mat-sidenav>
 
-        <mat-sidenav-content class="mat-sidenav-content">
-            <ng-container *ngIf="itemsList">
+        <mat-sidenav-content class="mat-sidenav-content p-12">
+            <ng-container>
                 <config-form-selector
                     [entity]="entity"
                     [config_items]="itemsList.data"
                     [disable_delete]="true"
                     [disable_cancel_button]="true"
+                    [disable_save_button]="true"
                     [column_mode]="100"
                     [fake_save]="true"
                     (onSave)="save($event)"
+                    (formChanged)="showSaveButton()"
                     [disable_form_title_bar]="true">
 
                 </config-form-selector>

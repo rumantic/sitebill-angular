@@ -1,6 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-around center">
     <div fxFlex="70">
-        <span [innerHTML]="_data.message"></span>
+        <span *ngIf="_data.message" [innerHTML]="_data.message"></span>
+        <span *ngIf="_data.error" [innerHTML]="_data.error" class="error"></span>
     </div>
     <div fxFlex="30">
         <button mat-raised-button

@@ -186,11 +186,11 @@ export class FormConstructorComponent implements OnInit {
         this.api_url = this.modelService.get_api_url();
         this.lat_center = 55.76;
         this.lng_center = 37.64;
+        this.form = this._formBuilder.group({});
     }
 
     ngOnInit() {
         // Reactive Form
-        this.form = this._formBuilder.group({});
         this._data.set_readonly(false);
         this.getModel();
         this.initSubscribers();

@@ -1,10 +1,12 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {ModelService} from "../../_services/model.service";
 import {SitebillResponse} from "../../_models/sitebill-response";
 import {MediaMatcher} from "@angular/cdk/layout";
 import {SitebillEntity} from "../../_models";
+import {ConfigFormComponent} from "./config-form/config-form.component";
+import {SnackService} from "../../_services/snack.service";
 
 @Component({
     selector: 'app-config',
@@ -21,10 +23,14 @@ export class ConfigComponent implements OnInit {
     mobileQuery: MediaQueryList;
 
     private _mobileQueryListener: () => void;
+    public saveButton: boolean = false;
+
+    @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
 
 
     constructor(
         protected modelService: ModelService,
+        protected _snackService: SnackService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
     ) {
         this._unsubscribeAll = new Subject();
@@ -50,14 +56,24 @@ export class ConfigComponent implements OnInit {
                 if ( this.sitebillResponse.success() ) {
                     this.showAppsConfig(0);
                 } else {
-                    console.log(this.sitebillResponse.message);
+                    this._snackService.error(this.sitebillResponse.message);
                 }
-                console.log(this.sitebillResponse);
             });
     }
 
     save(event) {
-        console.log(event);
+        let ql_items = this.config_form_child.get_ql_items_from_form();
+        this.modelService.update_system_config(ql_items)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: SitebillResponse) => {
+                if ( result.state === 'success' ) {
+                    this._snackService.message('Конфигурация обновлена успешно!');
+                } else {
+                    this._snackService.error('Ошибка при обновлении конфигурации: ' + result.message);
+                }
+            });
+
+        this.saveButton = false;
     }
 
 
@@ -68,8 +84,10 @@ export class ConfigComponent implements OnInit {
     }
 
     showAppsConfig(index: number) {
-        console.log(index);
-        console.log(this.sitebillResponse.data[index]);
         this.itemsList = this.sitebillResponse.data[index];
+    }
+
+    showSaveButton() {
+        this.saveButton = true;
     }
 }
