@@ -1,12 +1,13 @@
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, takeUntil} from "rxjs/operators";
 import {ModelService} from "../../_services/model.service";
 import {SitebillResponse} from "../../_models/sitebill-response";
 import {MediaMatcher} from "@angular/cdk/layout";
 import {SitebillEntity} from "../../_models";
 import {ConfigFormComponent} from "./config-form/config-form.component";
 import {SnackService} from "../../_services/snack.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
     selector: 'app-config',
@@ -17,7 +18,10 @@ export class ConfigComponent implements OnInit {
     protected _unsubscribeAll: Subject<any>;
     public sitebillResponse:SitebillResponse;
     public itemsList:any;
+    public menuItems:any;
     entity: SitebillEntity;
+    public searchControl: FormControl;
+    private debounce: number = 400;
 
 
     mobileQuery: MediaQueryList;
@@ -35,6 +39,8 @@ export class ConfigComponent implements OnInit {
     ) {
         this._unsubscribeAll = new Subject();
         this.sitebillResponse = new SitebillResponse();
+        this.searchControl = new FormControl('');
+
 
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -59,6 +65,45 @@ export class ConfigComponent implements OnInit {
                     this._snackService.error(this.sitebillResponse.message);
                 }
             });
+
+        this.searchControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                debounceTime(this.debounce),
+                distinctUntilChanged(),
+            )
+            .subscribe((result: string) => {
+                if ( result.length > 2 ) {
+                    this.showAppsConfig(0, this.filterBy(this.sitebillResponse.data, result));
+                }
+            });
+
+    }
+
+    filterBy(array, value = null){
+        if (!value) {
+             return array;
+        }
+        let filtered = [];
+
+
+
+        for(let i = 0; i < array.length; i++){
+
+            let obj = array[i].data;
+            let f1 = Object.keys(obj)
+                .filter( key => key.indexOf(value) > 0 )
+                .reduce( (res, key) => (res[key] = obj[key], res), {} );
+            if ( Object.keys(f1).length !== 0 ) {
+                //console.log(f1);
+                array[i].data = f1;
+                filtered.push(array[i]);
+            }
+
+        }
+
+        return filtered;
+
     }
 
     save(event) {
@@ -83,8 +128,14 @@ export class ConfigComponent implements OnInit {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
 
-    showAppsConfig(index: number) {
-        this.itemsList = this.sitebillResponse.data[index];
+    showAppsConfig(index: number, filtered_array = null) {
+        if ( !filtered_array ) {
+            filtered_array = this.filterBy(this.sitebillResponse.data, this.searchControl.value);
+        }
+
+        this.itemsList = filtered_array[index];
+        this.menuItems = filtered_array;
+
     }
 
     showSaveButton() {

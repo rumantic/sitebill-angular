@@ -1,9 +1,11 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="itemsList">
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="menuItems">
     <mat-toolbar color="accent" class="example-toolbar" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
             <h1 class="example-app-name">{{itemsList.title}}</h1>
         </div>
+        <input matInput placeholder="поиск" [formControl]="searchControl">
+
         <button mat-raised-button color="indigo" (click)="save(null)" *ngIf="saveButton"><mat-icon>save</mat-icon> Сохранить</button>
     </mat-toolbar>
 
@@ -13,7 +15,7 @@
                      [opened]="mobileQuery.matches ? false : true"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
-                <a mat-list-item (click)="showAppsConfig(i)" *ngFor="let item of sitebillResponse.data; let i = index">{{item.title}}</a>
+                <a mat-list-item (click)="showAppsConfig(i)" *ngFor="let item of menuItems; let i = index">{{item.title}}</a>
             </mat-nav-list>
 
 
