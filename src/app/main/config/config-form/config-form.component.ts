@@ -28,6 +28,8 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit,O
     @Input("config_items")
     config_items: any;
     @Output() formChanged = new EventEmitter<boolean>();
+    private form_reloading_in_progress: boolean = false;
+    private changed_items: {};
 
     constructor(
         protected modelService: ModelService,
@@ -67,21 +69,35 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit,O
         this.updateForm();
     }
 
+    get_changed_items () {
+        return this.changed_items;
+    }
+
     initSubscribers() {
         super.initSubscribers();
         this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
-                this.formChanged.emit(true);
+                if ( !this.form_reloading_in_progress ) {
+                    this.changed_items = status;
+                    this.formChanged.emit(true);
+                }
             });
     }
 
     updateForm() {
+        this.form_reloading_in_progress = true;
+        this.records = null;
+        this.rows = null;
+        this.tabs = null;
+        this.tabs_keys = null;
+
         this.records = this.config_items;
         this.rows = Object.keys(this.config_items);
         this.tabs = {'Основное':this.rows};
         this.tabs_keys = ['Основное'];
         this.init_form();
+        this.form_reloading_in_progress = false;
     }
 
     ngOnChanges (changes) {

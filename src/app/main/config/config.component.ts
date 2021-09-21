@@ -62,7 +62,7 @@ export class ConfigComponent implements OnInit {
     }
 
     save(event) {
-        let ql_items = this.config_form_child.get_ql_items_from_form();
+        let ql_items = this.config_form_child.get_changed_items();
         this.modelService.update_system_config(ql_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: SitebillResponse) => {
