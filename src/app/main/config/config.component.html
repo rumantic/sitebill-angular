@@ -1,7 +1,9 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="itemsList">
-    <mat-toolbar color="accent" class="example-toolbar">
-        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="example-app-name">{{itemsList.title}}</h1>
+    <mat-toolbar color="accent" class="example-toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+            <h1 class="example-app-name">{{itemsList.title}}</h1>
+        </div>
         <button mat-raised-button color="indigo" (click)="save(null)" *ngIf="saveButton"><mat-icon>save</mat-icon> Сохранить</button>
     </mat-toolbar>
 
