@@ -17,7 +17,7 @@
 </ng-container>
 
 <ng-container *ngIf="rows">
-    <div class="dialog-content-wrapper12 reducer">
+    <div class="dialog-content-wrapper12">
         <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title" *ngIf="_data.get_title() === null">
@@ -91,12 +91,12 @@
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
@@ -105,14 +105,14 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                     <mat-icon matSuffix>access_time</mat-icon>
                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
@@ -121,7 +121,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'docuploads'">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                     <ng-container *ngIf="records[x].value.length > 0">
                         <span *ngFor="let doc of records[x].value">
@@ -131,7 +131,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
@@ -169,6 +169,7 @@
                         </ng-template>
                     </ng-select>
                     <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
 
@@ -206,6 +207,7 @@
                                 </ng-template>
                             </ng-select>
                             <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                            <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                         </div>
                         <div fxFlex="10" *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
                             <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
@@ -239,16 +241,21 @@
                         </ng-template>
                     </ng-select>
                     <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
-                <mat-checkbox
-                    [hidden]="records[x].hidden"
-                    *ngSwitchCase="'checkbox'"
-                    class="form-checkbox"
-                    [required]="records[x].required_boolean"
-                    matInput
-                    [formControlName]="records[x].name"
-                >{{records[x].title}}</mat-checkbox>
+                <span *ngSwitchCase="'checkbox'">
+                    <mat-checkbox
+                        [hidden]="records[x].hidden"
+                        class="form-checkbox"
+                        [required]="records[x].required_boolean"
+                        matInput
+                        [formControlName]="records[x].name">
+                        <div [innerHTML]="records[x].title"></div>
+                    </mat-checkbox>
+
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
+                </span>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
                     <quill-editor
@@ -258,6 +265,7 @@
                         [ngModelOptions]="{standalone: true}"></quill-editor>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
                 <span [hidden]="records[x].hidden" *ngSwitchCase="'geodata'">
 
@@ -292,6 +300,7 @@
 
                                 <input [formControlName]="records[x].name" matInput [hidden]="true">
                                 <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                                <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                             </mat-form-field>
 
                         </div>
@@ -303,26 +312,31 @@
                 </span>
 
                 <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <textarea matInput matTextareaAutosize [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'password'">
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput type="password" [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
 
                 <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
                     <sb-booking *ngIf="records[x].name === 'booking'" [keyValue]="_data.key_value"></sb-booking>
                     <house-schema-builder *ngIf="records[x].name === 'house_schema_builder'" [keyValue]="_data.key_value"></house-schema-builder>
                     <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="this.modelService.get_user_id()"></user-profile>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </div>
 
                 <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchDefault>
-                    <mat-label>{{records[x].title}}</mat-label>
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
+                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
             </span>
         </span>
