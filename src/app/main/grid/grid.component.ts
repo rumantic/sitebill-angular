@@ -1259,7 +1259,6 @@ export class GridComponent implements OnInit, OnDestroy
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.panelClass = 'regular-modal';
-        dialogConfig.minWidth = '400px';
         dialogConfig.data = {};
         dialogConfig.data.entity = this.entity;
         dialogConfig.data.grid_items = this.grid_columns_for_compose;

@@ -9,6 +9,9 @@ grid-settings {
     .views {
         display: flex;
         height: 80vh;
+        @include media-breakpoint('lt-sm') {
+            min-height: 95vh;
+        }
         flex-direction: column;
         padding-bottom: 8px;
     }
@@ -52,15 +55,23 @@ grid-settings {
     }
 }
 .column-height {
-    max-height: 500px;
+    max-height: 55vh;
     min-height: 200px;
+    @include media-breakpoint('lt-sm') {
+        max-height: 60vh;
+    }
+
     overflow: scroll;
 }
 .pageselector {
     width: 150px !important;
 }
 .example-list {
-    width: 1500px;
+    width: 150px;
+    @include media-breakpoint('gt-xs') {
+        min-width: 350px;
+    }
+
     max-width: 100%;
     border: solid 1px #ccc;
     min-height: 30px;
