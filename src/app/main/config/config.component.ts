@@ -8,6 +8,7 @@ import {SitebillEntity} from "../../_models";
 import {ConfigFormComponent} from "./config-form/config-form.component";
 import {SnackService} from "../../_services/snack.service";
 import {FormControl} from "@angular/forms";
+import * as _ from "lodash";
 
 @Component({
     selector: 'app-config',
@@ -92,7 +93,12 @@ export class ConfigComponent implements OnInit {
 
             let obj = Object.assign({}, tmp_array[i].data);
             let f1 = Object.keys(obj)
-                .filter( key => key.indexOf(value) > 0 )
+                .filter( key =>
+                    key.indexOf(value) >= 0
+                    || obj[key].title.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0
+                    || obj[key].hint.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0
+                    || (obj[key].value && obj[key].value.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0)
+                )
                 .reduce( (res, key) => (res[key] = obj[key], res), {} );
             if ( Object.keys(f1).length !== 0 ) {
                 //console.log(f1);
