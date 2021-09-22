@@ -45,6 +45,7 @@ import {CollectionModalComponent} from "./collection-modal/collection-modal.comp
 import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
+import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -1253,6 +1254,21 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(ShareModalComponent, dialogConfig);
     }
+
+    settings_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '400px';
+        dialogConfig.data = {};
+        dialogConfig.data.entity = this.entity;
+        dialogConfig.data.grid_items = this.grid_columns_for_compose;
+        dialogConfig.data.page = this.page;
+
+
+        this.dialog.open(GridSettingsSidenavComponent, dialogConfig);
+    }
+
 
     toggleExpandGroup(group) {
         console.log('Toggled Expand Group!', group);

@@ -109,7 +109,7 @@
                     </button>
 
                     <!-- SETTINGS BUTTON -->
-                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settingsSidenav.toggle()"
+                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settings_modal()"
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
@@ -213,8 +213,4 @@
 
 
     </div>
-
-    <mat-sidenav #settingsSidenav position="end">
-        <grid-settings [entity]="entity" [grid_items]="grid_columns_for_compose" [page]="page" *ngIf="compose_complete" (close)="settingsSidenav.close()"></grid-settings>
-    </mat-sidenav>
 </mat-sidenav-container>

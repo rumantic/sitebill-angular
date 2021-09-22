@@ -1,6 +1,6 @@
-<div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
-    <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
-        <div class="header p8">
+<div  class="views" (click)="$event.stopPropagation()">
+    <div class="view">
+        <div class="header-s p8">
 
             <span class="title">Настройки таблицы</span>
 
@@ -42,7 +42,7 @@
         <div class="view__content" fxLayout="row" fxLayoutAlign="start">
             <div fxFlex="50">
                 <!-- SIDENAV HEADER -->
-                <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="header-s px-24" fxLayout="row" fxLayoutAlign="space-between center">
                     <div>Активные колонки</div>
                 </div>
                 <!-- / SIDENAV HEADER -->
@@ -65,7 +65,7 @@
             </div>
             <div fxFlex="50">
                 <!-- SIDENAV HEADER -->
-                <div class="header px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="header-s px-24" fxLayout="row" fxLayoutAlign="space-between center">
                     <div>Неактивные колонки</div>
                 </div>
                 <!-- / SIDENAV HEADER -->

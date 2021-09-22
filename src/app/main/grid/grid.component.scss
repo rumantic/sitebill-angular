@@ -307,7 +307,6 @@ mat-sidenav-container {
     }
 }
 .table-height {
-    min-height: 30vh;
     max-height: calc(70vh);
     @include media-breakpoint('lt-sm') {
         max-height: calc(60vh);
