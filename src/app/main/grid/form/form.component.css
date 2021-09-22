@@ -82,3 +82,6 @@ textarea {
     width: 100%;
     margin:0 auto;
 }
+.checkbox-wrap {
+    white-space: normal !important;
+}

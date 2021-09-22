@@ -251,7 +251,7 @@
                         [required]="records[x].required_boolean"
                         matInput
                         [formControlName]="records[x].name">
-                        <div [innerHTML]="records[x].title"></div>
+                        <div [innerHTML]="records[x].title" class="checkbox-wrap"></div>
                     </mat-checkbox>
 
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
@@ -332,7 +332,7 @@
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </div>
 
-                <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchDefault>
+                <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
