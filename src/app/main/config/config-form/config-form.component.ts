@@ -17,12 +17,17 @@ import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {FormStaticComponent} from "../../grid/form/form-static.component";
 import {EntityStorageService} from "../../../_services/entity-storage.service";
 import {takeUntil} from "rxjs/operators";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
+import {myCustomTooltipDefaults} from "../../grid/form/form-constructor.component";
 
 
 @Component({
     selector: 'config-form-selector',
     templateUrl: '../../grid/form/form.component.html',
     styleUrls: ['../../grid/form/form.component.css'],
+    providers: [
+        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    ],
 })
 export class ConfigFormComponent extends FormStaticComponent implements OnInit,OnChanges  {
     @Input("config_items")

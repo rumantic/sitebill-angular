@@ -11,6 +11,14 @@ import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {switchMap} from "rxjs-compat/operator/switchMap";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
+
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+    showDelay: 1000,
+    hideDelay: 1000,
+    touchendHideDelay: 1000,
+};
+
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -21,7 +29,10 @@ export function forbiddenNullValue(): ValidatorFn {
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.css']
+    styleUrls: ['./form.component.css'],
+    providers: [
+        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    ],
 })
 export class FormConstructorComponent implements OnInit {
     form: FormGroup;
