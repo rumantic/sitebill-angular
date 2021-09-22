@@ -20,13 +20,12 @@
             </div>
         </mat-toolbar>
 
-        <mat-sidenav-container class="example-sidenav-container"
-                               [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav-container class="example-sidenav-container">
             <mat-sidenav class="mat-sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                          [opened]="mobileQuery.matches ? false : true"
                          [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
                 <mat-nav-list *ngIf="menuItems && menuItems.length > 0">
-                    <a mat-list-item (click)="showAppsConfig(i)" *ngFor="let item of menuItems; let i = index">{{item.title}}</a>
+                    <a mat-list-item (click)="clickMenu(i)" *ngFor="let item of menuItems; let i = index">{{item.title}}</a>
                 </mat-nav-list>
 
 
@@ -48,6 +47,10 @@
 
                     </config-form-selector>
                 </ng-container>
+                <ng-container *ngIf="sitebillResponse.success() && !itemsList">
+                    Ничего не найдено
+                </ng-container>
+
             </mat-sidenav-content>
         </mat-sidenav-container>
 </div>

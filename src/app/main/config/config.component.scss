@@ -12,6 +12,11 @@
     h1.example-app-name {
         margin-left: 8px;
         color: white;
+        min-width: 300px;
+        @include media-breakpoint('lt-sm') {
+            display: none;
+        }
+
     }
 
     .example-sidenav-container {
@@ -21,6 +26,9 @@
 
     }
     .mat-sidenav {
+        @include media-breakpoint('gt-xs') {
+            min-width: 350px;
+        }
     }
 
     .example-is-mobile .example-sidenav-container {
@@ -34,7 +42,9 @@
         background-color: white;
     }
     .save-button-wrapper {
-        min-width: 150px;
+        @include media-breakpoint('gt-xs') {
+            min-width: 150px;
+        }
     }
     .search-wrapper {
         width: 100%;

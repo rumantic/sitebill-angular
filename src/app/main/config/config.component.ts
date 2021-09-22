@@ -9,6 +9,7 @@ import {ConfigFormComponent} from "./config-form/config-form.component";
 import {SnackService} from "../../_services/snack.service";
 import {FormControl} from "@angular/forms";
 import * as _ from "lodash";
+import {MatSidenav} from "@angular/material/sidenav";
 
 @Component({
     selector: 'app-config',
@@ -31,6 +32,7 @@ export class ConfigComponent implements OnInit {
     public saveButton: boolean = false;
 
     @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
+    @ViewChild(MatSidenav) side_nav: MatSidenav;
 
 
     constructor(
@@ -132,6 +134,14 @@ export class ConfigComponent implements OnInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
+
+    clickMenu(index: number) {
+        if ( this.mobileQuery.matches ) {
+            this.side_nav.toggle();
+
+        }
+        this.showAppsConfig(index);
     }
 
     showAppsConfig(index: number, filtered_array = null) {
