@@ -60,6 +60,7 @@ export class ConfigComponent implements OnInit {
             .subscribe((result: any) => {
                 Object.assign(this.sitebillResponse, result);
                 if ( this.sitebillResponse.success() ) {
+
                     this.showAppsConfig(0);
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
@@ -73,31 +74,30 @@ export class ConfigComponent implements OnInit {
                 distinctUntilChanged(),
             )
             .subscribe((result: string) => {
-                if ( result.length > 2 ) {
-                    this.showAppsConfig(0, this.filterBy(this.sitebillResponse.data, result));
-                }
+                this.showAppsConfig(0, this.filterBy(this.sitebillResponse.data, result));
             });
 
     }
 
     filterBy(array, value = null){
-        if (!value) {
-             return array;
+        if (!value || value === '') {
+            return array;
         }
         let filtered = [];
+        let tmp_array = _.cloneDeep(array);
 
 
 
-        for(let i = 0; i < array.length; i++){
+        for(let i = 0; i < tmp_array.length; i++){
 
-            let obj = array[i].data;
+            let obj = Object.assign({}, tmp_array[i].data);
             let f1 = Object.keys(obj)
                 .filter( key => key.indexOf(value) > 0 )
                 .reduce( (res, key) => (res[key] = obj[key], res), {} );
             if ( Object.keys(f1).length !== 0 ) {
                 //console.log(f1);
-                array[i].data = f1;
-                filtered.push(array[i]);
+                tmp_array[i].data = f1;
+                filtered.push(tmp_array[i]);
             }
 
         }
@@ -135,10 +135,13 @@ export class ConfigComponent implements OnInit {
 
         this.itemsList = filtered_array[index];
         this.menuItems = filtered_array;
-
     }
 
     showSaveButton() {
         this.saveButton = true;
+    }
+
+    clear_search_text() {
+        this.searchControl.patchValue('');
     }
 }
