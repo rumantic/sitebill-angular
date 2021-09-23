@@ -33,6 +33,7 @@ export class FilterComponent {
     string_filter_enable: boolean = false;
     checkbox_filter_enable: boolean = false;
     focus_complete: boolean = false;
+    hoverElement: boolean;
 
     price_selector: any;
     price_filter_enable: boolean = false;
