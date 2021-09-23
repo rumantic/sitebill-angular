@@ -761,7 +761,7 @@ export class ModelService {
 
     get_models_list () {
         let body = {};
-        body = {action: 'model', do: 'get_models_list', session_key: this.get_session_key_safe()};
+        body = {action: 'table', do: 'get_models_list', session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 

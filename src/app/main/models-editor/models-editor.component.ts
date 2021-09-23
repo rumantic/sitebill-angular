@@ -35,6 +35,19 @@ export class ModelsEditorComponent
 
     @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
     @ViewChild(MatSidenav) side_nav: MatSidenav;
+    columns = [{ prop: 'name' }, { name: 'title' }, { name: 'type' }];
+    rows = [
+        {
+            name: 'test',
+            title: 'test',
+            type: 'test',
+        },
+        {
+            name: 'test',
+            title: 'test',
+            type: 'test',
+        },
+    ];
 
 
     constructor(
@@ -57,16 +70,24 @@ export class ModelsEditorComponent
         this.entity.primary_key = 'id';
         this.entity.set_key_value(0);
 
+        console.log(this.rows);
+
     }
 
     ngOnInit(): void {
         this.modelService.get_models_list()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
                 Object.assign(this.sitebillResponse, result);
                 if ( this.sitebillResponse.success() ) {
-                    this.menuItems = this.sitebillResponse.data;
+                    this.menuItems = Object.keys(this.sitebillResponse.data);
+                    this.itemsList = this.sitebillResponse.data;
+                    let result_tmp = [];
+                    for (const [key, value] of Object.entries(this.itemsList['articles'])) {
+                        result_tmp.push(value);
+                    }
+                    console.log(result_tmp);
+                    this.rows = result_tmp;
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
                 }
@@ -138,12 +159,14 @@ export class ModelsEditorComponent
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
 
-    clickMenu(index: number) {
+    clickMenu(model_name: string) {
         if ( this.mobileQuery.matches ) {
             this.side_nav.toggle();
 
         }
-        this.showAppsConfig(index);
+        console.log(model_name);
+        console.log(this.itemsList[model_name]);
+        //this.showAppsConfig(index);
     }
 
     showAppsConfig(index: number, filtered_array = null) {
