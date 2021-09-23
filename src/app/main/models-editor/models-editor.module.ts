@@ -36,6 +36,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {Ng5SliderModule} from "ng5-slider";
 import {FuseSharedModule} from "../../../@fuse/shared.module";
 import {ModelsEditorComponent} from "./models-editor.component";
+import {MatListModule} from "@angular/material/list";
 
 const bundle = [
     ModelsEditorComponent,
@@ -43,7 +44,7 @@ const bundle = [
 
 @NgModule({
     declarations: [...bundle],
-    imports     : [
+    imports: [
         CommonModule,
         TranslateModule,
         // Material moment date module
@@ -89,6 +90,7 @@ const bundle = [
         Ng5SliderModule,
 
         FuseSharedModule,
+        MatListModule,
     ],
     exports: [...bundle],
     providers: [

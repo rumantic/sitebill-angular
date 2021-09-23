@@ -759,6 +759,12 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    get_models_list () {
+        let body = {};
+        body = {action: 'model', do: 'get_models_list', session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
     update_system_config ( ql_items: any ) {
         let body = {};
         body = {
