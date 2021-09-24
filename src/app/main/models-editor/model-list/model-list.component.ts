@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 
 import { takeUntil } from 'rxjs/operators';
-import {SitebillEntity} from "../../../_models";
+import {SitebillEntity, SitebillModelItem} from "../../../_models";
 import {ModelService} from "../../../_services/model.service";
 import {SnackService} from "../../../_services/snack.service";
 import {SitebillResponse} from "../../../_models/sitebill-response";
@@ -56,26 +56,17 @@ export class ModelListComponent implements OnInit, OnDestroy
             .subscribe((result: any) => {
                 Object.assign(this.sitebillResponse, result);
                 if ( this.sitebillResponse.success() ) {
-                    console.log(this.sitebillResponse.data);
                     this.models = [];
                     for (const [key, value] of Object.entries(this.sitebillResponse.data)) {
-                        console.log(key);
                         let entity = new SitebillEntity();
+                        for (const [key_obj, value_obj] of Object.entries(value)) {
+                            let model_item = new SitebillModelItem(value_obj);
+                            entity.model.push(model_item);
+                        }
                         entity.set_app_name(key);
                         entity.set_table_name(key);
                         this.models.push(entity);
                     }
-
-                    /*
-                    this.menuItems = Object.keys(this.sitebillResponse.data);
-                    this.itemsList = this.sitebillResponse.data;
-                    let result_tmp = [];
-                    for (const [key, value] of Object.entries(this.itemsList['articles'])) {
-                        result_tmp.push(value);
-                    }
-                    console.log(result_tmp);
-                    this.rows = result_tmp;
-                     */
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
                 }
@@ -99,10 +90,11 @@ export class ModelListComponent implements OnInit, OnDestroy
     /**
      * Read model
      *
-     * @param model_name
+     * @param model
      */
     selectModel(model: SitebillEntity): void
     {
+        console.log(model);
         this._modelsEditorService.setCurrentModel(model);
     }
 

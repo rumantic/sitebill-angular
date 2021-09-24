@@ -29,42 +29,8 @@
 
         </mat-sidenav>
 
-        <mat-sidenav-content class="mat-sidenav-content p-12">
-            <ng-container *ngIf="itemsList">
-                <ngx-datatable
-                    class="material"
-                    [rows]="rows"
-                    [columns]="columns"
-                    [headerHeight]="50"
-                    [footerHeight]="50"
-                    rowHeight="auto"
-                >
-                    <ngx-datatable-column name="name">
-                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
-                        <ng-template let-value="value" ngx-datatable-cell-template>
-                            {{ value }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="title">
-                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
-                        <ng-template let-value="value" ngx-datatable-cell-template>
-                            {{ value }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="type">
-                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
-                        <ng-template let-value="value" ngx-datatable-cell-template>
-                            {{ value }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                </ngx-datatable>
-
-            </ng-container>
-            <ng-container *ngIf="sitebillResponse.success() && !itemsList">
-
-                Ничего не найдено
-            </ng-container>
-
+        <mat-sidenav-content class="mat-sidenav-content">
+            <model-details [model]="_modelsEditorService.getCurrentModel()"></model-details>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

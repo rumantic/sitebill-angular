@@ -41,11 +41,13 @@ import {ModelListItemComponent} from "./model-list/model-list-item/model-list-it
 import {ModelListComponent} from "./model-list/model-list.component";
 import {NgxDnDModule} from "@swimlane/ngx-dnd";
 import {ModelsEditorService} from "./models-editor.service";
+import {ModelDetailsComponent} from "./model-details/model-details.component";
 
 const bundle = [
     ModelsEditorComponent,
     ModelListComponent,
-    ModelListItemComponent
+    ModelListItemComponent,
+    ModelDetailsComponent
 ];
 
 @NgModule({

@@ -11,6 +11,7 @@ import {SnackService} from "../../_services/snack.service";
 import {MediaMatcher} from "@angular/cdk/layout";
 import {debounceTime, distinctUntilChanged, takeUntil} from "rxjs/operators";
 import * as _ from "lodash";
+import {ModelsEditorService} from "./models-editor.service";
 
 @Component({
     selector   : 'models-editor',
@@ -35,24 +36,11 @@ export class ModelsEditorComponent
 
     @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
     @ViewChild(MatSidenav) side_nav: MatSidenav;
-    columns = [{ prop: 'name' }, { name: 'title' }, { name: 'type' }];
-    rows = [
-        {
-            name: 'test',
-            title: 'test',
-            type: 'test',
-        },
-        {
-            name: 'test',
-            title: 'test',
-            type: 'test',
-        },
-    ];
-
 
     constructor(
         protected modelService: ModelService,
         protected _snackService: SnackService,
+        public _modelsEditorService: ModelsEditorService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
     ) {
         this._unsubscribeAll = new Subject();
@@ -70,7 +58,6 @@ export class ModelsEditorComponent
         this.entity.primary_key = 'id';
         this.entity.set_key_value(0);
 
-        console.log(this.rows);
 
     }
 
@@ -87,7 +74,6 @@ export class ModelsEditorComponent
                         result_tmp.push(value);
                     }
                     console.log(result_tmp);
-                    this.rows = result_tmp;
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
                 }
