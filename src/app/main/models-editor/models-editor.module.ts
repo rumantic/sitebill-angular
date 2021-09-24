@@ -37,9 +37,15 @@ import {Ng5SliderModule} from "ng5-slider";
 import {FuseSharedModule} from "../../../@fuse/shared.module";
 import {ModelsEditorComponent} from "./models-editor.component";
 import {MatListModule} from "@angular/material/list";
+import {ModelListItemComponent} from "./model-list/model-list-item/model-list-item.component";
+import {ModelListComponent} from "./model-list/model-list.component";
+import {NgxDnDModule} from "@swimlane/ngx-dnd";
+import {ModelsEditorService} from "./models-editor.service";
 
 const bundle = [
     ModelsEditorComponent,
+    ModelListComponent,
+    ModelListItemComponent
 ];
 
 @NgModule({
@@ -91,9 +97,11 @@ const bundle = [
 
         FuseSharedModule,
         MatListModule,
+        NgxDnDModule,
     ],
     exports: [...bundle],
     providers: [
+        ModelsEditorService
     ],
     entryComponents: [...bundle]
 

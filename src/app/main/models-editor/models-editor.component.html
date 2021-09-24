@@ -24,9 +24,7 @@
         <mat-sidenav class="mat-sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [opened]="mobileQuery.matches ? false : true"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-            <mat-nav-list *ngIf="menuItems && menuItems.length > 0">
-                <a mat-list-item (click)="clickMenu(item)" *ngFor="let item of menuItems; let i = index">{{item}}</a>
-            </mat-nav-list>
+            <model-list class=""></model-list>
 
 
         </mat-sidenav>
