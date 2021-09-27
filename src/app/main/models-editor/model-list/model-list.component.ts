@@ -67,6 +67,7 @@ export class ModelListComponent implements OnInit, OnDestroy
                         entity.set_table_name(key);
                         this.models.push(entity);
                     }
+                    this._modelsEditorService.setCurrentModel(this.models[0]);
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
                 }

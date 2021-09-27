@@ -56,30 +56,116 @@
         <ng-container *ngIf="model">
             <ngx-datatable
                 class="material"
+                [columnMode]="'force'"
                 [rows]="model.model"
                 [columns]="columns"
                 [headerHeight]="50"
                 [footerHeight]="50"
                 rowHeight="auto"
+                [selectionType]="SelectionType"
+                [sorts]="[{ prop: 'name', dir: 'desc' }, { prop: 'type', dir: 'desc' } ]"
             >
-                <ngx-datatable-column name="name">
+                <ngx-datatable-column
+                    [width]="5"
+                    [draggable]="false"
+                    name="drag_handle">
+                    <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        <mat-icon ngxDragHandle>
+                            drag_handle
+                        </mat-icon>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [width]="5"
+                    [sortable]="false"
+                    [draggable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+                >
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [width]="50"
+                    [sortable]="true"
+                    name="name">
                     <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="title">
+
+                <ngx-datatable-column
+                    [sortable]="true"
+                    [width]="50"
+                    name="type">
                     <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="type">
+
+                <ngx-datatable-column
+                    [sortable]="true"
+                    [width]="30"
+                    name="required">
+                    <ng-template let-column="column" ngx-datatable-header-template>Обазятельное</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        <mat-slide-toggle class="mr-24" [checked]="value === 'on' ? true : false">
+                        </mat-slide-toggle>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [sortable]="true"
+                    [width]="50"
+                    name="title">
                     <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
                 </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [sortable]="true"
+                    [width]="20"
+                    name="active">
+                    <ng-template let-column="column" ngx-datatable-header-template>Доступ</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        Всем
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [sortable]="true"
+                    [width]="20"
+                    name="tab">
+                    <ng-template let-column="column" ngx-datatable-header-template>Вкладка</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{ value }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [width]="70"
+                    name="id">
+                    <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
+                                <mat-icon class="secondary-text">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
+                                <mat-icon class="secondary-text">delete</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
+                                <mat-icon class="secondary-text">power_settings_new</mat-icon>
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
             </ngx-datatable>
 
         </ng-container>

@@ -24,20 +24,15 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
 
     @ViewChild('titleInput')
     titleInputField;
+    SelectionType = 'checkbox';
 
-    columns = [{ prop: 'name' }, { name: 'title' }, { name: 'type' }];
-    rows = [
-        {
-            name: 'test',
-            title: 'test',
-            type: 'test',
-        },
-        {
-            name: 'test',
-            title: 'test',
-            type: 'test',
-        },
+    columns = [
+        { prop: 'drag_handle' },
+        { prop: 'name' },
+        { name: 'title' },
+        { name: 'type' }
     ];
+    rows = [];
 
 
     // Private
