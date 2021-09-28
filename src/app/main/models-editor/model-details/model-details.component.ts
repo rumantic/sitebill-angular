@@ -3,7 +3,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
-import {SitebillEntity} from "../../../_models";
+import {SitebillEntity, SitebillModelItem} from "../../../_models";
+import {ModelsEditorService} from "../models-editor.service";
+import {takeUntil} from "rxjs/operators";
+import {SitebillResponse} from "../../../_models/sitebill-response";
+import {SnackService} from "../../../_services/snack.service";
 
 
 @Component({
@@ -18,6 +22,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     @Input()
     model: SitebillEntity;
 
+    public sitebillResponse:SitebillResponse;
+
+
     tags: any[];
     formType: string;
     todoForm: FormGroup;
@@ -26,12 +33,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     titleInputField;
     SelectionType = 'checkbox';
 
-    columns = [
-        { prop: 'drag_handle' },
-        { prop: 'name' },
-        { name: 'title' },
-        { name: 'type' }
-    ];
+    columns = [];
     rows = [];
 
 
@@ -42,13 +44,20 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
      * Constructor
      *
      * @param {FormBuilder} _formBuilder
+     * @param _snackService
+     * @param _modelsEditorService
      */
     constructor(
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        protected _snackService: SnackService,
+        protected _modelsEditorService: ModelsEditorService,
     )
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this.sitebillResponse = new SitebillResponse();
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -184,5 +193,19 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     addTodo(): void
     {
         // this._todoService.updateTodo(this.todoForm.getRawValue());
+    }
+
+    toggle(model_item: SitebillModelItem, toggled_column: string) {
+        this._modelsEditorService.toggle(model_item.columns_id, toggled_column)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                Object.assign(this.sitebillResponse, result);
+                if ( this.sitebillResponse.success() ) {
+                    model_item.required_boolean = !model_item.required_boolean;
+                    this._snackService.message(this.sitebillResponse.message);
+                } else {
+                    this._snackService.error(this.sitebillResponse.message);
+                }
+            });
     }
 }

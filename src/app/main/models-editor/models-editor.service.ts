@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ModelService} from "../../_services/model.service";
 import {SitebillEntity} from "../../_models";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class ModelsEditorService {
@@ -20,5 +21,15 @@ export class ModelsEditorService {
 
     getCurrentModel() : SitebillEntity {
         return this.currentModel;
+    }
+
+    toggle( columns_id, toggled_column_name ): Observable<any> {
+        return this.modelService.toggle(
+            'table',
+            'columns',
+            'columns_id',
+            columns_id,
+            toggled_column_name
+        );
     }
 }

@@ -95,7 +95,6 @@ export class ModelListComponent implements OnInit, OnDestroy
      */
     selectModel(model: SitebillEntity): void
     {
-        console.log(model);
         this._modelsEditorService.setCurrentModel(model);
     }
 

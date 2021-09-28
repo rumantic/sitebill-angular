@@ -273,6 +273,7 @@ export class SitebillModelItem {
     primary_key_value: string;
     query: string;
     required: string;
+    required_boolean: boolean;
     tab: string;
     table_name: string;
     title: string;
@@ -284,6 +285,7 @@ export class SitebillModelItem {
     value_name: string;
     value_primary_key: string;
     value_table: string;
+    columns_id: number;
 
     constructor(item:any = null) {
         this.action = item.action;
@@ -304,6 +306,9 @@ export class SitebillModelItem {
         this.primary_key_value = item.primary_key_value;
         this.query = item.query;
         this.required = item.required;
+        //console.log(item.required_boolean);
+        this.required_boolean = item.required_boolean === '1';
+        //console.log(this.required_boolean);
         this.tab = item.tab;
         this.table_name = item.table_name;
         this.title = item.title;
@@ -315,6 +320,8 @@ export class SitebillModelItem {
         this.value_name = item.value_name;
         this.value_primary_key = item.value_primary_key;
         this.value_table = item.value_table;
+        this.columns_id = item.columns_id;
+
     }
 
     getValue() {

@@ -62,23 +62,6 @@ export class ModelsEditorComponent
     }
 
     ngOnInit(): void {
-        this.modelService.get_models_list()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                Object.assign(this.sitebillResponse, result);
-                if ( this.sitebillResponse.success() ) {
-                    this.menuItems = Object.keys(this.sitebillResponse.data);
-                    this.itemsList = this.sitebillResponse.data;
-                    let result_tmp = [];
-                    for (const [key, value] of Object.entries(this.itemsList['articles'])) {
-                        result_tmp.push(value);
-                    }
-                    console.log(result_tmp);
-                } else {
-                    this._snackService.error(this.sitebillResponse.message);
-                }
-            });
-
         this.searchControl.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),

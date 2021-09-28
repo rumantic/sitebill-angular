@@ -8,7 +8,7 @@ import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
-import {timer} from "rxjs";
+import {Observable, timer} from "rxjs";
 
 
 @Injectable()
@@ -1028,4 +1028,18 @@ export class ModelService {
     is_model_redirect_enabled () {
         return this.model_redirect;
     }
+
+    toggle( component, model_name, primary_key, primary_key_value, toggled_column_name ): Observable<any> {
+        const request = {
+            action: component,
+            do: 'toggle',
+            model_name: model_name,
+            primary_key: primary_key,
+            primary_key_value: primary_key_value,
+            toggled_column_name: toggled_column_name,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
+    }
+
 }
