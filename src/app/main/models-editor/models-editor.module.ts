@@ -43,12 +43,14 @@ import {NgxDnDModule} from "@swimlane/ngx-dnd";
 import {ModelsEditorService} from "./models-editor.service";
 import {ModelDetailsComponent} from "./model-details/model-details.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {ModelFormModalComponent} from "./model-form-modal/model-form-modal.component";
 
 const bundle = [
     ModelsEditorComponent,
     ModelListComponent,
     ModelListItemComponent,
-    ModelDetailsComponent
+    ModelDetailsComponent,
+    ModelFormModalComponent
 ];
 
 @NgModule({

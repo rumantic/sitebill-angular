@@ -157,7 +157,7 @@
                     <ng-template let-column="column" ngx-datatable-header-template></ng-template>
                     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                         <div fxLayout="row" fxLayoutAlign="start center">
-                            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
+                            <button mat-icon-button (click)="edit(row)" aria-label="Toggle delete">
                                 <mat-icon class="secondary-text">edit</mat-icon>
                             </button>
                             <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">

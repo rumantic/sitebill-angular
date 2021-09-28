@@ -8,6 +8,9 @@ import {ModelsEditorService} from "../models-editor.service";
 import {takeUntil} from "rxjs/operators";
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {SnackService} from "../../../_services/snack.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ViewModalComponent} from "../../grid/view-modal/view-modal.component";
+import {ModelFormModalComponent} from "../model-form-modal/model-form-modal.component";
 
 
 @Component({
@@ -51,6 +54,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         private _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         protected _modelsEditorService: ModelsEditorService,
+        protected dialog: MatDialog,
     )
     {
         // Set the private defaults
@@ -226,5 +230,22 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         } catch {
         }
     }
+
+    edit(model_item: SitebillModelItem) {
+        //console.log('view');
+        //console.log(item_id);
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        dialogConfig.data = {
+            model_item: model_item
+        };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+
+        this.dialog.open(ModelFormModalComponent, dialogConfig);
+    }
+
 
 }
