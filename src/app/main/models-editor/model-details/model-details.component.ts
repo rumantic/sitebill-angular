@@ -195,17 +195,36 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         // this._todoService.updateTodo(this.todoForm.getRawValue());
     }
 
-    toggle(model_item: SitebillModelItem, toggled_column: string) {
+    toggle_active (model_item: SitebillModelItem, toggled_column: string) {
+        this.toggle(model_item, toggled_column, false);
+    }
+
+    toggle(model_item: SitebillModelItem, toggled_column: string, post_update: boolean = true) {
+        if ( !post_update ) {
+            model_item[toggled_column] = !model_item[toggled_column];
+        }
         this._modelsEditorService.toggle(model_item.columns_id, toggled_column)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 Object.assign(this.sitebillResponse, result);
                 if ( this.sitebillResponse.success() ) {
-                    model_item.required_boolean = !model_item.required_boolean;
                     this._snackService.message(this.sitebillResponse.message);
+                    if ( post_update ) {
+                        model_item[toggled_column] = !model_item[toggled_column];
+                    }
                 } else {
                     this._snackService.error(this.sitebillResponse.message);
                 }
             });
     }
+
+    getRowClass(row): string {
+        try {
+            if (row.active != 1) {
+                return 'red-100-bg';
+            }
+        } catch {
+        }
+    }
+
 }

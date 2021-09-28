@@ -24,6 +24,9 @@ export class ModelsEditorService {
     }
 
     toggle( columns_id, toggled_column_name ): Observable<any> {
+        if ( toggled_column_name == 'required_boolean' ) {
+            toggled_column_name = 'required';
+        }
         return this.modelService.toggle(
             'table',
             'columns',

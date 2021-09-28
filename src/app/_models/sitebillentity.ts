@@ -286,6 +286,7 @@ export class SitebillModelItem {
     value_primary_key: string;
     value_table: string;
     columns_id: number;
+    active: boolean;
 
     constructor(item:any = null) {
         this.action = item.action;
@@ -321,7 +322,7 @@ export class SitebillModelItem {
         this.value_primary_key = item.value_primary_key;
         this.value_table = item.value_table;
         this.columns_id = item.columns_id;
-
+        this.active = item.active === '1';
     }
 
     getValue() {
