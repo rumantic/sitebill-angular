@@ -498,6 +498,9 @@ export class FormConstructorComponent implements OnInit {
     }
 
     onScroll({ end }, columnName:string) {
+        if ( !this.options_storage[columnName] || !this.options_storage_buffer[columnName]) {
+            return;
+        }
         if (this.loading || this.options_storage[columnName].length <= this.options_storage_buffer[columnName].length) {
             return;
         }

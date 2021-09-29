@@ -172,8 +172,9 @@
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
-
-                <span *ngSwitchCase="'select_by_query'"  [hidden]="records[x].hidden">
+                <span
+                    *ngSwitchCase="records[x].type === 'select_by_query' || records[x].type === 'select_by_query_multiple'  || records[x].type === 'select_by_query_multi'? records[x].type : '' "
+                    [hidden]="records[x].hidden">
                     <div fxLayout="row" fxLayoutAlign="space-between">
                         <div fxFlex.gt-xs="85" fxFlex.xs="80" class="min-select">
                             <ng-select [formControlName]="records[x].name"
@@ -191,10 +192,10 @@
                                        [searchable]="true"
                                        [typeahead]="input$"
                                        (search)="onSearch(records[x].name)"
-                                       [multiple]="false"
+                                       [multiple]="records[x].type === 'select_by_query_multiple'"
                                        (focus)="init_select_by_query_options(records[x].name)"
                                        [hideSelected]="false"
-                                       [closeOnSelect]="true"
+                                       [closeOnSelect]="records[x].type !== 'select_by_query_multiple'"
                                        placeholder="{{records[x].title}}">
                                 <ng-template ng-label-tmp let-item="item" let-index="index">
                                     <span [innerHTML]="item.value">
