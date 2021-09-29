@@ -104,7 +104,8 @@
 
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     position: absolute;
-    color: rgba(0, 0, 0, 0.54);
+    color: #5e6278;
+    font-weight: bold;
     transform-origin: 0 0;
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)
 }
@@ -207,7 +208,7 @@
 }
 
 ::ng-deep .ng-select .ng-clear-wrapper {
-    color: rgba(0, 0, 0, 0.54)
+    color: #5e6278
 }
 
 ::ng-deep .ng-select .ng-clear-wrapper:hover {
@@ -223,7 +224,7 @@
     border-right: 5px solid transparent;
     border-top: 5px solid;
     margin: 0 4px;
-    color: rgba(0, 0, 0, 0.54)
+    color: #5e6278
 }
 
 ::ng-deep .ng-select .ng-spinner-zone {
@@ -273,7 +274,7 @@
     line-height: 3em;
     height: 3em;
     padding: 0 16px;
-    color: rgba(0, 0, 0, 0.54);
+    color: #5e6278;
     font-weight: 500
 }
 
