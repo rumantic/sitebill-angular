@@ -659,6 +659,8 @@ export class FormConstructorComponent implements OnInit {
                 const control = this.form.controls[row];
                 if ( control.status === 'INVALID' ) {
                     required_fields.push(this.records[row].title);
+                    this.form.controls[row].markAsTouched();
+
                 }
             });
             this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно: ' + required_fields.join(', '));
