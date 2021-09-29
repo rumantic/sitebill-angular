@@ -10,15 +10,16 @@
 }
 
 ::ng-deep .ng-select.ng-select-disabled .ng-select-container .ng-value-container .ng-value {
-    color: rgba(0, 0, 0, 0.38)
+    color: #5e6278
 }
 
 ::ng-deep .ng-select.ng-select-disabled .ng-select-container .ng-value-container .ng-placeholder {
-    color: rgba(0, 0, 0, 0.38)
+    color: #5e6278;
+    font-weight: bold !important;
 }
 
 ::ng-deep .ng-select.ng-select-disabled .ng-arrow-wrapper .ng-arrow, .ng-select.ng-select-disabled .ng-clear-wrapper {
-    color: rgba(0, 0, 0, 0.38)
+    color: #5e6278
 }
 
 ::ng-deep .ng-select.ng-select-focused .ng-select-container:after {
@@ -51,7 +52,10 @@
 ::ng-deep .ng-select .ng-select-container {
     color: rgba(0, 0, 0, 0.87);
     align-items: baseline;
-    min-height: 51.5px
+    min-height: 51.5px;
+    background-color: #f5f8fa;
+    border-radius: 2px;
+
 }
 
 ::ng-deep .ng-select .ng-select-container:after {
@@ -314,7 +318,7 @@
 }
 
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
-    color: rgba(0, 0, 0, 0.38)
+    color: #5e6278
 }
 
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-child {
@@ -328,9 +332,9 @@
 
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option .ng-tag-label {
     padding-right: 5px;
-    font-size: 80%;
+    font-size: 100%;
     font-weight: 400;
-    color: rgba(0, 0, 0, 0.38)
+    color: #5e6278
 }
 
 ::ng-deep [dir="rtl"] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option .ng-tag-label {

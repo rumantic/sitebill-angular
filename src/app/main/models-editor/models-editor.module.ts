@@ -44,6 +44,7 @@ import {ModelsEditorService} from "./models-editor.service";
 import {ModelDetailsComponent} from "./model-details/model-details.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {ModelFormModalComponent} from "./model-form-modal/model-form-modal.component";
+import {SharedModule} from "../../shared.module";
 
 const bundle = [
     ModelsEditorComponent,
@@ -104,6 +105,7 @@ const bundle = [
         MatListModule,
         NgxDnDModule,
         MatSlideToggleModule,
+        SharedModule,
     ],
     exports: [...bundle],
     providers: [

@@ -242,7 +242,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         dialogConfig.data = {
             model_item: model_item
         };
-        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.panelClass = 'regular-modal';
 
         this.dialog.open(ModelFormModalComponent, dialogConfig);
     }

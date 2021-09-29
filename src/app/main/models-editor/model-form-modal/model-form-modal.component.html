@@ -1,16 +1,7 @@
-<div class="example-container dialog-content-wrapper">
-    <mat-toolbar>
-        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">Редактор поля</span>
-            <button mat-icon-button (click)="close()" aria-label="Закрыть">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
-
-    <!--h2 mat-dialog-title>Объект</h2-->
-    <div mat-dialog-content class="p-24 m-0 modal-content">
-        form
-    </div>
-</div>
-
+<form-static *ngIf="entity"
+             [entity]="entity"
+             [disable_delete]="false"
+             [disable_save_button]="false"
+             [column_mode]="100"
+>
+</form-static>
