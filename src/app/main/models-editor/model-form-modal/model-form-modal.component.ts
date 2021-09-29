@@ -27,6 +27,7 @@ export class ModelFormModalComponent
         this.entity.set_app_name('columns');
         this.entity.set_table_name('columns');
         this.entity.set_primary_key('columns_id');
+        // this.entity.set_title('колонки');
     }
 
 

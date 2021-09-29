@@ -174,8 +174,8 @@
 
 
                 <span *ngSwitchCase="'select_by_query'"  [hidden]="records[x].hidden">
-                    <div fxLayout="row">
-                        <div fxFlex="90" class="min-select">
+                    <div fxLayout="row" fxLayoutAlign="space-around">
+                        <div fxFlex.gt-xs="80" fxFlex.xs="80" class="min-select">
                             <ng-select [formControlName]="records[x].name"
                                        [required]="records[x].required_boolean"
                                        appendTo="body"
@@ -209,7 +209,7 @@
                             <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                             <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                         </div>
-                        <div fxFlex="10" *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
+                        <div fxFlex.gt-xs="5" fxFlex.xs="10" class="pt-4"  *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
                             <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
                                 <mat-icon>add</mat-icon>
                             </a>
