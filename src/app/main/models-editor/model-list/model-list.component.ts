@@ -9,6 +9,7 @@ import {ModelService} from "../../../_services/model.service";
 import {SnackService} from "../../../_services/snack.service";
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {ModelsEditorService} from "../models-editor.service";
+import {instances} from "chart.js";
 
 @Component({
     selector     : 'model-list',
@@ -59,9 +60,11 @@ export class ModelListComponent implements OnInit, OnDestroy
                     this.models = [];
                     for (const [key, value] of Object.entries(this.sitebillResponse.data)) {
                         let entity = new SitebillEntity();
-                        for (const [key_obj, value_obj] of Object.entries(value)) {
-                            let model_item = new SitebillModelItem(value_obj);
-                            entity.model.push(model_item);
+                        if ( value ) {
+                            for (const [key_obj, value_obj] of Object.entries(value)) {
+                                let model_item = new SitebillModelItem(value_obj);
+                                entity.model.push(model_item);
+                            }
                         }
                         entity.set_app_name(key);
                         entity.set_table_name(key);
