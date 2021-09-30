@@ -143,7 +143,7 @@
 
                 <uploader-component [hidden]="records[x].hidden" *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
 
-                <span *ngSwitchCase="'select_box_structure'" [hidden]="records[x].hidden">
+                <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
                     <ng-select [formControlName]="records[x].name"
                                [required]="records[x].required_boolean"
                                appendTo="body"
@@ -152,10 +152,10 @@
                                [items]="options_storage[records[x].name]"
                                [clearOnBackspace]="false"
                                [searchable]="true"
-                               [multiple]="false"
+                               [multiple]="records[x].type === 'select_box_structure_simple_multiple' || records[x].type === 'select_box_structure_multiple_checkbox'"
                                [hideSelected]="false"
                                (change)="apply_topic_activity()"
-                               [closeOnSelect]="true"
+                               [closeOnSelect]="records[x].type !== 'select_box_structure_simple_multiple' && records[x].type !== 'select_box_structure_multiple_checkbox'"
                                placeholder="{{records[x].title}}">
                         <ng-template ng-label-tmp let-item="item" let-index="index">
                             <span [innerHTML]="item.breadcrumbs">
@@ -192,10 +192,10 @@
                                        [searchable]="true"
                                        [typeahead]="input$"
                                        (search)="onSearch(records[x].name)"
-                                       [multiple]="records[x].type === 'select_by_query_multiple'"
+                                       [multiple]="records[x].type === 'select_by_query_multiple' || records[x].type === 'select_by_query_multi'"
                                        (focus)="init_select_by_query_options(records[x].name)"
                                        [hideSelected]="false"
-                                       [closeOnSelect]="records[x].type !== 'select_by_query_multiple'"
+                                       [closeOnSelect]="records[x].type !== 'select_by_query_multiple' && records[x].type !== 'select_by_query_multi'"
                                        placeholder="{{records[x].title}}">
                                 <ng-template ng-label-tmp let-item="item" let-index="index">
                                     <span [innerHTML]="item.value">

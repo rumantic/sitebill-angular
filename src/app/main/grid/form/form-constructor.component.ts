@@ -295,13 +295,21 @@ export class FormConstructorComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
-            if (this.records[this.rows[i]].type == 'select_by_query') {
+            if (
+                this.records[this.rows[i]].type == 'select_by_query' ||
+                this.records[this.rows[i]].type == 'select_by_query_multiple' ||
+                this.records[this.rows[i]].type == 'select_by_query_multi'
+            ) {
                 this.init_select_by_query_options(this.records[this.rows[i]].name, i);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
             }
-            if (this.records[this.rows[i]].type == 'select_box_structure') {
+            if (
+                this.records[this.rows[i]].type == 'select_box_structure' ||
+                this.records[this.rows[i]].type == 'select_box_structure_simple_multiple' ||
+                this.records[this.rows[i]].type == 'select_box_structure_multiple_checkbox'
+            ) {
                 this.init_select_by_query_options(this.records[this.rows[i]].name);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
