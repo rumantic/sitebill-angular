@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output
+} from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
@@ -88,6 +96,8 @@ export class FormConstructorComponent implements OnInit {
 
     onSave = new EventEmitter();
     afterSave = new EventEmitter();
+
+    @Output() afterFormInited = new EventEmitter();
 
 
     quillConfig = {
@@ -377,7 +387,7 @@ export class FormConstructorComponent implements OnInit {
 
         this.apply_topic_activity();
         this.form_inited = true;
-        this.after_form_inted();
+        this.after_form_inited();
         this.count_visible_items();
         //console.log(this.records);
 
@@ -407,6 +417,10 @@ export class FormConstructorComponent implements OnInit {
     hide_row(row) {
         this.records[row].hidden = true;
         this.records[row].type = 'hidden';
+    }
+
+    get_records () {
+        return this.records;
     }
 
     init_geodata(columnName) {
@@ -599,8 +613,9 @@ export class FormConstructorComponent implements OnInit {
             }
         }
     }
-    after_form_inted() {
+    after_form_inited() {
         this.form_title = this.get_title();
+        this.afterFormInited.emit(this.form);
         this.cdr.markForCheck();
     }
 

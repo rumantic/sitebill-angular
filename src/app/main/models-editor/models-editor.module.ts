@@ -45,13 +45,15 @@ import {ModelDetailsComponent} from "./model-details/model-details.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {ModelFormModalComponent} from "./model-form-modal/model-form-modal.component";
 import {SharedModule} from "../../shared.module";
+import {ModelFormStaticComponent} from "./model-form-modal/model-form-static.component";
 
 const bundle = [
     ModelsEditorComponent,
     ModelListComponent,
     ModelListItemComponent,
     ModelDetailsComponent,
-    ModelFormModalComponent
+    ModelFormModalComponent,
+    ModelFormStaticComponent
 ];
 
 @NgModule({
