@@ -256,9 +256,9 @@ export class SitebillEntity {
 }
 export class SitebillModelItem {
     action: string;
-    active_in_topic: number[];
+    active_in_topic: string;
     name: string;
-    value: string;
+    value: any;
     value_string: string;
     select_data_indexed: any;
     assign_to: string;
@@ -287,10 +287,17 @@ export class SitebillModelItem {
     value_table: string;
     columns_id: number;
     active: boolean;
+    parameters: any;
+
+    // Дополнительные поля
+    hidden: boolean;
+    active_in_topic_array: any;
+    type_native: string;
 
     constructor(item:any = null) {
         this.action = item.action;
         this.active_in_topic = item.active_in_topic;
+        this.active_in_topic_array = null;
         this.name = item.name;
         this.value = item.value;
         this.value_string = item.value_string;
@@ -315,6 +322,7 @@ export class SitebillModelItem {
         this.title = item.title;
         this.title_default = item.title_default;
         this.type = item.type;
+        this.type_native = item.type;
         this.unique = item.unique;
         this.value_default = item.value_default;
         this.value_field = item.value_field;

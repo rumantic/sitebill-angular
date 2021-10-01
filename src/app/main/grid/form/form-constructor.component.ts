@@ -1,5 +1,4 @@
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     EventEmitter,
@@ -11,14 +10,13 @@ import {ModelService} from '../../../_services/model.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
 import {debounceTime, distinctUntilChanged, map, takeUntil} from 'rxjs/operators';
-import {FormType, SitebillEntity} from '../../../_models';
+import {FormType, SitebillEntity, SitebillModelItem} from '../../../_models';
 import {Subject} from 'rxjs';
 import * as moment from 'moment';
 import {ConfirmComponent} from '../../../dialogs/confirm/confirm.component';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import {switchMap} from "rxjs-compat/operator/switchMap";
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -61,10 +59,10 @@ export class FormConstructorComponent implements OnInit {
 
     form_submitted: boolean = false;
     form_inited: boolean = false;
-    rows: any[];
+    rows: string[];
     tabs: any;
-    tabs_keys: any[];
-    records: any[];
+    tabs_keys: string[];
+    records: SitebillModelItem[];
     api_url: string;
     render_value_string_array = ['empty', 'select_box', 'select_by_query', 'select_box_structure', 'date'];
     render_value_array = ['empty', 'textarea_editor', 'safe_string', 'textarea', 'primary_key'];
@@ -248,6 +246,10 @@ export class FormConstructorComponent implements OnInit {
                     } else {
                         // console.log(result);
                         this.records = result.data;
+                        for (const [key_obj, value_obj] of Object.entries(result.data)) {
+                            this.records[key_obj] = new SitebillModelItem(value_obj);
+                        }
+
                         this.tabs = result.tabs;
                         this.tabs_keys = Object.keys(result.tabs);
                         this.rows = Object.keys(result.data);
@@ -416,7 +418,16 @@ export class FormConstructorComponent implements OnInit {
 
     hide_row(row) {
         this.records[row].hidden = true;
+        this.records[row].type_native = this.records[row].type;
         this.records[row].type = 'hidden';
+    }
+
+
+    show_row_soft(row) {
+        this.records[row].hidden = false;
+        if ( this.records[row].type_native ) {
+            this.records[row].type = this.records[row].type_native;
+        }
     }
 
     get_records () {
@@ -586,8 +597,14 @@ export class FormConstructorComponent implements OnInit {
 
         if (current_topic_id != null) {
             for (var i = 0; i < this.rows.length; i++) {
-                if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
-                    if (this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id) == -1) {
+                if (
+                    this.records[this.rows[i]].active_in_topic != '0' &&
+                    this.records[this.rows[i]].active_in_topic != null
+                ) {
+                    if (
+                        Array.isArray(this.records[this.rows[i]].active_in_topic_array) &&
+                        this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id.toString()) == -1
+                    ) {
                         this.form.get(this.rows[i]).clearValidators();
                         this.form.get(this.rows[i]).updateValueAndValidity();
                         this.records[this.rows[i]].required_boolean = false;
