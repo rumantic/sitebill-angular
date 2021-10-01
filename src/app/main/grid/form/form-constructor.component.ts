@@ -244,7 +244,6 @@ export class FormConstructorComponent implements OnInit {
                         this.error_message = result.message;
                         return false;
                     } else {
-                        // console.log(result);
                         this.records = result.data;
                         for (const [key_obj, value_obj] of Object.entries(result.data)) {
                             this.records[key_obj] = new SitebillModelItem(value_obj);
@@ -432,6 +431,10 @@ export class FormConstructorComponent implements OnInit {
 
     get_records () {
         return this.records;
+    }
+
+    get_SitebillModelItem (key: string): SitebillModelItem {
+        return this.records[key];
     }
 
     init_geodata(columnName) {

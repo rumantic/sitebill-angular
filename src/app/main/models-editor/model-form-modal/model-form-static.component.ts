@@ -60,11 +60,12 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
         this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
-                if ( status.type && this.previous_type !== status.type ) {
+                if ( this.form_inited && status.type && this.previous_type !== status.type ) {
                     this.previous_type = status.type;
                     this.onChangeType.emit(status.type);
                 }
             });
+
     }
 
     ngOnChanges (changes) {

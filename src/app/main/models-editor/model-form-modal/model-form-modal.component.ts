@@ -43,8 +43,9 @@ export class ModelFormModalComponent
     }
 
     update_form_fields_visibility( type: string = null ) {
-        console.log('onChange');
-        console.log(type);
+        if ( !type ) {
+            type = this.form_static.form.controls['type'].value;
+        }
         let common_fields = [
             'name',
             'active',
@@ -62,32 +63,38 @@ export class ModelFormModalComponent
             'parameters',
             'uaction'
         ];
+        let result_fields = common_fields;
 
-        let select_by_query_items = ['primary_key_table'];
+        let select_by_query_items = [
+            'primary_key_name',
+            'primary_key_table',
+            'value_string',
+            'query',
+            'value_name',
+            'title_default',
+            'value_default',
+            'combo'
+        ];
 
-        let visibility = {
-            'select_by_query': common_fields.concat(select_by_query_items),
-            'select_by_query_multiple': common_fields.concat(select_by_query_items),
-            'select_by_query_multi': common_fields.concat(select_by_query_items),
+        let type_visibility_fields = {
+            'select_by_query': select_by_query_items,
+            'select_by_query_multiple': select_by_query_items,
+            'select_by_query_multi': select_by_query_items,
+            'structure': ['entity'],
+            'select_box_structure': ['value_string', 'title_default'],
+            'select_box': ['select_data'],
+            'grade': ['select_data'],
+
         };
-
-
-
-        console.log(this.form_static.get_records());
+        if (type_visibility_fields[type]) {
+            result_fields = common_fields.concat(type_visibility_fields[type]);
+        }
         for (const [key, value] of Object.entries(this.form_static.get_records())) {
-            if ( !common_fields.includes(key) ) {
-                console.log(key);
+            if ( !result_fields.includes(key) ) {
                 this.form_static.hide_row(key);
+            } else {
+                this.form_static.show_row_soft(key);
             }
         }
-
-
-        // this.form_static.get_records().forEach(record => {
-        //     console.log(record);
-        // });
-
-        //this.form_static.hide_row('table_id');
-
-        //console.log(common_fields);
     }
 }
