@@ -293,7 +293,7 @@ export class SitebillModelItem {
     // Дополнительные поля
     hidden: boolean;
     active_in_topic_array: any;
-    type_native: string;
+    readonly type_native: string;
 
     constructor(item:any = null) {
         this.action = item.action;

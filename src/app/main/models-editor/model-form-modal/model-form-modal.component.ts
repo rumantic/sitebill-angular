@@ -49,15 +49,6 @@ export class ModelFormModalComponent
             type = this.form_static.form.controls['type'].value;
         }
         let languages = this.modelService.getConfigValue('languages');
-        console.log(languages);
-        languages = {
-            ru: 'ru',
-            en: 'en',
-            tr: 'tr'
-        }
-        //languages = ['ru', 'en', 'tr'];
-
-
 
         let common_fields = [
             'name',
@@ -90,7 +81,6 @@ export class ModelFormModalComponent
             'combo'
         ];
         select_by_query_items = select_by_query_items.concat(this.language_extends('title_default', languages));
-        console.log(select_by_query_items);
 
         let type_visibility_fields = {
             'select_by_query': select_by_query_items,
@@ -105,6 +95,7 @@ export class ModelFormModalComponent
         if (type_visibility_fields[type]) {
             result_fields = common_fields.concat(type_visibility_fields[type]);
         }
+
         for (const [key, value] of Object.entries(this.form_static.get_records())) {
             if ( !result_fields.includes(key) ) {
                 this.form_static.hide_row(key);

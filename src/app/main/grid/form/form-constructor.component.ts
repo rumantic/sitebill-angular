@@ -417,19 +417,18 @@ export class FormConstructorComponent implements OnInit {
 
     hide_row(row) {
         this.records[row].hidden = true;
-        this.records[row].type_native = this.records[row].type;
         this.records[row].type = 'hidden';
     }
 
 
     show_row_soft(row) {
         this.records[row].hidden = false;
-        if ( this.records[row].type_native ) {
+        if ( this.records[row].type_native !== this.records[row].type ) {
             this.records[row].type = this.records[row].type_native;
         }
     }
 
-    get_records () {
+    get_records ():SitebillModelItem[] {
         return this.records;
     }
 
