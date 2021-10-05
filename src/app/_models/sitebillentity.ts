@@ -294,6 +294,7 @@ export class SitebillModelItem {
     hidden: boolean;
     active_in_topic_array: any;
     readonly type_native: string;
+    multiple: boolean;
 
     constructor(item:any = null) {
         this.action = item.action;
@@ -324,6 +325,7 @@ export class SitebillModelItem {
         this.title_default = item.title_default;
         this.type = item.type;
         this.type_native = item.type;
+        this.multiple = item.type === 'select_by_query_multiple' || item.type === 'select_by_query_multi';
         this.unique = item.unique;
         this.value_default = item.value_default;
         this.value_field = item.value_field;

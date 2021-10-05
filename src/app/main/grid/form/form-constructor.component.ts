@@ -519,8 +519,13 @@ export class FormConstructorComponent implements OnInit {
                     this.options_storage[columnName] = result.data;
                     this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
 
-                    if (this.records[this.rows[rowIndex]].value_string) {
-                        this.initial_select_list(this.records[this.rows[rowIndex]].name, this.records[this.rows[rowIndex]].value_string);
+                    if (this.records[this.rows[rowIndex]].multiple) {
+                        this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
+                    } else {
+
+                        if (this.records[this.rows[rowIndex]].value_string) {
+                            this.initial_select_list(this.records[this.rows[rowIndex]].name, this.records[this.rows[rowIndex]].value_string);
+                        }
                     }
                     this.cdr.markForCheck();
                 }
@@ -711,7 +716,6 @@ export class FormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
-        //console.log(ql_items);
         this._data.set_ql_items(ql_items);
         this.onSave.emit(ql_items);
 
