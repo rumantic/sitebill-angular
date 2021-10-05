@@ -3,6 +3,7 @@ import {Component, Inject, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SitebillEntity, SitebillModelItem} from "../../../_models";
 import {ModelFormStaticComponent} from "./model-form-static.component";
+import {ModelService} from "../../../_services/model.service";
 
 @Component({
     selector   : 'model-form-modal',
@@ -22,6 +23,7 @@ export class ModelFormModalComponent
         @Inject(MAT_DIALOG_DATA) public _data: {
             model_item: SitebillModelItem,
         },
+        protected modelService: ModelService,
         protected dialogRef: MatDialogRef<ModelFormModalComponent>,
     )
     {
@@ -46,6 +48,10 @@ export class ModelFormModalComponent
         if ( !type ) {
             type = this.form_static.form.controls['type'].value;
         }
+
+        console.log(this.language_extends('title'));
+
+
         let common_fields = [
             'name',
             'active',
@@ -96,5 +102,18 @@ export class ModelFormModalComponent
                 this.form_static.show_row_soft(key);
             }
         }
+    }
+
+    language_extends ( key: string ) {
+        let languages = this.modelService.getConfigValue('languages');
+        if ( !languages ) {
+            return key;
+        }
+        let result = [];
+        result.push(key);
+        for (const [key_obj, value_obj] of Object.entries(languages)) {
+            result.push(key + '_' + key_obj);
+        }
+        return result;
     }
 }
