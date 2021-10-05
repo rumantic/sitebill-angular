@@ -847,9 +847,12 @@ export class FormConstructorComponent implements OnInit {
         return false;
     }
 
-    get_flex_width ( size:string, form_type:string, record ) {
+    get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
+        }
+        if ( record.fxFlex ) {
+            return record.fxFlex;
         }
         if ( this.column_mode ) {
             return this.column_mode;
@@ -857,7 +860,7 @@ export class FormConstructorComponent implements OnInit {
         if ( this.get_visible_items_counter() === 1 ) {
             return 'auto';
         }
-        var width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
+        let width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
         if ( width_100.indexOf(record.type) > -1 ) {
             return 100;
         }
@@ -879,11 +882,15 @@ export class FormConstructorComponent implements OnInit {
 
         return 'auto';
     }
-    get_flex_padding ( size:string, form_type:string, record ) {
+    get_flex_padding ( size:string, form_type:string, record: SitebillModelItem ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return '';
         }
-        return 'p-12';
+        let css_class = 'p-12';
+        if ( record.fxFlex ) {
+            css_class += ' border-top-1px';
+        }
+        return css_class;
     }
     get_appearance() {
         // outline,standard,fill,legacy

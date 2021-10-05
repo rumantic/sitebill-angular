@@ -85,3 +85,7 @@ textarea {
 .checkbox-wrap {
     white-space: normal !important;
 }
+.border-top-1px {
+    border-top: 5px dashed #f5f8fa;
+    margin-top: 12px;
+}

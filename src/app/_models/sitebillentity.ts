@@ -288,6 +288,7 @@ export class SitebillModelItem {
     columns_id: number;
     active: boolean;
     parameters: any;
+    fxFlex: number;
 
     // Дополнительные поля
     hidden: boolean;
@@ -331,6 +332,7 @@ export class SitebillModelItem {
         this.value_table = item.value_table;
         this.columns_id = item.columns_id;
         this.active = item.active === '1';
+        this.fxFlex = item.fxFlex;
     }
 
     getValue() {

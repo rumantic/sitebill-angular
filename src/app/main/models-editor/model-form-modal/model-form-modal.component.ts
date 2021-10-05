@@ -48,8 +48,15 @@ export class ModelFormModalComponent
         if ( !type ) {
             type = this.form_static.form.controls['type'].value;
         }
+        let languages = this.modelService.getConfigValue('languages');
+        console.log(languages);
+        languages = {
+            ru: 'ru',
+            en: 'en',
+            tr: 'tr'
+        }
+        //languages = ['ru', 'en', 'tr'];
 
-        console.log(this.language_extends('title'));
 
 
         let common_fields = [
@@ -57,7 +64,6 @@ export class ModelFormModalComponent
             'active',
             'table_id',
             'group_id',
-            'title',
             'value',
             'type',
             'required',
@@ -65,10 +71,13 @@ export class ModelFormModalComponent
             'dbtype',
             'active_in_topic',
             'tab',
-            'hint',
             'parameters',
             'uaction'
         ];
+        common_fields = common_fields.concat(this.language_extends('title', languages));
+        common_fields = common_fields.concat(this.language_extends('hint', languages));
+        common_fields = common_fields.concat(this.language_extends('tab', languages));
+
         let result_fields = common_fields;
 
         let select_by_query_items = [
@@ -77,19 +86,20 @@ export class ModelFormModalComponent
             'value_string',
             'query',
             'value_name',
-            'title_default',
             'value_default',
             'combo'
         ];
+        select_by_query_items = select_by_query_items.concat(this.language_extends('title_default', languages));
+        console.log(select_by_query_items);
 
         let type_visibility_fields = {
             'select_by_query': select_by_query_items,
             'select_by_query_multiple': select_by_query_items,
             'select_by_query_multi': select_by_query_items,
             'structure': ['entity'],
-            'select_box_structure': ['value_string', 'title_default'],
-            'select_box': ['select_data'],
-            'grade': ['select_data'],
+            'select_box_structure': ['value_string'].concat(this.language_extends('title_default', languages)),
+            'select_box': this.language_extends('select_data', languages),
+            'grade': this.language_extends('select_data', languages),
 
         };
         if (type_visibility_fields[type]) {
@@ -104,8 +114,7 @@ export class ModelFormModalComponent
         }
     }
 
-    language_extends ( key: string ) {
-        let languages = this.modelService.getConfigValue('languages');
+    language_extends ( key: string, languages: string[] ) {
         if ( !languages ) {
             return key;
         }
