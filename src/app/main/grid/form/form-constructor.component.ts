@@ -321,7 +321,7 @@ export class FormConstructorComponent implements OnInit {
                 this.records[this.rows[i]].type == 'select_box_structure_simple_multiple' ||
                 this.records[this.rows[i]].type == 'select_box_structure_multiple_checkbox'
             ) {
-                this.init_select_by_query_options(this.records[this.rows[i]].name);
+                this.init_select_by_query_options(this.records[this.rows[i]].name, i);
                 if (this.records[this.rows[i]].value == 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }

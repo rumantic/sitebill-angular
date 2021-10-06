@@ -325,7 +325,11 @@ export class SitebillModelItem {
         this.title_default = item.title_default;
         this.type = item.type;
         this.type_native = item.type;
-        this.multiple = item.type === 'select_by_query_multiple' || item.type === 'select_by_query_multi';
+        this.multiple =
+            item.type === 'select_by_query_multiple' ||
+            item.type === 'select_by_query_multi' ||
+            item.type === 'select_box_structure_simple_multiple' ||
+            item.type === 'select_box_structure_multiple_checkbox';
         this.unique = item.unique;
         this.value_default = item.value_default;
         this.value_field = item.value_field;
