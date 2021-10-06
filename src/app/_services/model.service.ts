@@ -2,7 +2,7 @@ import {Injectable, Inject, isDevMode, Output, EventEmitter} from '@angular/core
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {currentUser, UserProfile} from 'app/_models/currentuser';
-import {SitebillEntity, SitebillModelItem, User} from 'app/_models';
+import {ApiCall, SitebillEntity, SitebillModelItem, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
@@ -418,6 +418,17 @@ export class ModelService {
             params: params,
             switch_off_ai_mode: switch_off_ai_mode,
             anonymous: true,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
+    }
+
+    api_call (api_call: ApiCall) {
+        const request = {
+            action: api_call.name,
+            do: api_call.method,
+            params: api_call.params,
+            anonymous: api_call.anonymous,
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);

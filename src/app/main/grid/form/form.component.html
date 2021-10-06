@@ -173,7 +173,9 @@
                 </span>
 
                 <span
-                    *ngSwitchCase="records[x].type === 'select_by_query' || records[x].type === 'select_by_query_multiple'  || records[x].type === 'select_by_query_multi'? records[x].type : '' "
+                    *ngSwitchCase="records[x].type === 'select_by_query' ||
+                    records[x].type === 'select_by_query_multiple'  ||
+                    records[x].type === 'select_by_query_multi'? records[x].type : '' "
                     [hidden]="records[x].hidden">
                     <div fxLayout="row" fxLayoutAlign="space-between">
                         <div fxFlex.gt-xs="85" fxFlex.xs="80" class="min-select">

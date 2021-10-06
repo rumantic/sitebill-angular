@@ -254,6 +254,16 @@ export class SitebillEntity {
         return null;
     }
 }
+export interface ApiCall {
+    api: string,
+    name: string,
+    method: string,
+    params: ApiParams[],
+    anonymous: boolean
+}
+export interface ApiParams {
+    [key: string]: any;
+}
 export class SitebillModelItem {
     action: string;
     active_in_topic: string;
@@ -289,6 +299,7 @@ export class SitebillModelItem {
     active: boolean;
     parameters: any;
     fxFlex: number;
+    api: ApiCall;
 
     // Дополнительные поля
     hidden: boolean;
@@ -339,6 +350,7 @@ export class SitebillModelItem {
         this.columns_id = item.columns_id;
         this.active = item.active === '1';
         this.fxFlex = item.fxFlex;
+        this.api = item.api;
     }
 
     getValue() {

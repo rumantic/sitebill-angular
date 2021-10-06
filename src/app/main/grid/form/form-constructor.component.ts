@@ -248,6 +248,7 @@ export class FormConstructorComponent implements OnInit {
                         for (const [key_obj, value_obj] of Object.entries(result.data)) {
                             this.records[key_obj] = new SitebillModelItem(value_obj);
                         }
+                        console.log(this.records);
 
                         this.tabs = result.tabs;
                         this.tabs_keys = Object.keys(result.tabs);
@@ -498,6 +499,14 @@ export class FormConstructorComponent implements OnInit {
     }
 
     init_select_box_options(columnName) {
+        if ( this.records[columnName].api ) {
+            console.log(this.records[columnName].api);
+            this.modelService.api_call(this.records[columnName].api)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    console.log(result);
+                });
+        }
         this.options_storage[columnName] = this.records[columnName].select_data_indexed;
         try {
             this.options_storage[columnName].forEach((row, index) => {
