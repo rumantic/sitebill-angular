@@ -62,6 +62,7 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
                     }
 
                     if (status.primary_key_table && this.previous_primary_key_table !== status.primary_key_table ) {
+
                         let need_set_null = false;
                         if ( this.previous_primary_key_table !== undefined ) {
                             need_set_null = true;
@@ -71,6 +72,7 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
                             this.form.controls['primary_key_name'].patchValue(null);
                             this.form.controls['value_name'].patchValue(null);
                         }
+                        this.form.controls['query'].patchValue('SELECT * FROM re_' + status.primary_key_table);
                         this.refreshChild('primary_key_name', status.primary_key_table);
                         this.refreshChild('value_name', status.primary_key_table);
                     }
