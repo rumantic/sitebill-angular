@@ -441,7 +441,11 @@ export class FormConstructorComponent implements OnInit {
                     this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
 
                     if (this.records[this.rows[rowIndex]].multiple && this.records[this.rows[rowIndex]].value) {
-                        this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
+                        if ( this.records[this.rows[rowIndex]].value === '0' ) {
+                            this.form.controls[this.rows[rowIndex]].patchValue(null);
+                        } else {
+                            this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
+                        }
                     } else {
 
                         if (this.records[this.rows[rowIndex]].value_string) {
