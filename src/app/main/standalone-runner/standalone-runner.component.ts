@@ -42,6 +42,7 @@ export class StandaloneRunnerComponent
 
     run () {
         console.log('ready for standalone components');
+        console.log(' - - - - - ');
         this.config_loaded = true;
     }
 

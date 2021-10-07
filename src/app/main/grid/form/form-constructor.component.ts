@@ -18,6 +18,7 @@ import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
+import {SitebillResponse} from "../../../_models/sitebill-response";
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     showDelay: 1000,
@@ -98,99 +99,11 @@ export class FormConstructorComponent implements OnInit {
     @Output() afterFormInited = new EventEmitter();
 
 
-    quillConfig = {
-        toolbar: {
-            container:
-                [
-                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                    ['blockquote', 'code-block'],
-
-                    [{'header': 1}, {'header': 2}],               // custom button values
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                    [{'direction': 'rtl'}],                         // text direction
-
-                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-                    [{'font': []}],
-                    [{'align': []}],
-
-                    ['clean']                                    // remove formatting button
-
-                ],
-        },
-        // toolbar: {
-        //   container: [
-        //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        //     ['code-block'],
-        //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        //     //[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        //     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        //     //[{ 'direction': 'rtl' }],                         // text direction
-
-        //     //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        //     //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-        //     //[{ 'font': [] }],
-        //     //[{ 'align': [] }],
-
-        //     ['clean'],                                         // remove formatting button
-
-        //     ['link'],
-        //     //['link', 'image', 'video']
-        //     ['emoji'],
-        //   ],
-        //   handlers: {'emoji': function() {}}
-        // },
-    };
-
-    editorOptions = {
-        theme: 'snow',
-        modules: {
-            toolbar: {
-                container:
-                    [
-                        [{'placeholder': ['[GuestName]', '[HotelName]']}], // my custom dropdown
-                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                        ['blockquote', 'code-block'],
-
-                        [{'header': 1}, {'header': 2}],               // custom button values
-                        [{'list': 'ordered'}, {'list': 'bullet'}],
-                        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                        [{'direction': 'rtl'}],                         // text direction
-
-                        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-                        [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-                        [{'font': []}],
-                        [{'align': []}],
-
-                        ['clean']                                    // remove formatting button
-
-                    ],
-                handlers: {
-                    'placeholder': function (value) {
-                        if (value) {
-                            const cursorPosition = this.quill.getSelection().index;
-                            this.quill.insertText(cursorPosition, value);
-                            this.quill.setSelection(cursorPosition + value.length);
-                        }
-                    }
-                }
-            }
-        }
-    };
     private visible_items_counter: number;
 
 
     constructor (
-        protected modelService: ModelService,
+        public modelService: ModelService,
         protected _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         protected filterService: FilterService,
@@ -248,7 +161,7 @@ export class FormConstructorComponent implements OnInit {
                         for (const [key_obj, value_obj] of Object.entries(result.data)) {
                             this.records[key_obj] = new SitebillModelItem(value_obj);
                         }
-                        console.log(this.records);
+                        // console.log(this.records);
 
                         this.tabs = result.tabs;
                         this.tabs_keys = Object.keys(result.tabs);
@@ -264,7 +177,6 @@ export class FormConstructorComponent implements OnInit {
     }
 
     init_form() {
-        //console.log(this.records);
 
         //Сначала нужно получить значение topic_id
         //В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
@@ -344,7 +256,7 @@ export class FormConstructorComponent implements OnInit {
 
             if (this.records[this.rows[i]].type == 'select_box') {
                 this.init_select_box_options(this.records[this.rows[i]].name);
-                if (this.records[this.rows[i]].value_string == '') {
+                if (this.records[this.rows[i]].value_string == '' && this.records[this.rows[i]].value == '') {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
 
@@ -500,20 +412,20 @@ export class FormConstructorComponent implements OnInit {
 
     init_select_box_options(columnName) {
         if ( this.records[columnName].api ) {
-            console.log(this.records[columnName].api);
             this.modelService.api_call(this.records[columnName].api)
                 .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result: any) => {
-                    console.log(result);
+                .subscribe((result: SitebillResponse) => {
+                    this.options_storage[columnName] = result.data;
                 });
-        }
-        this.options_storage[columnName] = this.records[columnName].select_data_indexed;
-        try {
-            this.options_storage[columnName].forEach((row, index) => {
-                row.id = row.id.toString();
-                row.value = row.value.toString();
-            });
-        } catch {
+        } else {
+            this.options_storage[columnName] = this.records[columnName].select_data_indexed;
+            try {
+                this.options_storage[columnName].forEach((row, index) => {
+                    row.id = row.id.toString();
+                    row.value = row.value.toString();
+                });
+            } catch {
+            }
         }
     }
 
@@ -528,7 +440,7 @@ export class FormConstructorComponent implements OnInit {
                     this.options_storage[columnName] = result.data;
                     this.options_storage_buffer[columnName] = this.options_storage[columnName].slice(0, this.selectBufferSize);
 
-                    if (this.records[this.rows[rowIndex]].multiple) {
+                    if (this.records[this.rows[rowIndex]].multiple && this.records[this.rows[rowIndex]].value) {
                         this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
                     } else {
 
@@ -908,4 +820,94 @@ export class FormConstructorComponent implements OnInit {
         // outline,standard,fill,legacy
         return 'outline';
     }
+
+    quillConfig = {
+        toolbar: {
+            container:
+                [
+                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                    ['blockquote', 'code-block'],
+
+                    [{'header': 1}, {'header': 2}],               // custom button values
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+                    [{'direction': 'rtl'}],                         // text direction
+
+                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+                    [{'font': []}],
+                    [{'align': []}],
+
+                    ['clean']                                    // remove formatting button
+
+                ],
+        },
+        // toolbar: {
+        //   container: [
+        //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        //     ['code-block'],
+        //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        //     //[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        //     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        //     //[{ 'direction': 'rtl' }],                         // text direction
+
+        //     //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        //     //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        //     //[{ 'font': [] }],
+        //     //[{ 'align': [] }],
+
+        //     ['clean'],                                         // remove formatting button
+
+        //     ['link'],
+        //     //['link', 'image', 'video']
+        //     ['emoji'],
+        //   ],
+        //   handlers: {'emoji': function() {}}
+        // },
+    };
+
+    editorOptions = {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container:
+                    [
+                        [{'placeholder': ['[GuestName]', '[HotelName]']}], // my custom dropdown
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{'header': 1}, {'header': 2}],               // custom button values
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+                        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+                        [{'direction': 'rtl'}],                         // text direction
+
+                        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+                        [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+                        [{'font': []}],
+                        [{'align': []}],
+
+                        ['clean']                                    // remove formatting button
+
+                    ],
+                handlers: {
+                    'placeholder': function (value) {
+                        if (value) {
+                            const cursorPosition = this.quill.getSelection().index;
+                            this.quill.insertText(cursorPosition, value);
+                            this.quill.setSelection(cursorPosition + value.length);
+                        }
+                    }
+                }
+            }
+        }
+    };
+
 }

@@ -1,11 +1,4 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Input, OnChanges,
-    OnInit,
-    Output
-} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {FormBuilder} from '@angular/forms';
 
@@ -19,6 +12,7 @@ import {EntityStorageService} from "../../../_services/entity-storage.service";
 import {takeUntil} from "rxjs/operators";
 import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
 import {myCustomTooltipDefaults} from "../../grid/form/form-constructor.component";
+import {ApiParams} from "../../../_models";
 
 
 @Component({
@@ -32,6 +26,7 @@ import {myCustomTooltipDefaults} from "../../grid/form/form-constructor.componen
 export class ModelFormStaticComponent extends FormStaticComponent implements OnInit,OnChanges  {
     @Output() onChangeType: EventEmitter<string>  = new EventEmitter();
     private previous_type: string;
+    private previous_primary_key_table: string;
 
     constructor(
         protected modelService: ModelService,
@@ -60,12 +55,43 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
         this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
-                if ( this.form_inited && status.type && this.previous_type !== status.type ) {
-                    this.previous_type = status.type;
-                    this.onChangeType.emit(status.type);
+                if ( this.form_inited ) {
+                    if (status.type && this.previous_type !== status.type ) {
+                        this.previous_type = status.type;
+                        this.onChangeType.emit(status.type);
+                    }
+
+                    if (status.primary_key_table && this.previous_primary_key_table !== status.primary_key_table ) {
+                        let need_set_null = false;
+                        if ( this.previous_primary_key_table !== undefined ) {
+                            need_set_null = true;
+                        }
+                        this.previous_primary_key_table = status.primary_key_table;
+                        if ( need_set_null ) {
+                            this.form.controls['primary_key_name'].patchValue(null);
+                            this.form.controls['value_name'].patchValue(null);
+                        }
+                        this.refreshChild('primary_key_name', status.primary_key_table);
+                        this.refreshChild('value_name', status.primary_key_table);
+                    }
+
+                }
+
+            });
+        this.afterFormInited
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((status) => {
+                if ( this.form.controls['primary_key_table'].value !== null ) {
+                    this.previous_primary_key_table = this.form.controls['primary_key_table'].value;
+                    this.refreshChild('primary_key_name', this.form.controls['primary_key_table'].value);
+                    this.refreshChild('value_name', this.form.controls['primary_key_table'].value);
                 }
             });
+    }
 
+    refreshChild(child_key: string, parent_value: string) {
+        this.records[child_key].api.params = {table_name: parent_value};
+        this.init_select_box_options(child_key);
     }
 
     ngOnChanges (changes) {
