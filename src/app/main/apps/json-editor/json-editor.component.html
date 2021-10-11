@@ -1,5 +1,5 @@
-json editor
-<div [formGroup]="form" fxLayout="column" class="flex_wrap">
+jsoneditor
+<div [formGroup]="form" fxLayout="column" class="flex_wrap" *ngIf="json">
     <span fxLayout="row"  fxLayoutAlign="start center" *ngFor="let item of json | keyvalue;  let i = index">
         <mat-form-field class="p-12" appearance="outline" [matTooltip]="'tooltip'"  [hidden]="false">
             <mat-label [innerHTML]="'ключ'"></mat-label>

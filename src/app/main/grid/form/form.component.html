@@ -335,6 +335,10 @@
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </div>
 
+                <mat-form-field [hidden]="false" *ngSwitchCase="'parameter'">
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
                 <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">

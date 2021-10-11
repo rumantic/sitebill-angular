@@ -38,7 +38,6 @@ import {FuseSharedModule} from "../../../../@fuse/shared.module";
 import {MatListModule} from "@angular/material/list";
 import {NgxDnDModule} from "@swimlane/ngx-dnd";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {SharedModule} from "../../../shared.module";
 import {JsonEditorComponent} from "./json-editor.component";
 
 const bundle = [
@@ -96,7 +95,6 @@ const bundle = [
         MatListModule,
         NgxDnDModule,
         MatSlideToggleModule,
-        SharedModule,
     ],
     exports: [...bundle],
     providers: [

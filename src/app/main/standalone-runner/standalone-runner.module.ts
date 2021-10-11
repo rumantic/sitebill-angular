@@ -80,7 +80,7 @@ const routes = [
         SharedModule,
         ProfileModule,
         ModelsEditorModule,
-        JsonEditorModule,
+        JsonEditorModule
     ],
     providers: [
         BillingService
