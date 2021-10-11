@@ -264,6 +264,9 @@ export interface ApiCall {
 export interface ApiParams {
     [key: string]: any;
 }
+export interface JsonParams {
+    [key: string]: any;
+}
 export class SitebillModelItem {
     action: string;
     active_in_topic: string;

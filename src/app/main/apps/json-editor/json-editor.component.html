@@ -1,0 +1,19 @@
+json editor
+<div [formGroup]="form" fxLayout="column" class="flex_wrap">
+    <span fxLayout="row"  fxLayoutAlign="start center" *ngFor="let item of json | keyvalue;  let i = index">
+        <mat-form-field class="p-12" appearance="outline" [matTooltip]="'tooltip'"  [hidden]="false">
+            <mat-label [innerHTML]="'ключ'"></mat-label>
+            <input matInput [formControlName]="getKeyName(i)" [required]="false" placeholder="pair">
+            <mat-error>pair обязательное поле!</mat-error>
+        </mat-form-field>
+
+        <span class="pb-12"><mat-icon>trending_flat</mat-icon></span>
+
+
+        <mat-form-field class="p-12" appearance="outline" [matTooltip]="'tooltip'"  [hidden]="false">
+            <mat-label [innerHTML]="'значение'"></mat-label>
+            <input matInput [formControlName]="getValueName(i)" [required]="false" placeholder="pair">
+            <mat-error>pair обязательное поле!</mat-error>
+        </mat-form-field>
+    </span>
+</div>
