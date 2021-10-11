@@ -103,7 +103,7 @@ export class FormConstructorComponent implements OnInit {
 
 
     constructor (
-        public modelService: ModelService,
+        protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         protected filterService: FilterService,
