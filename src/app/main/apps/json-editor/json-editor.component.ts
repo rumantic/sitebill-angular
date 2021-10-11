@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import { ModelService } from 'app/_services/model.service';
 import {Subject} from "rxjs";
@@ -18,6 +18,9 @@ export class JsonEditorComponent
 
     @Input()
     json: JsonParams;
+
+    @Output() onChange = new EventEmitter();
+
 
     form_length: number = 0;
 
@@ -57,8 +60,7 @@ export class JsonEditorComponent
         this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
-                let test =  this.recreateJson(status);
-                console.log(test);
+                this.onChange.emit(this.recreateJson(status));
             });
     }
 

@@ -48,6 +48,7 @@ export class FormConstructorComponent implements OnInit {
     protected _unsubscribeAll: Subject<any>;
 
     public text_area_editor_storage = {};
+    public parameters_storage = {};
     public options_storage = {};
     public options_storage_buffer = {};
     public loading: Boolean;
@@ -219,6 +220,11 @@ export class FormConstructorComponent implements OnInit {
             if (this.records[this.rows[i]].type == 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
+
+            if (this.records[this.rows[i]].type == 'parameter') {
+                this.parameters_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
+            }
+
             if (
                 this.records[this.rows[i]].type == 'select_by_query' ||
                 this.records[this.rows[i]].type == 'select_by_query_multiple' ||
@@ -706,6 +712,8 @@ export class FormConstructorComponent implements OnInit {
                     ql_items[row] = this.text_area_editor_storage[row];
                 } else if (type === 'checkbox' && !control.value) {
                     ql_items[row] = null;
+                } else if (type === 'parameter') {
+                    ql_items[row] = this.parameters_storage[row];
                 } else if (type === 'date' && moment.isMoment(control.value)) {
                     ql_items[row] = control.value.format('DD.MM.YYYY');
                 } else if (type === 'dtdatetime' && moment.isMoment(control.value)) {
@@ -824,6 +832,11 @@ export class FormConstructorComponent implements OnInit {
         // outline,standard,fill,legacy
         return 'outline';
     }
+
+    updateParametersStorage(value: any, name:string) {
+        this.parameters_storage[name] = value;
+    }
+
 
     quillConfig = {
         toolbar: {

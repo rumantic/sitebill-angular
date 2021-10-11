@@ -80,6 +80,5 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
             this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
         }
     }
-
 }
 

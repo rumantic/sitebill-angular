@@ -336,7 +336,7 @@
                 </div>
 
                 <mat-form-field [hidden]="false" *ngSwitchCase="'parameter'">
-                    <json-editor [json]="form.controls[records[x].name].value"></json-editor>
+                    <json-editor [json]="form.controls[records[x].name].value" (onChange)="updateParametersStorage($event, records[x].name)"></json-editor>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 
