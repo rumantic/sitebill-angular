@@ -34,7 +34,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {StandaloneRunnerComponent} from "./standalone-runner.component";
 import {ProfileModule} from "../profile/profile.module";
 import {ModelsEditorModule} from "../models-editor/models-editor.module";
-import {JsonEditorModule} from "../apps/json-editor/json-editor.module";
 
 const routes = [
     {
@@ -80,7 +79,6 @@ const routes = [
         SharedModule,
         ProfileModule,
         ModelsEditorModule,
-        JsonEditorModule
     ],
     providers: [
         BillingService

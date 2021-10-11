@@ -85,6 +85,7 @@ import {LoginStandaloneComponent} from "./login/standalone/login/login-standalon
 import {ConfigComponent} from "./main/config/config.component";
 import {MatListModule} from "@angular/material/list";
 import {ConfigFormComponent} from "./main/config/config-form/config-form.component";
+import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component";
 
 @NgModule({
     imports: [
@@ -180,7 +181,8 @@ import {ConfigFormComponent} from "./main/config/config-form/config-form.compone
         SearchStringParserComponent,
         LoginStandaloneComponent,
         ConfigComponent,
-        ConfigFormComponent
+        ConfigFormComponent,
+        JsonEditorComponent
     ],
     providers: [
         ChatService,
@@ -207,6 +209,7 @@ import {ConfigFormComponent} from "./main/config/config-form/config-form.compone
         LoginStandaloneComponent,
         ConfigComponent,
         ConfigFormComponent,
+        JsonEditorComponent
     ],
     entryComponents: [
         LoginModalComponent,
@@ -221,7 +224,8 @@ import {ConfigFormComponent} from "./main/config/config-form/config-form.compone
         GatewaysModalComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
-        ConfigFormComponent
+        ConfigFormComponent,
+        JsonEditorComponent
     ]
 
 })

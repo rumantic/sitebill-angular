@@ -27,6 +27,7 @@ export class JsonEditorComponent
     ) {
         this._unsubscribeAll = new Subject();
         this.form = this._formBuilder.group({});
+/*
         this.json = {
             allow_htmltags: "a",
             depended: "d",
@@ -35,6 +36,7 @@ export class JsonEditorComponent
             map_width: "350",
             sdfsdfsdf: "s",
         }
+*/
     }
 
     ngOnInit(): void {
