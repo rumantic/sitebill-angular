@@ -1,18 +1,34 @@
 <div [formGroup]="form" fxLayout="column" class="flex_wrap" *ngIf="json">
     <span fxLayout="row"  fxLayoutAlign="start center" *ngFor="let item of json | keyvalue;  let i = index">
-        <mat-form-field class="p-12" appearance="outline" [matTooltip]="'tooltip'"  [hidden]="false">
+        <mat-form-field class="p-12" appearance="outline" [hidden]="false">
             <mat-label [innerHTML]="'ключ'"></mat-label>
-            <input matInput [formControlName]="getKeyName(i)" [required]="false" placeholder="pair">
-            <mat-error>pair обязательное поле!</mat-error>
+            <input matInput [formControlName]="getKeyName(i)" [required]="false" placeholder="ключ">
+            <mat-error>ключ обязательное поле!</mat-error>
         </mat-form-field>
 
         <span class="pb-12"><mat-icon>trending_flat</mat-icon></span>
 
 
-        <mat-form-field class="p-12" appearance="outline" [matTooltip]="'tooltip'"  [hidden]="false">
+        <mat-form-field class="p-12" appearance="outline" [hidden]="false">
             <mat-label [innerHTML]="'значение'"></mat-label>
-            <input matInput [formControlName]="getValueName(i)" [required]="false" placeholder="pair">
-            <mat-error>pair обязательное поле!</mat-error>
+            <input matInput [formControlName]="getValueName(i)" [required]="false" placeholder="значение">
+            <mat-error>значение обязательное поле!</mat-error>
         </mat-form-field>
+        <span class="pb-12">
+            <button mat-icon-button (click)="deleteEntry(getKeyName(i))" aria-label="Удалить">
+                <mat-icon>close</mat-icon>
+            </button>
+        </span>
+    </span>
+    <span fxLayout="row"  fxLayoutAlign="start center">
+        <span class="p-12">
+            <a mat-raised-button
+                    class="mat-accent w-100-p"
+                    (click)="addEntry()"
+                    aria-label="Добавить пару ключ-значение">
+                <mat-icon>add</mat-icon>
+                Добавить пару ключ-значение
+            </a>
+        </span>
     </span>
 </div>

@@ -5,6 +5,7 @@ import {Subject} from "rxjs";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {JsonParams} from "../../../_models";
 import {takeUntil} from "rxjs/operators";
+import {forbiddenNullValue} from "../../grid/form/form-constructor.component";
 
 @Component({
     selector   : 'json-editor',
@@ -28,9 +29,8 @@ export class JsonEditorComponent
         protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
     ) {
-        this._unsubscribeAll = new Subject();
         this.form = this._formBuilder.group({});
-/*
+        this._unsubscribeAll = new Subject();
         this.json = {
             allow_htmltags: "a",
             depended: "d",
@@ -39,29 +39,37 @@ export class JsonEditorComponent
             map_width: "350",
             sdfsdfsdf: "s",
         }
-*/
     }
 
     ngOnInit(): void {
-        let i = 0;
         if ( this.json ) {
-            for (const [key_obj, value_obj] of Object.entries(this.json)) {
-                let form_control_item = new FormControl(key_obj);
-                this.form.addControl(this.getKeyName(i), form_control_item);
-
-                form_control_item = new FormControl(value_obj);
-                this.form.addControl(this.getValueName(i), form_control_item);
-                i++;
-            }
+            this.drawForm(this.json);
         }
-        this.form_length = i;
-        console.log(this.form_length);
 
         this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
                 this.onChange.emit(this.recreateJson(status));
             });
+    }
+
+    drawForm ( json: JsonParams ) {
+        let i = 0;
+        this.form_length = 0;
+        this.form = null;
+        this.form = this._formBuilder.group({});
+        for (const [key_obj, value_obj] of Object.entries(json)) {
+            let form_control_item = new FormControl(key_obj);
+            form_control_item.setValidators(forbiddenNullValue());
+            this.form.addControl(this.getKeyName(i), form_control_item);
+
+            form_control_item = new FormControl(value_obj);
+            form_control_item.setValidators(forbiddenNullValue());
+            this.form.addControl(this.getValueName(i), form_control_item);
+            i++;
+        }
+        this.form_length = i;
+        this.onChange.emit(json);
     }
 
     recreateJson ( newKeyValue: {} ):JsonParams {
@@ -71,6 +79,23 @@ export class JsonEditorComponent
         }
         return new_json;
     }
+
+    getCurrentJson() {
+        let json:JsonParams = {};
+        for ( let i = 0; i < this.form_length; i++ ) {
+            json[this.form.controls[this.getKeyName(i)].value] = this.form.controls[this.getValueName(i)].value;
+        }
+        return json;
+    }
+
+    deleteEntry(key: string) {
+        let current_json = this.getCurrentJson();
+        delete(current_json[this.form.controls[key].value]);
+        this.json = current_json;
+        this.drawForm(current_json);
+        return current_json;
+    }
+
 
     getKeyName( index: number ) {
         return 'key-' + index.toString();
@@ -87,5 +112,16 @@ export class JsonEditorComponent
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    addEntry() {
+        let current_json = this.getCurrentJson();
+        let new_key = 'key' + this.form_length++;
+        while (current_json[new_key] !== undefined) {
+            new_key = 'key' + this.form_length++;
+        }
+        current_json[new_key] = '';
+        this.json = current_json;
+        this.drawForm(current_json);
     }
 }
