@@ -11,7 +11,7 @@
 
     <div class="todo-header" fxLayout="row" fxLayoutAlign="space-between center">
 
-        <button mat-button class="toggle-complete-button" (click)="toggleCompleted($event)"
+        <button mat-button class="toggle-complete-button"
                 aria-label="Toggle completed" fxFlex="0 1 auto">
             <mat-icon *ngIf="true">check_box</mat-icon>
             <mat-icon *ngIf="false">check_box_outline_blank</mat-icon>
@@ -20,32 +20,14 @@
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
 
-            <button mat-icon-button (click)="toggleImportant($event)" aria-label="Toggle important">
+            <button mat-icon-button aria-label="Toggle important">
                 <mat-icon class="red-fg" *ngIf="true">error</mat-icon>
                 <mat-icon class="secondary-text" *ngIf="false">error_outline</mat-icon>
             </button>
 
-            <button mat-icon-button (click)="toggleStar($event)" aria-label="Toggle star">
+            <button mat-icon-button aria-label="Toggle star">
                 <mat-icon class="amber-fg" *ngIf="true">star</mat-icon>
                 <mat-icon class="secondary-text" *ngIf="false">star_border</mat-icon>
-            </button>
-
-            <button mat-icon-button [matMenuTriggerFor]="labelMenu" fxFlex="0 1 auto">
-                <mat-icon class="secondary-text">label</mat-icon>
-            </button>
-
-            <mat-menu #labelMenu="matMenu">
-                <button mat-menu-item *ngFor="let tag of tags"
-                        (click)="toggleTagOnTodo(tag.id)">
-                    <mat-icon *ngIf="hasTag(tag.id)">check</mat-icon>
-                    <mat-icon *ngIf="!hasTag(tag.id)"></mat-icon>
-                    <span>{{tag.title}}</span>
-                </button>
-            </mat-menu>
-
-            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
-                <mat-icon class="secondary-text" *ngIf="true">delete_forever</mat-icon>
-                <mat-icon class="secondary-text" *ngIf="false">delete</mat-icon>
             </button>
 
         </div>
@@ -55,6 +37,7 @@
 
         <ng-container *ngIf="model">
             <ngx-datatable
+                #table
                 class="material"
                 [columnMode]="'force'"
                 [rows]="model.model"
@@ -67,25 +50,6 @@
                 [sorts]="[]"
             >
                 <ngx-datatable-column
-                    [width]="70"
-                    name="id">
-                    <ng-template let-column="column" ngx-datatable-header-template></ng-template>
-                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-                        <div fxLayout="row" fxLayoutAlign="start center">
-                            <button mat-icon-button (click)="edit(row)" aria-label="Toggle delete">
-                                <mat-icon class="secondary-text">edit</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="toggleDeleted($event)" aria-label="Toggle delete">
-                                <mat-icon class="secondary-text">delete</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="toggle_active(row, 'active')" aria-label="Toggle delete">
-                                <mat-icon class="secondary-text">power_settings_new</mat-icon>
-                            </button>
-                        </div>
-                    </ng-template>
-                </ngx-datatable-column>
-
-                <ngx-datatable-column
                     [width]="5"
                     [draggable]="false"
                     name="drag_handle">
@@ -94,6 +58,44 @@
                         <mat-icon ngxDragHandle>
                             drag_handle
                         </mat-icon>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column
+                    [width]="50"
+                    name="id">
+                    <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"  ngx-datatable-cell-template>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation()"
+                                    fxHide.xs>
+                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #moreMenu="matMenu">
+                                <button mat-menu-item (click)="edit(row)" aria-label="Редактировать">
+                                    <mat-icon class="secondary-text">edit</mat-icon>
+                                    <span>Редактировать</span>
+                                </button>
+
+                                <button mat-menu-item (click)="toggle_active(row, 'active')" aria-label="Активность">
+                                    <ng-container *ngIf="row.active">
+                                        <mat-icon class="amber-fg">power_settings_new</mat-icon>
+                                        <span>Отключить</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!row.active">
+                                        <mat-icon>power_settings_new</mat-icon>
+                                        <span>Включить</span>
+                                    </ng-container>
+                                </button>
+
+                                <button mat-menu-item (click)="delete(row, rowIndex)" aria-label="Удалить">
+                                    <mat-icon class="secondary-text">delete</mat-icon>
+                                    <span>Удалить</span>
+                                </button>
+                            </mat-menu>
+                        </div>
                     </ng-template>
                 </ngx-datatable-column>
 

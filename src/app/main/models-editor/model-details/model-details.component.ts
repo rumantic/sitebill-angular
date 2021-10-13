@@ -8,9 +8,11 @@ import {ModelsEditorService} from "../models-editor.service";
 import {takeUntil} from "rxjs/operators";
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {SnackService} from "../../../_services/snack.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ViewModalComponent} from "../../grid/view-modal/view-modal.component";
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ModelFormModalComponent} from "../model-form-modal/model-form-modal.component";
+import {ConfirmComponent} from "../../../dialogs/confirm/confirm.component";
+import {ModelService} from "../../../_services/model.service";
+import {DatatableComponent} from "@swimlane/ngx-datatable";
 
 
 @Component({
@@ -27,11 +29,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
 
     public sitebillResponse:SitebillResponse;
 
-
-    tags: any[];
-    formType: string;
-    todoForm: FormGroup;
-
     @ViewChild('titleInput')
     titleInputField;
     SelectionType = 'checkbox';
@@ -39,22 +36,28 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     columns = [];
     rows = [];
 
+    @ViewChild('table', { static: false }) table: DatatableComponent;
+
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    private confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
     /**
      * Constructor
      *
-     * @param {FormBuilder} _formBuilder
      * @param _snackService
      * @param _modelsEditorService
+     * @param dialog
+     * @param _matDialog
+     * @param modelService
      */
     constructor(
-        private _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         protected _modelsEditorService: ModelsEditorService,
         protected dialog: MatDialog,
+        public _matDialog: MatDialog,
+        protected modelService: ModelService,
     )
     {
         // Set the private defaults
@@ -73,7 +76,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.todoForm = this.createTodoForm();
 
     }
 
@@ -90,114 +92,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Focus title field
-     */
-    focusTitleField(): void
-    {
-        setTimeout(() => {
-            this.titleInputField.nativeElement.focus();
-        });
-    }
-
-    /**
-     * Create todo form
-     *
-     * @returns {FormGroup}
-     */
-    createTodoForm(): FormGroup
-    {
-        return this._formBuilder.group({
-            id       : [],
-            title    : [],
-            notes    : [],
-            startDate: [],
-            dueDate  : [],
-            completed: [],
-            starred  : [],
-            important: [],
-            deleted  : [],
-            tags     : []
-        });
-    }
-
-    /**
-     * Toggle star
-     *
-     * @param event
-     */
-    toggleStar(event): void
-    {
-        event.stopPropagation();
-        // this.todo.toggleStar();
-        // this._todoService.updateTodo(this.todo);
-    }
-
-    /**
-     * Toggle important
-     *
-     * @param event
-     */
-    toggleImportant(event): void
-    {
-        event.stopPropagation();
-        // this.todo.toggleImportant();
-        // this._todoService.updateTodo(this.todo);
-    }
-
-    /**
-     * Toggle Completed
-     *
-     * @param event
-     */
-    toggleCompleted(event): void
-    {
-        event.stopPropagation();
-        // this.todo.toggleCompleted();
-        // this._todoService.updateTodo(this.todo);
-    }
-
-    /**
-     * Toggle Deleted
-     *
-     * @param event
-     */
-    toggleDeleted(event): void
-    {
-        event.stopPropagation();
-        // this.todo.toggleDeleted();
-        // this._todoService.updateTodo(this.todo);
-    }
-
-    /**
-     * Toggle tag on todo
-     *
-     * @param tagId
-     */
-    toggleTagOnTodo(tagId): void
-    {
-        // this._todoService.toggleTagOnTodo(tagId, this.todo);
-    }
-
-    /**
-     * Has tag?
-     *
-     * @param tagId
-     * @returns {any}
-     */
-    hasTag(tagId): any
-    {
-        // return this._todoService.hasTag(tagId, this.todo);
-    }
-
-    /**
-     * Add todo
-     */
-    addTodo(): void
-    {
-        // this._todoService.updateTodo(this.todoForm.getRawValue());
-    }
 
     toggle_active (model_item: SitebillModelItem, toggled_column: string) {
         this.toggle(model_item, toggled_column, false);
@@ -248,4 +142,30 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     }
 
 
+    delete(model_item: SitebillModelItem, rowIndex: number) {
+        this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.modelService.delete('columns', 'columns_id', model_item.columns_id)
+                    .subscribe((response: any) => {
+                        if (response.state == 'error') {
+                            this._snackService.message(response.message);
+                            return null;
+                        } else {
+                            this.model.model = this.model.model.filter((item: SitebillModelItem) => {
+                                return item.columns_id != model_item.columns_id;
+                            });
+                            this.model.model = [...this.model.model];
+                            this._snackService.message('Запись удалена успешно');
+                        }
+                    });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
 }
