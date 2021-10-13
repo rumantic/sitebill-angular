@@ -27,7 +27,8 @@
                     </button>
                 </span>
             </span>
-            <span fxLayout="row" fxLayoutAlign="start center">
+        </div>
+        <span fxLayout="row" fxLayoutAlign="start center">
                 <span class="p-8">
                     <a mat-raised-button
                        class="mat-accent"
@@ -37,8 +38,16 @@
                         <span [fxHide.lt-sm]="true">Добавить</span>
                     </a>
                 </span>
+                <span>
+                    <a mat-raised-button class="light-green-50" [matMenuTriggerFor]="menu">Пресеты</a>
+                    <mat-menu #menu="matMenu">
+                      <a mat-menu-item *ngFor="let item of presets;"
+                         [matTooltip]="item.name"
+                         (click)="injectPreset(item)">{{item.title}}</a>
+                    </mat-menu>
+                </span>
             </span>
-        </div>
+
     </div>
 
 </div>

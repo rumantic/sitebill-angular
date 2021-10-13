@@ -7,6 +7,12 @@ import {JsonParams} from "../../../_models";
 import {takeUntil} from "rxjs/operators";
 import {forbiddenNullValue} from "../../grid/form/form-constructor.component";
 
+interface Preset {
+    name: string;
+    title: string;
+    pairs: JsonParams
+}
+
 @Component({
     selector   : 'json-editor',
     templateUrl: './json-editor.component.html',
@@ -25,6 +31,7 @@ export class JsonEditorComponent
 
     form_length: number = 0;
     form_subscription: Subscription;
+    presets: Preset[];
 
     constructor(
         protected modelService: ModelService,
@@ -32,6 +39,7 @@ export class JsonEditorComponent
     ) {
         this.form = this._formBuilder.group({});
         this._unsubscribeAll = new Subject();
+/*
         this.json = {
             allow_htmltags: "a",
             depended: "d",
@@ -40,6 +48,96 @@ export class JsonEditorComponent
             map_width: "350",
             sdfsdfsdf: "s",
         }
+*/
+        this.presets = [
+            {
+                name: 'uploads_full',
+                title: 'Полный набор для uploads',
+                pairs: {
+                    norm_width: '1920',
+                    norm_height: '1080',
+                    prev_width: '270',
+                    prev_height: '270',
+                    preview_smart_resizing: '1',
+                }
+            },
+            {
+                name: 'dt_format',
+                title: 'Формат даты',
+                pairs: {
+                    format: 'eu',
+                    inFormFormat: 'eu',
+                    noSeconds: '1',
+                }
+            },
+            {
+                name: 'onchange',
+                title: 'Событие при изменении значения',
+                pairs: {
+                    onchange: 'function_name',
+                }
+            },
+            {
+                name: 'styles',
+                title: 'CSS-стили',
+                pairs: {
+                    styles: '',
+                }
+            },
+            {
+                name: 'mask',
+                title: 'Маска ввода номеров телефона',
+                pairs: {
+                    mask: 'h (hhh) hhh-hh-hh',
+                }
+            },
+            {
+                name: 'allow_html',
+                title: 'Разрешить HTML-коды',
+                pairs: {
+                    allow_htmltags: '1',
+                }
+            },
+            {
+                name: 'link_dep',
+                title: 'Связанные справочники',
+                pairs: {
+                    linked: 'linked_key_id',
+                    depended: 'depended_key_id',
+                }
+            },
+            {
+                name: 'autocomplete',
+                title: 'Автозаполнение',
+                pairs: {
+                    autocomplete: '1',
+                    autocomplete_notappend: '0',
+                }
+            },
+            {
+                name: 'geodata_map_size',
+                title: 'Размер карты',
+                pairs: {
+                    map_width: '300',
+                    map_height: '300',
+                }
+            },
+            {
+                name: 'ta_cr',
+                title: 'Параметры поля ввода текста',
+                pairs: {
+                    cols: '30',
+                    rows: '7',
+                }
+            },
+            {
+                name: 'rules',
+                title: 'Произвольное правило rules',
+                pairs: {
+                    rules: '',
+                }
+            },
+        ];
     }
 
     ngOnInit(): void {
@@ -135,5 +233,16 @@ export class JsonEditorComponent
         this.json = current_json;
         this.drawForm(current_json);
         this.onChange.emit(current_json);
+    }
+
+    injectPreset(preset: Preset) {
+        let current_json = this.getCurrentJson();
+        for (const [key_obj, value_obj] of Object.entries(preset.pairs)) {
+            if ( current_json[key_obj] === undefined ) {
+                current_json[key_obj] = value_obj;
+            }
+        }
+        this.json = current_json;
+        this.drawForm(current_json);
     }
 }
