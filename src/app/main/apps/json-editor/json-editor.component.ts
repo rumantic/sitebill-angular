@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import { ModelService } from 'app/_services/model.service';
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {JsonParams} from "../../../_models";
 import {takeUntil} from "rxjs/operators";
@@ -24,6 +24,7 @@ export class JsonEditorComponent
 
 
     form_length: number = 0;
+    form_subscription: Subscription;
 
     constructor(
         protected modelService: ModelService,
@@ -46,17 +47,26 @@ export class JsonEditorComponent
             this.drawForm(this.json);
         }
 
-        this.form.valueChanges
+    }
+
+    subscribeForm () {
+        this.form_subscription = this.form.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status) => {
                 this.onChange.emit(this.recreateJson(status));
             });
     }
 
+    unsubscribeForm () {
+        if ( this.form_subscription ) {
+            this.form_subscription.unsubscribe();
+        }
+    }
+
     drawForm ( json: JsonParams ) {
         let i = 0;
         this.form_length = 0;
-        this.form = null;
+        this.unsubscribeForm();
         this.form = this._formBuilder.group({});
         for (const [key_obj, value_obj] of Object.entries(json)) {
             let form_control_item = new FormControl(key_obj);
@@ -69,6 +79,7 @@ export class JsonEditorComponent
             i++;
         }
         this.form_length = i;
+        this.subscribeForm();
         this.onChange.emit(json);
     }
 
@@ -123,5 +134,6 @@ export class JsonEditorComponent
         current_json[new_key] = '';
         this.json = current_json;
         this.drawForm(current_json);
+        this.onChange.emit(current_json);
     }
 }
