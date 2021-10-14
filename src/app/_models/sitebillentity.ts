@@ -299,6 +299,7 @@ export class SitebillModelItem {
     value_primary_key: string;
     value_table: string;
     columns_id: number;
+    table_id: number;
     active: boolean;
     parameters: any;
     fxFlex: number;
@@ -351,6 +352,7 @@ export class SitebillModelItem {
         this.value_primary_key = item.value_primary_key;
         this.value_table = item.value_table;
         this.columns_id = item.columns_id;
+        this.table_id = item.table_id;
         this.active = item.active === '1';
         this.fxFlex = item.fxFlex;
         this.api = item.api;

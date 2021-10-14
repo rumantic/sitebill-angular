@@ -22,6 +22,7 @@ export class ModelFormModalComponent
     constructor(
         @Inject(MAT_DIALOG_DATA) public _data: {
             model_item: SitebillModelItem,
+            table_id: string
         },
         protected modelService: ModelService,
         protected dialogRef: MatDialogRef<ModelFormModalComponent>,
@@ -32,7 +33,17 @@ export class ModelFormModalComponent
         this.entity.set_table_name('columns');
         this.entity.set_primary_key('columns_id');
         this.entity.set_hidden('columns_id');
-        this.entity.set_key_value(this._data.model_item.columns_id);
+
+        if ( this._data.model_item ) {
+            if ( this._data.model_item.columns_id ) {
+                this.entity.set_key_value(this._data.model_item.columns_id);
+            }
+            if ( this._data.table_id ) {
+                this.entity.set_default_value('table_id', this._data.table_id);
+            }
+        }
+        //this.entity.set_default_value('active', 1);
+
         // this.entity.set_title('колонки');
     }
 

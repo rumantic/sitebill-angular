@@ -11,11 +11,13 @@
 
     <div class="todo-header" fxLayout="row" fxLayoutAlign="space-between center">
 
-        <button mat-button class="toggle-complete-button"
-                aria-label="Toggle completed" fxFlex="0 1 auto">
-            <mat-icon *ngIf="true">check_box</mat-icon>
-            <mat-icon *ngIf="false">check_box_outline_blank</mat-icon>
-            <span class="ml-8">Mark as Done</span>
+        <button mat-raised-button
+                class="mat-accent"
+                aria-label="Toggle completed"
+                (click)="edit(default_column_model)"
+                fxFlex="0 1 auto">
+            <mat-icon>playlist_add</mat-icon>
+            <span class="ml-8">Добавить колонку</span>
         </button>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">

@@ -31,10 +31,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
 
     @ViewChild('titleInput')
     titleInputField;
+
     SelectionType = 'checkbox';
 
     columns = [];
     rows = [];
+    default_column_model: SitebillModelItem;
 
     @ViewChild('table', { static: false }) table: DatatableComponent;
 
@@ -64,7 +66,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
 
         this.sitebillResponse = new SitebillResponse();
-
+        this.default_column_model = new SitebillModelItem({});
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -76,8 +78,16 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-
     }
+
+    ngOnChanges (changes) {
+        if ( changes.model.previousValue !=  changes.model.currentValue) {
+            if ( this.model && this.model.model[0]) {
+                this.default_column_model.table_id = this.model.model[0].table_id;
+            }
+        }
+    }
+
 
     /**
      * On destroy
@@ -134,7 +144,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         dialogConfig.autoFocus = true;
         //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         dialogConfig.data = {
-            model_item: model_item
+            model_item: model_item,
+            table_id: this.default_column_model.table_id,
         };
         dialogConfig.panelClass = 'regular-modal';
 
