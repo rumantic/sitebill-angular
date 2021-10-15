@@ -149,7 +149,39 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         };
         dialogConfig.panelClass = 'regular-modal';
 
-        this.dialog.open(ModelFormModalComponent, dialogConfig);
+        let dialogRef = this.dialog.open(ModelFormModalComponent, dialogConfig);
+        dialogRef.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+                this.reload_model();
+            })
+
+    }
+
+    reload_model () {
+        this.modelService.get_models_list()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                Object.assign(this.sitebillResponse, result);
+                if ( this.sitebillResponse.success() ) {
+                    for (const [key, value] of Object.entries(this.sitebillResponse.data)) {
+                        if ( key === this.model.get_table_name() ) {
+                            let entity = new SitebillEntity();
+                            if ( value ) {
+                                for (const [key_obj, value_obj] of Object.entries(value)) {
+                                    let model_item = new SitebillModelItem(value_obj);
+                                    entity.model.push(model_item);
+                                }
+                            }
+                            entity.set_app_name(key);
+                            entity.set_table_name(key);
+                            this.model.model = [...entity.model];
+                        }
+                    }
+                } else {
+                    this._snackService.error(this.sitebillResponse.message);
+                }
+            });
     }
 
 
@@ -160,7 +192,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
+        this.confirmDialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 this.modelService.delete('columns', 'columns_id', model_item.columns_id)
                     .subscribe((response: any) => {
