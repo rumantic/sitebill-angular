@@ -40,7 +40,7 @@
         <ng-container *ngIf="model">
             <ngx-datatable
                 #table
-                class="material"
+                class="material table-height"
                 [columnMode]="'force'"
                 [rows]="model.model"
                 [columns]="columns"
@@ -48,6 +48,9 @@
                 [footerHeight]="50"
                 rowHeight="auto"
                 [rowClass]="getRowClass"
+                [rowHeight]="50"
+                [scrollbarV]="true"
+                [virtualization]="false"
                 [selectionType]="SelectionType"
                 [sorts]="[]"
             >

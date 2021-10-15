@@ -45,5 +45,11 @@ model-details {
             }
         }
     }
+    .table-height {
+        max-height: calc(70vh);
+        @include media-breakpoint('lt-sm') {
+            max-height: calc(60vh);
+        }
+    }
 }
 
