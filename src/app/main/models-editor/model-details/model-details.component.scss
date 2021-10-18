@@ -46,7 +46,7 @@ model-details {
         }
     }
     .table-height {
-        max-height: calc(70vh);
+        max-height: calc(68vh);
         @include media-breakpoint('lt-sm') {
             max-height: calc(60vh);
         }
