@@ -160,10 +160,19 @@
                 <ngx-datatable-column
                     [sortable]="true"
                     [width]="20"
-                    name="active">
+                    name="group_id">
                     <ng-template let-column="column" ngx-datatable-header-template>Доступ</ng-template>
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        Всем
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <ng-container *ngIf="isArray(row.group_id_array) && row.group_id_array.length > 0">
+                            <div fxLayout="row" matTooltip="{{row.group_id}}">
+                                <mat-icon>group</mat-icon>
+                                <div class="mt-0 group-count accent">{{row.group_id_array.length}}</div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="isArray(row.group_id_array) && row.group_id_array.length === 0">
+                            Всем
+                        </ng-container>
+
                     </ng-template>
                 </ngx-datatable-column>
 

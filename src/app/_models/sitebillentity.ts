@@ -279,6 +279,7 @@ export class SitebillModelItem {
     dbtype: string;
     entity: string;
     group_id: string;
+    group_id_array: [];
     hint: string;
     primary_key: string;
     primary_key_name: string;
@@ -324,6 +325,7 @@ export class SitebillModelItem {
         this.dbtype = item.dbtype;
         this.entity = item.entity;
         this.group_id = item.group_id;
+        this.group_id_array = item.group_id_array;
         this.hint = item.hint;
         this.primary_key = item.primary_key;
         this.primary_key_name = item.primary_key_name;

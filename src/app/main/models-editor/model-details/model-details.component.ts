@@ -83,6 +83,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     ngOnChanges (changes) {
         if ( changes.model.previousValue !=  changes.model.currentValue) {
             if ( this.model && this.model.model[0]) {
+                // console.log(this.model);
                 this.default_column_model.table_id = this.model.model[0].table_id;
             }
         }
@@ -210,5 +211,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
             }
             this.confirmDialogRef = null;
         });
+    }
+
+    isArray(obj : any ) {
+        return Array.isArray(obj)
     }
 }
