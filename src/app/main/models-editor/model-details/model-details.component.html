@@ -20,7 +20,7 @@
             <span class="ml-8">Добавить колонку</span>
         </button>
 
-        <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+        <!--div class="actions" fxLayout="row" fxLayoutAlign="start center">
 
             <button mat-icon-button aria-label="Toggle important">
                 <mat-icon class="red-fg" *ngIf="true">error</mat-icon>
@@ -32,7 +32,7 @@
                 <mat-icon class="secondary-text" *ngIf="false">star_border</mat-icon>
             </button>
 
-        </div>
+        </div-->
     </div>
 
     <div class="todo-content">
@@ -51,7 +51,6 @@
                 [rowHeight]="50"
                 [scrollbarV]="true"
                 [virtualization]="false"
-                [selectionType]="SelectionType"
                 [sorts]="[]"
             >
                 <ngx-datatable-column
