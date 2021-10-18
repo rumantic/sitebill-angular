@@ -55,7 +55,7 @@
                 [sorts]="[]"
             >
                 <ngx-datatable-column
-                    [width]="5"
+                    [width]="10"
                     [draggable]="false"
                     name="drag_handle">
                     <ng-template let-column="column" ngx-datatable-header-template></ng-template>
@@ -67,7 +67,7 @@
                 </ngx-datatable-column>
 
                 <ngx-datatable-column
-                    [width]="50"
+                    [width]="10"
                     name="id">
                     <ng-template let-column="column" ngx-datatable-header-template></ng-template>
                     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"  ngx-datatable-cell-template>
@@ -114,7 +114,7 @@
                 </ngx-datatable-column-->
 
                 <ngx-datatable-column
-                    [width]="50"
+                    [width]="150"
                     [sortable]="true"
                     name="name">
                     <ng-template let-column="column" ngx-datatable-header-template>Название</ng-template>
@@ -125,7 +125,7 @@
 
                 <ngx-datatable-column
                     [sortable]="true"
-                    [width]="50"
+                    [width]="150"
                     name="type">
                     <ng-template let-column="column" ngx-datatable-header-template>Тип</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
@@ -149,7 +149,7 @@
 
                 <ngx-datatable-column
                     [sortable]="true"
-                    [width]="50"
+                    [width]="150"
                     name="title">
                     <ng-template let-column="column" ngx-datatable-header-template>Заголовок</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
@@ -178,7 +178,7 @@
 
                 <ngx-datatable-column
                     [sortable]="true"
-                    [width]="20"
+                    [width]="120"
                     name="tab">
                     <ng-template let-column="column" ngx-datatable-header-template>Вкладка</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
