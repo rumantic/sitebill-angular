@@ -104,20 +104,20 @@
                     </ng-template>
                 </ngx-datatable-column>
 
-                <ngx-datatable-column
+                <!--ngx-datatable-column
                     [width]="5"
                     [sortable]="false"
                     [draggable]="false"
                     [headerCheckboxable]="true"
                     [checkboxable]="true"
                 >
-                </ngx-datatable-column>
+                </ngx-datatable-column-->
 
                 <ngx-datatable-column
                     [width]="50"
                     [sortable]="true"
                     name="name">
-                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
+                    <ng-template let-column="column" ngx-datatable-header-template>Название</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
@@ -127,7 +127,7 @@
                     [sortable]="true"
                     [width]="50"
                     name="type">
-                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
+                    <ng-template let-column="column" ngx-datatable-header-template>Тип</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
@@ -137,7 +137,7 @@
                     [sortable]="true"
                     [width]="30"
                     name="required_boolean">
-                    <ng-template let-column="column" ngx-datatable-header-template>Обазятельное</ng-template>
+                    <ng-template let-column="column" ngx-datatable-header-template>Обязательное</ng-template>
                     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                         <mat-slide-toggle
                             class="mr-24"
@@ -151,7 +151,7 @@
                     [sortable]="true"
                     [width]="50"
                     name="title">
-                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }} </ng-template>
+                    <ng-template let-column="column" ngx-datatable-header-template>Заголовок</ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{ value }}
                     </ng-template>
