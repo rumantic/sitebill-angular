@@ -46,6 +46,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {ModelFormModalComponent} from "./model-form-modal/model-form-modal.component";
 import {SharedModule} from "../../shared.module";
 import {ModelFormStaticComponent} from "./model-form-modal/model-form-static.component";
+import {DragulaModule, DragulaService} from "ng2-dragula";
+import {DragulaExtendedDirective} from "../../_directives/dragula-extended.directive";
 
 const bundle = [
     ModelsEditorComponent,
@@ -53,11 +55,14 @@ const bundle = [
     ModelListItemComponent,
     ModelDetailsComponent,
     ModelFormModalComponent,
-    ModelFormStaticComponent
+    ModelFormStaticComponent,
 ];
 
 @NgModule({
-    declarations: [...bundle],
+    declarations: [
+        ...bundle,
+        DragulaExtendedDirective
+    ],
     imports: [
         CommonModule,
         TranslateModule,
@@ -108,10 +113,15 @@ const bundle = [
         NgxDnDModule,
         MatSlideToggleModule,
         SharedModule,
+        DragulaModule
     ],
-    exports: [...bundle],
+    exports: [
+        ...bundle,
+        DragulaExtendedDirective
+    ],
     providers: [
-        ModelsEditorService
+        ModelsEditorService,
+        DragulaService
     ],
     entryComponents: [...bundle]
 

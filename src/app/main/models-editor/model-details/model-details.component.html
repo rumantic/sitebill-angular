@@ -52,10 +52,10 @@
                 [scrollbarV]="true"
                 [virtualization]="false"
                 [sorts]="[]"
+                [dragulaName]="'bag'"
             >
                 <ngx-datatable-column
                     [width]="10"
-                    [draggable]="false"
                     name="drag_handle">
                     <ng-template let-column="column" ngx-datatable-header-template></ng-template>
                     <ng-template let-value="value" ngx-datatable-cell-template>
