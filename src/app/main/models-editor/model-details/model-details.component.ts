@@ -216,4 +216,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
     isArray(obj : any ) {
         return Array.isArray(obj)
     }
+
+    onDrop($event: any) {
+        console.log('DRAG event::', event);
+    }
 }

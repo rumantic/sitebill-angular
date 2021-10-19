@@ -53,6 +53,9 @@
                 [virtualization]="false"
                 [sorts]="[]"
                 [dragulaName]="'bag'"
+                [dragulaModel]="model.model"
+                (directiveDrop)="onDrop($event)"
+                (directiveDrag)="onDrag($event)"
             >
                 <ngx-datatable-column
                     [width]="10"
