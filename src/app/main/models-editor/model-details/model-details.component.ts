@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
-import {SitebillEntity, SitebillModelItem} from "../../../_models";
+import {ApiCall, ApiParams, SitebillEntity, SitebillModelItem} from "../../../_models";
 import {ModelsEditorService} from "../models-editor.service";
 import {takeUntil} from "rxjs/operators";
 import {SitebillResponse} from "../../../_models/sitebill-response";
@@ -217,7 +217,21 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
         return Array.isArray(obj)
     }
 
-    onDrop($event: any) {
-        console.log('DRAG event::', event);
+    onDrop(model: SitebillModelItem[]) {
+        let ids = [];
+        model.forEach( item => {
+                ids.push(item.columns_id)
+            });
+        let params = <ApiParams> {
+            ids:ids
+        };
+        let api_reorder = <ApiCall>{
+            api: 'api',
+            name: 'table',
+            method: 'reorder_columns',
+            params: params,
+        };
+
+        this.modelService.api_call(api_reorder);
     }
 }

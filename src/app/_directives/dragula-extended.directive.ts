@@ -1,5 +1,6 @@
 import { Directive, OnChanges, AfterViewInit, EventEmitter, OnInit, Output, Input, OnDestroy, ElementRef, SimpleChange } from '@angular/core';
 import { dragula, DragulaService, Group } from 'ng2-dragula';
+import {moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Directive({ selector: 'ngx-datatable[dragulaName]' })
 export class DragulaExtendedDirective implements OnChanges, OnInit, AfterViewInit, OnDestroy {
@@ -98,19 +99,8 @@ export class DragulaExtendedDirective implements OnChanges, OnInit, AfterViewIni
 
         // Set DRAG and DROP subscriptions and callbacks
         this.subscriptionDrop = this.dragulaService.drop(this.dragulaName).subscribe(({ name ,el ,source , target , sibling}) => {
-            this.onDropModel([el , source , target]);
+            this.onDropModel([el , source , target, sibling, name]);
         });
-
-        /*
-        this.subscriptionDrag = this.dragulaService.drag.subscribe((value) => {
-            this.drag(value.slice(1));
-        });
-        this.subscriptionDrop = this.dragulaService.drop.subscribe((value) => {
-            const [bagName, el, target, source] = value;
-
-            this.onDropModel(value.slice(1));
-        });
-         */
     }
 
     private checkModel(){
@@ -128,9 +118,22 @@ export class DragulaExtendedDirective implements OnChanges, OnInit, AfterViewIni
     }
 
     private onDropModel(args) {
-        let [el, target, source] = args;
+        let [el, target, source, siblings, name] = args;
+        let index = 0;
 
         // Added emitter on any DROP action
+        let fromIndex = el.children[0].getAttribute('ng-reflect-row-index');
+        let toIndex = siblings.children[0].getAttribute('ng-reflect-row-index');
+        moveItemInArray(
+            this.dragulaModel,
+            fromIndex,
+            toIndex
+        );
+
+        target.children.forEach(item => {
+            item.children[0].setAttribute('ng-reflect-row-index', index);
+            index++;
+        });
         this.directiveDrop.emit(this.dragulaModel);
     }
 
