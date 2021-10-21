@@ -232,6 +232,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy
             params: params,
         };
 
-        this.modelService.api_call(api_reorder);
+        this.modelService.api_call(api_reorder)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(result => {
+
+        });
     }
 }
