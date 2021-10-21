@@ -46,9 +46,9 @@ model-details {
         }
     }
     .table-height {
-        max-height: calc(68vh);
+        max-height: calc(55vh);
         @include media-breakpoint('lt-sm') {
-            max-height: calc(60vh);
+            max-height: calc(45vh);
         }
     }
     .group-count {
