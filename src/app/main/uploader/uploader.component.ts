@@ -49,6 +49,8 @@ export class UploaderComponent {
     @Input("disable_gallery_controls")
     disable_gallery_controls: boolean;
 
+    uploader_title: string = '';
+
 
 
 
@@ -73,7 +75,7 @@ export class UploaderComponent {
             this.max_uploads = 100;
         }
         this.options = { concurrency: 1, maxUploads: this.max_uploads };
-        //console.log(this.entity.model[this.image_field]);
+        this.uploader_title = this.entity.model[this.image_field].title;
         //console.log(this.image_field);
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
