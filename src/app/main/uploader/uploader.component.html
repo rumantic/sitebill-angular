@@ -4,12 +4,12 @@
         <div class="h2">{{uploader_title}}</div>
     </div>
 
-    <div class="p-8 pt-0">
-        <span fxLayout="column" fxLayoutAlign="start center">
-            <div  *ngIf="!disable_gallery_controls">
+    <div class="p-8 pt-0  w-100-p">
+        <span class="w-100-p" fxLayout="column" fxLayoutAlign="start center">
+            <div class="w-100-p"  *ngIf="!disable_gallery_controls">
                 <!-- Front -->
-                <div class="fuse-widget-front">
-                    <div class="pl-8 pr-8 py-8" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="fuse-widget-front w-100-p">
+                    <div class="pl-8 pr-8 py-8 w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
 
                         <div class="h3">Всего фото: {{galleryImages[image_field].length}}</div>
                         <div>

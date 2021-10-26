@@ -98,7 +98,7 @@ export class GalleryComponent implements OnInit {
                 imageInfinityMove: true,
                 imageAnimation: NgxGalleryAnimation.Slide,
                 thumbnailActions: [
-                    { icon: 'fa fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
+                    { icon: 'fas fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
                     { icon: 'fa fa-times-circle fa-sm', onClick: this.deleteImage.bind(this), titleText: 'удалить' },
                     { icon: 'fa fa-chevron-right fa-sm', onClick: this.moveRight.bind(this), titleText: 'ниже' },
                     { icon: 'fa fa-star fa-sm', onClick: this.moveToStart.bind(this), titleText: 'сделать главной' },
