@@ -73,7 +73,8 @@ export class UploaderComponent {
             this.max_uploads = 100;
         }
         this.options = { concurrency: 1, maxUploads: this.max_uploads };
-        //console.log(this.entity);
+        //console.log(this.entity.model[this.image_field]);
+        //console.log(this.image_field);
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field

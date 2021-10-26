@@ -57,6 +57,13 @@
     </div>
     <!-- / Front -->
 </fuse-widget>
-<gallery-component *ngIf="galleryImages[image_field].length > 0" [galleryImages]="galleryImages" [entity]="entity" [image_field]="image_field" [disable_gallery_controls]="disable_gallery_controls"></gallery-component>
+<gallery-component
+    *ngIf="galleryImages[image_field].length > 0"
+    [galleryImages]="galleryImages"
+    [entity]="entity"
+    [image_field]="image_field"
+    [disable_gallery_controls]="disable_gallery_controls">
+
+</gallery-component>
 
 

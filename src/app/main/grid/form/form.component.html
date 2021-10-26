@@ -139,9 +139,24 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <uploader-component [hidden]="records[x].hidden" *ngSwitchCase="'uploads'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name"></uploader-component>
+                <uploader-component
+                    *ngSwitchCase="'uploads'"
+                    [hidden]="records[x].hidden"
+                    [galleryImages]="galleryImages"
+                    [entity]="_data"
+                    [image_field]="records[x].name">
 
-                <uploader-component [hidden]="records[x].hidden" *ngSwitchCase="'photo'" [galleryImages]="galleryImages" [entity]="_data" [image_field]="records[x].name" [max_uploads]="1"></uploader-component>
+                </uploader-component>
+
+                <uploader-component
+                    *ngSwitchCase="'photo'"
+                    [hidden]="records[x].hidden"
+                    [galleryImages]="galleryImages"
+                    [entity]="_data"
+                    [image_field]="records[x].name"
+                    [max_uploads]="1">
+
+                </uploader-component>
 
                 <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
                     <ng-select [formControlName]="records[x].name"

@@ -5,5 +5,12 @@
 
     <view-static *ngIf="!edit_mode" [entity]="entity"></view-static>
 
-    <form-static *ngIf="edit_mode" [entity]="entity" [disable_delete]="true" [disable_form_title_bar]="true" (onClose)="close_edit()"></form-static>
+    <form-static
+        *ngIf="edit_mode"
+        [entity]="entity"
+        [disable_delete]="true"
+        [column_mode]="50"
+        [disable_form_title_bar]="true"
+        (onClose)="close_edit()">
+    </form-static>
 </div>

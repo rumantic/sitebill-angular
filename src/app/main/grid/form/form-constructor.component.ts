@@ -162,6 +162,7 @@ export class FormConstructorComponent implements OnInit {
                         for (const [key_obj, value_obj] of Object.entries(result.data)) {
                             this.records[key_obj] = new SitebillModelItem(value_obj);
                         }
+                        this._data.model = this.records;
                         // console.log(this.records);
 
                         this.tabs = result.tabs;
@@ -787,6 +788,11 @@ export class FormConstructorComponent implements OnInit {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
+        let width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector', 'photo'];
+        if ( width_100.indexOf(record.type) > -1 ) {
+            return 100;
+        }
+
         if ( record.fxFlex ) {
             return record.fxFlex;
         }
@@ -795,10 +801,6 @@ export class FormConstructorComponent implements OnInit {
         }
         if ( this.get_visible_items_counter() === 1 ) {
             return 'auto';
-        }
-        let width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector'];
-        if ( width_100.indexOf(record.type) > -1 ) {
-            return 100;
         }
         if ( form_type == FormType.inline ) {
             return 100;
