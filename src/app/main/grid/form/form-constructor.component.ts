@@ -788,7 +788,14 @@ export class FormConstructorComponent implements OnInit {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
-        let width_100: Array<string> = ['uploads', 'textarea', 'textarea_editor', 'injector', 'photo'];
+        let width_100: Array<string> = [
+            'uploads',
+            'textarea',
+            'textarea_editor',
+            'injector',
+            'photo',
+            'geodata'
+        ];
         if ( width_100.indexOf(record.type) > -1 ) {
             return 100;
         }
