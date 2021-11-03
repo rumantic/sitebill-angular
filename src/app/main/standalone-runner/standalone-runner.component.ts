@@ -75,7 +75,9 @@ export class StandaloneRunnerComponent
             }
         );
 
+        console.log('run sitebillAuthService.init()');
         this.sitebillAuthService.init();
+        console.log('after sitebillAuthService.init()');
         if ( this.sitebillAuthService.get_state() == 'ready' ) {
             console.log('sitebillAuthService has ready state')
             this.run();

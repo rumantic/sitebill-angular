@@ -20,6 +20,8 @@ export class SitebillAuthService {
         private modelService: ModelService,
     )
     {
+        console.log('SitebillAuthService constructor');
+        console.log(this.complete_emitter);
 
     }
 
