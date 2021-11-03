@@ -60,16 +60,19 @@ import {AlertComponent} from "./_directives";
 import {Error404Component} from "./main/pages/errors/404/error-404.component";
 import {Error500Component} from "./main/pages/errors/500/error-500.component";
 import {SitebillAuthService} from "./_services/sitebill-auth.service";
+import {ConfigComponent} from "./main/config/config.component";
 
 const appRoutes: Routes = [
     //Для обычного angular этот маршрут для корня
-    //{path: '', redirectTo: 'frontend', pathMatch: 'full'},
+    {path: '', redirectTo: 'frontend', pathMatch: 'full'},
 
     //Для standalone
+/*
     {
         path: '',
         loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
     },
+*/
 
 
     {path: 'login', component: LoginComponent},
@@ -131,6 +134,14 @@ const appRoutes: Routes = [
     {
         path: 'calendar',
         loadChildren: () => import('app/main/sb-calendar/sb-calendar.module').then(m => m.SbCalendarModuleWithRoutes),
+    },
+    {
+        path: 'models-editor',
+        loadChildren: () => import('app/main/models-editor/models-editor.module').then(m => m.ModelsEditorModule),
+    },
+    {
+        path: 'config',
+        component: ConfigComponent
     },
     /*
     {

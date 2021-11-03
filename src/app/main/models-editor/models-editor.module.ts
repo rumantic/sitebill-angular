@@ -48,6 +48,7 @@ import {SharedModule} from "../../shared.module";
 import {ModelFormStaticComponent} from "./model-form-modal/model-form-static.component";
 import {DragulaModule, DragulaService} from "ng2-dragula";
 import {DragulaExtendedDirective} from "../../_directives/dragula-extended.directive";
+import {RouterModule} from "@angular/router";
 
 const bundle = [
     ModelsEditorComponent,
@@ -57,6 +58,14 @@ const bundle = [
     ModelFormModalComponent,
     ModelFormStaticComponent,
 ];
+
+const routes = [
+    {
+        path     : '',
+        component: ModelsEditorComponent
+    }
+];
+
 
 @NgModule({
     declarations: [
@@ -70,6 +79,7 @@ const bundle = [
         MatMomentDateModule,
         NgxDatatableModule,
         FuseWidgetModule,
+        RouterModule.forChild(routes),
 
         MatIconModule,
         MatFormFieldModule,
