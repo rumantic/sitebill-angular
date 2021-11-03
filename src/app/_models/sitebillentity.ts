@@ -318,11 +318,15 @@ export class SitebillModelItem {
         this.active_in_topic_array = null;
         this.name = item.name;
         this.value = item.value;
+        if ( this.name == 'dbtype' ) {
+            this.patchDBType();
+        }
+
         this.value_string = item.value_string;
         this.select_data_indexed = item.select_data_indexed;
         this.assign_to = item.assign_to;
         this.combo = item.combo;
-        this.dbtype = item.dbtype;
+
         this.entity = item.entity;
         this.group_id = item.group_id;
         this.group_id_array = item.group_id_array;
@@ -358,6 +362,14 @@ export class SitebillModelItem {
         this.active = item.active === '1';
         this.fxFlex = item.fxFlex;
         this.api = item.api;
+    }
+
+    patchDBType () {
+        if ( this.value && (this.value === '0' || this.value === 'notable') ) {
+            this.value = '0';
+        } else {
+            this.value = '1';
+        }
     }
 
     getValue() {
