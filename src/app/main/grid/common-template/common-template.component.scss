@@ -7,6 +7,10 @@
     left: 50px;
 }
 
+.status_icon {
+    font-size: 12px;
+}
+
 :host ::ng-deep .datatable-body-row:hover .control_hover {
     display: flex;
     position: absolute;

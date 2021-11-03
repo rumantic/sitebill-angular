@@ -1,7 +1,5 @@
-import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, isDevMode, Inject, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { FilterService } from 'app/_services/filter.service';
-import { SitebillEntity } from 'app/_models';
+import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, Inject} from '@angular/core';
+import {SitebillEntity} from 'app/_models';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 
@@ -141,6 +139,21 @@ export class CommonTemplateComponent {
 
     building_blocks(item_id: number) {
         this.building_blocksEvent.next(item_id);
+    }
+
+    get_status_class ( row ) {
+        try {
+            if (row.active.value != '1') {
+                return 'red-100';
+            } else if (row.active.value === '1') {
+                return 'light-green-100';
+            }
+            if (row.hot.value == 1) {
+                return 'amber-100';
+            }
+        } catch {
+        }
+        return '';
     }
 
     get_permission ( row, action ) {

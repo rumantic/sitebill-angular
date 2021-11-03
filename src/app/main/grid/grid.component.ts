@@ -1083,15 +1083,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     getRowClass(row): string {
-        try {
-            if (row.active.value != 1) {
-                return 'red-100-bg';
-            }
-            if (row.hot.value == 1) {
-                return 'amber-100-bg';
-            }
-        } catch {
-        }
+        return '';
     }
 
 
