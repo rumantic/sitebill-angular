@@ -49,6 +49,7 @@ import {ModelFormStaticComponent} from "./model-form-modal/model-form-static.com
 import {DragulaModule, DragulaService} from "ng2-dragula";
 import {DragulaExtendedDirective} from "../../_directives/dragula-extended.directive";
 import {RouterModule} from "@angular/router";
+import {detect_mode, SitebillModes} from "../../_helpers/env";
 
 const bundle = [
     ModelsEditorComponent,
@@ -59,12 +60,16 @@ const bundle = [
     ModelFormStaticComponent,
 ];
 
-const routes = [
+let routes = [
     {
         path     : '',
         component: ModelsEditorComponent
     }
 ];
+
+if ( detect_mode() == SitebillModes.standalone ) {
+    routes = [];
+}
 
 
 @NgModule({
