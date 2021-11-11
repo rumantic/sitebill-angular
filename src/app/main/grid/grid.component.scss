@@ -131,7 +131,6 @@ mat-sidenav-container {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
 :host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
-    overflow: visible !important;
 }
 :host ::ng-deep .not-active {
     background: #ef5350;

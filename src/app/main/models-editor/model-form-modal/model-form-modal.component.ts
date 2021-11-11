@@ -41,8 +41,9 @@ export class ModelFormModalComponent
             if ( this._data.table_id ) {
                 this.entity.set_default_value('table_id', this._data.table_id);
             }
+        } else {
+            // this.entity.set_default_value('type', 'safe_string');
         }
-        //this.entity.set_default_value('active', 1);
 
         // this.entity.set_title('колонки');
     }
