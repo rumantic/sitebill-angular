@@ -572,7 +572,12 @@ export class GridComponent implements OnInit, OnDestroy
         let page_number = this.page.pageNumber + 1;
         // console.log(filter_params_json);
 
-        this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
+        let table_name = this.entity.get_table_name();
+        if ( !table_name ) {
+            table_name = this.entity.get_app_name();
+        }
+
+        this.modelService.load(table_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 //this.loadingIndicator = true;
