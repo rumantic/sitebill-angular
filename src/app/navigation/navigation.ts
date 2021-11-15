@@ -146,6 +146,20 @@ export const navigation: FuseNavigation[] = [
         }
         */
     },
+    {
+        id: 'config',
+        title: 'Настройки',
+        type: 'item',
+        icon: 'settings',
+        url: 'config',
+    },
+    {
+        id: 'models-editor',
+        title: 'Редактор форм',
+        type: 'item',
+        icon: 'developer_board',
+        url: 'models-editor',
+    },
 
     /*
     {

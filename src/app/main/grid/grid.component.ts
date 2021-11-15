@@ -44,6 +44,8 @@ import {ShareModalComponent} from "./share-modal/share-modal.component";
 import {CollectionModalComponent} from "./collection-modal/collection-modal.component";
 import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component";
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
+import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
+import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -93,6 +95,7 @@ export class GridComponent implements OnInit, OnDestroy
     error_message: string;
     selectionType = '';
     grouped: any;
+    footerHeight: number;
 
 
     @ViewChild('gridTable') table: any;
@@ -168,6 +171,10 @@ export class GridComponent implements OnInit, OnDestroy
 
     @Input('enable_coworker_button')
     enable_coworker_button: boolean;
+
+    @Input('enable_testimonials_button')
+    enable_testimonials_button: boolean;
+
 
     @Input('enable_building_blocks_button')
     enable_building_blocks_button: boolean;
@@ -249,7 +256,17 @@ export class GridComponent implements OnInit, OnDestroy
         this.after_compose_complete_checked = false;
         this.loadingIndicator = true;
     }
+
+    initFooterHeight () {
+        if ( window.innerWidth < 959 ) {
+            this.footerHeight = 100;
+        } else {
+            this.footerHeight = 50;
+        }
+    }
+
     ngOnInit() {
+        this.initFooterHeight();
         this.entity.set_app_url(null);
         if (this.disable_menu) {
             //console.log(this.disable_menu);
@@ -555,7 +572,12 @@ export class GridComponent implements OnInit, OnDestroy
         let page_number = this.page.pageNumber + 1;
         // console.log(filter_params_json);
 
-        this.modelService.load(this.entity.get_table_name(), grid_columns, filter_params_json, params.owner, page_number, this.page.size)
+        let table_name = this.entity.get_table_name();
+        if ( !table_name ) {
+            table_name = this.entity.get_app_name();
+        }
+
+        this.modelService.load(table_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
                 //this.loadingIndicator = true;
@@ -1066,15 +1088,7 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     getRowClass(row): string {
-        try {
-            if (row.active.value != 1) {
-                return 'red-100-bg';
-            }
-            if (row.hot.value == 1) {
-                return 'amber-100-bg';
-            }
-        } catch {
-        }
+        return '';
     }
 
 
@@ -1186,6 +1200,23 @@ export class GridComponent implements OnInit, OnDestroy
         });
     }
 
+    testimonials(item_id: any) {
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '400px';
+        //this.entity.set_key_value(item_id);
+        this.entity.set_param('id', item_id);
+        dialogConfig.data = this.entity;
+
+        const modalRef = this.dialog.open(TestimonialsModalComponent, dialogConfig);
+        modalRef.componentInstance.onSave.subscribe((result) => {
+            console.log(result);
+        });
+    }
+
+
     reset_filters () {
         this.clear_search_text();
         this.clear_selected_date_filter(this.date_range_key);
@@ -1220,6 +1251,20 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(ShareModalComponent, dialogConfig);
     }
+
+    settings_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.data = {};
+        dialogConfig.data.entity = this.entity;
+        dialogConfig.data.grid_items = this.grid_columns_for_compose;
+        dialogConfig.data.page = this.page;
+
+
+        this.dialog.open(GridSettingsSidenavComponent, dialogConfig);
+    }
+
 
     toggleExpandGroup(group) {
         console.log('Toggled Expand Group!', group);
@@ -1267,5 +1312,4 @@ export class GridComponent implements OnInit, OnDestroy
         this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
         return false;
     }
-
 }

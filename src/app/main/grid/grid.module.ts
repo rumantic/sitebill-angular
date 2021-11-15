@@ -100,6 +100,11 @@ import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component"
 import {CoworkComponent} from "./entity/cowork/cowork.component";
 import {BuildingBlocksComponent} from "./entity/building-blocks/building-blocks.component";
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
+import {ClientComponent} from "./entity/client/client.component";
+import {AutoResolverComponent} from "./entity/autoresolver/auto-resolver.component";
+import {CloudTestimonialsComponent} from "./entity/cloud/testimonials/cloud-testimonials.component";
+import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
+import {AutoResolverFormComponent} from "./entity/autoresolver/form/auto-resolver-form.component";
 
 const routes = [
     {
@@ -350,6 +355,10 @@ const routes = [
         UserComponent,
         CoworkComponent,
         BuildingBlocksComponent,
+        ClientComponent,
+        AutoResolverComponent,
+        AutoResolverFormComponent,
+        CloudTestimonialsComponent,
 
         FilterComponent,
         DeclineClientComponent,
@@ -373,6 +382,7 @@ const routes = [
         ShareModalComponent,
         CollectionModalComponent,
         CoworkerModalComponent,
+        TestimonialsModalComponent,
         BuildingBlocksModalComponent,
         GroupTemplateComponent,
         FavoritesComponent
@@ -441,7 +451,15 @@ const routes = [
         NgxUploaderModule,
         FavoritesComponent,
         CoworkComponent,
-        BuildingBlocksComponent
+        BuildingBlocksComponent,
+        DataComponent,
+        CityComponent,
+        ClientComponent,
+        AutoResolverComponent,
+        CloudTestimonialsComponent,
+        FrontComponent,
+        UserComponent,
+        AutoResolverFormComponent
     ],
     providers: [
         FilterService,

@@ -46,10 +46,17 @@ mat-sidenav-container {
 }
 
 ::ng-deep .regular-modal {
+    .cdk-overlay-pane{
+        width: unset !important;
+        height: unset !important;
+        max-width: 100% !important;
+    }
+
     .mat-dialog-container {
         padding: 0;
-
+        resize: both;
     }
+
 }
 
 
@@ -124,7 +131,6 @@ mat-sidenav-container {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
 :host ::ng-deep .datatable-body-row:hover .datatable-body-cell {
-    overflow: visible !important;
 }
 :host ::ng-deep .not-active {
     background: #ef5350;
@@ -155,7 +161,7 @@ mat-sidenav-container {
 }
 
 #ngx-datatable {
-    .header {
+    .header-standalone {
 
         .search-wrapper {
             width: 100%;
@@ -188,7 +194,7 @@ mat-sidenav-container {
             }
         }
 
-        .toolbar {
+        .angular-toolbar {
             &__daterange {
                 width: 220px;
             }
@@ -241,13 +247,13 @@ mat-sidenav-container {
                 }
             }
 
-            .toolbar {
+            .angular-toolbar {
                 margin: 0 0 0 auto;
             }
         }
     }
 
-    .content {
+    .content1 {
         overflow: hidden;
 
         .sidebar {
@@ -290,6 +296,25 @@ mat-sidenav-container {
         .datatable-header-cell-template-wrap {
             width: 100%;
         }
+    }
+
+}
+::ng-deep ngx-datatable {
+    .datatable-footer-inner {
+        @include media-breakpoint('lt-md') {
+        }
+    }
+}
+.table-height {
+    max-height: calc(70vh);
+    @include media-breakpoint('lt-sm') {
+        max-height: calc(60vh);
+    }
+}
+
+.date-range {
+    @include media-breakpoint('lt-sm') {
+        display: none;
     }
 }
 

@@ -81,6 +81,11 @@ import {SearchStringParserComponent} from "./main/grid/search-string-parser/sear
 import {HouseSchemaModule} from "./main/houseschema/house-schema.module";
 import {StringParserService} from "./_services/string-parser.service";
 import {EntityStorageService} from "./_services/entity-storage.service";
+import {LoginStandaloneComponent} from "./login/standalone/login/login-standalone.component";
+import {ConfigComponent} from "./main/config/config.component";
+import {MatListModule} from "@angular/material/list";
+import {ConfigFormComponent} from "./main/config/config-form/config-form.component";
+import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component";
 
 @NgModule({
     imports: [
@@ -142,6 +147,7 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         SbCalendarModule,
         FuseWidgetModule,
         HouseSchemaModule,
+        MatListModule,
     ],
     declarations: [
         RegisterDomainModalComponent,
@@ -173,6 +179,10 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         ContactInjectorComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
+        LoginStandaloneComponent,
+        ConfigComponent,
+        ConfigFormComponent,
+        JsonEditorComponent
     ],
     providers: [
         ChatService,
@@ -195,6 +205,11 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         ProfileCardComponent,
         GatewaysComponent,
         SearchStringParserComponent,
+        LoginModalComponent,
+        LoginStandaloneComponent,
+        ConfigComponent,
+        ConfigFormComponent,
+        JsonEditorComponent
     ],
     entryComponents: [
         LoginModalComponent,
@@ -209,6 +224,8 @@ import {EntityStorageService} from "./_services/entity-storage.service";
         GatewaysModalComponent,
         DemoBannerComponent,
         SearchStringParserComponent,
+        ConfigFormComponent,
+        JsonEditorComponent
     ]
 
 })

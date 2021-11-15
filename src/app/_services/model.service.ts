@@ -2,13 +2,13 @@ import {Injectable, Inject, isDevMode, Output, EventEmitter} from '@angular/core
 import {HttpClient} from '@angular/common/http';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {currentUser, UserProfile} from 'app/_models/currentuser';
-import {SitebillEntity, SitebillModelItem, User} from 'app/_models';
+import {ApiCall, SitebillEntity, SitebillModelItem, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
-import {timer} from "rxjs";
+import {Observable, timer} from "rxjs";
 
 
 @Injectable()
@@ -30,9 +30,15 @@ export class ModelService {
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     @Output() sitebill_loaded_complete_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() need_reload_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() valid_user_emitter: EventEmitter<any> = new EventEmitter();
+    @Output() init_permissions_complete_emitter: EventEmitter<any> = new EventEmitter();
+
     private dom_sitebill_config: any;
     private install_mode: boolean;
     private nobody_first_login = false;
+    public init_permissions_complete: boolean = false;
+    public init_config_complete: boolean = false;
 
 
 
@@ -40,7 +46,7 @@ export class ModelService {
         private http: HttpClient,
         private router: Router,
         protected _fuseConfigService: FuseConfigService,
-        protected storageService: StorageService,
+        public storageService: StorageService,
         private filterService: FilterService,
         protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
@@ -104,6 +110,15 @@ export class ModelService {
 
     all_checks_passes () {
         if ( this.get_nobody_mode() || this.get_user_id() > 0 ) {
+            console.log('all_checks_passes success');
+            return true;
+        }
+        return false;
+    }
+
+    final_state () {
+        if ( this.init_config_complete && this.init_permissions_complete ) {
+            console.log('final_state true');
             return true;
         }
         return false;
@@ -175,6 +190,7 @@ export class ModelService {
         }
         // console.log('enable_need_reload');
         this.need_reload = true;
+
     }
 
     disable_need_reload() {
@@ -190,8 +206,8 @@ export class ModelService {
     }
 
     session_key_validate() {
-        // console.log('session_key_validate');
         if ( !this.session_key_validated ) {
+            console.log('session_key_validate');
             this.load_current_user_profile();
         }
         this.session_key_validated = true;
@@ -230,11 +246,17 @@ export class ModelService {
         if (!this.is_validated_session_key()) {
             this.validateKey(session_key).subscribe((result: any) => {
                 if (result.error === 'check_session_key_failed') {
+                    console.log('check_session_key_failed need reload');
                     if ( this.is_model_redirect_enabled() ) {
+                        console.log('reset storage');
                         this.reset_local_user_storage();
                         let refresh_url = this.router.url;
                         this.enable_need_reload('get_session_key_safe');
                         this.router.navigate([refresh_url]);
+                    }
+                    if ( this.getDomConfigValue('standalone_mode' ) ) {
+                        this.reset_local_user_storage();
+                        this.need_reload_emitter.emit(true);
                     }
                 } else {
                     this.session_key_validate();
@@ -337,6 +359,11 @@ export class ModelService {
         };
     }
 
+    reinit_currentUser_standalone(storage) {
+        this.storageService.setItem('currentUser', JSON.stringify(storage));
+        this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
+    }
+
     reinit_currentUser() {
         this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
         this.disable_need_reload();
@@ -396,6 +423,17 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
+    api_call (api_call: ApiCall) {
+        const request = {
+            action: api_call.name,
+            do: api_call.method,
+            params: api_call.params,
+            anonymous: api_call.anonymous,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
+    }
+
 
     // Возвращает все записи
     load_dictionary_model_all(model_name, columnName) {
@@ -427,14 +465,25 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
+    loadByUri(model_name, entity_uri ) {
+        const load_data_request = {
+            action: 'model',
+            do: 'load_data',
+            model_name: model_name,
+            entity_uri: entity_uri,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
+    }
 
-    loadById(model_name, primary_key, key_value) {
+    loadById(model_name, primary_key, key_value, ql_items = null ) {
         const load_data_request = {
             action: 'model',
             do: 'load_data',
             model_name: model_name,
             primary_key: primary_key,
             key_value: key_value,
+            ql_items: ql_items,
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
@@ -458,13 +507,28 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
-    native_insert(model_name, ql_items) {
-        const body = {action: 'model', do: 'native_insert', model_name: model_name, ql_items: ql_items, session_key: this.get_session_key_safe()};
+    native_insert(model_name, ql_items, only_ql = null) {
+        const body = {
+            action: 'model',
+            do: 'native_insert',
+            model_name: model_name,
+            ql_items: ql_items,
+            only_ql: only_ql,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    native_update(model_name, key_value, ql_items) {
-        const body = {action: 'model', do: 'native_update', model_name: model_name, key_value: key_value, ql_items: ql_items, session_key: this.get_session_key_safe()};
+    native_update(model_name, key_value, ql_items, only_ql = null) {
+        const body = {
+            action: 'model',
+            do: 'native_update',
+            model_name: model_name,
+            key_value: key_value,
+            ql_items: ql_items,
+            only_ql: only_ql,
+            session_key: this.get_session_key_safe()
+        };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
@@ -693,13 +757,65 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
+    load_config_anonymous () {
+        //console.log(this.get_api_url());
+        let body = {};
+        body = {action: 'model', do: 'load_config', anonymous: true, session_key: ''};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+    system_config () {
+        let body = {};
+        body = {action: 'config', do: 'system_config', session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+    get_models_list () {
+        let body = {};
+        body = {action: 'table', do: 'get_models_list', session_key: this.get_session_key_safe()};
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
+    update_system_config ( ql_items: any ) {
+        let body = {};
+        body = {
+            action: 'config',
+            do: 'update',
+            ql_items: ql_items,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
+    }
+
     is_config_loaded () {
         return this.config_loaded;
     }
 
+    init_config_standalone() {
+        console.log('start init config standalone');
+        this.load_config_anonymous()
+            .subscribe((result: any) => {
+                    console.log('config standalone data loaded');
+                    if (result.state === 'success') {
+                        this.sitebill_config = result.data;
+                        this.config_loaded = true;
+                        this.config_loaded_emitter.emit(true);
+                    } else {
+                        console.log('load config failed');
+                    }
+                },
+                error => {
+                    console.log('load config failed, bad request');
+                });
+
+    }
+
+
     init_config() {
+        console.log('start init config');
         this.load_config()
             .subscribe((result: any) => {
+                console.log('config data loaded');
                     if (result.state === 'success') {
                         this.sitebill_config = result.data;
                         this.config_loaded = true;
@@ -721,7 +837,9 @@ export class ModelService {
     }
 
     after_config_loaded () {
+        console.log('after_config_loaded');
         this.config_loaded_emitter.emit(true);
+        this.init_config_complete = true;
         //console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
         if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
             this.show_navbar();
@@ -768,6 +886,10 @@ export class ModelService {
                 if ( result.data.imgfile != null ) {
                     this.current_user_profile.imgfile.value = result.data.imgfile.value;
                 }
+                this.valid_user_emitter.emit(true);
+            } else {
+                console.log('get_oauth_user_profile failed');
+                this.valid_user_emitter.emit(false);
             }
         });
     }
@@ -833,7 +955,9 @@ export class ModelService {
         return this.current_entity;
     }
 
-    private init_permissions() {
+    public init_permissions() {
+        console.log('init_permissions');
+
         const request = {
             action: 'oauth',
             do: 'check_session_key',
@@ -845,6 +969,8 @@ export class ModelService {
                     this.storageService.setItem('currentUser', JSON.stringify(result));
                 }
                 this.sitebill_loaded_complete_emitter.emit(true);
+                this.init_permissions_complete_emitter.emit(true);
+                this.init_permissions_complete = true;
             });
     }
 
@@ -913,4 +1039,18 @@ export class ModelService {
     is_model_redirect_enabled () {
         return this.model_redirect;
     }
+
+    toggle( component, model_name, primary_key, primary_key_value, toggled_column_name ): Observable<any> {
+        const request = {
+            action: component,
+            do: 'toggle',
+            model_name: model_name,
+            primary_key: primary_key,
+            primary_key_value: primary_key_value,
+            toggled_column_name: toggled_column_name,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
+    }
+
 }

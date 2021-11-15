@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation, Input, Output, EventEmitter, Inject} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 import {fuseAnimations} from '@fuse/animations';
@@ -9,6 +9,7 @@ import {SitebillEntity, SitebillModelItem} from 'app/_models';
 import {FilterService} from 'app/_services/filter.service';
 import {Page} from '../../page';
 import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: 'grid-settings',
@@ -40,9 +41,14 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
     constructor(
         private modelService: ModelService,
         protected bitrix24Service: Bitrix24Service,
+        private dialogRef: MatDialogRef<GridSettingsSidenavComponent>,
+        @Inject(MAT_DIALOG_DATA) private _data: any,
         private filterService: FilterService
     ) {
         this._unsubscribeAll = new Subject();
+        this.entity = this._data.entity;
+        this.grid_items = this._data.grid_items;
+        this.page = this._data.page;
 
         // Set the defaults
         this.view = 'main';
@@ -189,5 +195,6 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
 
     onCloseClick() {
         this.close.emit();
+        this.dialogRef.close();
     }
 }

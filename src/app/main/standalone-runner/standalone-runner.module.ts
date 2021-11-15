@@ -32,6 +32,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {StandaloneRunnerComponent} from "./standalone-runner.component";
+import {ProfileModule} from "../profile/profile.module";
+import {ModelsEditorModule} from "../models-editor/models-editor.module";
 
 const routes = [
     {
@@ -44,7 +46,7 @@ const routes = [
     declarations: [
         StandaloneRunnerComponent,
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         TranslateModule,
@@ -74,7 +76,9 @@ const routes = [
         MatExpansionModule,
         GridModule,
         FuseSharedModule,
-        SharedModule
+        SharedModule,
+        ProfileModule,
+        ModelsEditorModule,
     ],
     providers: [
         BillingService

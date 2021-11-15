@@ -1,7 +1,5 @@
-import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, isDevMode, Inject, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { FilterService } from 'app/_services/filter.service';
-import { SitebillEntity } from 'app/_models';
+import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, Inject} from '@angular/core';
+import {SitebillEntity} from 'app/_models';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 
@@ -42,6 +40,9 @@ export class CommonTemplateComponent {
     @Input("enable_coworker_button")
     enable_coworker_button: boolean;
 
+    @Input("enable_testimonials_button")
+    enable_testimonials_button: boolean;
+
     @Input("enable_building_blocks_button")
     enable_building_blocks_button: boolean;
 
@@ -65,6 +66,7 @@ export class CommonTemplateComponent {
     @Output() deleteEvent = new EventEmitter<number>();
     @Output() reportEvent = new EventEmitter<number>();
     @Output() coworkersEvent = new EventEmitter<number>();
+    @Output() testimonialsEvent = new EventEmitter<number>();
     @Output() building_blocksEvent = new EventEmitter<number>();
     @Output() toggle_activeEvent = new EventEmitter<any>();
     @Output() view_galleryEvent = new EventEmitter<any>();
@@ -131,8 +133,27 @@ export class CommonTemplateComponent {
         this.coworkersEvent.next(item_id);
     }
 
+    testimonials(item_id: number) {
+        this.testimonialsEvent.next(item_id);
+    }
+
     building_blocks(item_id: number) {
         this.building_blocksEvent.next(item_id);
+    }
+
+    get_status_class ( row ) {
+        try {
+            if (row.active.value != '1') {
+                return 'red-100';
+            } else if (row.active.value === '1') {
+                return 'light-green-100';
+            }
+            if (row.hot.value == 1) {
+                return 'amber-100';
+            }
+        } catch {
+        }
+        return '';
     }
 
     get_permission ( row, action ) {

@@ -9,7 +9,8 @@ import { ModelService } from 'app/_services/model.service';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {Router} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {LoginModalComponent} from '../../login/modal/login-modal.component';
+import {SitebillAuthService} from "../../_services/sitebill-auth.service";
+import {LoginModalComponent} from "../../login/modal/login-modal.component";
 
 @Component({
     selector   : 'standalone-runner',
@@ -20,6 +21,8 @@ import {LoginModalComponent} from '../../login/modal/login-modal.component';
 export class StandaloneRunnerComponent
 {
     loading = false;
+    config_loaded = false;
+    access_denied_state = false;
 
     /**
      * Constructor
@@ -27,6 +30,7 @@ export class StandaloneRunnerComponent
      */
     constructor(
         public modelService: ModelService,
+        public sitebillAuthService: SitebillAuthService,
         private _fuseConfigService: FuseConfigService,
         protected router: Router,
         protected dialog: MatDialog,
@@ -35,7 +39,59 @@ export class StandaloneRunnerComponent
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
     }
+
+    run () {
+        console.log('ready for standalone components');
+        console.log(' - - - - - ');
+        this.config_loaded = true;
+    }
+
+    access_denied () {
+        console.log('access denied');
+        this.access_denied_state = true;
+    }
+
     ngOnInit() {
-        console.log('run standalone...');
+        console.log('run standalone ...');
+        this.sitebillAuthService.complete_emitter.subscribe(
+            (result: any) => {
+                if ( result ) {
+                    console.log('sitebillAuthService.complete() result = true')
+                    console.log('user_id = ' + this.modelService.get_user_id());
+                    this.run();
+                } else {
+                    console.log('sitebillAuthService.complete() result = false');
+                    this.access_denied();
+                }
+            },
+            error => {
+                console.log('error');
+                console.log(error);
+                this.access_denied();
+            },
+            complete => {
+                console.log('sitebillAuthService.complete() complete');
+                this.access_denied();
+            }
+        );
+
+        console.log('run sitebillAuthService.init()');
+        this.sitebillAuthService.init();
+        console.log('after sitebillAuthService.init()');
+        if ( this.sitebillAuthService.get_state() == 'ready' ) {
+            console.log('sitebillAuthService has ready state')
+            this.run();
+        }
+    }
+    login_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(LoginModalComponent, dialogConfig);
+    }
+
+    logout() {
+        this.modelService.logout();
     }
 }

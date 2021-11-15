@@ -82,3 +82,9 @@
 
 ::ng-deep .room_count {
 }
+.hover {
+    border: 1px solid green;
+}
+.hover:hover {
+    display: none;
+}

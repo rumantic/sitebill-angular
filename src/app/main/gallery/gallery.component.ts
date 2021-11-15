@@ -19,7 +19,7 @@ export class GalleryComponent implements OnInit {
     private differ: DefaultIterableDiffer<any>;
     public previous_image_count: number;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
-    gallery_columns = 2;
+    gallery_columns = 8;
 
     //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
@@ -73,7 +73,7 @@ export class GalleryComponent implements OnInit {
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
         }
-        let height_calc = rows_number_calc * 200;
+        let height_calc = rows_number_calc * 150;
         // height_calc = 100;
 
         this.previous_image_count = this.galleryImages.length;
@@ -98,7 +98,7 @@ export class GalleryComponent implements OnInit {
                 imageInfinityMove: true,
                 imageAnimation: NgxGalleryAnimation.Slide,
                 thumbnailActions: [
-                    { icon: 'fa fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
+                    { icon: 'fas fa-chevron-left fa-sm', onClick: this.moveLeft.bind(this), titleText: 'выше' },
                     { icon: 'fa fa-times-circle fa-sm', onClick: this.deleteImage.bind(this), titleText: 'удалить' },
                     { icon: 'fa fa-chevron-right fa-sm', onClick: this.moveRight.bind(this), titleText: 'ниже' },
                     { icon: 'fa fa-star fa-sm', onClick: this.moveToStart.bind(this), titleText: 'сделать главной' },

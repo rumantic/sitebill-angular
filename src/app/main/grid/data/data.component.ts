@@ -58,6 +58,7 @@ export class DataComponent extends GridComponent {
     }
 
     getRowClass(row): string {
+        return '';
         try {
             if (row['id'].collections != null) {
                 return 'green-100-bg';

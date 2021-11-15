@@ -9,13 +9,17 @@ import {FormType, SitebillEntity} from 'app/_models';
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
-import {FormConstructorComponent} from './form-constructor.component';
+import {FormConstructorComponent, myCustomTooltipDefaults} from './form-constructor.component';
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
 
 
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css'],
+    providers: [
+        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    ],
 })
 export class FormComponent extends FormConstructorComponent implements OnInit {
 
@@ -76,6 +80,5 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
             this._snackService.message('Нет доступа к добавлению/редактированию ' + entity.get_title(), 5000);
         }
     }
-
 }
 

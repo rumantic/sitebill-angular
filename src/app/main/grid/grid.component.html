@@ -5,6 +5,7 @@
     [disable_edit_button]="disable_edit_button"
     [disable_view_button]="disable_view_button"
     [enable_coworker_button]="enable_coworker_button"
+    [enable_testimonials_button]="enable_testimonials_button"
     [enable_building_blocks_button]="enable_building_blocks_button"
     [disable_gallery_controls]="disable_gallery_controls"
     [complaint_mode]="complaint_mode"
@@ -13,6 +14,7 @@
     (deleteEvent)="delete($event)"
     (reportEvent)="report($event)"
     (coworkersEvent)="coworkers($event)"
+    (testimonialsEvent)="testimonials($event)"
     (building_blocksEvent)="building_blocks($event)"
     (view_galleryEvent)="view_gallery($event)"
     (view_injectorEvent)="view_injector($event)"
@@ -26,7 +28,7 @@
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header p-16 p-md-24 accent" fxLayout="column"  *ngIf="!disable_header">
+        <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
             <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                 <!-- BOARD SELECTION BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
@@ -76,9 +78,9 @@
                 </div>
                 <!-- / SEARCH -->
                 <!-- TOOLBAR -->
-                <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
+                <div class="angular-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
 
-                    <mat-form-field class="pt-12 pr-8 toolbar__daterange" *ngIf="date_range_enable">
+                    <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
                         <input autocomplete="off"
                                matTooltip="Выбрать период времени для отображения записей"
                                matInput
@@ -107,7 +109,7 @@
                     </button>
 
                     <!-- SETTINGS BUTTON -->
-                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settingsSidenav.toggle()"
+                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settings_modal()"
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
@@ -144,7 +146,7 @@
         </div>
         <!-- / HEADER -->
         <!-- CONTENT -->
-        <div class="content" layout="row">
+        <div class="content1" layout="row">
             <!-- WIDGET GROUP -->
             <div class="widget-group grey-100-bg" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                  [@animateStagger]="{value:'50'}">
@@ -160,15 +162,16 @@
                         <ngx-datatable
                             #gridTable
                             *ngIf="compose_complete"
-                            class="material expandable"
+                            class="table-height material expandable"
                             [rows]="rows_data"
                             [columns]="data_columns"
-                            [loadingIndicator]="loadingIndicator"
                             [columnMode]="'force'"
                             [headerHeight]="ngxHeaderHeight"
-                            [footerHeight]="56"
-                            [rowHeight]="'auto'"
+                            [footerHeight]="footerHeight"
+                            [rowHeight]="50"
                             [scrollbarH]="scrollbarH"
+                            [scrollbarV]="true"
+                            [virtualization]="false"
                             [reorderable]="reorderable"
                             [externalPaging]="true"
                             [count]="page.totalElements"
@@ -181,8 +184,6 @@
                             (resize)="onResize($event)"
                             (page)="setPage($event)"
                             (select)="onSelect($event)"
-                            [groupedRows]="grouped"
-                            [groupExpansionDefault]="true"
                         >
 
                             <!-- Group Header Template -->
@@ -212,8 +213,4 @@
 
 
     </div>
-
-    <mat-sidenav #settingsSidenav position="end">
-        <grid-settings [entity]="entity" [grid_items]="grid_columns_for_compose" [page]="page" *ngIf="compose_complete" (close)="settingsSidenav.close()"></grid-settings>
-    </mat-sidenav>
 </mat-sidenav-container>

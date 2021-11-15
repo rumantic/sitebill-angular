@@ -59,9 +59,16 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {AlertComponent} from "./_directives";
 import {Error404Component} from "./main/pages/errors/404/error-404.component";
 import {Error500Component} from "./main/pages/errors/500/error-500.component";
+import {SitebillAuthService} from "./_services/sitebill-auth.service";
+import {ConfigComponent} from "./main/config/config.component";
+import {detect_mode, SitebillModes} from "./_helpers/env";
 
-const appRoutes: Routes = [
+
+let appRoutes: Routes = [
+    //Для обычного angular этот маршрут для корня
     {path: '', redirectTo: 'frontend', pathMatch: 'full'},
+
+
     {path: 'login', component: LoginComponent},
     {path: 'logout', component: LoginComponent},
     {
@@ -122,6 +129,14 @@ const appRoutes: Routes = [
         path: 'calendar',
         loadChildren: () => import('app/main/sb-calendar/sb-calendar.module').then(m => m.SbCalendarModuleWithRoutes),
     },
+    {
+        path: 'models-editor',
+        loadChildren: () => import('app/main/models-editor/models-editor.module').then(m => m.ModelsEditorModule),
+    },
+    {
+        path: 'config',
+        component: ConfigComponent
+    },
     /*
     {
         path: 'client/my',
@@ -135,6 +150,18 @@ const appRoutes: Routes = [
     },
     */
 ];
+
+if ( detect_mode() == SitebillModes.standalone ) {
+    appRoutes = [
+        //Для standalone
+        {
+            path: '',
+            loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
+        },
+    ];
+}
+
+
 
 @NgModule({
     declarations: [
@@ -204,6 +231,7 @@ const appRoutes: Routes = [
         MessageService,
         AuthGuard,
         ModelService,
+        SitebillAuthService,
         PublicGuard,
         AlertService,
         AuthenticationService,

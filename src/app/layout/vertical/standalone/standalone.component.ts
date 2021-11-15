@@ -63,4 +63,11 @@ export class StandaloneComponent implements OnInit, OnDestroy
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
+    get_max_height_class() {
+        if ( this.modelService.getDomConfigValue('form_mode') !== 'true' ) {
+            return 'max-vh-85';
+        }
+        return '';
+    }
 }

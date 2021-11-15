@@ -15,6 +15,7 @@ export class UserComponent extends GridComponent {
         this.entity.set_app_name('user');
         this.entity.set_table_name('user');
         this.entity.primary_key = 'user_id';
+        this.enable_testimonials_button = true;
     }
 
 }

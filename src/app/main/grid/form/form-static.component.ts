@@ -8,15 +8,20 @@ import {FormType, SitebillEntity} from 'app/_models';
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
-import {FormConstructorComponent} from './form-constructor.component';
+import {FormConstructorComponent, myCustomTooltipDefaults} from './form-constructor.component';
 import {FormComponent} from "./form.component";
 import {EntityStorageService} from "../../../_services/entity-storage.service";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
 
 
 @Component({
     selector: 'form-static',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.css']
+    styleUrls: ['./form.component.css'],
+    providers: [
+        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    ],
+
 })
 export class FormStaticComponent extends FormConstructorComponent implements OnInit {
     @Input("entity")
@@ -48,7 +53,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        private entityStorageService: EntityStorageService,
+        protected entityStorageService: EntityStorageService,
         protected cdr: ChangeDetectorRef
     ) {
         super(
@@ -63,9 +68,6 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
     }
     save() {
         super.save();
-        if ( this.form.valid ) {
-            this.onClose.emit(true);
-        }
     }
     close() {
         super.close();

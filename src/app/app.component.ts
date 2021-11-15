@@ -22,6 +22,7 @@ import { Bitrix24Router } from './integrations/bitrix24/bitrix24router';
 import {ModelService} from './_services/model.service';
 import {DemoBannerComponent} from "./dialogs/demo-banner/demo-banner.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {SitebillAuthService} from "./_services/sitebill-auth.service";
 
 @Component({
     selector   : 'app',
@@ -65,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy
         private router: Router,
         private bitrix24Router: Bitrix24Router,
         public modelService: ModelService,
+        public sitebillAuthService: SitebillAuthService,
         protected dialog: MatDialog,
         private _platform: Platform
     )
@@ -274,17 +276,41 @@ export class AppComponent implements OnInit, OnDestroy
 
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
-        this.modelService.onSitebillStart();
-        this.modelService.config_loaded_emitter.subscribe((result: any) => {
-            if ( this.modelService.getConfigValue('apps.complex.api.enable') !== '1' ) {
-                this._fuseNavigationService.removeNavigationItem('complex');
+        /*
+        this.modelService.need_reload_emitter.subscribe(
+            (result: any) => {
+                if ( result === true ) {
+                    console.log('start reload window');
+                    if ( localStorage.getItem('sitebill_reloaded')  !== 'true') {
+                        localStorage.setItem('sitebill_reloaded', 'true');
+                        //this.document.location.reload();
+                    }
+                }
+            },
+            error => {
+                console.log('error');
+                console.log(error);
+            },
+            complete => {
+                console.log('need_reload_emitter complete')
             }
+        );
+         */
+        if ( this.modelService.getDomConfigValue('standalone_mode') ) {
+        } else {
+            this.modelService.onSitebillStart();
+            this.modelService.config_loaded_emitter.subscribe((result: any) => {
+                if ( this.modelService.getConfigValue('apps.complex.api.enable') !== '1' ) {
+                    this._fuseNavigationService.removeNavigationItem('complex');
+                }
 
 
-            if (!this.demoTimerSubscribe) {
-                this.switchTimer();
-            }
-        });
+                if (!this.demoTimerSubscribe) {
+                    this.switchTimer();
+                }
+            });
+        }
+
 
     }
 

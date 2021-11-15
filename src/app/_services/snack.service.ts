@@ -25,4 +25,13 @@ export class SnackService {
             data: { message: message },
         });
     }
+
+    error(message: string, duration = 10000) {
+        this.snackBar.openFromComponent(SnackBarComponent, {
+            duration: duration,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            data: {error: message},
+        });
+    }
 }

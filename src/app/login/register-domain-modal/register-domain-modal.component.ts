@@ -58,7 +58,7 @@ export class RegisterDomainModalComponent
     constructor(
         private http: HttpClient,
         private elRef: ElementRef,
-        private modelSerivce: ModelService,
+        private modelService: ModelService,
         private _formBuilder: FormBuilder,
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
@@ -110,14 +110,14 @@ export class RegisterDomainModalComponent
 
     register() {
         this.loading = true;
-        this.modelSerivce.set_install_mode(true);
+        this.modelService.set_install_mode(true);
         this.whmcs_create(this.loginForm.value.name, '', this.loginForm.value.email, this.loginForm.value.password)
             .subscribe(
                 (data: any) => {
                     this.loading = false;
                     //console.log(data);
                     if ( data.RESULT == 'error' ) {
-                        this.modelSerivce.set_install_mode(false);
+                        this.modelService.set_install_mode(false);
                         this.snackBar.open(data.MESSAGE, 'ok', {
                             duration: 2000,
                             horizontalPosition: this.horizontalPosition,
@@ -125,7 +125,7 @@ export class RegisterDomainModalComponent
                         });
                     } else {
                         this.register_success = true;
-                        this.modelSerivce.set_install_mode(true);
+                        this.modelService.set_install_mode(true);
                         this.progress_mode = 'determinate';
                         this.wait_message = 'Пожалуйста, подождите ... ';
                         this.show_progress(data.domain);
@@ -186,7 +186,7 @@ export class RegisterDomainModalComponent
         this.wait_message = 'Готово';
         console.log('run autologin');
 
-        this.modelSerivce.set_api_url('https://' + domain);
+        this.modelService.set_api_url('https://' + domain);
         this.progress_mode = 'indeterminate';
 
 
@@ -229,10 +229,10 @@ export class RegisterDomainModalComponent
 
     after_success_login () {
         this._snackService.message('Авторизация успешна!');
-        this.modelSerivce.disable_nobody_mode();
-        this.modelSerivce.load_current_user_profile();
-        this.modelSerivce.set_install_mode(false);
-        this.modelSerivce.init_config();
+        this.modelService.disable_nobody_mode();
+        this.modelService.load_current_user_profile();
+        this.modelService.set_install_mode(false);
+        this.modelService.init_config();
         this.close.emit();
         // this.dialogRef.close();
     }
