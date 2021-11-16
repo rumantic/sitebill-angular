@@ -17,7 +17,9 @@ import {SnackService} from "../../../../_services/snack.service";
 export class AppsDataSidebarComponent
 {
     protected _unsubscribeAll: Subject<any>;
-    memorylist_user: any[];
+    public memorylist_user: any[];
+    public app_root = '/apps-data';
+
 
     /**
      * Constructor

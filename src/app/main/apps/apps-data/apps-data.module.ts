@@ -6,6 +6,7 @@ import {AppsDataSidebarComponent} from "./apps-data-sidebar/apps-data-sidebar.co
 import {MatIconModule} from "@angular/material/icon";
 
 const routes = [
+    {path: '', redirectTo: 'my', pathMatch: 'full'},
     {
         path     : ':memorylist_id',
         component: AppsDataComponent,

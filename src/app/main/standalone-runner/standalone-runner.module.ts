@@ -37,7 +37,7 @@ import {ModelsEditorModule} from "../models-editor/models-editor.module";
 
 const routes = [
     {
-        path     : 'test',
+        path     : 'apps-data',
         loadChildren: () => import('app/main/apps/apps-data/apps-data.module').then(m => m.AppsDataModule),
     },
     {

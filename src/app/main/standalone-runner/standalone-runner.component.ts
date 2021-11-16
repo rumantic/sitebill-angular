@@ -23,6 +23,7 @@ export class StandaloneRunnerComponent
     loading = false;
     config_loaded = false;
     access_denied_state = false;
+    redirected_components = ['apps-data'];
 
     /**
      * Constructor
@@ -43,7 +44,13 @@ export class StandaloneRunnerComponent
     run () {
         console.log('ready for standalone components');
         console.log(' - - - - - ');
-        this.config_loaded = true;
+        // Сначала проверим, нужно ли нам перекидывать на загружаемый модуль
+        if ( this.redirected_components.includes(this.modelService.getDomConfigValue('component')) ) {
+            this.router.navigate([this.modelService.getDomConfigValue('component')]);
+        } else {
+            // Или просто запускаем готовую упаковку (без lazyload)
+            this.config_loaded = true;
+        }
     }
 
     access_denied () {

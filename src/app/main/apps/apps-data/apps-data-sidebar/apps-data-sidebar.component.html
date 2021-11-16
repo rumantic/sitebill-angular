@@ -7,11 +7,20 @@
 
         <div class="nav-item">
             <a class="nav-link"
-               [routerLink]="'./my'"
+               [routerLink]="[app_root,'my']"
                [routerLinkActive]="['active', 'accent']"
                matRipple>
                 <mat-icon class="nav-link-icon" >label</mat-icon>
                 <span>Мои</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a class="nav-link"
+               [routerLink]="[app_root,'all']"
+               [routerLinkActive]="['active', 'accent']"
+               matRipple>
+                <mat-icon class="nav-link-icon" >label</mat-icon>
+                <span>Все</span>
             </a>
         </div>
     </div>
