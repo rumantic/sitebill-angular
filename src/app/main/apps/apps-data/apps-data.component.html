@@ -8,8 +8,8 @@
 
             <!-- CONTENT -->
             <div class="content" fxLayout="row">
-                grid
-                <!--favorites-grid [memorylist_id]="memorylist_id"></favorites-grid-->
+                <data-grid [default_user_id]="default_user_id" *ngIf="default_user_id > 0"></data-grid>
+                <data-grid *ngIf="default_user_id === 0"></data-grid>
             </div>
             <!-- / CONTENT -->
 

@@ -3,6 +3,7 @@ import { fuseAnimations } from '@fuse/animations';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {FilterService} from "../../../_services/filter.service";
 import {SitebillEntity} from "../../../_models";
+import {ModelService} from "../../../_services/model.service";
 
 @Component({
     selector: 'apps-data-client',
@@ -13,8 +14,10 @@ import {SitebillEntity} from "../../../_models";
 export class AppsDataComponent {
     public memorylist_id: any;
     private entity: SitebillEntity;
+    default_user_id: number;
     constructor(
         private route: ActivatedRoute,
+        public modelService: ModelService,
         public filterService: FilterService,
         ) {
     }
@@ -27,8 +30,12 @@ export class AppsDataComponent {
 
 
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.memorylist_id = params.get('memorylist_id');
-            this.filterService.empty_share(this.entity);
+            if ( params.get('tag') === 'my' ) {
+                this.default_user_id = this.modelService.get_user_id();
+            } else {
+                this.default_user_id = 0;
+            }
+            this.filterService.empty_share(this.entity)
         });
     }
 }

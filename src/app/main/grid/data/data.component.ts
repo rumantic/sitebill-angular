@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialogConfig} from "@angular/material/dialog";
@@ -11,6 +11,9 @@ import {MatDialogConfig} from "@angular/material/dialog";
     animations: fuseAnimations
 })
 export class DataComponent extends GridComponent {
+    @Input('default_user_id')
+    default_user_id = 0;
+
     setup_apps() {
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
@@ -21,6 +24,9 @@ export class DataComponent extends GridComponent {
         this.switch_collections(true);
         this.enable_date_range('date_added');
         this.enable_coworker_button = true;
+        if ( this.default_user_id > 0 ) {
+            this.entity.set_default_params({ user_id: this.default_user_id });
+        }
     }
 
     edit_form(item_id: any) {
