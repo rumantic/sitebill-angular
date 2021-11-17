@@ -5,27 +5,19 @@
 
         <div class="nav-subheader">Объявления</div>
 
-        <div class="nav-item">
+        <div class="nav-item" *ngFor="let item of appsDataService.main_menu">
             <a class="nav-link"
-               [routerLink]="[app_root,'my']"
+               [routerLink]="[app_root,item.tag]"
                [routerLinkActive]="['active', 'accent']"
+               (click)="appsDataService.setActiveMenuItem(item)"
                matRipple>
                 <mat-icon class="nav-link-icon" >label</mat-icon>
-                <span>Мои</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link"
-               [routerLink]="[app_root,'all']"
-               [routerLinkActive]="['active', 'accent']"
-               matRipple>
-                <mat-icon class="nav-link-icon" >label</mat-icon>
-                <span>Все</span>
+                <span>{{item.title}}</span>
             </a>
         </div>
     </div>
 
-    <div class="nav material2" *ngIf="memorylist_user">
+    <!--div class="nav material2" *ngIf="memorylist_user">
 
         <div class="nav-subheader">Мои списки</div>
 
@@ -38,7 +30,7 @@
                 <span>{{item['value']}}</span>
             </a>
         </div>
-    </div>
+    </div-->
 
 </div>
 <!-- / SIDEBAR CONTENT -->

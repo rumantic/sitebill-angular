@@ -8,8 +8,8 @@
 
             <!-- CONTENT -->
             <div class="content" fxLayout="row">
-                <data-grid [default_user_id]="default_user_id" *ngIf="default_user_id > 0"></data-grid>
-                <data-grid *ngIf="default_user_id === 0"></data-grid>
+                <data-grid [default_params]="default_params" *ngIf="switch_trigger"></data-grid>
+                <data-grid [default_params]="default_params" *ngIf="!switch_trigger"></data-grid>
             </div>
             <!-- / CONTENT -->
 

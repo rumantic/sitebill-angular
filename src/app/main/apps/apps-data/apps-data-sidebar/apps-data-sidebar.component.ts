@@ -8,6 +8,7 @@ import { ModelService } from 'app/_services/model.service';
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {SnackService} from "../../../../_services/snack.service";
+import {AppsDataService} from "../apps-data.service";
 
 @Component({
     selector   : 'apps-data-sidebar',
@@ -28,7 +29,8 @@ export class AppsDataSidebarComponent
     constructor(
         private modelService: ModelService,
         protected _snackService: SnackService,
-        private _fuseTranslationLoaderService: FuseTranslationLoaderService
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        public appsDataService: AppsDataService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);

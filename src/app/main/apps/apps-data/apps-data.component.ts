@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {FilterService} from "../../../_services/filter.service";
-import {SitebillEntity} from "../../../_models";
+import {ApiParams, SitebillEntity} from "../../../_models";
 import {ModelService} from "../../../_services/model.service";
+import {AppsDataService} from "./apps-data.service";
 
 @Component({
     selector: 'apps-data-client',
@@ -13,13 +14,18 @@ import {ModelService} from "../../../_services/model.service";
 })
 export class AppsDataComponent {
     public memorylist_id: any;
+    public default_params: ApiParams;
+    public switch_trigger: boolean;
+
     private entity: SitebillEntity;
-    default_user_id: number;
+
     constructor(
         private route: ActivatedRoute,
         public modelService: ModelService,
         public filterService: FilterService,
+        public appsDataService: AppsDataService,
         ) {
+        this.switch_trigger = false;
     }
 
     ngOnInit() {
@@ -30,11 +36,8 @@ export class AppsDataComponent {
 
 
         this.route.paramMap.subscribe((params: ParamMap) => {
-            if ( params.get('tag') === 'my' ) {
-                this.default_user_id = this.modelService.get_user_id();
-            } else {
-                this.default_user_id = 0;
-            }
+            this.default_params = this.appsDataService.getMenuItemByTag(params.get('tag')).params;
+            this.switch_trigger = !this.switch_trigger;
             this.filterService.empty_share(this.entity)
         });
     }

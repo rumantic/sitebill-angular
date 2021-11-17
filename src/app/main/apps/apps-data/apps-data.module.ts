@@ -6,6 +6,7 @@ import {AppsDataSidebarComponent} from "./apps-data-sidebar/apps-data-sidebar.co
 import {MatIconModule} from "@angular/material/icon";
 import {GridModule} from "../../grid/grid.module";
 import {CommonModule} from "@angular/common";
+import {AppsDataService} from "./apps-data.service";
 
 const routes = [
     {path: '', redirectTo: 'my', pathMatch: 'full'},
@@ -34,6 +35,7 @@ const routes = [
         CommonModule
     ],
     providers: [
+        AppsDataService
     ],
     entryComponents: [
     ]
