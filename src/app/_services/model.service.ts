@@ -434,6 +434,10 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
+    api_request (request: any) {
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
+    }
+
 
     // Возвращает все записи
     load_dictionary_model_all(model_name, columnName) {

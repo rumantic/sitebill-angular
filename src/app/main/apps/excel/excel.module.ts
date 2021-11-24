@@ -8,6 +8,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {ExcelModalComponent} from "./modal/excel-modal.component";
 import {MatButtonModule} from "@angular/material/button";
 import {FlexModule} from "@angular/flex-layout";
+import {NgxUploaderModule} from "ngx-uploader";
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import {FlexModule} from "@angular/flex-layout";
         MatToolbarModule,
         MatButtonModule,
         FlexModule,
+        NgxUploaderModule,
     ],
     providers: [
     ],
