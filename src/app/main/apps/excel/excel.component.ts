@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Inject, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
-import {ApiCall, ApiParams, SitebillEntity} from "../../../_models";
+import {SitebillEntity} from "../../../_models";
 import {UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput} from "ngx-uploader";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector: 'excel-apps',
@@ -19,7 +21,8 @@ export class ExcelComponent  implements OnInit {
     uploadInput: EventEmitter<UploadInput>;
     humanizeBytes: Function;
     dragOver: boolean;
-    excel_upload_api: ApiCall;
+    protected _unsubscribeAll: Subject<any>;
+
 
     @Input("entity")
     entity: SitebillEntity;
@@ -30,6 +33,8 @@ export class ExcelComponent  implements OnInit {
         protected modelService: ModelService,
         protected _snackService: SnackService,
     ) {
+        this._unsubscribeAll = new Subject();
+
         this.options = { concurrency: 1, maxUploads: 3, maxFileSize: 1000000 };
         this.files = []; // local uploading files array
         this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
@@ -38,12 +43,12 @@ export class ExcelComponent  implements OnInit {
 
 
     ngOnInit() {
-        console.log(this.entity);
     }
 
     onUploadOutput(output: UploadOutput): void {
         switch (output.type) {
             case 'allAddedToQueue':
+                this.startUpload();
                 // uncomment this if you want to auto upload files when added
                 // const event: UploadInput = {
                 //   type: 'uploadAll',
@@ -77,11 +82,29 @@ export class ExcelComponent  implements OnInit {
                 this.dragOver = false;
                 break;
             case 'done':
-                console.log('done');
-                console.log(output);
-                // The file is downloaded
+                this.startParse(output.file.response.file);
                 break;
         }
+    }
+
+    startParse ( file_name ) {
+        const request = {
+            action: 'dropzone_xls',
+            layer: 'native_ajax',
+            do: 'parse_xls_json',
+            file_name: file_name,
+            model_name: this.entity.get_table_name(),
+            primary_key: this.entity.get_primary_key(),
+            anonymous: false,
+            session_key: this.modelService.get_session_key_safe()
+        };
+        this.modelService.api_request(request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                if (result) {
+                    console.log(result);
+                }
+            });
     }
 
     startUpload(): void {
@@ -119,4 +142,8 @@ export class ExcelComponent  implements OnInit {
         this.uploadInput.emit({ type: 'removeAll' });
     }
 
+    OnDestroy () {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
 }

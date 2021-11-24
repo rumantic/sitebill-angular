@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import {SharedModule} from "../../../shared.module";
 import {MatIconModule} from "@angular/material/icon";
-import {GridModule} from "../../grid/grid.module";
 import {CommonModule} from "@angular/common";
 import {ExcelComponent} from "./excel.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
