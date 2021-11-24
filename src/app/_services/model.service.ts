@@ -805,7 +805,7 @@ export class ModelService {
                     }
                 },
                 error => {
-                    console.log('load config failed, bad request');
+                    console.log('load config failed, bad request standalone');
                 });
 
     }
@@ -829,6 +829,7 @@ export class ModelService {
                 },
                 error => {
                     console.log('load config failed, bad request');
+                    this.config_loaded_emitter.emit(true);
                     if ( this.is_model_redirect_enabled() ) {
                         this.router.navigate(['grid/data']);
                     }
