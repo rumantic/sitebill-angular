@@ -109,6 +109,13 @@
                     </button>
 
                     <!-- SETTINGS BUTTON -->
+                    <button mat-icon-button (click)="excel_modal()"
+                            aria-label="Импорт/экспорт из Excel" matTooltip="Импорт/экспорт из Excel" class="mb-4">
+                        <mat-icon>cloud_upload</mat-icon>
+                    </button>
+                    <!-- / SETTINGS BUTTON -->
+
+                    <!-- SETTINGS BUTTON -->
                     <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settings_modal()"
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
@@ -137,8 +144,6 @@
                         <mat-icon>share</mat-icon>
                     </button>
                     <!-- / SHARE MEMORYLIST BUTTON -->
-
-
 
                 </div>
                 <!-- / TOOLBAR -->

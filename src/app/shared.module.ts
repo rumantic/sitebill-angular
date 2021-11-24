@@ -86,6 +86,7 @@ import {ConfigComponent} from "./main/config/config.component";
 import {MatListModule} from "@angular/material/list";
 import {ConfigFormComponent} from "./main/config/config-form/config-form.component";
 import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component";
+import {ExcelModule} from "./main/apps/excel/excel.module";
 
 @NgModule({
     imports: [
@@ -148,6 +149,7 @@ import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component
         FuseWidgetModule,
         HouseSchemaModule,
         MatListModule,
+        ExcelModule
     ],
     declarations: [
         RegisterDomainModalComponent,

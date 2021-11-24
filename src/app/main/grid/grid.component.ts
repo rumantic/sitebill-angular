@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {DOCUMENT} from '@angular/common';
@@ -30,10 +30,7 @@ import * as moment from 'moment';
 import { CommonTemplateComponent } from './common-template/common-template.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
-import {type} from 'os';
 import {BillingService} from '../../_services/billing.service';
-import { SelectionType } from '@swimlane/ngx-datatable';
-import {ResponseContentType} from '@angular/http';
 import {ReportComponent} from "../../dialogs/report/report.component";
 import *  as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
@@ -46,6 +43,7 @@ import {CoworkerModalComponent} from "./coworker-modal/coworker-modal.component"
 import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blocks-modal.component";
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
+import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -1264,6 +1262,17 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(GridSettingsSidenavComponent, dialogConfig);
     }
+
+    excel_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.data = {};
+        dialogConfig.data.entity = this.entity;
+
+        this.dialog.open(ExcelModalComponent, dialogConfig);
+    }
+
 
 
     toggleExpandGroup(group) {
