@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
-import {SitebillEntity} from "../../../_models";
+import {SitebillEntity, SitebillModelItem} from "../../../_models";
 import {UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput} from "ngx-uploader";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
@@ -28,6 +28,11 @@ export class ExcelComponent  implements OnInit {
     entity: SitebillEntity;
 
     onSave = new EventEmitter();
+    excel_columns = [];
+    excel_rows: any;
+    mapped_columns = {};
+    mapped_model_titles = {};
+    public mapped_columns_array: any[];
 
     constructor(
         protected modelService: ModelService,
@@ -43,7 +48,34 @@ export class ExcelComponent  implements OnInit {
 
 
     ngOnInit() {
+        console.log(this.entity);
+        let index = 0;
+        for (const [key_obj, value_obj] of Object.entries(this.entity.model)) {
+            this.mapped_model_titles[index] = value_obj.title;
+            index++;
+            this.excel_columns.push({
+                title: value_obj.title,
+                prop: value_obj.title,
+                //cellTemplate: this.rowTemplate,
+            });
+        }
+        console.log(this.mapped_model_titles);
     }
+
+
+    colName(n) {
+        let ordA = 'a'.charCodeAt(0);
+        let ordZ = 'z'.charCodeAt(0);
+        let len = ordZ - ordA + 1;
+
+        let s = "";
+        while(n >= 0) {
+            s = String.fromCharCode(n % len + ordA) + s;
+            n = Math.floor(n / len) - 1;
+        }
+        return s.toUpperCase();
+    }
+
 
     onUploadOutput(output: UploadOutput): void {
         switch (output.type) {
@@ -102,9 +134,42 @@ export class ExcelComponent  implements OnInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result) {
-                    console.log(result);
+                    this.mapped_columns = this.mapper(result.excel_data);
+                    this.mapped_columns_array = this.mapper_array(result.excel_data);
+                    this.prepareTableData(result.excel_data);
                 }
             });
+    }
+
+    mapper ( rows ) {
+        let hashmap = rows[0];
+
+        let ret = {};
+        for(let key in hashmap){
+            ret[hashmap[key]] = key;
+        }
+
+        console.log(ret);
+        return ret;
+    }
+    mapper_array ( rows ) {
+        let hashmap = rows[0];
+
+        let ret = [];
+        for(let key in hashmap){
+            ret.push({
+                letter: key,
+                title: hashmap[key]
+            });
+        }
+        console.log(ret);
+        return ret;
+    }
+
+    prepareTableData ( data ) {
+        this.excel_rows = data;
+        console.log(data);
+
     }
 
     startUpload(): void {

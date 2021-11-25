@@ -1,11 +1,45 @@
-<label class="upload-button">
-    <input
-        type="file"
-        ngFileSelect
-        [options]="options"
-        (uploadOutput)="onUploadOutput($event)"
-        [uploadInput]="uploadInput"
-        multiple
-    />
-</label>
+<div class="excel-apps">
+    <label class="upload-button">
+        <input
+            type="file"
+            ngFileSelect
+            [options]="options"
+            (uploadOutput)="onUploadOutput($event)"
+            [uploadInput]="uploadInput"
+            multiple
+        />
+    </label>
+    <ngx-datatable
+        *ngIf="excel_rows"
+        [rows]="excel_rows"
+        [columns]="excel_columns"
+        [rowHeight]="50"
+        [scrollbarV]="true"
+        [virtualization]="false"
+        class="material table-height"
+    >
+        <ngx-datatable-column *ngFor="let col of excel_columns; let i = index;" [name]="col.name">
+            <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-row="row"
+            >
+                <ng-container *ngIf="rowIndex === 0">
+                    <ng-select
+                        appendTo="body"
+                        bindValue="letter"
+                        bindLabel="title"
+                        [items]="mapped_columns_array"
+                        [(ngModel)]="mapped_columns[mapped_model_titles[i]]"
+                    >
+
+                    </ng-select>
+                </ng-container>
+                {{row[mapped_columns[mapped_model_titles[i]]]}}
+            </ng-template>
+        </ngx-datatable-column>
+
+    </ngx-datatable>
+</div>
 

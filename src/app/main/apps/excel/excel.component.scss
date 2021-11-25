@@ -1,3 +1,14 @@
-.form-item {
-    width: 100%;
+@import 'src/@fuse/scss/fuse';
+
+.excel-apps {
+    .form-item {
+        width: 100%;
+    }
+    .table-height {
+        max-height: calc(55vh);
+        @include media-breakpoint('lt-sm') {
+            max-height: calc(45vh);
+        }
+    }
 }
+
