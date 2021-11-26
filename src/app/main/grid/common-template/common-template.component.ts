@@ -157,7 +157,7 @@ export class CommonTemplateComponent {
     }
 
     get_permission ( row, action ) {
-        if ( row[this.entity.get_primary_key()].permissions != null ) {
+        if ( row[this.entity.get_primary_key()] && row[this.entity.get_primary_key()].permissions != null && row[this.entity.get_primary_key()].permissions !== undefined) {
             if ( row[this.entity.get_primary_key()].permissions[action] === true ) {
                 return true;
             }

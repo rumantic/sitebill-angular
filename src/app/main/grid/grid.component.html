@@ -190,23 +190,6 @@
                             (page)="setPage($event)"
                             (select)="onSelect($event)"
                         >
-
-                            <!-- Group Header Template -->
-                            <ngx-datatable-group-header *ngIf="enable_grouping" [rowHeight]="50" #myGroupHeader>
-                                <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
-                                    <div style="padding-left:5px;">
-                                        <button mat-button
-                                                title="Expand/Collapse Group"
-                                                (click)="toggleExpandGroup(group)"
-                                        >
-                                            <mat-icon *ngIf="expanded">keyboard_arrow_down</mat-icon>
-                                            <mat-icon *ngIf="!expanded">keyboard_arrow_right</mat-icon>
-                                            <b>ЖК {{group.value[0][group_key].value_string}}</b>
-                                        </button>
-                                    </div>
-                                </ng-template>
-                            </ngx-datatable-group-header>
-
                         </ngx-datatable>
                     </div>
                     <!-- / Front -->

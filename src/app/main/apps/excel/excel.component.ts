@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
-import {SitebillEntity, SitebillModelItem} from "../../../_models";
+import {SitebillEntity} from "../../../_models";
 import {UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput} from "ngx-uploader";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
@@ -11,6 +11,7 @@ import {takeUntil} from "rxjs/operators";
     selector: 'excel-apps',
     templateUrl: './excel.component.html',
     styleUrls: ['./excel.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 export class ExcelComponent  implements OnInit {
@@ -40,7 +41,7 @@ export class ExcelComponent  implements OnInit {
     ) {
         this._unsubscribeAll = new Subject();
 
-        this.options = { concurrency: 1, maxUploads: 3, maxFileSize: 1000000 };
+        this.options = { concurrency: 1, maxUploads: 3, maxFileSize: 10000000 };
         this.files = []; // local uploading files array
         this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
         this.humanizeBytes = humanizeBytes;
@@ -62,6 +63,106 @@ export class ExcelComponent  implements OnInit {
         console.log(this.mapped_model_titles);
     }
 
+
+
+    startParse ( file_name ) {
+        console.log('start parse');
+        const request = {
+            action: 'dropzone_xls',
+            layer: 'native_ajax',
+            do: 'parse_xls_json',
+            file_name: file_name,
+            model_name: this.entity.get_table_name(),
+            primary_key: this.entity.get_primary_key(),
+            anonymous: false,
+            session_key: this.modelService.get_session_key_safe()
+        };
+        this.modelService.api_request(request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                if (result.status == 'OK') {
+                    this.prepareTableData(result.excel_data);
+                    this.mapped_columns = this.mapper(result.excel_data);
+                    this.mapped_columns_array = this.mapper_array(result.excel_data);
+                } else {
+                    this._snackService.error(result.error);
+                }
+            });
+    }
+
+    mapper ( rows ) {
+        let hashmap = rows[0];
+
+        let ret = {};
+        for(let key in hashmap){
+            ret[hashmap[key]] = key;
+        }
+        return ret;
+    }
+    mapper_array ( rows ) {
+        let hashmap = rows[0];
+
+        let ret = [];
+        ret.push({
+            letter: undefined,
+            title: 'не выбрано'
+        });
+
+        for(let key in hashmap){
+            ret.push({
+                letter: key,
+                title: hashmap[key]
+            });
+        }
+        console.log(ret);
+        return ret;
+    }
+
+    prepareTableData ( data ) {
+        if ( data.length > 5 ) {
+            this.excel_rows = [...data.slice(0, 5)];
+        } else {
+            this.excel_rows = [...data];
+        }
+        console.log(this.excel_rows);
+    }
+
+    startUpload(): void {
+        console.log('start upload');
+        console.log(this.files);
+        const request = {
+            action: 'dropzone_xls',
+            layer: 'native_ajax',
+            model_name: this.entity.get_table_name(),
+            primary_key: this.entity.get_primary_key(),
+            anonymous: false,
+            session_key: this.modelService.get_session_key_safe()
+        };
+        let params = new URLSearchParams();
+        for(let key in request){
+            params.set(key, request[key])
+        }
+
+        const event: UploadInput = {
+            type: 'uploadAll',
+            url: this.modelService.get_api_url() + '/apps/api/rest.php?' + params.toString(),
+            method: 'POST',
+            data: { foo: 'bar' }
+        };
+        this.uploadInput.emit(event);
+    }
+
+    cancelUpload(id: string): void {
+        this.uploadInput.emit({ type: 'cancel', id: id });
+    }
+
+    removeFile(id: string): void {
+        this.uploadInput.emit({ type: 'remove', id: id });
+    }
+
+    removeAllFiles(): void {
+        this.uploadInput.emit({ type: 'removeAll' });
+    }
 
     colName(n) {
         let ordA = 'a'.charCodeAt(0);
@@ -119,96 +220,19 @@ export class ExcelComponent  implements OnInit {
         }
     }
 
-    startParse ( file_name ) {
-        const request = {
-            action: 'dropzone_xls',
-            layer: 'native_ajax',
-            do: 'parse_xls_json',
-            file_name: file_name,
-            model_name: this.entity.get_table_name(),
-            primary_key: this.entity.get_primary_key(),
-            anonymous: false,
-            session_key: this.modelService.get_session_key_safe()
-        };
-        this.modelService.api_request(request)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                if (result) {
-                    this.mapped_columns = this.mapper(result.excel_data);
-                    this.mapped_columns_array = this.mapper_array(result.excel_data);
-                    this.prepareTableData(result.excel_data);
-                }
-            });
-    }
-
-    mapper ( rows ) {
-        let hashmap = rows[0];
-
-        let ret = {};
-        for(let key in hashmap){
-            ret[hashmap[key]] = key;
-        }
-
-        console.log(ret);
-        return ret;
-    }
-    mapper_array ( rows ) {
-        let hashmap = rows[0];
-
-        let ret = [];
-        for(let key in hashmap){
-            ret.push({
-                letter: key,
-                title: hashmap[key]
-            });
-        }
-        console.log(ret);
-        return ret;
-    }
-
-    prepareTableData ( data ) {
-        this.excel_rows = data;
-        console.log(data);
-
-    }
-
-    startUpload(): void {
-        const request = {
-            action: 'dropzone_xls',
-            layer: 'native_ajax',
-            model_name: this.entity.get_table_name(),
-            primary_key: this.entity.get_primary_key(),
-            anonymous: false,
-            session_key: this.modelService.get_session_key_safe()
-        };
-        let params = new URLSearchParams();
-        for(let key in request){
-            params.set(key, request[key])
-        }
-
-        const event: UploadInput = {
-            type: 'uploadAll',
-            url: this.modelService.get_api_url() + '/apps/api/rest.php?' + params.toString(),
-            method: 'POST',
-            data: { foo: 'bar' }
-        };
-        this.uploadInput.emit(event);
-    }
-
-    cancelUpload(id: string): void {
-        this.uploadInput.emit({ type: 'cancel', id: id });
-    }
-
-    removeFile(id: string): void {
-        this.uploadInput.emit({ type: 'remove', id: id });
-    }
-
-    removeAllFiles(): void {
-        this.uploadInput.emit({ type: 'removeAll' });
-    }
 
     OnDestroy () {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    get_default_value(i: number) {
+        return 0;
+    }
+
+    update_mapper(event: any) {
+        this.excel_rows = [...this.excel_rows];
+        // console.log(this.mapped_columns);
+
     }
 }

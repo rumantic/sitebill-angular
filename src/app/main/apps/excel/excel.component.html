@@ -6,7 +6,6 @@
             [options]="options"
             (uploadOutput)="onUploadOutput($event)"
             [uploadInput]="uploadInput"
-            multiple
         />
     </label>
     <ngx-datatable
@@ -27,11 +26,13 @@
             >
                 <ng-container *ngIf="rowIndex === 0">
                     <ng-select
+                        class="select_options"
                         appendTo="body"
                         bindValue="letter"
                         bindLabel="title"
                         [items]="mapped_columns_array"
                         [(ngModel)]="mapped_columns[mapped_model_titles[i]]"
+                        (ngModelChange)="update_mapper($event)"
                     >
 
                     </ng-select>

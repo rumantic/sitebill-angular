@@ -614,7 +614,7 @@ export class GridComponent implements OnInit, OnDestroy
                     //console.log(this.item_model);
                     this.rows_data = result_f1.rows;
                     this.data_all = result_f1.rows.length;
-                    this.group();
+                    // this.group();
 
 
                     //this.init_selected_rows(this.rows, selected);
