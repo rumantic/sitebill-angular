@@ -1,15 +1,24 @@
 <div class="excel-apps">
-    <label class="upload-button">
-        <input
-            type="file"
-            ngFileSelect
-            [options]="options"
-            (uploadOutput)="onUploadOutput($event)"
-            [uploadInput]="uploadInput"
-        />
-    </label>
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center">
+        <label class="upload-button">
+            <input
+                type="file"
+                ngFileSelect
+                [options]="options"
+                (uploadOutput)="onUploadOutput($event)"
+                [uploadInput]="uploadInput"
+            />
+        </label>
+        <button *ngIf="can_import" (click)="startImport()" mat-raised-button class="mat-accent" matTooltip="Начать импорт данных">
+            Начать импорт данных
+        </button>
+    </div>
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="loading">
+        <mat-icon><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
+    </div>
+
     <ngx-datatable
-        *ngIf="excel_rows"
+        *ngIf="can_import && !loading"
         [rows]="excel_rows"
         [columns]="excel_columns"
         [rowHeight]="50"

@@ -10,6 +10,9 @@ import {NgxUploaderModule} from "ngx-uploader";
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
     declarations: [
@@ -28,6 +31,9 @@ import {FormsModule} from "@angular/forms";
         NgxDatatableModule,
         NgSelectModule,
         FormsModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule,
     ],
     providers: [
     ],

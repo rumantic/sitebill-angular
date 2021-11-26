@@ -34,6 +34,9 @@ export class ExcelComponent  implements OnInit {
     mapped_columns = {};
     mapped_model_titles = {};
     public mapped_columns_array: any[];
+    public can_import = false;
+    public loading = false;
+    public file_for_import = null;
 
     constructor(
         protected modelService: ModelService,
@@ -41,7 +44,7 @@ export class ExcelComponent  implements OnInit {
     ) {
         this._unsubscribeAll = new Subject();
 
-        this.options = { concurrency: 1, maxUploads: 3, maxFileSize: 10000000 };
+        this.options = { concurrency: 1, maxUploads: 99, maxFileSize: 10000000 };
         this.files = []; // local uploading files array
         this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
         this.humanizeBytes = humanizeBytes;
@@ -80,10 +83,13 @@ export class ExcelComponent  implements OnInit {
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+                this.loading = false;
                 if (result.status == 'OK') {
                     this.prepareTableData(result.excel_data);
                     this.mapped_columns = this.mapper(result.excel_data);
                     this.mapped_columns_array = this.mapper_array(result.excel_data);
+                    this.can_import = true;
+                    this.file_for_import = file_name;
                 } else {
                     this._snackService.error(result.error);
                 }
@@ -118,6 +124,36 @@ export class ExcelComponent  implements OnInit {
         return ret;
     }
 
+    startImport() {
+        console.log('start import');
+        console.log(this.mapped_columns);
+        this.clearTable();
+
+        const request = {
+            action: 'dropzone_xls',
+            layer: 'native_ajax',
+            do: 'import_json',
+            file_name: this.file_for_import,
+            model_name: this.entity.get_table_name(),
+            primary_key: this.entity.get_primary_key(),
+            anonymous: false,
+            mapped_columns: this.mapped_columns,
+            session_key: this.modelService.get_session_key_safe()
+        };
+        console.log(request);
+        this.loading = true;
+
+        this.modelService.api_request(request)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                console.log(result);
+                this.loading = false;
+            });
+
+
+
+    }
+
     prepareTableData ( data ) {
         if ( data.length > 5 ) {
             this.excel_rows = [...data.slice(0, 5)];
@@ -127,8 +163,16 @@ export class ExcelComponent  implements OnInit {
         console.log(this.excel_rows);
     }
 
+    clearTable () {
+        let empty = [];
+        this.excel_rows = [...empty];
+    }
+
     startUpload(): void {
         console.log('start upload');
+        this.can_import = false;
+        this.loading = true;
+        this.clearTable();
         console.log(this.files);
         const request = {
             action: 'dropzone_xls',
@@ -235,4 +279,5 @@ export class ExcelComponent  implements OnInit {
         // console.log(this.mapped_columns);
 
     }
+
 }
