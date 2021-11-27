@@ -7,6 +7,7 @@ import {humanizeBytes, UploaderOptions, UploadFile, UploadInput, UploadOutput} f
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {ExcelState} from "./types/state.type";
+import {worksheetData} from "./types/worksheet-data.type";
 
 @Component({
     selector: 'excel-apps',
@@ -40,6 +41,7 @@ export class ExcelComponent  implements OnInit {
     public file_for_import = null;
     public state: ExcelState;
     public ExcelState = ExcelState;
+    public worksheetData: worksheetData;
 
     constructor(
         protected modelService: ModelService,
@@ -87,11 +89,13 @@ export class ExcelComponent  implements OnInit {
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                this.loading = false;
+                console.log(result);
                 if (result.status == 'OK') {
-                    this.prepareTableData(result.excel_data);
-                    this.mapped_columns = this.mapper(result.excel_data);
-                    this.mapped_columns_array = this.mapper_array(result.excel_data);
+                    this.worksheetData = result.excel_full_data.worksheetData[0];
+                    console.log(this.worksheetData);
+                    this.prepareTableData(result.excel_full_data.data);
+                    this.mapped_columns = this.mapper(result.excel_full_data.data);
+                    this.mapped_columns_array = this.mapper_array(result.excel_full_data.data);
                     this.can_import = true;
                     this.file_for_import = file_name;
                     this.setState(ExcelState.preview_table);

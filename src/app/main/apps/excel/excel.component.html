@@ -9,9 +9,17 @@
                 [uploadInput]="uploadInput"
             />
         </label>
-        <button *ngIf="getState() === ExcelState.preview_table" (click)="startImport()" mat-raised-button class="mat-accent" matTooltip="Начать импорт данных">
-            Начать импорт данных
-        </button>
+        <ng-container *ngIf="getState() === ExcelState.preview_table">
+            <div>
+                Строк: {{worksheetData.totalRows}}
+            </div>
+            <div>
+                Колонок: {{worksheetData.lastColumnIndex+1}}
+            </div>
+            <button  (click)="startImport()" mat-raised-button class="mat-accent" matTooltip="Начать импорт данных">
+                Начать импорт данных
+            </button>
+        </ng-container>
     </div>
     <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.loading">
         <mat-icon><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
