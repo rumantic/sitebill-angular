@@ -9,16 +9,20 @@
                 [uploadInput]="uploadInput"
             />
         </label>
-        <button *ngIf="can_import" (click)="startImport()" mat-raised-button class="mat-accent" matTooltip="Начать импорт данных">
+        <button *ngIf="getState() === ExcelState.preview_table" (click)="startImport()" mat-raised-button class="mat-accent" matTooltip="Начать импорт данных">
             Начать импорт данных
         </button>
     </div>
-    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="loading">
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.loading">
         <mat-icon><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
     </div>
 
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_result">
+        import result
+    </div>
+
     <ngx-datatable
-        *ngIf="can_import && !loading"
+        *ngIf="getState() === ExcelState.preview_table"
         [rows]="excel_rows"
         [columns]="excel_columns"
         [rowHeight]="50"

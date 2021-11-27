@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ModelService} from '../../../_services/model.service';
 import {SnackService} from '../../../_services/snack.service';
 import {SitebillEntity} from "../../../_models";
-import {UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput} from "ngx-uploader";
+import {humanizeBytes, UploaderOptions, UploadFile, UploadInput, UploadOutput} from "ngx-uploader";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {ExcelState} from "./types/state.type";
 
 @Component({
     selector: 'excel-apps',
@@ -37,6 +38,8 @@ export class ExcelComponent  implements OnInit {
     public can_import = false;
     public loading = false;
     public file_for_import = null;
+    public state: ExcelState;
+    public ExcelState = ExcelState;
 
     constructor(
         protected modelService: ModelService,
@@ -70,6 +73,7 @@ export class ExcelComponent  implements OnInit {
 
     startParse ( file_name ) {
         console.log('start parse');
+        this.setState(ExcelState.loading);
         const request = {
             action: 'dropzone_xls',
             layer: 'native_ajax',
@@ -90,6 +94,7 @@ export class ExcelComponent  implements OnInit {
                     this.mapped_columns_array = this.mapper_array(result.excel_data);
                     this.can_import = true;
                     this.file_for_import = file_name;
+                    this.setState(ExcelState.preview_table);
                 } else {
                     this._snackService.error(result.error);
                 }
@@ -127,6 +132,7 @@ export class ExcelComponent  implements OnInit {
     startImport() {
         console.log('start import');
         console.log(this.mapped_columns);
+        this.setState(ExcelState.loading);
         this.clearTable();
 
         const request = {
@@ -146,8 +152,8 @@ export class ExcelComponent  implements OnInit {
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+                this.setState(ExcelState.import_result);
                 console.log(result);
-                this.loading = false;
             });
 
 
@@ -168,12 +174,20 @@ export class ExcelComponent  implements OnInit {
         this.excel_rows = [...empty];
     }
 
+    getState (): ExcelState {
+        return this.state;
+
+    }
+
+    setState (state:ExcelState) {
+        this.state = state;
+
+    }
+
     startUpload(): void {
         console.log('start upload');
-        this.can_import = false;
-        this.loading = true;
         this.clearTable();
-        console.log(this.files);
+        this.setState(ExcelState.loading);
         const request = {
             action: 'dropzone_xls',
             layer: 'native_ajax',
