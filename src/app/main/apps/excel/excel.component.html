@@ -25,8 +25,13 @@
         <mat-icon><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
     </div>
 
-    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_result">
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_complete">
         import result
+    </div>
+
+    <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_in_progress">
+        <mat-progress-bar mode="determinate" value="{{getProgressInPercent()}}"></mat-progress-bar>
+        <div class="p-12">{{getImportedRows()}}/{{worksheetData.totalRows}}</div>
     </div>
 
     <ngx-datatable

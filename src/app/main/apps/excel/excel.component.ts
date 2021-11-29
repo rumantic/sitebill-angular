@@ -42,6 +42,7 @@ export class ExcelComponent  implements OnInit {
     public state: ExcelState;
     public ExcelState = ExcelState;
     public worksheetData: worksheetData;
+    public progress_page = 1;
 
     constructor(
         protected modelService: ModelService,
@@ -133,16 +134,18 @@ export class ExcelComponent  implements OnInit {
         return ret;
     }
 
-    startImport() {
+    startImport(page = 0) {
         console.log('start import');
         console.log(this.mapped_columns);
-        this.setState(ExcelState.loading);
+        this.setState(ExcelState.import_in_progress);
         this.clearTable();
 
         const request = {
             action: 'dropzone_xls',
             layer: 'native_ajax',
             do: 'import_json',
+            page: page,
+            totalPages: this.worksheetData.totalPages,
             file_name: this.file_for_import,
             model_name: this.entity.get_table_name(),
             primary_key: this.entity.get_primary_key(),
@@ -150,18 +153,37 @@ export class ExcelComponent  implements OnInit {
             mapped_columns: this.mapped_columns,
             session_key: this.modelService.get_session_key_safe()
         };
-        console.log(request);
-        this.loading = true;
+        this.progress_page = page;
 
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                this.setState(ExcelState.import_result);
                 console.log(result);
+                if ( result.data.import_status === ExcelState.import_in_progress ) {
+                    this.startImport(result.data.page);
+                } else {
+                    this.progress_page = result.data.page;
+
+                    setTimeout(() => {
+                        this.setState(ExcelState.import_complete);
+                    }, 1000);
+                }
             });
 
 
 
+    }
+
+    getImportedRows () {
+        let imported_rows = Math.round(this.progress_page*this.worksheetData.perPage);
+        if ( imported_rows > this.worksheetData.totalRows ) {
+             imported_rows = this.worksheetData.totalRows;
+        }
+        return imported_rows;
+    }
+
+    getProgressInPercent () {
+        return Math.round(((this.getImportedRows())/this.worksheetData.totalRows)*100);
     }
 
     prepareTableData ( data ) {

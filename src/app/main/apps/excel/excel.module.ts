@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
         MatInputModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
+        MatProgressBarModule,
     ],
     providers: [
     ],
