@@ -59,6 +59,7 @@
                         [items]="mapped_columns_array"
                         [(ngModel)]="mapped_columns[mapped_model_titles[i]]"
                         (ngModelChange)="update_mapper($event)"
+                        (change)="update_mapper_import()"
                     >
 
                     </ng-select>

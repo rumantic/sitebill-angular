@@ -31,10 +31,13 @@ export class ExcelComponent  implements OnInit {
     entity: SitebillEntity;
 
     onSave = new EventEmitter();
+    start_excel_columns = {};
     excel_columns = [];
     excel_rows: any;
     mapped_columns = {};
-    mapped_model_titles = {};
+    mapped_model_titles = [];
+    mapped_model_keys = [];
+    mapped_model_keys_for_import = {};
     public mapped_columns_array: any[];
     public can_import = false;
     public loading = false;
@@ -62,6 +65,7 @@ export class ExcelComponent  implements OnInit {
         let index = 0;
         for (const [key_obj, value_obj] of Object.entries(this.entity.model)) {
             this.mapped_model_titles[index] = value_obj.title;
+            this.mapped_model_keys[value_obj.title] = value_obj.name;
             index++;
             this.excel_columns.push({
                 title: value_obj.title,
@@ -69,7 +73,6 @@ export class ExcelComponent  implements OnInit {
                 //cellTemplate: this.rowTemplate,
             });
         }
-        console.log(this.mapped_model_titles);
     }
 
 
@@ -90,7 +93,6 @@ export class ExcelComponent  implements OnInit {
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log(result);
                 if (result.status == 'OK') {
                     this.worksheetData = result.excel_full_data.worksheetData[0];
                     console.log(this.worksheetData);
@@ -100,6 +102,7 @@ export class ExcelComponent  implements OnInit {
                     this.can_import = true;
                     this.file_for_import = file_name;
                     this.setState(ExcelState.preview_table);
+                    this.update_mapper_import();
                 } else {
                     this._snackService.error(result.error);
                 }
@@ -117,10 +120,12 @@ export class ExcelComponent  implements OnInit {
     }
     mapper_array ( rows ) {
         let hashmap = rows[0];
+        this.start_excel_columns = hashmap;
 
         let ret = [];
         ret.push({
             letter: undefined,
+            column_key: '_not_defined',
             title: 'не выбрано'
         });
 
@@ -130,13 +135,11 @@ export class ExcelComponent  implements OnInit {
                 title: hashmap[key]
             });
         }
-        console.log(ret);
         return ret;
     }
 
+
     startImport(page = 0) {
-        console.log('start import');
-        console.log(this.mapped_columns);
         this.setState(ExcelState.import_in_progress);
         this.clearTable();
 
@@ -150,9 +153,10 @@ export class ExcelComponent  implements OnInit {
             model_name: this.entity.get_table_name(),
             primary_key: this.entity.get_primary_key(),
             anonymous: false,
-            mapped_columns: this.mapped_columns,
+            mapped_columns: this.mapped_model_keys_for_import,
             session_key: this.modelService.get_session_key_safe()
         };
+        console.log(request);
         this.progress_page = page;
 
         this.modelService.api_request(request)
@@ -169,10 +173,12 @@ export class ExcelComponent  implements OnInit {
                     }, 1000);
                 }
             });
+    }
 
-
+    import_mapper () {
 
     }
+
 
     getImportedRows () {
         let imported_rows = Math.round(this.progress_page*this.worksheetData.perPage);
@@ -192,7 +198,7 @@ export class ExcelComponent  implements OnInit {
         } else {
             this.excel_rows = [...data];
         }
-        console.log(this.excel_rows);
+        // console.log(this.excel_rows);
     }
 
     clearTable () {
@@ -211,7 +217,7 @@ export class ExcelComponent  implements OnInit {
     }
 
     startUpload(): void {
-        console.log('start upload');
+        // console.log('start upload');
         this.clearTable();
         this.setState(ExcelState.loading);
         const request = {
@@ -316,8 +322,16 @@ export class ExcelComponent  implements OnInit {
 
     update_mapper(event: any) {
         this.excel_rows = [...this.excel_rows];
-        // console.log(this.mapped_columns);
-
     }
 
+    update_mapper_import() {
+        for (let i = 0; i < this.mapped_model_titles.length; i++) {
+            if ( this.mapped_columns[this.mapped_model_titles[i]] !== undefined ) {
+                this.mapped_model_keys_for_import[this.mapped_model_keys[this.mapped_model_titles[i]]] = this.start_excel_columns[this.mapped_columns[this.mapped_model_titles[i]]];
+            } else {
+                this.mapped_model_keys_for_import[this.mapped_model_keys[this.mapped_model_titles[i]]] = '_not_defined';
+            }
+        }
+        console.log(this.mapped_model_keys_for_import);
+    }
 }
