@@ -8,6 +8,7 @@ import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {ExcelState} from "./types/state.type";
 import {worksheetData} from "./types/worksheet-data.type";
+import {SitebillResponse} from "../../../_models/sitebill-response";
 
 @Component({
     selector: 'excel-apps',
@@ -46,6 +47,7 @@ export class ExcelComponent  implements OnInit {
     public ExcelState = ExcelState;
     public worksheetData: worksheetData;
     public progress_page = 1;
+    public import_result: string;
 
     constructor(
         protected modelService: ModelService,
@@ -154,6 +156,7 @@ export class ExcelComponent  implements OnInit {
             primary_key: this.entity.get_primary_key(),
             anonymous: false,
             mapped_columns: this.mapped_model_keys_for_import,
+            excel_header: this.start_excel_columns,
             session_key: this.modelService.get_session_key_safe()
         };
         console.log(request);
@@ -161,16 +164,23 @@ export class ExcelComponent  implements OnInit {
 
         this.modelService.api_request(request)
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
+            .subscribe((result: SitebillResponse) => {
                 console.log(result);
-                if ( result.data.import_status === ExcelState.import_in_progress ) {
-                    this.startImport(result.data.page);
-                } else {
-                    this.progress_page = result.data.page;
+                if ( result.state === 'OK' ) {
+                    if ( result.data.import_status === ExcelState.import_in_progress ) {
+                        this.startImport(result.data.page);
+                    } else {
+                        this.progress_page = result.data.page;
 
-                    setTimeout(() => {
-                        this.setState(ExcelState.import_complete);
-                    }, 1000);
+                        setTimeout(() => {
+                            this.setState(ExcelState.import_complete);
+                            this.import_result = 'Данные загружены';
+                        }, 1000);
+                    }
+                } else {
+                    this._snackService.error(result.message);
+                    this.import_result = result.message;
+                    this.setState(ExcelState.import_complete);
                 }
             });
     }

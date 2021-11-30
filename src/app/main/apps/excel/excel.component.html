@@ -26,7 +26,7 @@
     </div>
 
     <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_complete">
-        import result
+        {{import_result}}
     </div>
 
     <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_in_progress">
