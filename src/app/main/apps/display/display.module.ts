@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {CommonModule} from "@angular/common";
-import {ExcelComponent} from "./excel.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {ExcelModalComponent} from "./modal/excel-modal.component";
 import {MatButtonModule} from "@angular/material/button";
 import {FlexModule} from "@angular/flex-layout";
 import {NgxUploaderModule} from "ngx-uploader";
@@ -14,14 +12,14 @@ import {MatInputModule} from "@angular/material/input";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {DisplayModule} from "../display/display.module";
+import {DisplayComponent} from "./display.component";
 
 @NgModule({
     declarations: [
-        ExcelComponent,
-        ExcelModalComponent
+        DisplayComponent
     ],
     exports: [
+        DisplayComponent
     ],
     imports: [
         MatIconModule,
@@ -37,7 +35,6 @@ import {DisplayModule} from "../display/display.module";
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        DisplayModule,
     ],
     providers: [
     ],
@@ -45,6 +42,6 @@ import {DisplayModule} from "../display/display.module";
     ]
 })
 
-export class ExcelModule
+export class DisplayModule
 {
 }

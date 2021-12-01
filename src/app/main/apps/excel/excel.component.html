@@ -25,6 +25,13 @@
         <mat-icon><mat-spinner [diameter]="20"></mat-spinner></mat-icon>
     </div>
 
+    <div fxLayout="column" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_complete || getState() === ExcelState.import_in_progress">
+        <h3>Статистика импорта записей:</h3>
+        <div>Новые: {{import_statistics.new_stat_items}}</div>
+        <div>Обновлено: {{import_statistics.updated_stat_items}}</div>
+        <div class="">Отклонено: {{import_statistics.rejected_stat_items}}</div>
+    </div>
+
     <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_complete">
         {{import_result}}
     </div>
@@ -32,6 +39,11 @@
     <div fxLayout="row" class="p-12" fxLayoutAlign="space-between center" *ngIf="getState() === ExcelState.import_in_progress">
         <mat-progress-bar mode="determinate" value="{{getProgressInPercent()}}"></mat-progress-bar>
         <div class="p-12">{{getImportedRows()}}/{{worksheetData.totalRows}}</div>
+    </div>
+
+    <div fxLayout="row" class="p-12 width-100-p" fxLayoutAlign="space-between center"
+         *ngIf="true || getState() === ExcelState.import_complete || getState() === ExcelState.import_in_progress">
+        <display-apps [messages]="import_statistics.error_stat_items"></display-apps>
     </div>
 
     <ngx-datatable

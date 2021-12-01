@@ -9,6 +9,7 @@ import {takeUntil} from "rxjs/operators";
 import {ExcelState} from "./types/state.type";
 import {worksheetData} from "./types/worksheet-data.type";
 import {SitebillResponse} from "../../../_models/sitebill-response";
+import {StatisticsType} from "./types/statistics.type";
 
 @Component({
     selector: 'excel-apps',
@@ -48,6 +49,12 @@ export class ExcelComponent  implements OnInit {
     public worksheetData: worksheetData;
     public progress_page = 1;
     public import_result: string;
+    public import_statistics = {
+        new_stat_items: 0,
+        updated_stat_items: 0,
+        rejected_stat_items: 0,
+        error_stat_items: [],
+    };
 
     constructor(
         protected modelService: ModelService,
@@ -80,7 +87,6 @@ export class ExcelComponent  implements OnInit {
 
 
     startParse ( file_name ) {
-        console.log('start parse');
         this.setState(ExcelState.loading);
         const request = {
             action: 'dropzone_xls',
@@ -97,7 +103,6 @@ export class ExcelComponent  implements OnInit {
             .subscribe((result: any) => {
                 if (result.status == 'OK') {
                     this.worksheetData = result.excel_full_data.worksheetData[0];
-                    console.log(this.worksheetData);
                     this.prepareTableData(result.excel_full_data.data);
                     this.mapped_columns = this.mapper(result.excel_full_data.data);
                     this.mapped_columns_array = this.mapper_array(result.excel_full_data.data);
@@ -159,7 +164,7 @@ export class ExcelComponent  implements OnInit {
             excel_header: this.start_excel_columns,
             session_key: this.modelService.get_session_key_safe()
         };
-        console.log(request);
+        //console.log(request);
         this.progress_page = page;
 
         this.modelService.api_request(request)
@@ -167,6 +172,7 @@ export class ExcelComponent  implements OnInit {
             .subscribe((result: SitebillResponse) => {
                 console.log(result);
                 if ( result.state === 'OK' ) {
+                    this.updateStatistics(result.data.import_statistics);
                     if ( result.data.import_status === ExcelState.import_in_progress ) {
                         this.startImport(result.data.page);
                     } else {
@@ -177,6 +183,7 @@ export class ExcelComponent  implements OnInit {
                             this.import_result = 'Данные загружены';
                         }, 1000);
                     }
+
                 } else {
                     this._snackService.error(result.message);
                     this.import_result = result.message;
@@ -187,6 +194,18 @@ export class ExcelComponent  implements OnInit {
 
     import_mapper () {
 
+    }
+
+    updateStatistics( import_statistics: {} ) {
+        for (let item in StatisticsType) {
+            if ( item === StatisticsType.error_stat_items ) {
+                this.import_statistics[item] = this.import_statistics[item].concat(import_statistics[item]);
+            } else {
+                if ( !isNaN(Number(import_statistics[item])) ) {
+                    this.import_statistics[item] += Number(import_statistics[item]);
+                }
+            }
+        }
     }
 
 
@@ -342,6 +361,5 @@ export class ExcelComponent  implements OnInit {
                 this.mapped_model_keys_for_import[this.mapped_model_keys[this.mapped_model_titles[i]]] = '_not_defined';
             }
         }
-        console.log(this.mapped_model_keys_for_import);
     }
 }
