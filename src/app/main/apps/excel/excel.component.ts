@@ -198,11 +198,13 @@ export class ExcelComponent  implements OnInit {
 
     updateStatistics( import_statistics: {} ) {
         for (let item in StatisticsType) {
-            if ( item === StatisticsType.error_stat_items ) {
-                this.import_statistics[item] = this.import_statistics[item].concat(import_statistics[item]);
-            } else {
-                if ( !isNaN(Number(import_statistics[item])) ) {
-                    this.import_statistics[item] += Number(import_statistics[item]);
+            if ( import_statistics &&  import_statistics.hasOwnProperty(item) ) {
+                if ( item === StatisticsType.error_stat_items ) {
+                    this.import_statistics[item] = this.import_statistics[item].concat(import_statistics[item]);
+                } else {
+                    if ( !isNaN(Number(import_statistics[item])) ) {
+                        this.import_statistics[item] += Number(import_statistics[item]);
+                    }
                 }
             }
         }
