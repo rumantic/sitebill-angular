@@ -116,7 +116,7 @@
                     <!-- / SETTINGS BUTTON -->
 
                     <!-- SETTINGS BUTTON -->
-                    <button *ngIf="!freeze_default_columns_list" mat-icon-button (click)="settings_modal()"
+                    <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button (click)="settings_modal()"
                             aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                         <mat-icon>settings</mat-icon>
                     </button>
