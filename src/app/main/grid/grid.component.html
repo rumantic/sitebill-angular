@@ -108,12 +108,19 @@
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
-                    <!-- SETTINGS BUTTON -->
+                    <!-- EXCEL IMPORT BUTTON -->
                     <button mat-icon-button (click)="excel_modal()"
-                            aria-label="Импорт/экспорт из Excel" matTooltip="Импорт/экспорт из Excel" class="mb-4">
+                            aria-label="Импорт из Excel" matTooltip="Импорт из Excel" class="mb-4">
                         <mat-icon>cloud_upload</mat-icon>
                     </button>
-                    <!-- / SETTINGS BUTTON -->
+                    <!-- / EXCEL IMPORT BUTTON -->
+
+                    <!-- EXCEL EXPORT BUTTON -->
+                    <button mat-icon-button (click)="excel_export()"
+                            aria-label="Экспорт в Excel" matTooltip="Экспорт в Excel" class="mb-4">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                    <!-- / EXCEL EXPORT BUTTON -->
 
                     <!-- SETTINGS BUTTON -->
                     <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button (click)="settings_modal()"

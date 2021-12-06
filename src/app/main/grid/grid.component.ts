@@ -44,6 +44,7 @@ import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blo
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
 import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
+import {SitebillResponse} from "../../_models/sitebill-response";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -339,7 +340,9 @@ export class GridComponent implements OnInit, OnDestroy
             }
         }
 
-        this.filterService.share.subscribe((entity: SitebillEntity) => {
+        this.filterService.share
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((entity: SitebillEntity) => {
             if (entity.get_app_name() == this.entity.get_app_name()) {
                 if (this.refresh_complete) {
                     this.resizeSubject.next(0);
@@ -349,12 +352,16 @@ export class GridComponent implements OnInit, OnDestroy
             }
         });
 
-        this._fuseConfigService.broadcast.subscribe((result) => {
+        this._fuseConfigService.broadcast
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
             this.refresh();
         });
 
 
-        this.resizeObservable.subscribe(() => {
+        this.resizeObservable
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
 
             //console.log('subscirbe');
             //console.log(entity);
@@ -814,9 +821,12 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить запись?';
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
+        this.confirmDialogRef.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(result => {
             if (result) {
                 this.modelService.delete(this.entity.get_table_name(), this.entity.primary_key, item_id)
+                    .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((response: any) => {
                         console.log(response);
 
@@ -951,6 +961,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
 
         this.modelService.update_only_ql(this.entity.get_table_name(), value, ql_items)
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response: any) => {
                 if (response.state == 'error') {
                     this._snackService.message(response.message);
@@ -986,7 +997,9 @@ export class GridComponent implements OnInit, OnDestroy
             dialogConfig.panelClass = 'regular-modal';
 
             const modalRef = this.dialog.open(CollectionModalComponent, dialogConfig);
-            modalRef.componentInstance.onSave.subscribe((result) => {
+            modalRef.componentInstance.onSave
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
                 this.model_service_toggle_collections(event, domain, deal_id, title, data_id, result.memorylist_id);
             });
         } else {
@@ -998,6 +1011,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     model_service_toggle_collections( event, domain, deal_id, title, data_id, memorylist_id = 0 ) {
         this.modelService.toggle_collections(domain, deal_id, title, data_id, memorylist_id)
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response: any) => {
                 console.log(response);
                 if (response.state == 'error') {
@@ -1051,6 +1065,7 @@ export class GridComponent implements OnInit, OnDestroy
         const params = { width: event.newValue };
         if ( event.column !== undefined && event.column.model_name !== undefined ) {
             this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
+                .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((response: any) => {
                     //console.log(response);
                 });
@@ -1109,9 +1124,14 @@ export class GridComponent implements OnInit, OnDestroy
         const deal_id = this.bitrix24Service.get_entity_id();
         const domain = this.bitrix24Service.get_domain();
         this.modelService.export_collections_pdf(domain, deal_id, report_type, this.memorylist_id)
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response: any) => {
                 this.saveAsProject(response);
             });
+    }
+
+    saveAsExcel(content){
+        this.writeContents((<any>content), this.entity.get_table_name() + '_.xlsx', 'application/excel');
     }
 
     saveAsProject(content){
@@ -1176,7 +1196,9 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.data = this.entity;
 
         const modalRef = this.dialog.open(BuildingBlocksModalComponent, dialogConfig);
-        modalRef.componentInstance.onSave.subscribe((result) => {
+        modalRef.componentInstance.onSave
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
             console.log(result);
         });
 
@@ -1193,7 +1215,9 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.data = this.entity;
 
         const modalRef = this.dialog.open(CoworkerModalComponent, dialogConfig);
-        modalRef.componentInstance.onSave.subscribe((result) => {
+        modalRef.componentInstance.onSave
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
             console.log(result);
         });
     }
@@ -1209,7 +1233,9 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.data = this.entity;
 
         const modalRef = this.dialog.open(TestimonialsModalComponent, dialogConfig);
-        modalRef.componentInstance.onSave.subscribe((result) => {
+        modalRef.componentInstance.onSave
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
             console.log(result);
         });
     }
@@ -1273,6 +1299,21 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.dialog.open(ExcelModalComponent, dialogConfig);
     }
+
+    excel_export() {
+        this.modelService.excel_export(this.entity, this.get_filter_params())
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                    this.saveAsExcel(result);
+                },
+                err => {
+                    console.log(err);
+                    return false;
+                }
+            );
+
+    }
+
 
 
 

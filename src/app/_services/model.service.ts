@@ -952,6 +952,18 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request, {responseType: 'blob'});
     }
 
+    excel_export(entity: SitebillEntity, input_params) {
+        const request = {
+            action: 'excelfree',
+            do: 'export',
+            model_name: entity.get_table_name(),
+            input_params: input_params,
+            session_key: this.get_session_key_safe()
+        };
+        return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request, {responseType: 'blob'});
+    }
+
+
     set_current_entity ( entity: SitebillEntity ) {
         this.current_entity = entity;
     }
