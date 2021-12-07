@@ -451,7 +451,9 @@ export class FormConstructorComponent implements OnInit {
                         if ( this.records[this.rows[rowIndex]].value === '0' ) {
                             this.form.controls[this.rows[rowIndex]].patchValue(null);
                         } else {
-                            this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
+                            if ( !Array.isArray(this.records[this.rows[rowIndex]].value) ) {
+                                this.form.controls[this.rows[rowIndex]].patchValue(this.records[this.rows[rowIndex]].value.split(','));
+                            }
                         }
                     } else {
 

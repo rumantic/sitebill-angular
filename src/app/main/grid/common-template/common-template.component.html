@@ -90,6 +90,10 @@
     </button>
 </ng-template>
 
+<ng-template #select_by_query_multi_Tmpl let-column="column" let-row="row" let-value="value">
+    {{row[column['model_name']].value_string_implode}}
+</ng-template>
+
 <ng-template #photoTmpl let-column="column" let-row="row" let-value="value">
     <button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
         <ng-container *ngIf="value != ''">

@@ -755,6 +755,11 @@ export class GridComponent implements OnInit, OnDestroy
                 case 'uploads':
                     cellTemplate = this.commonTemplate.imageTmpl;
                     break;
+
+                case 'select_by_query_multi':
+                    cellTemplate = this.commonTemplate.select_by_query_multi_Tmpl;
+                    break;
+
                 default:
                     cellTemplate = null;
                     prop = model[this.columns_index[row]].name + '.value_string';

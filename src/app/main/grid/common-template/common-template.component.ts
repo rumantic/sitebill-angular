@@ -30,6 +30,8 @@ export class CommonTemplateComponent {
     @ViewChild('injectorTmpl') injectorTmpl: TemplateRef<any>;
     @ViewChild('FilterComponent') filterTmpl: TemplateRef<any>;
     @ViewChild('clientStatusIdTmpl') clientStatusIdTmpl: TemplateRef<any>;
+    @ViewChild('select_by_query_multi_Tmpl') select_by_query_multi_Tmpl: TemplateRef<any>;
+
 
     template_loaded: boolean;
     @Input() entity: SitebillEntity;
