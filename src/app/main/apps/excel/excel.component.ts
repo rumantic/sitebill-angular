@@ -10,6 +10,7 @@ import {ExcelState} from "./types/state.type";
 import {worksheetData} from "./types/worksheet-data.type";
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {StatisticsType} from "./types/statistics.type";
+import {FilterService} from "../../../_services/filter.service";
 
 @Component({
     selector: 'excel-apps',
@@ -59,6 +60,7 @@ export class ExcelComponent  implements OnInit {
     constructor(
         protected modelService: ModelService,
         protected _snackService: SnackService,
+        protected filterService: FilterService,
     ) {
         this._unsubscribeAll = new Subject();
 
@@ -179,17 +181,21 @@ export class ExcelComponent  implements OnInit {
                         this.progress_page = result.data.page;
 
                         setTimeout(() => {
-                            this.setState(ExcelState.import_complete);
-                            this.import_result = 'Данные загружены';
+                            this.finish_import('Данные загружены');
                         }, 1000);
                     }
 
                 } else {
                     this._snackService.error(result.message);
-                    this.import_result = result.message;
-                    this.setState(ExcelState.import_complete);
+                    this.finish_import(result.message);
                 }
             });
+    }
+
+    finish_import (import_result: string) {
+        this.filterService.empty_share(this.entity);
+        this.import_result = import_result;
+        this.setState(ExcelState.import_complete);
     }
 
     import_mapper () {
