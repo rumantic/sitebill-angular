@@ -34,6 +34,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {StandaloneRunnerComponent} from "./standalone-runner.component";
 import {ProfileModule} from "../profile/profile.module";
 import {ModelsEditorModule} from "../models-editor/models-editor.module";
+import {WhatsAppModule} from "../apps/whatsapp/whatsapp.module";
 
 const routes = [
     {
@@ -83,6 +84,7 @@ const routes = [
         SharedModule,
         ProfileModule,
         ModelsEditorModule,
+        WhatsAppModule,
     ],
     providers: [
         BillingService
