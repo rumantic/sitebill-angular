@@ -9,6 +9,7 @@ import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
 import {Observable, timer} from "rxjs";
+import {SitebillSession} from "../_models/sitebillsession";
 
 
 @Injectable()
@@ -69,6 +70,11 @@ export class ModelService {
         this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
         this.set_api_url(this.storageService.getItem('api_url'));
     }
+
+    get sitebill_session(): SitebillSession {
+        return {sessionId: this.get_session_key()};
+    }
+
 
     set_api_url(api_url: string) {
         this.api_url = api_url;

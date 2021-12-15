@@ -14,3 +14,8 @@ export class SitebillResponse {
         return this.state === 'success';
     }
 }
+
+export enum ResponseState {
+    success = 'success',
+    error = 'error'
+}

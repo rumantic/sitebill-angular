@@ -1,3 +1,8 @@
+<div class="p-12" *ngIf="state === WhatsappStateTypes.draw_qr">
+    <img [src]="qr_image">
+
+</div>
+
 <div #scrollMe class="whatsapp-chat">
     <div fxLayout="column" class="p-12" fxLayoutAlign="start start">
         whatsapp-chat
