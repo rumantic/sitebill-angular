@@ -18,6 +18,7 @@ export class CommonTemplateComponent {
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
     @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
+    @ViewChild('whatsAppTmpl') whatsAppTmpl: TemplateRef<any>;
     @ViewChild('priceTmpl') priceTmpl: TemplateRef<any>;
     @ViewChild('geoTmpl') geoTmpl: TemplateRef<any>;
     @ViewChild('dtdatetimeTmpl') dtdatetimeTmpl: TemplateRef<any>;
@@ -74,6 +75,7 @@ export class CommonTemplateComponent {
     @Output() view_galleryEvent = new EventEmitter<any>();
     @Output() view_injectorEvent = new EventEmitter<any>();
     @Output() toggle_collectionEvent = new EventEmitter<any>();
+    @Output() view_whatsappEvent = new EventEmitter<any>();
 
 
     constructor(
@@ -117,6 +119,11 @@ export class CommonTemplateComponent {
     view_gallery(row, column, images, disable_gallery_controls) {
         const event = { row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls };
         this.view_galleryEvent.next(event);
+    }
+
+    view_whatsapp(row, column, value) {
+        const event = { row: row, column: column, value: value};
+        this.view_whatsappEvent.next(event);
     }
 
     edit_form(item_id: number) {

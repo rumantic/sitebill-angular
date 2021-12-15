@@ -15,11 +15,13 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {WhatsAppChatComponent} from "./whatsapp-chat/whatsapp-chat.component";
 import {WhatsAppService} from "./whatsapp.service";
 import { DialogComponent } from './whatsapp-chat/dialog/dialog.component';
+import { WhatsappModalComponent } from './whatsapp-modal/whatsapp-modal.component';
 
 @NgModule({
     declarations: [
         WhatsAppChatComponent,
-        DialogComponent
+        DialogComponent,
+        WhatsappModalComponent
     ],
     exports: [
         WhatsAppChatComponent

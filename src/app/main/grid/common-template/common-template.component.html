@@ -104,6 +104,12 @@
     </button>
 </ng-template>
 
+<ng-template #whatsAppTmpl let-column="column" let-row="row" let-value="value">
+    <button mat-button (click)="view_whatsapp(row, column, value)">
+        {{value}}
+    </button>
+</ng-template>
+
 <ng-template #textTmpl let-row="row" let-value="value">
     <ng-container *ngIf="valid_link(value); else defaultTextBlock">
         <div><a href="{{value}}" target="_blank" matTooltip="{{value}}">{{value|replace:'(https://www.|https://)':' '|slice:0:15}}</a></div>

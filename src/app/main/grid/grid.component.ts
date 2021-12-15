@@ -45,6 +45,7 @@ import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-moda
 import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
 import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
 import {SitebillResponse} from "../../_models/sitebill-response";
+import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -713,6 +714,12 @@ export class GridComponent implements OnInit, OnDestroy
 
             switch (model[this.columns_index[row]].type) {
                 case 'safe_string':
+                    if ( model[this.columns_index[row]].name === 'phone' ) {
+                        console.log(model[this.columns_index[row]].name)
+                        cellTemplate = this.commonTemplate.whatsAppTmpl;
+                    }
+                    break;
+
                 case 'textarea':
                 case 'textarea_editor':
                     //console.log(model[this.columns_index[row]].name);
@@ -761,7 +768,12 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
 
                 default:
-                    cellTemplate = null;
+                    if ( model[this.columns_index[row]].name === 'phone' ) {
+                        console.log(model[this.columns_index[row]].name)
+                        cellTemplate = this.commonTemplate.whatsAppTmpl;
+                    } else {
+                        cellTemplate = null;
+                    }
                     prop = model[this.columns_index[row]].name + '.value_string';
 
             }
@@ -897,6 +909,21 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
+    }
+
+    view_whatsapp(event) {
+        console.log(event);
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { phone: event.value };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.width = '99vw';
+
+        this.dialog.open(WhatsappModalComponent, dialogConfig);
+
+
     }
 
     view_gallery(event) {

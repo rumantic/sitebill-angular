@@ -1,6 +1,7 @@
 <div class="p-12" *ngIf="state === WhatsappStateTypes.draw_qr">
     <h1>Откройте, пожалуйста, Whatsapp и просканируйте QR-код для активации отправки сообщений через ваш телефон</h1>
     <img [src]="qr_image">
+    <button (click)="drawChat()">Нажмите когда просканиурете код</button>
 </div>
 <chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" (onChange)="update_chat($event)"></chat-dialog>
 
