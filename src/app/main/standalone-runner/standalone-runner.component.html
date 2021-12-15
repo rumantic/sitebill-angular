@@ -13,7 +13,7 @@
     <ng-container *ngIf="!this.modelService.getDomConfigValue('form_mode')">
         <ng-container [ngSwitch]="this.modelService.getDomConfigValue('component')">
 
-            <whatsapp-chat *ngSwitchCase="'whatsapp-chat'">
+            <whatsapp-chat [phone_number]="'79535888981'" *ngSwitchCase="'whatsapp-chat'">
             </whatsapp-chat>
 
             <models-editor *ngSwitchCase="'models-editor'">

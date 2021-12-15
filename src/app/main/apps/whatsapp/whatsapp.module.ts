@@ -14,10 +14,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {WhatsAppChatComponent} from "./whatsapp-chat/whatsapp-chat.component";
 import {WhatsAppService} from "./whatsapp.service";
+import { DialogComponent } from './whatsapp-chat/dialog/dialog.component';
 
 @NgModule({
     declarations: [
-        WhatsAppChatComponent
+        WhatsAppChatComponent,
+        DialogComponent
     ],
     exports: [
         WhatsAppChatComponent

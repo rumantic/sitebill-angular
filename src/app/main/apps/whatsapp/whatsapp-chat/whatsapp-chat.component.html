@@ -1,14 +1,12 @@
 <div class="p-12" *ngIf="state === WhatsappStateTypes.draw_qr">
+    <h1>Откройте, пожалуйста, Whatsapp и просканируйте QR-код для активации отправки сообщений через ваш телефон</h1>
     <img [src]="qr_image">
-
 </div>
+<chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" (onChange)="update_chat($event)"></chat-dialog>
 
 <div #scrollMe class="whatsapp-chat">
     <div fxLayout="column" class="p-12" fxLayoutAlign="start start">
         whatsapp-chat
-        <div *ngFor="let item of messages">
-            {{item}}
-        </div>
     </div>
 </div>
 

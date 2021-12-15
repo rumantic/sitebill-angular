@@ -7,6 +7,9 @@ import {takeUntil} from "rxjs/operators";
 import {ResponseState, SitebillResponse} from "../../../../_models/sitebill-response";
 import {WhatsappStateTypes} from "../types/whatsapp-state.types";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {SitebillSession} from "../../../../_models/sitebillsession";
+import {Message} from "../types/venom-bot/model/message";
+import {Chat} from "../types/whatsapp.types";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -25,6 +28,13 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     @Input("messages")
     messages: any[];
 
+    @Input("phone_number")
+    phone_number: string;
+
+    private chat: Chat;
+
+    public dialog: any;
+
     constructor(
         protected whatsAppService: WhatsAppService,
         protected modelService: ModelService,
@@ -34,29 +44,39 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
 
-
+    initGetQrCodeProcess ( session: SitebillSession ) {
+        console.log('need qr code');
+        setTimeout(() => {
+            this.whatsAppService.getQrCode(this.modelService.sitebill_session)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: SitebillResponse) => {
+                    console.log(result);
+                    this.drawQrCode(result.data);
+                });
+        }, 7000)
+    }
 
     ngOnInit() {
         console.log(this.messages);
+        this.chat = {
+            chatId: this.phone_number+'@c.us'
+        }
         this.scrollToBottom();
 
         this.whatsAppService.isConnected(this.modelService.sitebill_session)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (result: SitebillResponse) => {
-                    if ( result.state === ResponseState.success ) {
-                        console.log('client connected');
+                    console.log(result);
+                    if ( result ) {
+                        if ( result.state === ResponseState.success ) {
+                            console.log('client connected');
+                            this.drawChat();
+                        } else {
+                            this.initGetQrCodeProcess(this.modelService.sitebill_session);
+                        }
                     } else {
-                        console.log('need qr code');
-                        setTimeout(() => {
-                            this.whatsAppService.getQrCode(this.modelService.sitebill_session)
-                                .pipe(takeUntil(this._unsubscribeAll))
-                                .subscribe((result: SitebillResponse) => {
-                                    console.log(result);
-                                    this.drawQrCode(result.data);
-                                });
-                        }, 3000)
-                        console.log(result);
+                        this.initGetQrCodeProcess(this.modelService.sitebill_session);
                     }
                 },
                 error => {
@@ -80,6 +100,23 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
          */
 
     }
+    drawChat () {
+        this.whatsAppService.getAllMessagesInChat(this.chat)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (result: SitebillResponse) => {
+                    if ( result.state ===  ResponseState.success ) {
+                    }
+                    this.state = WhatsappStateTypes.chat;
+                    this.dialog = result;
+                    console.log(result);
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+
+    }
 
     drawQrCode ( base64Qr: string ) {
         this.state = WhatsappStateTypes.draw_qr;
@@ -101,5 +138,21 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     OnDestroy () {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    update_chat(message) {
+        console.log(message);
+        this.whatsAppService.sendText(this.chat, message)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (result: SitebillResponse) => {
+                    console.log('update chat');
+                    this.drawChat();
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+
     }
 }

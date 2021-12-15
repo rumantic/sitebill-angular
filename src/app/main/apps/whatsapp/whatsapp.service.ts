@@ -24,11 +24,11 @@ export class WhatsAppService {
     }
 
     get hostname(): string {
-        return 'localhost'
+        return '94.73.239.163'
     }
 
     get port(): string {
-        return '3000'
+        return '3001'
     }
 
     get api_uri(): string {
@@ -40,8 +40,24 @@ export class WhatsAppService {
     }
 
     getAllMessagesInChat ( chat: Chat ) {
-        return this.http.post(`${this.api_url}/getAllMessagesInChat`, chat);
+        const chat_session = {
+            session: this.modelService.sitebill_session,
+            chat: chat
+        };
+        console.log(chat_session);
+        return this.http.post(`${this.api_url}/getAllMessagesInChat`, chat_session);
     }
+
+    sendText ( chat: Chat, message: string ) {
+        const chat_session = {
+            session: this.modelService.sitebill_session,
+            chat: chat,
+            message: message
+        };
+        console.log(chat_session);
+        return this.http.post(`${this.api_url}/sendText`, chat_session);
+    }
+
 
     isConnected (session: SitebillSession) {
         return this.http.post(`${this.api_url}/isConnected`, session);
