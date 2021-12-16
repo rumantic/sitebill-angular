@@ -8,7 +8,6 @@ import {ResponseState, SitebillResponse} from "../../../../_models/sitebill-resp
 import {WhatsappStateTypes} from "../types/whatsapp-state.types";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {SitebillSession} from "../../../../_models/sitebillsession";
-import {Message} from "../types/venom-bot/model/message";
 import {Chat} from "../types/whatsapp.types";
 
 @Component({
@@ -22,7 +21,12 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     protected _unsubscribeAll: Subject<any>;
     public state: WhatsappStateTypes;
     public WhatsappStateTypes = WhatsappStateTypes;
+
     public qr_image: SafeResourceUrl;
+    private wait_qr_ms = 12000;
+    private qr_seconds: number = 0;
+    private clearInterval: NodeJS.Timeout;
+
     @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
     @Input("messages")
@@ -35,6 +39,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     public dialog: any;
 
+
     constructor(
         protected whatsAppService: WhatsAppService,
         protected modelService: ModelService,
@@ -46,14 +51,21 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     initGetQrCodeProcess ( session: SitebillSession ) {
         console.log('need qr code');
+        this.state = WhatsappStateTypes.wait_qr;
+        this.clearInterval = setInterval(this.incrementSeconds.bind(this), 1000);
         setTimeout(() => {
             this.whatsAppService.getQrCode(this.modelService.sitebill_session)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: SitebillResponse) => {
+                    clearInterval(this.clearInterval);
                     console.log(result);
                     this.drawQrCode(result.data);
                 });
-        }, 7000)
+        }, this.wait_qr_ms)
+    }
+
+    incrementSeconds() {
+        this.qr_seconds += 1;
     }
 
     ngOnInit() {
@@ -138,6 +150,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     OnDestroy () {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        clearInterval(this.clearInterval);
     }
 
     update_chat(message) {
@@ -154,5 +167,9 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 }
             );
 
+    }
+
+    getProgressInPercent() {
+        return Math.round((1 - ((this.wait_qr_ms - this.qr_seconds*1000)/this.wait_qr_ms))*100);
     }
 }

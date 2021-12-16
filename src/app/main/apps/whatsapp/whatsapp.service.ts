@@ -6,7 +6,7 @@ import {SitebillSession} from "../../../_models/sitebillsession";
 
 @Injectable()
 export class WhatsAppService {
-    public schema = "http"
+    public schema = "https"
 
     /**
      * Constructor
@@ -24,11 +24,11 @@ export class WhatsAppService {
     }
 
     get hostname(): string {
-        return '94.73.239.163'
+        return 'whatsapp.sitebill.site'
     }
 
     get port(): string {
-        return '3001'
+        return '443'
     }
 
     get api_uri(): string {
