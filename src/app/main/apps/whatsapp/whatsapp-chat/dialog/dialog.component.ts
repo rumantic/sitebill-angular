@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
 import {Message} from "../../types/venom-bot/model/message";
 import {
     FusePerfectScrollbarDirective
@@ -12,8 +12,8 @@ import {NgForm} from "@angular/forms";
     styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements OnInit {
-    @ViewChild(FusePerfectScrollbarDirective)
-    directiveScroll: FusePerfectScrollbarDirective;
+    @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
 
     @Input("chat")
     chat: Chat;
@@ -37,6 +37,11 @@ export class DialogComponent implements OnInit {
         this.readyToReply();
     }
 
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
+
+
     /**
      * Ready to reply
      */
@@ -44,38 +49,27 @@ export class DialogComponent implements OnInit {
     {
         setTimeout(() => {
             this.scrollToBottom();
+            this.replyForm.reset();
         });
 
     }
 
-    /**
-     * Scroll to the bottom
-     *
-     * @param {number} speed
-     */
-    scrollToBottom(speed?: number): void
-    {
-        speed = speed || 400;
-        if ( this.directiveScroll )
-        {
-            this.directiveScroll.update();
 
-            setTimeout(() => {
-                this.directiveScroll.scrollToBottom(0, speed);
-            });
-        }
+    scrollToBottom(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }
     }
+
 
     /**
      * Reply
      */
     reply(): void
     {
-        this.readyToReply();
         if ( this.replyForm.form.value.message != null && this.replyForm.form.value.message.trim() !== '' ) {
             this.onChange.emit(this.replyForm.form.value.message);
         }
-
-
+        this.readyToReply();
     }
 }

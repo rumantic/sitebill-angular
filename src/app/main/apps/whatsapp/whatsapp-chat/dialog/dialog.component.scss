@@ -4,8 +4,13 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0.8));
     overflow: hidden;
     max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+
 
     .dialog {
+        box-sizing: border-box;
+        width: 100%;
 
         .chat-toolbar {
             min-height: 64px;
@@ -32,8 +37,12 @@
 
         #chat-content {
             background: transparent;
-            overflow: auto;
+            overflow: scroll;
             min-height: 300px;
+            max-height: 300px;
+            box-sizing: border-box;
+            width: 100%;
+
 
             .message-row {
                 padding: 16px;
