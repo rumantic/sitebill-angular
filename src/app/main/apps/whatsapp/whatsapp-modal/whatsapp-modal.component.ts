@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: 'whatsapp-modal',
@@ -12,6 +12,7 @@ export class WhatsappModalComponent implements OnInit {
     constructor(
         protected dialog: MatDialog,
         public _matDialog: MatDialog,
+        private dialogRef: MatDialogRef<WhatsappModalComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
         console.log(this._data);
@@ -19,6 +20,10 @@ export class WhatsappModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    close () {
+        this.dialogRef.close();
     }
 
 }

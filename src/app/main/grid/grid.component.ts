@@ -915,7 +915,7 @@ export class GridComponent implements OnInit, OnDestroy
         console.log(event);
         const dialogConfig = new MatDialogConfig();
 
-        dialogConfig.disableClose = false;
+        dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = { phone: event.value };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
