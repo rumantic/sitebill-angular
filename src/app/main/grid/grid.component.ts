@@ -17,7 +17,7 @@ import { ModelService } from 'app/_services/model.service';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { FormComponent } from './form/form.component';
 import { Page } from './page';
-import { SitebillEntity } from 'app/_models';
+import {SitebillEntity, SitebillModelItem} from 'app/_models';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
 
@@ -665,7 +665,7 @@ export class GridComponent implements OnInit, OnDestroy
         return control_column;
     }
 
-    compose_columns(columns_list, model) {
+    compose_columns(columns_list, model:SitebillModelItem[]) {
         //console.log('compose columns');
         //console.log(model);
         //console.log(model.length);
@@ -714,8 +714,7 @@ export class GridComponent implements OnInit, OnDestroy
 
             switch (model[this.columns_index[row]].type) {
                 case 'safe_string':
-                    if ( model[this.columns_index[row]].name === 'phone' ) {
-                        console.log(model[this.columns_index[row]].name)
+                    if ( this.isMessengerEnabled(model[this.columns_index[row]]) ) {
                         cellTemplate = this.commonTemplate.whatsAppTmpl;
                     }
                     break;
@@ -768,8 +767,7 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
 
                 default:
-                    if ( model[this.columns_index[row]].name === 'phone' ) {
-                        console.log(model[this.columns_index[row]].name)
+                    if ( this.isMessengerEnabled(model[this.columns_index[row]]) ) {
                         cellTemplate = this.commonTemplate.whatsAppTmpl;
                     } else {
                         cellTemplate = null;
@@ -793,6 +791,19 @@ export class GridComponent implements OnInit, OnDestroy
         this.after_compose();
         //console.log(this.data_columns);
 
+    }
+
+    isMessengerEnabled ( modelItem: SitebillModelItem ) {
+        if (
+            modelItem.name === 'phone' ||
+            (
+                modelItem.parameters &&
+                modelItem.parameters['messenger'] === '1'
+            )
+        ) {
+            return true;
+        }
+        return false;
     }
 
     after_compose () {

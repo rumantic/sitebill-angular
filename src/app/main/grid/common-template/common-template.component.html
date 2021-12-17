@@ -32,7 +32,7 @@
         </button>
         <button
             mat-icon-button
-            *ngIf="enable_coworker_button && this.modelSerivce.getConfigValue('enable_coworker_mode') && get_permission(row, 'U')">
+            *ngIf="enable_coworker_button && modelService.getConfigValue('enable_coworker_mode') && get_permission(row, 'U')">
             <mat-icon (click)="coworkers(value)" aria-label="Ко-воркеры" matTooltip="Ко-воркеры">group</mat-icon>
         </button>
         <button
@@ -106,7 +106,8 @@
 
 <ng-template #whatsAppTmpl let-column="column" let-row="row" let-value="value">
     <button mat-button (click)="view_whatsapp(row, column, value)">
-        {{value}}
+        <mat-icon *ngIf="isWhatsAppAvailable(value)">message</mat-icon>
+        <span class="p-4">{{value}}</span>
     </button>
 </ng-template>
 

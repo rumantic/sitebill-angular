@@ -70,9 +70,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     ngOnInit() {
         console.log(this.messages);
-        this.chat = {
-            chatId: this.phone_number+'@c.us'
-        }
         this.scrollToBottom();
 
         this.whatsAppService.isConnected(this.modelService.sitebill_session)
@@ -113,7 +110,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     }
     drawChat () {
-        this.whatsAppService.getAllMessagesInChat(this.chat)
+        this.whatsAppService.getAllMessagesInChat(this.phone_number)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (result: SitebillResponse) => {
@@ -122,6 +119,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     this.state = WhatsappStateTypes.chat;
                     this.dialog = result;
                     console.log(result);
+                    this.whatsAppService.readyState = true;
                 },
                 error => {
                     console.log(error);
@@ -155,7 +153,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     update_chat(message) {
         console.log(message);
-        this.whatsAppService.sendText(this.chat, message)
+        this.whatsAppService.sendText(this.phone_number, message)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (result: SitebillResponse) => {

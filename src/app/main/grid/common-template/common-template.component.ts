@@ -2,6 +2,14 @@ import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, Inject} 
 import {SitebillEntity} from 'app/_models';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import {WhatsAppService} from "../../apps/whatsapp/whatsapp.service";
+import {takeUntil} from "rxjs/operators";
+import {SitebillResponse} from "../../../_models/sitebill-response";
+import {Subject} from "rxjs";
+
+interface WhatsAppCheckStorage {
+    [key: string]: any;
+}
 
 @Component({
     selector: 'common-template',
@@ -10,6 +18,8 @@ import { ModelService } from 'app/_services/model.service';
 })
 export class CommonTemplateComponent {
     api_url: string;
+    protected _unsubscribeAll: Subject<any>;
+
 
     @ViewChild('gridCheckboxHdrTmpl') gridCheckboxHdrTmpl: TemplateRef<any>;
     @ViewChild('gridCheckboxTmpl') gridCheckboxTmpl: TemplateRef<any>;
@@ -77,15 +87,19 @@ export class CommonTemplateComponent {
     @Output() toggle_collectionEvent = new EventEmitter<any>();
     @Output() view_whatsappEvent = new EventEmitter<any>();
 
+    private whatsAppCheckStorage: WhatsAppCheckStorage = {};
+
 
     constructor(
         @Inject(APP_CONFIG) private config: AppConfig,
-        private modelSerivce: ModelService,
+        public modelService: ModelService,
+        protected whatsAppService: WhatsAppService,
     ) {
+        this._unsubscribeAll = new Subject();
     }
 
     ngOnInit () {
-        this.api_url = this.modelSerivce.get_api_url();
+        this.api_url = this.modelService.get_api_url();
     }
 
     view(item_id: number) {
@@ -173,5 +187,35 @@ export class CommonTemplateComponent {
             return false;
         }
         return true;
+    }
+
+    isWhatsAppAvailable(value: any) {
+        if ( !this.whatsAppService.readyState ) {
+            return false;
+        }
+        if ( this.whatsAppCheckStorage[value] != undefined ) {
+            return this.whatsAppCheckStorage[value];
+        }
+        this.whatsAppCheckStorage[value] = false;
+
+        this.whatsAppService.checkNumberStatus(value)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                    if ( result['numberExists'] ) {
+                        console.log(value + ' numberExists');
+                        this.whatsAppCheckStorage[value] = true;
+                    } else {
+                        this.whatsAppCheckStorage[value] = false;
+                    }
+                }, error => {
+                    console.log(error);
+                    this.whatsAppCheckStorage[value] = false;
+                });
+        return false;
+    }
+
+    OnDestroy () {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }
