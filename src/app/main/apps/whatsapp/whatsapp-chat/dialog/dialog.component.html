@@ -17,7 +17,7 @@
                      alt="{{message.sender.formattedName}}" />
                 <div class="bubble">
                     <div class="message" *ngIf="message.type === 'chat'">{{message.content}}</div>
-                    <div class="time secondary-text">{{message.timestamp | date:'d.MM.yy HH:mm'}}</div>
+                    <div class="time secondary-text">{{message.timestamp*1000 | date:'d.MM.yy HH:mm'}}</div>
                 </div>
             </div>
             <!-- / MESSAGE -->

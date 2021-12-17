@@ -118,7 +118,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     }
                     this.state = WhatsappStateTypes.chat;
                     this.dialog = result;
-                    console.log(result);
+                    //console.log(result);
                     this.whatsAppService.readyState = true;
                 },
                 error => {
