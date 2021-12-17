@@ -1,7 +1,7 @@
 import {Component, TemplateRef, ViewChild, Input, Output, EventEmitter, Inject} from '@angular/core';
 import {SitebillEntity} from 'app/_models';
-import { AppConfig, APP_CONFIG } from 'app/app.config.module';
-import { ModelService } from 'app/_services/model.service';
+import {AppConfig, APP_CONFIG} from 'app/app.config.module';
+import {ModelService} from 'app/_services/model.service';
 import {WhatsAppService} from "../../apps/whatsapp/whatsapp.service";
 import {takeUntil} from "rxjs/operators";
 import {SitebillResponse} from "../../../_models/sitebill-response";
@@ -98,7 +98,7 @@ export class CommonTemplateComponent {
         this._unsubscribeAll = new Subject();
     }
 
-    ngOnInit () {
+    ngOnInit() {
         this.api_url = this.modelService.get_api_url();
     }
 
@@ -107,23 +107,23 @@ export class CommonTemplateComponent {
     }
 
     toggle_active(row, value) {
-        const event = {row:row, value:value};
+        const event = {row: row, value: value};
         this.toggle_activeEvent.next(event);
     }
 
     toggle_collection(row, value) {
-        const event = { row: row, value: value };
+        const event = {row: row, value: value};
         this.toggle_collectionEvent.next(event);
     }
 
     view_injector(row, value) {
-        const event = { row: row, value: value };
+        const event = {row: row, value: value};
         this.view_injectorEvent.next(event);
     }
 
-    valid_link (value) {
+    valid_link(value) {
         const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-        if ( value.match(reg) ) {
+        if (value.match(reg)) {
             return true;
         }
         return false;
@@ -131,12 +131,12 @@ export class CommonTemplateComponent {
 
 
     view_gallery(row, column, images, disable_gallery_controls) {
-        const event = { row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls };
+        const event = {row: row, column: column, images: images, disable_gallery_controls: disable_gallery_controls};
         this.view_galleryEvent.next(event);
     }
 
     view_whatsapp(row, column, value) {
-        const event = { row: row, column: column, value: value};
+        const event = {row: row, column: column, value: value};
         this.view_whatsappEvent.next(event);
     }
 
@@ -164,7 +164,7 @@ export class CommonTemplateComponent {
         this.building_blocksEvent.next(item_id);
     }
 
-    get_status_class ( row ) {
+    get_status_class(row) {
         try {
             if (row.active.value != '1') {
                 return 'red-100';
@@ -179,9 +179,9 @@ export class CommonTemplateComponent {
         return '';
     }
 
-    get_permission ( row, action ) {
-        if ( row[this.entity.get_primary_key()] && row[this.entity.get_primary_key()].permissions != null && row[this.entity.get_primary_key()].permissions !== undefined) {
-            if ( row[this.entity.get_primary_key()].permissions[action] === true ) {
+    get_permission(row, action) {
+        if (row[this.entity.get_primary_key()] && row[this.entity.get_primary_key()].permissions != null && row[this.entity.get_primary_key()].permissions !== undefined) {
+            if (row[this.entity.get_primary_key()].permissions[action] === true) {
                 return true;
             }
             return false;
@@ -190,10 +190,10 @@ export class CommonTemplateComponent {
     }
 
     isWhatsAppAvailable(value: any) {
-        if ( !this.whatsAppService.readyState ) {
+        if (!this.whatsAppService.readyState) {
             return false;
         }
-        if ( this.whatsAppCheckStorage[value] != undefined ) {
+        if (this.whatsAppCheckStorage[value] != undefined) {
             return this.whatsAppCheckStorage[value];
         }
         this.whatsAppCheckStorage[value] = false;
@@ -201,20 +201,20 @@ export class CommonTemplateComponent {
         this.whatsAppService.checkNumberStatus(value)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                    if ( result['numberExists'] ) {
-                        console.log(value + ' numberExists');
-                        this.whatsAppCheckStorage[value] = true;
-                    } else {
-                        this.whatsAppCheckStorage[value] = false;
-                    }
-                }, error => {
-                    console.log(error);
+                if (result && result['numberExists']) {
+                    console.log(value + ' numberExists');
+                    this.whatsAppCheckStorage[value] = true;
+                } else {
                     this.whatsAppCheckStorage[value] = false;
-                });
+                }
+            }, error => {
+                console.log(error);
+                this.whatsAppCheckStorage[value] = false;
+            });
         return false;
     }
 
-    OnDestroy () {
+    OnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }

@@ -19,7 +19,7 @@ export class WhatsAppService {
     )
     {
         console.log('WhatsAppService constructor');
-        this.isConnected(this.modelService.sitebill_session)
+        this.isLoggedIn(this.modelService.sitebill_session)
             .subscribe(
                 (result ) => {
                     if ( result ) {
@@ -95,9 +95,17 @@ export class WhatsAppService {
         };
         return this.http.post(`${this.api_url}/checkNumberStatus`, chat_session);
     }
+    isConnectedOnStart (session: SitebillSession) {
+        return this.http.post(`${this.api_url}/isConnected`, session);
+    }
     isConnected (session: SitebillSession) {
         return this.http.post(`${this.api_url}/isConnected`, session);
     }
+
+    isLoggedIn (session: SitebillSession) {
+        return this.http.post(`${this.api_url}/isLoggedIn`, session);
+    }
+
     getQrCode (session: SitebillSession) {
         return this.http.post(`${this.api_url}/getQrCode`, session);
     }
