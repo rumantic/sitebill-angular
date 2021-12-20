@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ModelService} from "../../../_services/model.service";
 import {SitebillSession} from "../../../_models/sitebillsession";
 import parsePhoneNumber from 'libphonenumber-js';
+import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
 
 @Injectable()
 export class WhatsAppService {
@@ -89,11 +90,15 @@ export class WhatsAppService {
 
     checkNumberStatus ( number: string ) {
         number = this.normalizeNumber(number);
-        const chat_session = {
-            session: this.modelService.sitebill_session,
-            chat: {chatId: number},
-        };
-        return this.http.post(`${this.api_url}/checkNumberStatus`, chat_session);
+        if ( number !== '' ) {
+            const chat_session = {
+                session: this.modelService.sitebill_session,
+                chat: {chatId: number},
+            };
+            return this.http.post(`${this.api_url}/checkNumberStatus`, chat_session);
+        } else {
+            return new EmptyObservable();
+        }
     }
     isConnectedOnStart (session: SitebillSession) {
         return this.http.post(`${this.api_url}/isConnected`, session);
