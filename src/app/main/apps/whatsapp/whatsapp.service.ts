@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ModelService} from "../../../_services/model.service";
 import {SitebillSession} from "../../../_models/sitebillsession";
 import parsePhoneNumber from 'libphonenumber-js';
 import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
+import {APP_CONFIG, AppConfig} from "../../../app.config.module";
 
 @Injectable()
 export class WhatsAppService {
-    public schema = "https";
+    public schema = this.config.whatsapp_schema;
     private ready: boolean = false;
 
 
@@ -17,6 +18,7 @@ export class WhatsAppService {
     constructor(
         private http: HttpClient,
         private modelService: ModelService,
+        @Inject(APP_CONFIG) private config: AppConfig,
     )
     {
         console.log('WhatsAppService constructor');
@@ -44,11 +46,11 @@ export class WhatsAppService {
     }
 
     get hostname(): string {
-        return 'whatsapp.sitebill.site'
+        return this.config.whatsapp_host;
     }
 
     get port(): string {
-        return '443'
+        return this.config.whatsapp_port;
     }
 
     get api_uri(): string {
