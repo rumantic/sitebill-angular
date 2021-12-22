@@ -1,10 +1,9 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
 import {Message} from "../../types/venom-bot/model/message";
-import {
-    FusePerfectScrollbarDirective
-} from "../../../../../../@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive";
 import {Chat} from "../../types/whatsapp.types";
 import {NgForm} from "@angular/forms";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {AttachModalComponent} from "./attach-modal/attach-modal.component";
 
 @Component({
     selector: 'chat-dialog',
@@ -30,7 +29,9 @@ export class DialogComponent implements OnInit {
     replyForm: NgForm;
 
 
-    constructor() {
+    constructor(
+        protected dialog_modal: MatDialog,
+    ) {
     }
 
     ngOnInit(): void {
@@ -71,5 +72,16 @@ export class DialogComponent implements OnInit {
             this.onChange.emit(this.replyForm.form.value.message);
         }
         this.readyToReply();
+    }
+
+    attach_modal() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '50vw';
+        dialogConfig.data = {};
+
+        this.dialog_modal.open(AttachModalComponent, dialogConfig);
+
     }
 }

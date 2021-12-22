@@ -50,6 +50,9 @@
               fxFlex class="reply-form"
               fxLayout="row"
               fxLayoutAlign="start center">
+            <button mat-icon-button aria-label="Прикрепить файл" (click)="attach_modal()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
 
             <mat-form-field fxFlex floatLabel="never">
                 <textarea matInput #replyInput placeholder="Сообщение"

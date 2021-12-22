@@ -16,11 +16,13 @@ import {WhatsAppChatComponent} from "./whatsapp-chat/whatsapp-chat.component";
 import {WhatsAppService} from "./whatsapp.service";
 import { DialogComponent } from './whatsapp-chat/dialog/dialog.component';
 import { WhatsappModalComponent } from './whatsapp-modal/whatsapp-modal.component';
+import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-modal.component";
 
 @NgModule({
     declarations: [
         WhatsAppChatComponent,
         DialogComponent,
+        AttachModalComponent,
         WhatsappModalComponent
     ],
     exports: [
