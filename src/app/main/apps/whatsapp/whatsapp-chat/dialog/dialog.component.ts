@@ -4,6 +4,7 @@ import {Chat} from "../../types/whatsapp.types";
 import {NgForm} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AttachModalComponent} from "./attach-modal/attach-modal.component";
+import {SitebillEntity} from "../../../../../_models";
 
 @Component({
     selector: 'chat-dialog',
@@ -75,6 +76,8 @@ export class DialogComponent implements OnInit {
     }
 
     attach_modal() {
+
+
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.panelClass = 'regular-modal';

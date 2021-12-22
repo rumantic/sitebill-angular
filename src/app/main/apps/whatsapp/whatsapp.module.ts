@@ -17,6 +17,7 @@ import {WhatsAppService} from "./whatsapp.service";
 import { DialogComponent } from './whatsapp-chat/dialog/dialog.component';
 import { WhatsappModalComponent } from './whatsapp-modal/whatsapp-modal.component';
 import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-modal.component";
+import {SharedModule} from "../../../shared.module";
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-m
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
+        SharedModule,
     ],
     providers: [
         WhatsAppService
