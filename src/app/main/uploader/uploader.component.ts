@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, isDevMode, Inject } from '@angular/core';
+import {Component, EventEmitter, Input, isDevMode, Inject, Output} from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
@@ -48,6 +48,8 @@ export class UploaderComponent {
 
     @Input("disable_gallery_controls")
     disable_gallery_controls: boolean;
+
+    @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
 
     uploader_title: string = '';
 
@@ -134,6 +136,7 @@ export class UploaderComponent {
                                     this.galleryImages[this.image_field].push(gallery_image);
                                 }
                             }
+                            this.upload_complete.emit(this.entity);
 
 
                             //this.uppend_uploads();
@@ -177,7 +180,6 @@ export class UploaderComponent {
     uppend_uploads() {
         this.modelSerivce.uppend_uploads(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
             .subscribe((result: UploadResult) => {
-                console.log(result);
                 if ( result.state === 'error' ) {
                     this._snackService.message('Невозможно загрузить файл. Поддерживаются только jpg и png изображения.', 5000);
                     return false;
@@ -196,6 +198,7 @@ export class UploaderComponent {
                     };
                     this.galleryImages[this.image_field].push(gallery_image);
                 }
+                this.upload_complete.emit(this.entity);
             });
     }
 
