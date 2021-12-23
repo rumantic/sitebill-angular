@@ -45,3 +45,8 @@ export class MessageLinkPreview {
     url: string;
     title: string;
 }
+
+export class DialogPost {
+    message: string;
+    files: string[];
+}

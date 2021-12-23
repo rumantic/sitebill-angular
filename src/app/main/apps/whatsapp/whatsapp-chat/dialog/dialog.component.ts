@@ -9,7 +9,7 @@ import {
     ViewChildren
 } from '@angular/core';
 import {Message} from "../../types/venom-bot/model/message";
-import {Chat} from "../../types/whatsapp.types";
+import {Chat, DialogPost} from "../../types/whatsapp.types";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AttachModalComponent} from "./attach-modal/attach-modal.component";
@@ -36,7 +36,7 @@ export class DialogComponent implements OnInit {
     @Input("dialog")
     dialog: Message[];
 
-    @Output() onChange = new EventEmitter();
+    @Output() onChange: EventEmitter<DialogPost> = new EventEmitter();
 
     @ViewChildren('replyInput')
     replyInputField;
@@ -46,6 +46,7 @@ export class DialogComponent implements OnInit {
     files_field = 'files';
     files_entity: SitebillEntity;
     can_send = false;
+    dialogPost: DialogPost;
 
 
     constructor(
@@ -53,6 +54,7 @@ export class DialogComponent implements OnInit {
         private fb: FormBuilder,
     ) {
         this._unsubscribeAll = new Subject();
+        this.dialogPost = null;
     }
 
     ngOnInit(): void {
@@ -99,8 +101,29 @@ export class DialogComponent implements OnInit {
      * Reply
      */
     reply(): void {
-        if (this.form.controls['message'].value != null && this.form.controls['message'].value.trim() !== '') {
-            this.onChange.emit(this.form.controls['message'].value);
+        if ( this.can_send ) {
+            this.dialogPost = {
+                message: null,
+                files: null,
+            };
+
+            if (this.form.controls['message'].value != null && this.form.controls['message'].value.trim() !== '') {
+                this.dialogPost.message = this.form.controls['message'].value;
+            }
+
+            if (
+                this.files_entity &&
+                this.files_entity.model &&
+                this.files_entity.model[this.files_field] &&
+                this.files_entity.model[this.files_field].value &&
+                this.files_entity.model[this.files_field].value.length > 0
+            ) {
+                this.dialogPost.files = this.files_entity.model[this.files_field].value;
+                this.show_gallery = false;
+                this.files_entity = null;
+            }
+            this.onChange.emit(this.dialogPost);
+            this.dialogPost = null;
         }
         this.readyToReply();
     }

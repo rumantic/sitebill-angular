@@ -56,6 +56,14 @@ export class AttachModalComponent  implements OnInit {
         } else {
             this.entity = this._data.entity;
             this.show_uploader = true;
+            if ( this._data.entity &&
+                this._data.entity.model &&
+                this._data.entity.model[this.files_column_name] &&
+                this._data.entity.model[this.files_column_name].value &&
+                this._data.entity.model[this.files_column_name].value.length > 0
+            ) {
+                this.show_attach_button = true;
+            }
         }
     }
 
