@@ -67,7 +67,7 @@
             </div>
             <div class="w-100-p">
                 <gallery-component
-                    *ngIf="galleryImages[image_field].length > 0"
+                    *ngIf="show_gallery && galleryImages[image_field].length > 0"
                     [galleryImages]="galleryImages"
                     [entity]="entity"
                     [image_field]="image_field"

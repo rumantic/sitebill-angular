@@ -212,7 +212,8 @@ import {ExcelModule} from "./main/apps/excel/excel.module";
         ConfigComponent,
         ConfigFormComponent,
         JsonEditorComponent,
-        UploaderComponent
+        UploaderComponent,
+        GalleryComponent
     ],
     entryComponents: [
         LoginModalComponent,

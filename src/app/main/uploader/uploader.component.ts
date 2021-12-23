@@ -54,6 +54,7 @@ export class UploaderComponent {
 
 
     uploader_title: string = '';
+    public show_gallery = false;
 
 
 
@@ -82,6 +83,24 @@ export class UploaderComponent {
         if ( this.entity.model && this.entity.model[this.image_field]) {
             this.uploader_title = this.entity.model[this.image_field].title;
         }
+
+        if(!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+            this.galleryImages = [];
+            this.galleryImages[this.image_field] = [];
+            for (var prop in this.entity.model[this.image_field].value) {
+
+                let gallery_image = {
+                    small: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].preview + '?' + new Date().getTime(),
+                    medium: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                    big: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                };
+                this.galleryImages[this.image_field].push(gallery_image);
+            }
+        } else if (!this.galleryImages) {
+            this.galleryImages = [];
+            this.galleryImages[this.image_field] = [];
+        }
+
         //console.log(this.image_field);
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
@@ -92,6 +111,7 @@ export class UploaderComponent {
             + '&primary_key_value=' + this.entity.primary_key
             + '&primary_key=' + this.entity.key_value
             + '&session_key=' + this.modelSerivce.get_session_key();
+        this.show_gallery = true;
     }
 
     onUploadOutput(output: UploadOutput): void {

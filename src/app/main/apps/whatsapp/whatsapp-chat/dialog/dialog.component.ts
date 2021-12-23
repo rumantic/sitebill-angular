@@ -5,6 +5,8 @@ import {NgForm} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AttachModalComponent} from "./attach-modal/attach-modal.component";
 import {SitebillEntity} from "../../../../../_models";
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
     selector: 'chat-dialog',
@@ -13,7 +15,9 @@ import {SitebillEntity} from "../../../../../_models";
 })
 export class DialogComponent implements OnInit {
     @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+    protected _unsubscribeAll: Subject<any>;
 
+    public show_gallery = false;
 
     @Input("chat")
     chat: Chat;
@@ -28,11 +32,14 @@ export class DialogComponent implements OnInit {
 
     @ViewChild('replyForm')
     replyForm: NgForm;
+    files_field = 'files';
+    files_entity: SitebillEntity;
 
 
     constructor(
         protected dialog_modal: MatDialog,
     ) {
+        this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
@@ -47,8 +54,7 @@ export class DialogComponent implements OnInit {
     /**
      * Ready to reply
      */
-    readyToReply(): void
-    {
+    readyToReply(): void {
         setTimeout(() => {
             this.scrollToBottom();
             this.replyForm.reset();
@@ -60,16 +66,16 @@ export class DialogComponent implements OnInit {
     scrollToBottom(): void {
         try {
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }
+        } catch (err) {
+        }
     }
 
 
     /**
      * Reply
      */
-    reply(): void
-    {
-        if ( this.replyForm.form.value.message != null && this.replyForm.form.value.message.trim() !== '' ) {
+    reply(): void {
+        if (this.replyForm.form.value.message != null && this.replyForm.form.value.message.trim() !== '') {
             this.onChange.emit(this.replyForm.form.value.message);
         }
         this.readyToReply();
@@ -82,9 +88,24 @@ export class DialogComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.panelClass = 'regular-modal';
         dialogConfig.minWidth = '50vw';
-        dialogConfig.data = {};
+        dialogConfig.data = {entity: this.files_entity};
 
-        this.dialog_modal.open(AttachModalComponent, dialogConfig);
+        const modalRef = this.dialog_modal.open(AttachModalComponent, dialogConfig);
+        modalRef.componentInstance.attach_entity
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if ( result.model && result.model['files'] && result.model['files'].value.length > 0 ) {
+                    this.show_gallery = true;
+                    this.files_entity = new SitebillEntity();
+                    this.files_entity = result;
+                    console.log(result.model['files'].value);
+                }
+            });
+    }
 
+    OnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }
+

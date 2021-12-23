@@ -41,6 +41,15 @@
     </div>
     <!-- / CHAT CONTENT -->
 
+    <!-- / REPLY FORM -->
+    <gallery-component
+        *ngIf="show_gallery"
+        [entity]="files_entity"
+        [image_field]="files_field"
+        [disable_gallery_controls]="true"
+    >
+    </gallery-component>
+
     <!-- CHAT FOOTER -->
     <div class="chat-footer" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center center">
         <!-- REPLY FORM -->
@@ -64,7 +73,6 @@
             </button>
 
         </form>
-        <!-- / REPLY FORM -->
     </div>
     <!-- / CHAT FOOTER-->
 </div>

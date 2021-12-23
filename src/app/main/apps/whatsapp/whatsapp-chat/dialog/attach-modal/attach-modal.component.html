@@ -10,7 +10,6 @@
     <div fxLayout="column" *ngIf="show_uploader">
         <div class="p-12 form-item">
             <uploader-component
-                [galleryImages]="galleryImages"
                 [entity]="entity"
                 [image_field]="files_column_name"
                 (upload_complete)="upload_complete($event)"

@@ -39,19 +39,24 @@ export class AttachModalComponent  implements OnInit {
 
 
     ngOnInit() {
-        this.entity = new SitebillEntity();
-        this.entity.set_app_name('files_queue');
-        this.entity.set_table_name('files_queue');
-        this.entity.primary_key = 'id';
+        if ( !this._data.entity ) {
+            this.entity = new SitebillEntity();
+            this.entity.set_app_name('files_queue');
+            this.entity.set_table_name('files_queue');
+            this.entity.primary_key = 'id';
 
-        this.modelService.load_only_model(this.entity.get_app_name())
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                if (result) {
-                    this.entity.model = result.columns;
-                    this.show_uploader = true;
-                }
-            });
+            this.modelService.load_only_model(this.entity.get_app_name())
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if (result) {
+                        this.entity.model = result.columns;
+                        this.show_uploader = true;
+                    }
+                });
+        } else {
+            this.entity = this._data.entity;
+            this.show_uploader = true;
+        }
     }
 
 
@@ -70,6 +75,7 @@ export class AttachModalComponent  implements OnInit {
 
     attach() {
         this.attach_entity.emit(this.entity);
+        this.dialogRef.close();
     }
 
     upload_complete(entity: SitebillEntity) {

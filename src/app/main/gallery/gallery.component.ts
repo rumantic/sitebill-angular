@@ -80,8 +80,20 @@ export class GalleryComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.galleryImages = this.galleryImagesInput[this.image_field];
+        this.galleryImages = [];
+        if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
+            this.galleryImages = this.galleryImagesInput[this.image_field];
+        } else if(this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+            for (var prop in this.entity.model[this.image_field].value) {
 
+                let gallery_image = {
+                    small: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].preview + '?' + new Date().getTime(),
+                    medium: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                    big: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                };
+                this.galleryImages.push(gallery_image);
+            }
+        }
         this.differ =
             <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
         let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
