@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {fuseAnimations} from "../../../../../../../@fuse/animations";
-import {humanizeBytes, UploaderOptions, UploadFile, UploadInput, UploadOutput} from "ngx-uploader";
-import {SitebillEntity} from "../../../../../../_models";
+import {SitebillEntity, SitebillModelItem} from "../../../../../../_models";
 import {ModelService} from "../../../../../../_services/model.service";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {NgxGalleryImage} from "ngx-gallery-9";
 
 @Component({
     selector: 'attach-modal',
@@ -17,7 +17,10 @@ export class AttachModalComponent  implements OnInit {
     public link: string;
     protected _unsubscribeAll: Subject<any>;
     public show_uploader = false;
+    public show_attach_button = false;
     public files_column_name = 'files';
+
+    @Output() attach_entity: EventEmitter<SitebillEntity> = new EventEmitter();
 
 
     onSave = new EventEmitter();
@@ -66,6 +69,30 @@ export class AttachModalComponent  implements OnInit {
     }
 
     attach() {
-        console.log(this.entity);
+        this.attach_entity.emit(this.entity);
+    }
+
+    upload_complete(entity: SitebillEntity) {
+        this.refreshModel();
+    }
+
+    refreshModel () {
+        this.modelService.loadById(this.entity.get_app_name(), this.entity.get_primary_key(), this.entity.get_key_value())
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                this.entity.model = [];
+                for (const [key_obj, value_obj] of Object.entries(result.data)) {
+                    this.entity.model[key_obj] = new SitebillModelItem(value_obj);
+                }
+                if ( this.entity.model['files'] && this.entity.model['files'].value && this.entity.model['files'].value.length > 0 ) {
+                    this.show_attach_button = true;
+                } else {
+                    this.show_attach_button = false;
+                }
+            });
+    }
+
+    onImageArrayChange(image_array: NgxGalleryImage[]) {
+        this.refreshModel();
     }
 }

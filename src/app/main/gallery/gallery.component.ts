@@ -1,4 +1,16 @@
-import { Component, OnInit, Input, ViewChild,TemplateRef, ElementRef, SimpleChange, OnChanges, IterableDiffers, DefaultIterableDiffer } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChild,
+    TemplateRef,
+    ElementRef,
+    SimpleChange,
+    OnChanges,
+    IterableDiffers,
+    DefaultIterableDiffer,
+    Output, EventEmitter
+} from '@angular/core';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery-9';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
@@ -38,6 +50,9 @@ export class GalleryComponent implements OnInit {
 
     @Input("disable_gallery_controls")
     disable_gallery_controls: boolean;
+
+    @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
+
 
     constructor(
         private differs: IterableDiffers,
@@ -165,6 +180,7 @@ export class GalleryComponent implements OnInit {
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
+                        this.onGalleryChange.emit(this.galleryImages);
                     });
             }
             this.confirmDialogRef = null;
@@ -262,6 +278,7 @@ export class GalleryComponent implements OnInit {
 
     reorder(tmp_images) {
         this.galleryImages = tmp_images;
+        this.onGalleryChange.emit(this.galleryImages);
     }
 
     array_move(arr, old_index, new_index) {

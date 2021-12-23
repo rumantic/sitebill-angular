@@ -71,7 +71,9 @@
                     [galleryImages]="galleryImages"
                     [entity]="entity"
                     [image_field]="image_field"
-                    [disable_gallery_controls]="disable_gallery_controls">
+                    [disable_gallery_controls]="disable_gallery_controls"
+                    (onGalleryChange)="onGalleryChange($event)"
+                >
 
                 </gallery-component>
             </div>

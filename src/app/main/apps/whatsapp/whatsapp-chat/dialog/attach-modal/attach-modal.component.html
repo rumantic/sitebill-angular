@@ -12,11 +12,14 @@
             <uploader-component
                 [galleryImages]="galleryImages"
                 [entity]="entity"
-                [image_field]="files_column_name">
+                [image_field]="files_column_name"
+                (upload_complete)="upload_complete($event)"
+                (onImageArrayChange)="onImageArrayChange($event)"
+            >
             </uploader-component>
         </div>
         <div class="p-12 form-item">
-            <button mat-raised-button (click)="attach()" aria-label="Прикрепить">
+            <button mat-raised-button (click)="attach()" aria-label="Прикрепить" *ngIf="show_attach_button">
                 <mat-icon>attach_file</mat-icon> Прикрепить
             </button>
         </div>

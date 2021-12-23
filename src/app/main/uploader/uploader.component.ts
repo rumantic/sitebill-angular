@@ -50,6 +50,8 @@ export class UploaderComponent {
     disable_gallery_controls: boolean;
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
+    @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
+
 
     uploader_title: string = '';
 
@@ -215,6 +217,7 @@ export class UploaderComponent {
                 this.modelSerivce.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
+                        this.upload_complete.emit(this.entity);
                         //console.log(this.galleryImages);
                         //this.recalculate_options();
                     });
@@ -244,5 +247,9 @@ export class UploaderComponent {
 
     removeAllFiles(): void {
         this.uploadInput.emit({ type: 'removeAll' });
+    }
+
+    onGalleryChange(image_array: NgxGalleryImage[]) {
+        this.onImageArrayChange.emit(image_array);
     }
 }
