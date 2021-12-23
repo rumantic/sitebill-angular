@@ -33,27 +33,27 @@
 
             </div-->
             <!-- / MESSAGE -->
-
+            <div class="p-12" *ngIf="show_gallery">
+                <gallery-component
+                    [entity]="files_entity"
+                    [image_field]="files_field"
+                    [disable_gallery_controls]="true"
+                >
+                </gallery-component>
+            </div>
 
         </div>
         <!-- CHAT MESSAGES -->
+        <!-- / REPLY FORM -->
 
     </div>
     <!-- / CHAT CONTENT -->
 
-    <!-- / REPLY FORM -->
-    <gallery-component
-        *ngIf="show_gallery"
-        [entity]="files_entity"
-        [image_field]="files_field"
-        [disable_gallery_controls]="true"
-    >
-    </gallery-component>
 
     <!-- CHAT FOOTER -->
     <div class="chat-footer" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center center">
         <!-- REPLY FORM -->
-        <form #replyForm="ngForm"
+        <form [formGroup]="form"
               (ngSubmit)="reply()"
               (keyup.enter)="reply()"
               fxFlex class="reply-form"
@@ -64,11 +64,11 @@
             </button>
 
             <mat-form-field fxFlex floatLabel="never">
-                <textarea matInput #replyInput placeholder="Сообщение"
-                          ngModel name="message"></textarea>
+                <textarea matInput placeholder="Сообщение"
+                          formControlName="message"></textarea>
             </mat-form-field>
 
-            <button mat-fab type="submit" aria-label="Отправить">
+            <button mat-fab type="submit" aria-label="Отправить" [disabled]="!can_send">
                 <mat-icon>send</mat-icon>
             </button>
 

@@ -7,7 +7,7 @@ import {FlexModule} from "@angular/flex-layout";
 import {NgxUploaderModule} from "ngx-uploader";
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
@@ -44,6 +44,7 @@ import {SharedModule} from "../../../shared.module";
         MatProgressSpinnerModule,
         MatProgressBarModule,
         SharedModule,
+        ReactiveFormsModule,
     ],
     providers: [
         WhatsAppService

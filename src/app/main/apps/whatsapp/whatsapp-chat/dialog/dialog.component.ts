@@ -1,7 +1,16 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    ViewChildren
+} from '@angular/core';
 import {Message} from "../../types/venom-bot/model/message";
 import {Chat} from "../../types/whatsapp.types";
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AttachModalComponent} from "./attach-modal/attach-modal.component";
 import {SitebillEntity} from "../../../../../_models";
@@ -16,6 +25,8 @@ import {Subject} from "rxjs";
 export class DialogComponent implements OnInit {
     @ViewChild('scrollMe') private myScrollContainer: ElementRef;
     protected _unsubscribeAll: Subject<any>;
+    form: FormGroup;
+
 
     public show_gallery = false;
 
@@ -34,21 +45,34 @@ export class DialogComponent implements OnInit {
     replyForm: NgForm;
     files_field = 'files';
     files_entity: SitebillEntity;
+    can_send = false;
 
 
     constructor(
         protected dialog_modal: MatDialog,
+        private fb: FormBuilder,
     ) {
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
         this.readyToReply();
+        this.form = this.fb.group({
+            message: [''],
+        });
+
+        this.form.valueChanges
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+                this.onFormValuesChanged();
+            });
+
     }
 
     ngAfterViewChecked() {
         this.scrollToBottom();
     }
+
 
 
     /**
@@ -57,7 +81,8 @@ export class DialogComponent implements OnInit {
     readyToReply(): void {
         setTimeout(() => {
             this.scrollToBottom();
-            this.replyForm.reset();
+            this.form.controls['message'].patchValue('');
+            this.can_send = false;
         });
 
     }
@@ -70,13 +95,12 @@ export class DialogComponent implements OnInit {
         }
     }
 
-
     /**
      * Reply
      */
     reply(): void {
-        if (this.replyForm.form.value.message != null && this.replyForm.form.value.message.trim() !== '') {
-            this.onChange.emit(this.replyForm.form.value.message);
+        if (this.form.controls['message'].value != null && this.form.controls['message'].value.trim() !== '') {
+            this.onChange.emit(this.form.controls['message'].value);
         }
         this.readyToReply();
     }
@@ -89,6 +113,7 @@ export class DialogComponent implements OnInit {
         dialogConfig.panelClass = 'regular-modal';
         dialogConfig.minWidth = '50vw';
         dialogConfig.data = {entity: this.files_entity};
+        this.show_gallery = false;
 
         const modalRef = this.dialog_modal.open(AttachModalComponent, dialogConfig);
         modalRef.componentInstance.attach_entity
@@ -98,7 +123,7 @@ export class DialogComponent implements OnInit {
                     this.show_gallery = true;
                     this.files_entity = new SitebillEntity();
                     this.files_entity = result;
-                    console.log(result.model['files'].value);
+                    this.can_send = true;
                 }
             });
     }
@@ -106,6 +131,14 @@ export class DialogComponent implements OnInit {
     OnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    private onFormValuesChanged() {
+        if (this.form.controls['message'].value != null && this.form.controls['message'].value.trim() !== '') {
+            this.can_send = true;
+        } else {
+            this.can_send = false;
+        }
     }
 }
 

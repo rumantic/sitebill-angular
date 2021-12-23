@@ -153,6 +153,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     update_chat(message) {
         console.log(message);
+        /*
         this.whatsAppService.sendText(this.phone_number, message)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
@@ -164,6 +165,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     console.log(error);
                 }
             );
+         */
 
     }
 
