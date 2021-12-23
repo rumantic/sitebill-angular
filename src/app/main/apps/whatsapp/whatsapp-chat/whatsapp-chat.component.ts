@@ -8,7 +8,7 @@ import {ResponseState, SitebillResponse} from "../../../../_models/sitebill-resp
 import {WhatsappStateTypes} from "../types/whatsapp-state.types";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {SitebillSession} from "../../../../_models/sitebillsession";
-import {Chat} from "../types/whatsapp.types";
+import {Chat, DialogPost} from "../types/whatsapp.types";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -151,20 +151,22 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         clearInterval(this.clearInterval);
     }
 
-    update_chat(message) {
-        console.log(message);
+    update_chat(dialog_post: DialogPost) {
+        console.log(dialog_post);
+        if (dialog_post.message) {
+            this.whatsAppService.sendText(this.phone_number, dialog_post.message)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (result: SitebillResponse) => {
+                        console.log('update chat');
+                        this.drawChat();
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
         /*
-        this.whatsAppService.sendText(this.phone_number, message)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (result: SitebillResponse) => {
-                    console.log('update chat');
-                    this.drawChat();
-                },
-                error => {
-                    console.log(error);
-                }
-            );
          */
 
     }

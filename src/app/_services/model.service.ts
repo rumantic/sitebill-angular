@@ -72,7 +72,10 @@ export class ModelService {
     }
 
     get sitebill_session(): SitebillSession {
-        return {sessionId: this.get_session_key()};
+        return {
+            sessionId: this.get_session_key(),
+            clientUrl: this.get_api_url(),
+        };
     }
 
 
