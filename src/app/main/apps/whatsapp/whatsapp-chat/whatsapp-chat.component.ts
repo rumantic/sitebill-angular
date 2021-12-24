@@ -166,6 +166,19 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     }
                 );
         }
+        if ( dialog_post.files ) {
+            this.whatsAppService.sendFile(this.phone_number, dialog_post.files)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (result: SitebillResponse) => {
+                        console.log('update chat');
+                        this.drawChat();
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
         /*
          */
 

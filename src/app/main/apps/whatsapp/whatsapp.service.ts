@@ -90,6 +90,17 @@ export class WhatsAppService {
         return this.http.post(`${this.api_url}/sendText`, chat_session);
     }
 
+    sendFile ( number: string, files: any ) {
+        number = this.normalizeNumber(number);
+        const chat_session = {
+            session: this.modelService.sitebill_session,
+            chat: {chatId: number},
+            files: files
+        };
+        console.log(chat_session);
+        return this.http.post(`${this.api_url}/sendFile`, chat_session);
+    }
+
     checkNumberStatus ( number: string ) {
         number = this.normalizeNumber(number);
         if ( number !== '' ) {
