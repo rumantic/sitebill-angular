@@ -18,6 +18,8 @@ import { DialogComponent } from './whatsapp-chat/dialog/dialog.component';
 import { WhatsappModalComponent } from './whatsapp-modal/whatsapp-modal.component';
 import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-modal.component";
 import {SharedModule} from "../../../shared.module";
+import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
+const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
     declarations: [
@@ -45,6 +47,7 @@ import {SharedModule} from "../../../shared.module";
         MatProgressBarModule,
         SharedModule,
         ReactiveFormsModule,
+        SocketIoModule.forRoot(config),
     ],
     providers: [
         WhatsAppService

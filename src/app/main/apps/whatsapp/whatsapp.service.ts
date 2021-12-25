@@ -5,6 +5,7 @@ import {SitebillSession} from "../../../_models/sitebillsession";
 import parsePhoneNumber from 'libphonenumber-js';
 import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
 import {APP_CONFIG, AppConfig} from "../../../app.config.module";
+import {Socket} from "ngx-socket-io";
 
 @Injectable()
 export class WhatsAppService {
@@ -19,6 +20,7 @@ export class WhatsAppService {
         private http: HttpClient,
         private modelService: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
+        private socket: Socket
     )
     {
         console.log('WhatsAppService constructor');
@@ -126,5 +128,12 @@ export class WhatsAppService {
 
     getQrCode (session: SitebillSession) {
         return this.http.post(`${this.api_url}/getQrCode`, session);
+    }
+
+    sendChatSocket(message){
+        this.socket.emit('chat', message);
+    }
+    receiveChatSocket(){
+        return this.socket.fromEvent('chat');
     }
 }
