@@ -131,9 +131,9 @@ export class WhatsAppService {
     }
 
     sendChatSocket(message){
-        this.socket.emit('chat', message);
+        this.socket.emit('msgToServer', {session: this.modelService.sitebill_session,message: message});
     }
-    receiveChatSocket(){
-        return this.socket.fromEvent('chat');
+    receiveChatSocket(session: SitebillSession){
+        return this.socket.fromEvent('msgToClient/'+session.sessionId);
     }
 }

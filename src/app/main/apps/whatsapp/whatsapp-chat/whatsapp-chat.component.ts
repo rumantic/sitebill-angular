@@ -94,6 +94,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     console.log(error);
                 }
                 );
+        this.receiveChatSocketSubscriber();
         /*
         this.whatsAppService.getHostDevice()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -109,6 +110,20 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
          */
 
     }
+    receiveChatSocketSubscriber() {
+        this.whatsAppService.receiveChatSocket(this.modelService.sitebill_session)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (result ) => {
+                    console.log('got message!');
+                    console.log(result);
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+
     drawChat () {
         this.whatsAppService.getAllMessagesInChat(this.phone_number)
             .pipe(takeUntil(this._unsubscribeAll))
@@ -153,6 +168,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     update_chat(dialog_post: DialogPost) {
         console.log(dialog_post);
+        this.whatsAppService.sendChatSocket(dialog_post.message);
         if (dialog_post.message) {
             this.whatsAppService.sendText(this.phone_number, dialog_post.message)
                 .pipe(takeUntil(this._unsubscribeAll))
