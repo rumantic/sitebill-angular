@@ -17,6 +17,8 @@
                      alt="{{message.sender.formattedName}}" />
                 <div class="bubble">
                     <div class="message" *ngIf="message.type === 'chat'">{{message.content}}</div>
+                    <div class="message" *ngIf="message.type === 'image'"><img [src]="_sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'
+                 + message.content)"></div>
                     <div class="time secondary-text">{{message.timestamp*1000 | date:'d.MM.yy HH:mm'}}</div>
                 </div>
             </div>

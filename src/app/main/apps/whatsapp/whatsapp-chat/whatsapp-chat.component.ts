@@ -9,6 +9,7 @@ import {WhatsappStateTypes} from "../types/whatsapp-state.types";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {SitebillSession} from "../../../../_models/sitebillsession";
 import {Chat, DialogPost} from "../types/whatsapp.types";
+import {Message} from "../types/venom-bot/model/message";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -37,13 +38,14 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     private chat: Chat;
 
-    public dialog: any;
+    public dialog: Message[];
+    private subscribed = false;
 
 
     constructor(
         protected whatsAppService: WhatsAppService,
         protected modelService: ModelService,
-        private _sanitizer: DomSanitizer
+        public _sanitizer: DomSanitizer
     ) {
         this._unsubscribeAll = new Subject();
     }
@@ -94,7 +96,9 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     console.log(error);
                 }
                 );
-        this.receiveChatSocketSubscriber();
+        if ( !this.subscribed ) {
+            this.receiveChatSocketSubscriber();
+        }
         /*
         this.whatsAppService.getHostDevice()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -111,29 +115,32 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     }
     receiveChatSocketSubscriber() {
+        console.log('receiveChatSocketSubscriber');
         this.whatsAppService.receiveChatSocket(this.modelService.sitebill_session)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
-                (result ) => {
-                    console.log('got message!');
-                    console.log(result);
+                (result: Message ) => {
+                    if ( result.from == this.whatsAppService.normalizeNumber(this.phone_number) ) {
+                        console.log('got message!');
+                        console.log(result);
+                        this.dialog.push(result);
+                    }
                 },
                 error => {
                     console.log(error);
                 }
             );
+        this.subscribed = true;
     }
 
     drawChat () {
         this.whatsAppService.getAllMessagesInChat(this.phone_number)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
-                (result: SitebillResponse) => {
-                    if ( result.state ===  ResponseState.success ) {
-                    }
+                (result: Message[]) => {
                     this.state = WhatsappStateTypes.chat;
                     this.dialog = result;
-                    //console.log(result);
+                    console.log(result);
                     this.whatsAppService.readyState = true;
                 },
                 error => {
@@ -161,6 +168,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
 
     OnDestroy () {
+        console.log('OnDestroy');
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         clearInterval(this.clearInterval);
@@ -186,9 +194,10 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
             this.whatsAppService.sendFile(this.phone_number, dialog_post.files)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe(
-                    (result: SitebillResponse) => {
-                        console.log('update chat');
-                        this.drawChat();
+                    (result) => {
+                        console.log('update chat after file');
+                        console.log(result);
+                        setTimeout(this.drawChat.bind(this), 2000);
                     },
                     error => {
                         console.log(error);

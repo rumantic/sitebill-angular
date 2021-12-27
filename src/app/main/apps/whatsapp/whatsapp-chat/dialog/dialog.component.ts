@@ -16,6 +16,7 @@ import {AttachModalComponent} from "./attach-modal/attach-modal.component";
 import {SitebillEntity} from "../../../../../_models";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
     selector: 'chat-dialog',
@@ -52,6 +53,7 @@ export class DialogComponent implements OnInit {
     constructor(
         protected dialog_modal: MatDialog,
         private fb: FormBuilder,
+        public _sanitizer: DomSanitizer
     ) {
         this._unsubscribeAll = new Subject();
         this.dialogPost = null;
