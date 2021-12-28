@@ -147,13 +147,23 @@ export class UploaderComponent {
                                     this.add_to_collections(this.entity.key_value);
                                 }
 
+                                let img_folder = this.getImgFolder(result.message[this.image_field]['type']);
+
 
                                 for (var prop in result.message[this.image_field]['value']) {
+                                    let small_url = this.api_url +
+                                        img_folder +
+                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result.message[this.image_field]['value'][prop].normal) +
+                                        '?' + new Date().getTime();
+
+                                    if ( small_url.indexOf('\.pdf') >= 0 ) {
+                                        small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
+                                    }
 
                                     let gallery_image = {
-                                        small: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].preview + '?' + new Date().getTime(),
-                                        medium: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
-                                        big: this.api_url + '/img/data/' + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                        small: small_url,
+                                        medium: this.api_url + img_folder + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
+                                        big: this.api_url + img_folder + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
                                     };
                                     this.galleryImages[this.image_field].push(gallery_image);
                                 }
@@ -189,6 +199,13 @@ export class UploaderComponent {
         }
 
         this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
+    }
+
+    getImgFolder (type: string) {
+        if ( type === 'docuploads' ) {
+            return '/img/mediadocs/';
+        }
+        return '/img/data/';
     }
 
     add_to_collections(data_id) {

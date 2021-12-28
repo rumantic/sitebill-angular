@@ -78,22 +78,38 @@ export class GalleryComponent implements OnInit {
         }
     }
 
+    replaceFileTypeIcons (galleryImages) {
+        return galleryImages;
+    }
+
 
     ngOnInit(): void {
         this.galleryImages = [];
         if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
             this.galleryImages = this.galleryImagesInput[this.image_field];
         } else if(this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+            let img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
+
             for (var prop in this.entity.model[this.image_field].value) {
 
+                let small_url = this.modelSerivce.get_api_url() +
+                    img_folder +
+                    (this.entity.model[this.image_field].value[prop].preview?this.entity.model[this.image_field].value[prop].preview:this.entity.model[this.image_field].value[prop].normal) +
+                    '?' + new Date().getTime();
+                if ( small_url.indexOf('\.pdf') >= 0 ) {
+                    small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
+                }
+
+
                 let gallery_image = {
-                    small: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].preview + '?' + new Date().getTime(),
-                    medium: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
-                    big: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                    small: small_url,
+                    medium: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
+                    big: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
                 };
                 this.galleryImages.push(gallery_image);
             }
         }
+        this.galleryImages = this.replaceFileTypeIcons(this.galleryImages);
         this.differ =
             <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
         let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
@@ -176,6 +192,13 @@ export class GalleryComponent implements OnInit {
 
             }
         }
+    }
+
+    getImgFolder (type: string) {
+        if ( type === 'docuploads' ) {
+            return '/img/mediadocs/';
+        }
+        return '/img/data/';
     }
 
     deleteImage(event, index) {
