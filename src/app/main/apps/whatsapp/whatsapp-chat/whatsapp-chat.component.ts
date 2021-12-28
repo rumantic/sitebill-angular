@@ -184,14 +184,25 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     update_chat(dialog_post: DialogPost) {
         console.log(dialog_post);
-        this.whatsAppService.sendChatSocket(dialog_post.message);
+        if ( dialog_post.phone_list && dialog_post.phone_list.length > 0 ) {
+            dialog_post.phone_list.forEach(phone_number => {
+                this.sendPost(dialog_post, phone_number, false);
+            });
+        } else {
+            this.sendPost(dialog_post, this.phone_number);
+        }
+    }
+
+    sendPost (dialog_post: DialogPost, phone_number: string, update_chat = true) {
         if (dialog_post.message) {
-            this.whatsAppService.sendText(this.phone_number, dialog_post.message)
+            this.whatsAppService.sendText(phone_number, dialog_post.message)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe(
                     (result: SitebillResponse) => {
-                        console.log('update chat');
-                        this.drawChat();
+                        if ( update_chat ) {
+                            console.log('update chat');
+                            this.drawChat();
+                        }
                     },
                     error => {
                         console.log(error);
@@ -199,22 +210,20 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 );
         }
         if ( dialog_post.files ) {
-            this.whatsAppService.sendFile(this.phone_number, dialog_post.files)
+            this.whatsAppService.sendFile(phone_number, dialog_post.files)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe(
                     (result) => {
-                        console.log('update chat after file');
-                        console.log(result);
-                        setTimeout(this.drawChat.bind(this), 2000);
+                        if ( update_chat ) {
+                            console.log('update chat after file');
+                            setTimeout(this.drawChat.bind(this), 2000);
+                        }
                     },
                     error => {
                         console.log(error);
                     }
                 );
         }
-        /*
-         */
-
     }
 
     getProgressInPercent() {

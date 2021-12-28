@@ -6,7 +6,7 @@
 
         <!-- CHAT MESSAGES -->
         <div class="chat-messages">
-            <whatsapp-contacts-list *ngIf="entity"></whatsapp-contacts-list>
+            <whatsapp-contacts-list *ngIf="entity" [entity]="entity" #whatsappContactsList></whatsapp-contacts-list>
 
             <ng-container *ngIf="dialog">
                 <!-- MESSAGE -->

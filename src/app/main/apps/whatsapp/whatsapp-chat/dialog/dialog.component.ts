@@ -52,6 +52,8 @@ export class DialogComponent implements OnInit {
     can_send = false;
     dialogPost: DialogPost;
 
+    @ViewChild('whatsappContactsList') whatsappContactsList;
+
 
     constructor(
         protected dialog_modal: MatDialog,
@@ -110,6 +112,7 @@ export class DialogComponent implements OnInit {
             this.dialogPost = {
                 message: null,
                 files: null,
+                phone_list: (this.whatsappContactsList?this.whatsappContactsList.phone_list:null)
             };
 
             if (this.form.controls['message'].value != null && this.form.controls['message'].value.trim() !== '') {

@@ -49,4 +49,5 @@ export class MessageLinkPreview {
 export class DialogPost {
     message: string;
     files: string[];
+    phone_list?: string[];
 }
