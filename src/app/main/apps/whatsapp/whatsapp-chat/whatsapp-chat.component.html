@@ -7,5 +7,5 @@
     <img [src]="qr_image">
     <button (click)="drawChat()">Нажмите когда просканиурете код</button>
 </div>
-<chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" (onChange)="update_chat($event)"></chat-dialog>
+<chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" [entity]="entity" (onChange)="update_chat($event)"></chat-dialog>
 

@@ -19,6 +19,7 @@ import { WhatsappModalComponent } from './whatsapp-modal/whatsapp-modal.componen
 import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-modal.component";
 import {SharedModule} from "../../../shared.module";
 import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
+import { ContactsListComponent } from './whatsapp-chat/dialog/contacts-list/contacts-list.component';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -26,7 +27,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
         WhatsAppChatComponent,
         DialogComponent,
         AttachModalComponent,
-        WhatsappModalComponent
+        WhatsappModalComponent,
+        ContactsListComponent
     ],
     exports: [
         WhatsAppChatComponent

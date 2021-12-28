@@ -109,6 +109,16 @@
                         <mat-icon>autorenew</mat-icon>
                     </button>
 
+                    <!-- SENDER BUTTON -->
+                    <button mat-icon-button (click)="whatsapp_list_sender(entity)"
+                            aria-label="Рассылка WhatsApp" matTooltip="Рассылка WhatsApp"
+                            *ngIf="entity.get_app_name() === 'client'"
+                            class="mb-4">
+                        <mat-icon>message</mat-icon>
+                    </button>
+                    <!-- / SENDER BUTTON -->
+
+
                     <!-- EXCEL IMPORT BUTTON -->
                     <button mat-icon-button (click)="excel_modal()"
                             aria-label="Импорт из Excel" matTooltip="Импорт из Excel" class="mb-4">

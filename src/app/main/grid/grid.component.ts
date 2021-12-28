@@ -922,6 +922,19 @@ export class GridComponent implements OnInit, OnDestroy
         this.dialog.open(ViewModalComponent, dialogConfig);
     }
 
+    whatsapp_list_sender(entity: SitebillEntity) {
+        console.log(event);
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { entity: entity };
+        dialogConfig.panelClass = 'form-ngrx-compose-dialog';
+        dialogConfig.width = '99vw';
+
+        this.dialog.open(WhatsappModalComponent, dialogConfig);
+    }
+
     view_whatsapp(event) {
         console.log(event);
         const dialogConfig = new MatDialogConfig();
@@ -933,8 +946,6 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.width = '99vw';
 
         this.dialog.open(WhatsappModalComponent, dialogConfig);
-
-
     }
 
     view_gallery(event) {

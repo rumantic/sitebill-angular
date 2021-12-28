@@ -10,6 +10,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {SitebillSession} from "../../../../_models/sitebillsession";
 import {Chat, DialogPost} from "../types/whatsapp.types";
 import {Message} from "../types/venom-bot/model/message";
+import {SitebillEntity} from "../../../../_models";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -35,6 +36,9 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     @Input("phone_number")
     phone_number: string;
+
+    @Input("entity")
+    entity: SitebillEntity;
 
     private chat: Chat;
 
@@ -134,19 +138,23 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     drawChat () {
-        this.whatsAppService.getAllMessagesInChat(this.phone_number)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (result: Message[]) => {
-                    this.state = WhatsappStateTypes.chat;
-                    this.dialog = result;
-                    console.log(result);
-                    this.whatsAppService.readyState = true;
-                },
-                error => {
-                    console.log(error);
-                }
-            );
+        if ( this.entity ) {
+            this.state = WhatsappStateTypes.chat;
+        } else {
+            this.whatsAppService.getAllMessagesInChat(this.phone_number)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (result: Message[]) => {
+                        this.state = WhatsappStateTypes.chat;
+                        this.dialog = result;
+                        console.log(result);
+                        this.whatsAppService.readyState = true;
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
 
     }
 

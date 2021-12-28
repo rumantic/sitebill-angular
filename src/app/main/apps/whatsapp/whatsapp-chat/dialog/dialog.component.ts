@@ -34,6 +34,9 @@ export class DialogComponent implements OnInit {
     @Input("chat")
     chat: Chat;
 
+    @Input("entity")
+    entity: SitebillEntity;
+
     @Input("dialog")
     dialog: Message[];
 

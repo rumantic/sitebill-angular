@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {SitebillEntity} from "../../../../_models";
 
 @Component({
     selector: 'whatsapp-modal',
@@ -8,6 +9,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 })
 export class WhatsappModalComponent implements OnInit {
     phone_number: any;
+    entity: SitebillEntity;
 
     constructor(
         protected dialog: MatDialog,
@@ -16,7 +18,11 @@ export class WhatsappModalComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
         console.log(this._data);
-        this.phone_number = this._data.phone;
+        if ( this._data.entity ) {
+            this.entity = this._data.entity;
+        } else {
+            this.phone_number = this._data.phone;
+        }
     }
 
     ngOnInit(): void {
