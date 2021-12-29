@@ -193,6 +193,12 @@ export class CommonTemplateComponent {
         if (!this.whatsAppService.readyState) {
             return false;
         }
+        if ( localStorage.getItem(value) != undefined ) {
+            if (localStorage.getItem(value) === '1') {
+                return true;
+            }
+            return false;
+        }
         if (this.whatsAppCheckStorage[value] != undefined) {
             return this.whatsAppCheckStorage[value];
         }
@@ -203,8 +209,10 @@ export class CommonTemplateComponent {
             .subscribe((result) => {
                 if (result && result['numberExists']) {
                     console.log(value + ' numberExists');
+                    localStorage.setItem(value, '1');
                     this.whatsAppCheckStorage[value] = true;
                 } else {
+                    localStorage.setItem(value, '0');
                     this.whatsAppCheckStorage[value] = false;
                 }
             }, error => {

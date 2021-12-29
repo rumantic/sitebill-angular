@@ -1,6 +1,7 @@
 export enum SitebillModes {
     standalone,
-    application
+    application,
+    development
 };
 export function detect_mode () {
     if ( document.getElementById('app_root') ) {
@@ -9,4 +10,12 @@ export function detect_mode () {
         }
     }
     return SitebillModes.application;
+}
+export function detect_dev_mode () {
+    if ( document.getElementById('app_root') ) {
+        if (document.getElementById('app_root').getAttribute('dev_mode') === 'true') {
+            return true;
+        }
+    }
+    return false;
 }

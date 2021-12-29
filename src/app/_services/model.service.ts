@@ -74,7 +74,7 @@ export class ModelService {
     get sitebill_session(): SitebillSession {
         return {
             sessionId: this.get_session_key(),
-            clientUrl: this.get_api_url(),
+            clientUrl: ( this.get_api_url()!=='' ? this.get_api_url() : window.location.protocol+'//'+window.location.hostname ),
         };
     }
 

@@ -6,8 +6,8 @@ export const environment = {
     production: false,
     apiEndpoint: 'http://qplan',
     hmr       : false,
-    whatsapp_host: '94.73.239.163',
-    whatsapp_port: '3001',
+    whatsapp_host: '192.168.1.37',
+    whatsapp_port: '3002',
     whatsapp_schema: 'http',
 };
 

@@ -20,7 +20,12 @@ import {AttachModalComponent} from "./whatsapp-chat/dialog/attach-modal/attach-m
 import {SharedModule} from "../../../shared.module";
 import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
 import { ContactsListComponent } from './whatsapp-chat/dialog/contacts-list/contacts-list.component';
-const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
+import {detect_dev_mode} from "../../../_helpers/env";
+
+let config: SocketIoConfig = { url: 'https://whatsapp.sitebill.site', options: {} };
+if ( detect_dev_mode() ) {
+    config = { url: 'http://localhost:3002', options: {} };
+}
 
 @NgModule({
     declarations: [
