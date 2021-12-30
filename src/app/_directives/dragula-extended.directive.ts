@@ -130,10 +130,10 @@ export class DragulaExtendedDirective implements OnChanges, OnInit, AfterViewIni
             toIndex
         );
 
-        target.children.forEach(item => {
+        for (let item of target.children) {
             item.children[0].setAttribute('ng-reflect-row-index', index);
             index++;
-        });
+        }
         this.directiveDrop.emit(this.dragulaModel);
     }
 
