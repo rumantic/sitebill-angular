@@ -11,6 +11,7 @@ import {SitebillSession} from "../../../../_models/sitebillsession";
 import {Chat, DialogPost} from "../types/whatsapp.types";
 import {Message} from "../types/venom-bot/model/message";
 import {SitebillEntity} from "../../../../_models";
+import {SnackService} from "../../../../_services/snack.service";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -49,6 +50,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     constructor(
         protected whatsAppService: WhatsAppService,
         protected modelService: ModelService,
+        protected _snackService: SnackService,
         public _sanitizer: DomSanitizer
     ) {
         this._unsubscribeAll = new Subject();
@@ -64,7 +66,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: SitebillResponse) => {
                     clearInterval(this.clearInterval);
-                    console.log(result);
                     this.drawQrCode(result.data);
                 });
         }, this.wait_qr_ms)
@@ -98,6 +99,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     //this.getQrCode();
                     console.log('error isConnected');
                     console.log(error);
+                    this._snackService.error('Сервис отправки сообщений в WhatsApp временно недоступен');
                 }
                 );
         if ( !this.subscribed ) {
