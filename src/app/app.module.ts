@@ -62,6 +62,7 @@ import {Error500Component} from "./main/pages/errors/500/error-500.component";
 import {SitebillAuthService} from "./_services/sitebill-auth.service";
 import {ConfigComponent} from "./main/config/config.component";
 import {detect_mode, SitebillModes} from "./_helpers/env";
+import {WhatsAppModule} from "./main/apps/whatsapp/whatsapp.module";
 
 
 let appRoutes: Routes = [
@@ -226,6 +227,7 @@ if ( detect_mode() == SitebillModes.standalone ) {
         SampleModule,
         SharedModule,
         AppConfigModule,
+        WhatsAppModule,
     ],
     providers: [
         MessageService,

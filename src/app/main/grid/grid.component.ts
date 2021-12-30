@@ -1449,4 +1449,11 @@ export class GridComponent implements OnInit, OnDestroy
             });
 
     }
+
+    getTableHeight() {
+        if ( this.modelService.getDomConfigValue('standalone_mode' ) ) {
+            return ' table-height ';
+        }
+        return '';
+    }
 }

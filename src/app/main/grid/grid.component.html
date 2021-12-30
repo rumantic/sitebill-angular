@@ -185,7 +185,7 @@
                         <ngx-datatable
                             #gridTable
                             *ngIf="compose_complete"
-                            class="table-height material expandable"
+                            class="{{getTableHeight()}} material expandable"
                             [rows]="rows_data"
                             [columns]="data_columns"
                             [columnMode]="'force'"
