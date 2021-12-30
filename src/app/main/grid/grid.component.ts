@@ -63,7 +63,7 @@ export class GridComponent implements OnInit, OnDestroy
     ngxHeaderHeight: any;
     rows_my = [];
     rows_data = [];
-    selected = [];
+    selected:SitebillModelItem[] = [];
     loadingIndicator: boolean;
     loadGridComplete: boolean;
     reorderable: boolean;
@@ -201,7 +201,7 @@ export class GridComponent implements OnInit, OnDestroy
     input_entity: SitebillEntity;
 
     @Input('enable_select_rows')
-    enable_select_rows = false;
+    enable_select_rows = true;
 
     @Input('complaint_mode')
     complaint_mode = false;
@@ -1166,12 +1166,8 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     onSelect({selected}) {
-        console.log('Select Event', selected);
-
         this.selected.splice(0, this.selected.length);
         this.selected.push(...selected);
-
-        console.log(this.selected);
     }
 
     export_collections_pdf(report_type = 'client') {
@@ -1416,5 +1412,41 @@ export class GridComponent implements OnInit, OnDestroy
         this.group_key = this.entity.get_primary_key();
         this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
         return false;
+    }
+
+    deleteSelected($event: MouseEvent) {
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+        let delete_ids = [];
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить записи?';
+        this.confirmDialogRef.componentInstance.confirmMessage2 = this.selected.length + ' шт.';
+        this.selected.forEach((item) => {
+            delete_ids.push(item[this.entity.get_primary_key()].value)
+        });
+
+
+        this.confirmDialogRef.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(result => {
+                if (result) {
+                    this.modelService.delete(this.entity.get_table_name(), this.entity.primary_key, delete_ids)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((response: any) => {
+                            this.selected = [];
+
+                            if (response.state == 'error') {
+                                this._snackService.message(response.message);
+                                return null;
+                            } else {
+                                this._snackService.message('Записи удалены успешно');
+                                this.filterService.empty_share(this.entity);
+                            }
+                        });
+                }
+                this.confirmDialogRef = null;
+            });
+
     }
 }

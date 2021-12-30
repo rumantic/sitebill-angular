@@ -190,13 +190,14 @@ export class CommonTemplateComponent {
     }
 
     isWhatsAppAvailable(value: any) {
-        if (!this.whatsAppService.readyState) {
-            return false;
-        }
         if ( localStorage.getItem(value) != undefined ) {
             if (localStorage.getItem(value) === '1') {
                 return true;
             }
+            return false;
+        }
+
+        if (!this.whatsAppService.readyState) {
             return false;
         }
         if (this.whatsAppCheckStorage[value] != undefined) {

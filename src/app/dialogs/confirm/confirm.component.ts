@@ -9,6 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ConfirmComponent
 {
     public confirmMessage: string;
+    public confirmMessage2: string;
 
     /**
      * Constructor
