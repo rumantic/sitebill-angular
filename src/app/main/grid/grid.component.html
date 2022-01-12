@@ -112,7 +112,7 @@
                     <!-- SENDER BUTTON -->
                     <button mat-icon-button (click)="whatsapp_list_sender(entity)"
                             aria-label="Рассылка WhatsApp" matTooltip="Рассылка WhatsApp"
-                            *ngIf="entity.get_app_name() === 'client'"
+                            *ngIf="show_whatsapp() && entity.get_app_name() === 'client'"
                             class="mb-4">
                         <mat-icon>message</mat-icon>
                     </button>

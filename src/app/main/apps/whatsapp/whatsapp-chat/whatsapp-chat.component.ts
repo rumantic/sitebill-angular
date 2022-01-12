@@ -78,6 +78,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     ngOnInit() {
         console.log(this.messages);
         this.scrollToBottom();
+        //this.getAllChatsGroups();
 
         this.whatsAppService.isConnected(this.modelService.sitebill_session)
             .pipe(takeUntil(this._unsubscribeAll))
@@ -120,6 +121,20 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
          */
 
     }
+
+    getAllChatsGroups () {
+        this.whatsAppService.getGroupMembers(null)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (result ) => {
+                    console.log(result);
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+
     receiveChatSocketSubscriber() {
         console.log('receiveChatSocketSubscriber');
         this.whatsAppService.receiveChatSocket(this.modelService.sitebill_session)

@@ -64,6 +64,9 @@ export class WhatsAppService {
     }
 
     normalizeNumber ( number: string ) {
+        if ( !number ) {
+            return '';
+        }
         const phoneNumber = parsePhoneNumber(number, 'RU');
         if (phoneNumber && phoneNumber.isValid()) {
             return phoneNumber.number.replace('+','') + '@c.us';
@@ -101,6 +104,28 @@ export class WhatsAppService {
         };
         console.log(chat_session);
         return this.http.post(`${this.api_url}/sendFile`, chat_session);
+    }
+
+    getGroupMembers ( number: string ) {
+        let groupId = '79529374488-1634787586@g.us';
+        number = this.normalizeNumber(number);
+        const chat_session = {
+            session: this.modelService.sitebill_session,
+            group: {groupId: groupId},
+        };
+        console.log(chat_session);
+        return this.http.post(`${this.api_url}/getGroupMembers`, chat_session);
+    }
+
+    getAllChatsGroups ( number: string ) {
+        let groupId = '79529374488-1634787586@g.us';
+        number = this.normalizeNumber(number);
+        const chat_session = {
+            session: this.modelService.sitebill_session,
+            group: {groupId: groupId},
+        };
+        console.log(chat_session);
+        return this.http.post(`${this.api_url}/getAllChatsGroups`, chat_session);
     }
 
     checkNumberStatus ( number: string ) {

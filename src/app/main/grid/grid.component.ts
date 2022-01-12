@@ -1456,4 +1456,11 @@ export class GridComponent implements OnInit, OnDestroy
         }
         return '';
     }
+
+    show_whatsapp() {
+        if ( this.filterService.get_share_array(this.entity.get_app_name()) ) {
+            return true;
+        }
+        return false;
+    }
 }
