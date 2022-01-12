@@ -46,6 +46,7 @@ import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.compone
 import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
 import {SitebillResponse} from "../../_models/sitebill-response";
 import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-modal.component";
+import {WhatsAppService} from "../apps/whatsapp/whatsapp.service";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -63,7 +64,7 @@ export class GridComponent implements OnInit, OnDestroy
     ngxHeaderHeight: any;
     rows_my = [];
     rows_data = [];
-    selected:SitebillModelItem[] = [];
+    selected: SitebillModelItem[] = [];
     loadingIndicator: boolean;
     loadGridComplete: boolean;
     reorderable: boolean;
@@ -236,7 +237,8 @@ export class GridComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         protected cdr: ChangeDetectorRef,
         public filterService: FilterService,
-        protected stringParserService: StringParserService
+        protected stringParserService: StringParserService,
+        protected whatsAppService: WhatsAppService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -923,7 +925,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     whatsapp_list_sender(entity: SitebillEntity) {
-        console.log(event);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
@@ -1458,9 +1459,13 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     show_whatsapp() {
-        if ( this.filterService.get_share_array(this.entity.get_app_name()) ) {
+        if ( this.whatsAppService.getMailingList().length > 0 ) {
             return true;
         }
         return false;
+    }
+
+    addToMailingList($event: MouseEvent) {
+        this.whatsAppService.addToMailingList(this.selected);
     }
 }

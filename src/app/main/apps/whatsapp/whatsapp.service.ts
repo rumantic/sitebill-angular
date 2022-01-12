@@ -6,11 +6,13 @@ import parsePhoneNumber from 'libphonenumber-js';
 import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
 import {APP_CONFIG, AppConfig} from "../../../app.config.module";
 import {Socket} from "ngx-socket-io";
+import {SitebillEntity, SitebillModelItem} from "../../../_models";
 
 @Injectable()
 export class WhatsAppService {
     public schema = this.config.whatsapp_schema;
     private ready: boolean = false;
+    private mailing_list: SitebillModelItem[] = [];
 
 
     /**
@@ -23,7 +25,6 @@ export class WhatsAppService {
         private socket: Socket
     )
     {
-        console.log('WhatsAppService constructor');
         this.isLoggedIn(this.modelService.sitebill_session)
             .subscribe(
                 (result ) => {
@@ -160,5 +161,12 @@ export class WhatsAppService {
     }
     receiveChatSocket(session: SitebillSession){
         return this.socket.fromEvent('msgToClient/'+session.sessionId);
+    }
+
+    addToMailingList ( entities: SitebillModelItem[] ) {
+        this.mailing_list = this.mailing_list.concat(entities);
+    }
+    getMailingList (): SitebillModelItem[] {
+        return this.mailing_list;
     }
 }

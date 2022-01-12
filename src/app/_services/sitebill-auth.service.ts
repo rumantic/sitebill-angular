@@ -21,8 +21,6 @@ export class SitebillAuthService {
     )
     {
         console.log('SitebillAuthService constructor');
-        console.log(this.complete_emitter);
-
     }
 
     init () {
@@ -31,7 +29,6 @@ export class SitebillAuthService {
         this.modelService.config_loaded_emitter.subscribe(
             (result: any) => {
                 if ( result ) {
-                    console.log('this.modelService.config_loaded_emitter.subscribe result = true');
                     this.init_user();
                 }
             },

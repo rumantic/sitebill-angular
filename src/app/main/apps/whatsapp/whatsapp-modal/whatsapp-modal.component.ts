@@ -17,7 +17,6 @@ export class WhatsappModalComponent implements OnInit {
         private dialogRef: MatDialogRef<WhatsappModalComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any
     ) {
-        console.log(this._data);
         if ( this._data.entity ) {
             this.entity = this._data.entity;
         } else {

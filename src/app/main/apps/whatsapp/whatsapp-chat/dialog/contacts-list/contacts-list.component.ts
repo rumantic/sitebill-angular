@@ -4,6 +4,7 @@ import {ModelService} from "../../../../../../_services/model.service";
 import {Subject} from "rxjs";
 import {FilterService} from "../../../../../../_services/filter.service";
 import {SitebillEntity} from "../../../../../../_models";
+import {WhatsAppService} from "../../../whatsapp.service";
 
 @Component({
     selector: 'whatsapp-contacts-list',
@@ -21,12 +22,33 @@ export class ContactsListComponent implements OnInit {
     constructor(
         public modelService: ModelService,
         public filterService: FilterService,
+        protected whatsAppService: WhatsAppService,
     ) {
         this._unsubscribeAll = new Subject();
         this.phone_list = [];
     }
 
     ngOnInit(): void {
+        this.loadMailingListFromWhatsappService();
+    }
+
+    loadMailingListFromWhatsappService () {
+        if ( this.whatsAppService.getMailingList().length > 0 ) {
+            this.whatsAppService.getMailingList().forEach(item => {
+                let mapped = Object.keys(item);
+                mapped.forEach(function (column_item, i, arr) {
+                   if ( column_item == 'phone' ) {
+                       if ( this.phone_list.indexOf(item[column_item].value) < 0 ) {
+                           this.phone_list.push(item[column_item].value);
+                       }
+                   }
+                }.bind(this));
+            });
+        }
+
+    }
+
+    loadMailingListFromGridParams () {
         this.modelService.load(this.entity.get_table_name(), ['phone'], this.getFilterParams(), null, 1, 999)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -38,7 +60,6 @@ export class ContactsListComponent implements OnInit {
                     });
                 }
             });
-
     }
 
     getFilterParams() {
@@ -47,7 +68,7 @@ export class ContactsListComponent implements OnInit {
 
         var obj = this.filterService.get_share_array(this.entity.get_app_name());
         var mapped = Object.keys(obj);
-        // console.log(mapped);
+        //console.log(mapped);
         var self = this;
 
         mapped.forEach(function (item, i, arr) {

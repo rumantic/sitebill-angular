@@ -221,10 +221,23 @@
                                     let-isVisible="isVisible">
                                     <div class="page-count">
                                         <ng-container *ngIf="enable_select_rows && selectedCount > 0">
-                                            <button mat-icon-button (click)="deleteSelected($event)"
-                                                    [matTooltip]="'Удалить выбранные'" aria-label="Удалить выбранные">
-                                                <mat-icon class="secondary-text">delete</mat-icon>
+                                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation()"
+                                                    fxHide.xs>
+                                                <mat-icon class="secondary-text">more_vert</mat-icon>
                                             </button>
+
+                                            <mat-menu #moreMenu="matMenu">
+                                                <button mat-menu-item (click)="addToMailingList($event)"
+                                                        aria-label="Добавить в рассылку">
+                                                    <mat-icon class="secondary-text">message</mat-icon>
+                                                    <span>Добавить в рассылку</span>
+                                                </button>
+                                                <button mat-menu-item (click)="deleteSelected($event)"
+                                                        [matTooltip]="'Удалить выбранные'" aria-label="Удалить выбранные">
+                                                    <mat-icon class="secondary-text">delete</mat-icon>
+                                                    <span>Удалить выбранные</span>
+                                                </button>
+                                            </mat-menu>
                                         </ng-container>
 
                                         <ng-container *ngIf="enable_select_rows && selectedCount > 0">
