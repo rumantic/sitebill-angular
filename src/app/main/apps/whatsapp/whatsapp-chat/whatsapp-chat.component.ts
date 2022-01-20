@@ -12,6 +12,7 @@ import {Chat, DialogPost} from "../types/whatsapp.types";
 import {Message} from "../types/venom-bot/model/message";
 import {SitebillEntity} from "../../../../_models";
 import {SnackService} from "../../../../_services/snack.service";
+import {promise} from "protractor";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -197,48 +198,55 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         clearInterval(this.clearInterval);
     }
 
-    update_chat(dialog_post: DialogPost) {
+    async update_chat(dialog_post: DialogPost) {
         console.log(dialog_post);
         if ( dialog_post.phone_list && dialog_post.phone_list.length > 0 ) {
-            dialog_post.phone_list.forEach(phone_number => {
-                this.sendPost(dialog_post, phone_number, false);
-            });
+            for (const phone_number of dialog_post.phone_list) {
+                const result = await this.sendPost(dialog_post, phone_number, false);
+                console.log(result);
+            }
         } else {
-            this.sendPost(dialog_post, this.phone_number);
+            await this.sendPost(dialog_post, this.phone_number);
         }
     }
 
-    sendPost (dialog_post: DialogPost, phone_number: string, update_chat = true) {
-        if (dialog_post.message) {
-            this.whatsAppService.sendText(phone_number, dialog_post.message)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe(
-                    (result: SitebillResponse) => {
-                        if ( update_chat ) {
-                            console.log('update chat');
-                            this.drawChat();
+    async sendPost (dialog_post: DialogPost, phone_number: string, update_chat = true) {
+        return new Promise((resolve, reject) => {
+            if (dialog_post.message) {
+                this.whatsAppService.sendText(phone_number, dialog_post.message)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(
+                        (result: SitebillResponse) => {
+                            if ( update_chat ) {
+                                console.log('update chat');
+                                this.drawChat();
+                            }
+                            resolve(result);
+                        },
+                        error => {
+                            console.log(error);
+                            reject(new Error(error))
                         }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                );
-        }
-        if ( dialog_post.files ) {
-            this.whatsAppService.sendFile(phone_number, dialog_post.files)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe(
-                    (result) => {
-                        if ( update_chat ) {
-                            console.log('update chat after file');
-                            setTimeout(this.drawChat.bind(this), 2000);
+                    );
+            }
+            if ( dialog_post.files ) {
+                this.whatsAppService.sendFile(phone_number, dialog_post.files)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(
+                        (result) => {
+                            if ( update_chat ) {
+                                console.log('update chat after file');
+                                setTimeout(this.drawChat.bind(this), 2000);
+                            }
+                            resolve(result);
+                        },
+                        error => {
+                            console.log(error);
+                            reject(new Error(error))
                         }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                );
-        }
+                    );
+            }
+        })
     }
 
     getProgressInPercent() {
