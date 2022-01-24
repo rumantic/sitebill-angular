@@ -19,7 +19,8 @@ export class WhatsappModalComponent implements OnInit {
     ) {
         if ( this._data.entity ) {
             this.entity = this._data.entity;
-        } else {
+        }
+        if (this._data.phone) {
             this.phone_number = this._data.phone;
         }
     }

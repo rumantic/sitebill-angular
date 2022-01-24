@@ -937,12 +937,15 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     view_whatsapp(event) {
-        console.log(event);
         const dialogConfig = new MatDialogConfig();
+        this.entity.set_key_value(event.row[this.entity.get_primary_key()].value)
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { phone: event.value };
+        dialogConfig.data = {
+            phone: event.value,
+            entity: this.entity,
+        };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         dialogConfig.width = '99vw';
 
