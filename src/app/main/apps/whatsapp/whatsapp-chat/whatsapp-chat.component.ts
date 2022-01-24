@@ -143,8 +143,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
             .subscribe(
                 (result: Message ) => {
                     if ( result.from == this.whatsAppService.normalizeNumber(this.phone_number) ) {
-                        console.log('got message!');
-                        console.log(result);
+                        this.updateChatMessagesOnServer([result])
                         this.dialog.push(result);
                     }
                 },
@@ -156,7 +155,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     drawChat () {
-        if ( this.entity ) {
+        if ( this.whatsAppService.getMailingList().length > 0 ) {
             this.state = WhatsappStateTypes.chat;
         } else {
             this.whatsAppService.getAllMessagesInChat(this.phone_number)
@@ -166,7 +165,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                         this.updateChatMessagesOnServer(result);
                         this.state = WhatsappStateTypes.chat;
                         this.dialog = result;
-                        console.log(result);
                         this.whatsAppService.readyState = true;
                     },
                     error => {
@@ -177,7 +175,8 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     updateChatMessagesOnServer (messages: Message[]) {
-        messages.forEach(item => this.messagesService.message(item));
+        const client_id = this.entity.get_key_value();
+        messages.forEach(item => this.messagesService.message(item, client_id));
     }
 
     drawQrCode ( base64Qr: string ) {
