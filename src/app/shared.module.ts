@@ -87,6 +87,7 @@ import {MatListModule} from "@angular/material/list";
 import {ConfigFormComponent} from "./main/config/config-form/config-form.component";
 import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component";
 import {ExcelModule} from "./main/apps/excel/excel.module";
+import {MessagesService} from "./_services/messages.service";
 
 @NgModule({
     imports: [
@@ -193,6 +194,7 @@ import {ExcelModule} from "./main/apps/excel/excel.module";
         StorageService,
         StringParserService,
         EntityStorageService,
+        MessagesService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     ],
     exports: [

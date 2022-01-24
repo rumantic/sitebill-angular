@@ -13,6 +13,7 @@ import {Message} from "../types/venom-bot/model/message";
 import {SitebillEntity} from "../../../../_models";
 import {SnackService} from "../../../../_services/snack.service";
 import {promise} from "protractor";
+import {MessagesService} from "../../../../_services/messages.service";
 
 @Component({
     selector: 'whatsapp-chat',
@@ -52,7 +53,8 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         protected whatsAppService: WhatsAppService,
         protected modelService: ModelService,
         protected _snackService: SnackService,
-        public _sanitizer: DomSanitizer
+        public _sanitizer: DomSanitizer,
+        private messagesService: MessagesService
     ) {
         this._unsubscribeAll = new Subject();
     }
@@ -161,6 +163,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe(
                     (result: Message[]) => {
+                        this.updateChatMessagesOnServer(result);
                         this.state = WhatsappStateTypes.chat;
                         this.dialog = result;
                         console.log(result);
@@ -171,7 +174,10 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     }
                 );
         }
+    }
 
+    updateChatMessagesOnServer (messages: Message[]) {
+        messages.forEach(item => this.messagesService.message(item));
     }
 
     drawQrCode ( base64Qr: string ) {
@@ -216,7 +222,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 this.whatsAppService.sendText(phone_number, dialog_post.message)
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe(
-                        (result: SitebillResponse) => {
+                        (result) => {
                             if ( update_chat ) {
                                 console.log('update chat');
                                 this.drawChat();
