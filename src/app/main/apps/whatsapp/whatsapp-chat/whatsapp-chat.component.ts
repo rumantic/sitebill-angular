@@ -241,7 +241,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                         (result) => {
                             if ( update_chat ) {
                                 console.log('update chat after file');
-                                setTimeout(this.drawChat.bind(this), 2000);
+                                setTimeout(this.drawChat.bind(this, sendCallbackBundle), 2000);
                             }
                             resolve(result);
                         },
