@@ -47,6 +47,7 @@ import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
 import {SitebillResponse} from "../../_models/sitebill-response";
 import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-modal.component";
 import {WhatsAppService} from "../apps/whatsapp/whatsapp.service";
+import {SendCallbackBundle} from "../apps/whatsapp/types/whatsapp.types";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -942,9 +943,10 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            phone: event.value,
+        dialogConfig.data = <SendCallbackBundle>{
             entity: this.entity,
+            modelItems: event.row,
+            phone: event.value,
         };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         dialogConfig.width = '99vw';

@@ -1,7 +1,14 @@
+import {SitebillEntity, SitebillModelItem} from "../../../../_models";
+
 export class Chat {
     chatId: string;
 }
-
+export class SendCallbackBundle {
+    entity: SitebillEntity;
+    modelItems: SitebillModelItem[];
+    data_id?: number;
+    phone?:string;
+}
 export class MessageContactVcard {
     chatId: string;
     contactsId: string;
