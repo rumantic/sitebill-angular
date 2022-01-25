@@ -9,7 +9,7 @@ import {
     ViewChildren
 } from '@angular/core';
 import {Message} from "../../types/venom-bot/model/message";
-import {Chat, DialogPost} from "../../types/whatsapp.types";
+import {Chat, DialogPost, SendCallbackBundle} from "../../types/whatsapp.types";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AttachModalComponent} from "./attach-modal/attach-modal.component";
@@ -17,6 +17,7 @@ import {SitebillEntity} from "../../../../../_models";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
+import {WhatsAppService} from "../../whatsapp.service";
 
 @Component({
     selector: 'chat-dialog',
@@ -34,8 +35,8 @@ export class DialogComponent implements OnInit {
     @Input("chat")
     chat: Chat;
 
-    @Input("entity")
-    entity: SitebillEntity;
+    @Input("sendCallbackBundle")
+    sendCallbackBundle: SendCallbackBundle;
 
     @Input("dialog")
     dialog: Message[];
@@ -58,6 +59,7 @@ export class DialogComponent implements OnInit {
     constructor(
         protected dialog_modal: MatDialog,
         private fb: FormBuilder,
+        public whatsAppService: WhatsAppService,
         public _sanitizer: DomSanitizer
     ) {
         this._unsubscribeAll = new Subject();
@@ -170,6 +172,14 @@ export class DialogComponent implements OnInit {
         } else {
             this.can_send = false;
         }
+    }
+
+    show_mailing_list () {
+        if (this.whatsAppService.getMailingList().length > 0) {
+            return true;
+        }
+        return false;
+
     }
 }
 

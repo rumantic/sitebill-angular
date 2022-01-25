@@ -173,7 +173,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     updateChatMessagesOnServer (messages: Message[], sendCallbackBundle: SendCallbackBundle) {
         const client_id = sendCallbackBundle.entity.get_key_value();
-        messages.forEach(item => this.messagesService.message(item, client_id));
+        messages.forEach(item => this.messagesService.message(item, client_id, sendCallbackBundle.data_id));
     }
 
     drawQrCode ( base64Qr: string ) {

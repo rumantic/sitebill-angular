@@ -3,8 +3,8 @@ import {takeUntil} from "rxjs/operators";
 import {ModelService} from "../../../../../../_services/model.service";
 import {Subject} from "rxjs";
 import {FilterService} from "../../../../../../_services/filter.service";
-import {SitebillEntity} from "../../../../../../_models";
 import {WhatsAppService} from "../../../whatsapp.service";
+import {SendCallbackBundle} from "../../../types/whatsapp.types";
 
 @Component({
     selector: 'whatsapp-contacts-list',
@@ -14,8 +14,8 @@ import {WhatsAppService} from "../../../whatsapp.service";
 export class ContactsListComponent implements OnInit {
     protected _unsubscribeAll: Subject<any>;
 
-    @Input("entity")
-    entity: SitebillEntity;
+    @Input("sendCallbackBundle")
+    sendCallbackBundle: SendCallbackBundle;
 
     public phone_list: string[];
 
@@ -49,7 +49,7 @@ export class ContactsListComponent implements OnInit {
     }
 
     loadMailingListFromGridParams () {
-        this.modelService.load(this.entity.get_table_name(), ['phone'], this.getFilterParams(), null, 1, 999)
+        this.modelService.load(this.sendCallbackBundle.entity.get_table_name(), ['phone'], this.getFilterParams(), null, 1, 999)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if ( result && result.rows ) {
@@ -66,7 +66,7 @@ export class ContactsListComponent implements OnInit {
         let filter_params_json = {};
         let concatenate_search_string = null;
 
-        var obj = this.filterService.get_share_array(this.entity.get_app_name());
+        var obj = this.filterService.get_share_array(this.sendCallbackBundle.entity.get_app_name());
         var mapped = Object.keys(obj);
         //console.log(mapped);
         var self = this;
@@ -75,7 +75,7 @@ export class ContactsListComponent implements OnInit {
             if (
                 self.modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1' &&
                 item === 'concatenate_search' &&
-                self.entity.get_app_name() === 'data'
+                self.sendCallbackBundle.entity.get_app_name() === 'data'
             ) {
                 concatenate_search_string = obj[item];
             } else {

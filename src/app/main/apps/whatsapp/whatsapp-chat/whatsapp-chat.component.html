@@ -12,5 +12,5 @@
         </button>
     </div>
 </div>
-<chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" [entity]="entity" (onChange)="update_chat($event)"></chat-dialog>
+<chat-dialog *ngIf="state === WhatsappStateTypes.chat" [dialog]="dialog" [sendCallbackBundle]="sendCallbackBundle" (onChange)="update_chat($event)"></chat-dialog>
 

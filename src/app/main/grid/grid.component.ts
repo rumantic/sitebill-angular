@@ -930,7 +930,9 @@ export class GridComponent implements OnInit, OnDestroy
 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = { entity: entity };
+        dialogConfig.data = <SendCallbackBundle>{
+            entity: entity,
+        };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         dialogConfig.width = '99vw';
 
