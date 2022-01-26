@@ -83,7 +83,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (result: SitebillResponse) => {
-                    console.log(result);
                     if ( result ) {
                         if ( result.state === ResponseState.success ) {
                             console.log('client connected');
@@ -154,6 +153,19 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     drawChat (sendCallbackBundle: SendCallbackBundle) {
         if ( this.whatsAppService.getMailingList().length > 0 ) {
             this.state = WhatsappStateTypes.chat;
+            if ( sendCallbackBundle.phone ) {
+                this.whatsAppService.getAllMessagesInChat(sendCallbackBundle.phone)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(
+                        (result: Message[]) => {
+                            this.updateChatMessagesOnServer(result, sendCallbackBundle);
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    );
+            }
+
         } else {
             this.whatsAppService.getAllMessagesInChat(sendCallbackBundle.phone)
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -201,21 +213,48 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     async update_chat(dialog_post: DialogPost) {
-        console.log(dialog_post);
         let sendCallbackBundle = this.sendCallbackBundle;
 
-        if ( dialog_post.phone_list && dialog_post.phone_list.length > 0 ) {
-            for (const phone_number of dialog_post.phone_list) {
-                const result = await this.sendPost(dialog_post, sendCallbackBundle, false );
-                console.log(result);
+        if ( this.whatsAppService.getMailingList().length > 0 ) {
+            let phone_cache = [];
+            for (const item of this.whatsAppService.getMailingList()) {
+                let mapped = Object.keys(item);
+                for (const column_item of mapped) {
+                    if ( column_item == 'phone' ) {
+                        if ( phone_cache.indexOf(item[column_item].value) < 0 ) {
+                            phone_cache.push(item[column_item].value);
+                            sendCallbackBundle.phone = item[column_item].value;
+                            sendCallbackBundle.entity.set_key_value(item[sendCallbackBundle.entity.get_primary_key()].value)
+                            const result = await this.sendPost(dialog_post, sendCallbackBundle, false );
+                            const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
+                            this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+                        }
+                    }
+                }
             }
+
         } else {
             await this.sendPost(dialog_post, sendCallbackBundle,true);
         }
     }
 
+    async getAllMessagesInChat (phone: string): Promise<Message[]> {
+        return new Promise((resolve, reject) => {
+            this.whatsAppService.getAllMessagesInChat(phone)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (result: Message[]) => {
+                        resolve(result);
+                    },
+                    error => {
+                        console.log(error);
+                        reject(new Error(error))
+                    }
+                );
+        })
+    }
+
     async sendPost (dialog_post: DialogPost, sendCallbackBundle: SendCallbackBundle, update_chat = true ) {
-        console.log(sendCallbackBundle)
         return new Promise((resolve, reject) => {
             if (dialog_post.message) {
                 this.whatsAppService.sendText(sendCallbackBundle.phone, dialog_post.message)
@@ -223,8 +262,9 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     .subscribe(
                         (result) => {
                             if ( update_chat ) {
-                                console.log('update chat');
-                                this.drawChat(sendCallbackBundle);
+                                if (update_chat) {
+                                    this.drawChat(sendCallbackBundle);
+                                }
                             }
                             resolve(result);
                         },
@@ -240,7 +280,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     .subscribe(
                         (result) => {
                             if ( update_chat ) {
-                                console.log('update chat after file');
                                 setTimeout(this.drawChat.bind(this, sendCallbackBundle), 2000);
                             }
                             resolve(result);
