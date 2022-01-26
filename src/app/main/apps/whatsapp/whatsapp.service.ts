@@ -13,6 +13,7 @@ export class WhatsAppService {
     public schema = this.config.whatsapp_schema;
     private ready: boolean = false;
     private mailing_list: SitebillModelItem[] = [];
+    private mailing_attach_list: SitebillModelItem[] = [];
 
 
     /**
@@ -168,5 +169,14 @@ export class WhatsAppService {
     }
     getMailingList (): SitebillModelItem[] {
         return this.mailing_list;
+    }
+    addToMailingAttachList ( entities: SitebillModelItem[] ) {
+        this.mailing_attach_list = this.mailing_list.concat(entities);
+    }
+    getMailingAttachList (): SitebillModelItem[] {
+        return this.mailing_attach_list;
+    }
+    clearMailingAttachList () {
+        this.mailing_attach_list = [];
     }
 }

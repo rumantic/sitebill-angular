@@ -1473,6 +1473,10 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     addToMailingList($event: MouseEvent) {
-        this.whatsAppService.addToMailingList(this.selected);
+        if ( this.entity.get_app_name() === 'client' ) {
+            this.whatsAppService.addToMailingList(this.selected);
+        } else {
+            this.whatsAppService.addToMailingAttachList(this.selected);
+        }
     }
 }

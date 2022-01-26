@@ -47,6 +47,13 @@
                 </gallery-component>
             </div>
 
+            <div class="p-12" *ngIf="show_mailing_attach_list()">
+                Прикреплено объектов: {{whatsAppService.getMailingAttachList().length}}
+                <button mat-icon-button aria-label="Убрать" [matTooltip]="'Убрать'" (click)="clear_mailing_attach_list()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </div>
         </div>
         <!-- CHAT MESSAGES -->
         <!-- / REPLY FORM -->
@@ -64,7 +71,10 @@
               fxFlex class="reply-form"
               fxLayout="row"
               fxLayoutAlign="start center">
-            <button mat-icon-button aria-label="Прикрепить файл" (click)="attach_modal()">
+            <button mat-icon-button aria-label="Прикрепить файл" [matTooltip]="'Прикрепить объект'" (click)="attach_entity_modal()">
+                <mat-icon>business</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Прикрепить файл" [matTooltip]="'Прикрепить файл'" (click)="attach_modal()">
                 <mat-icon>attach_file</mat-icon>
             </button>
 

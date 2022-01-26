@@ -21,6 +21,8 @@ import {SharedModule} from "../../../shared.module";
 import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
 import { ContactsListComponent } from './whatsapp-chat/dialog/contacts-list/contacts-list.component';
 import {detect_dev_mode} from "../../../_helpers/env";
+import {AttachEntityModalComponent} from "./whatsapp-chat/dialog/attach-entity-modal/attach-entity-modal.component";
+import {GridModule} from "../../grid/grid.module";
 
 let config: SocketIoConfig = { url: 'https://whatsapp.sitebill.site', options: {} };
 if ( detect_dev_mode() ) {
@@ -32,6 +34,7 @@ if ( detect_dev_mode() ) {
         WhatsAppChatComponent,
         DialogComponent,
         AttachModalComponent,
+        AttachEntityModalComponent,
         WhatsappModalComponent,
         ContactsListComponent
     ],
@@ -55,6 +58,7 @@ if ( detect_dev_mode() ) {
         SharedModule,
         ReactiveFormsModule,
         SocketIoModule.forRoot(config),
+        GridModule,
     ],
     providers: [
         WhatsAppService

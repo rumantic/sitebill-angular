@@ -18,6 +18,7 @@ import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
 import {WhatsAppService} from "../../whatsapp.service";
+import {AttachEntityModalComponent} from "./attach-entity-modal/attach-entity-modal.component";
 
 @Component({
     selector: 'chat-dialog',
@@ -137,6 +138,29 @@ export class DialogComponent implements OnInit {
         this.readyToReply();
     }
 
+    attach_entity_modal() {
+
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'regular-modal';
+        dialogConfig.minWidth = '90vw';
+        dialogConfig.data = {entity: this.files_entity};
+        this.show_gallery = false;
+
+        const modalRef = this.dialog_modal.open(AttachEntityModalComponent, dialogConfig);
+        modalRef.componentInstance.attach_entity
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if ( result.model && result.model['files'] && result.model['files'].value.length > 0 ) {
+                    this.show_gallery = true;
+                    this.files_entity = new SitebillEntity();
+                    this.files_entity = result;
+                    this.can_send = true;
+                }
+            });
+    }
+
     attach_modal() {
 
 
@@ -178,6 +202,17 @@ export class DialogComponent implements OnInit {
             return true;
         }
         return false;
+    }
+
+    show_mailing_attach_list () {
+        if (this.whatsAppService.getMailingAttachList().length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    clear_mailing_attach_list() {
+        this.whatsAppService.clearMailingAttachList();
 
     }
 }
