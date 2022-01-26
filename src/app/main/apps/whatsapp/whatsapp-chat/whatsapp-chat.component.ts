@@ -10,7 +10,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {SitebillSession} from "../../../../_models/sitebillsession";
 import {Chat, DialogPost, SendCallbackBundle} from "../types/whatsapp.types";
 import {Message} from "../types/venom-bot/model/message";
-import {SitebillEntity, SitebillModelItem} from "../../../../_models";
+import {ApiCall, ApiParams, SitebillEntity, SitebillModelItem} from "../../../../_models";
 import {SnackService} from "../../../../_services/snack.service";
 import {promise} from "protractor";
 import {MessagesService} from "../../../../_services/messages.service";
@@ -255,6 +255,31 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     async sendPost (dialog_post: DialogPost, sendCallbackBundle: SendCallbackBundle, update_chat = true ) {
+        if ( dialog_post.entities ) {
+            for (const item of dialog_post.entities) {
+                let data_id = item['id']['value']
+
+                const apiCall = <ApiCall> {
+                    api: 'pdfreport',
+                    name: 'pdfreport',
+                    method: 'get_meta',
+                    anonymous: true
+                };
+                const pdf_meta = await this.modelService.api_call_async(apiCall, {data_id: data_id})
+                console.log(pdf_meta);
+                let recursive_dialog_post = <DialogPost> {
+                    message: 'data_id = ' + data_id,
+                }
+                sendCallbackBundle.data_id = data_id;
+                let result = await this.sendPost(recursive_dialog_post, sendCallbackBundle, false)
+                const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
+                this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+            }
+            return new Promise((resolve, reject) => {
+                resolve('ok');
+            })
+        }
+
         return new Promise((resolve, reject) => {
             if (dialog_post.message) {
                 this.whatsAppService.sendText(sendCallbackBundle.phone, dialog_post.message)

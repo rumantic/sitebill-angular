@@ -132,6 +132,9 @@ export class DialogComponent implements OnInit {
                 this.show_gallery = false;
                 this.files_entity = null;
             }
+            if ( this.whatsAppService.getMailingAttachList().length > 0 ) {
+                this.dialogPost.entities = this.whatsAppService.getMailingAttachList();
+            }
             this.onChange.emit(this.dialogPost);
             this.dialogPost = null;
         }
@@ -206,14 +209,15 @@ export class DialogComponent implements OnInit {
 
     show_mailing_attach_list () {
         if (this.whatsAppService.getMailingAttachList().length > 0) {
+            this.can_send = true;
             return true;
         }
         return false;
     }
 
     clear_mailing_attach_list() {
+        this.can_send = false;
         this.whatsAppService.clearMailingAttachList();
-
     }
 }
 

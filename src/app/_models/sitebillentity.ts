@@ -258,7 +258,7 @@ export interface ApiCall {
     api: string,
     name: string,
     method: string,
-    params: ApiParams[],
+    params?: ApiParams[],
     anonymous: boolean
 }
 export interface ApiParams {

@@ -57,4 +57,5 @@ export class DialogPost {
     message: string;
     files: string[];
     phone_list?: string[];
+    entities?: SitebillModelItem[];
 }

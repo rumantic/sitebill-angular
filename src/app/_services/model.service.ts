@@ -8,8 +8,9 @@ import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
 import {StorageService} from "./storage.service";
 import {SnackService} from "./snack.service";
-import {Observable, timer} from "rxjs";
+import {Observable, Subject, timer} from "rxjs";
 import {SitebillSession} from "../_models/sitebillsession";
+import {takeUntil} from "rxjs/operators";
 
 
 @Injectable()
@@ -40,6 +41,7 @@ export class ModelService {
     private nobody_first_login = false;
     public init_permissions_complete: boolean = false;
     public init_config_complete: boolean = false;
+    protected _unsubscribeAll: Subject<any>;
 
 
 
@@ -52,6 +54,8 @@ export class ModelService {
         protected _snackService: SnackService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
+        this._unsubscribeAll = new Subject();
+
         this.navbar_hidden = false;
         this.toolbar_hidden = false;
         // console.log('ModelService constructor');
@@ -148,7 +152,9 @@ export class ModelService {
         console.log('apps.realty.enable_guest_mode ' + this.getConfigValue('apps.realty.enable_guest_mode'));
         if ( this.getConfigValue('apps.realty.enable_guest_mode') === '1') {
             if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
-                this.get_cms_session().subscribe((result: any) => {
+                this.get_cms_session()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result: any) => {
                     console.log(result);
                     let finaly_need_guest = false;
                     try {
@@ -187,7 +193,9 @@ export class ModelService {
                 this._snackService.message('Для работы с разделом вы должны авторизоваться.');
                 let timerPeriod = 1000;
                 const numbers = timer(timerPeriod);
-                numbers.subscribe(x => this.router.navigate(['/login/']));
+                numbers
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(x => this.router.navigate(['/login/']));
                 this.nobody_first_login = true;
             }
         }
@@ -253,7 +261,9 @@ export class ModelService {
     get_session_key_safe() {
         const session_key = this.get_session_key();
         if (!this.is_validated_session_key()) {
-            this.validateKey(session_key).subscribe((result: any) => {
+            this.validateKey(session_key)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
                 if (result.error === 'check_session_key_failed') {
                     console.log('check_session_key_failed need reload');
                     if ( this.is_model_redirect_enabled() ) {
@@ -298,7 +308,9 @@ export class ModelService {
     init_nobody_user_storage () {
         this.reset_local_user_storage();
 
-        this.init_nobody_session().subscribe((result: any) => {
+        this.init_nobody_session()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
             if ( result.error === 'check_session_key_failed' ) {
                 this.reset_local_user_storage();
                 let refresh_url = this.router.url;
@@ -324,7 +336,9 @@ export class ModelService {
     logout() {
         if ( this.all_checks_passes() ) {
             console.log('run logout');
-            this.model_logout().subscribe(
+            this.model_logout()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
                 data => {
                     this.enable_guest_mode();
 
@@ -432,16 +446,34 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    api_call (api_call: ApiCall) {
-        const request = {
+    api_call (api_call: ApiCall, standard_params = {}) {
+        let request = {
             action: api_call.name,
             do: api_call.method,
             params: api_call.params,
             anonymous: api_call.anonymous,
             session_key: this.get_session_key_safe()
         };
+        request = {...request, ...standard_params};
+        console.log(request);
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
+    async api_call_async (api_call: ApiCall, standard_params = {}) {
+        return new Promise((resolve, reject) => {
+            this.api_call(api_call, standard_params)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (result) => {
+                        resolve(result);
+                    },
+                    error => {
+                        console.log(error);
+                        reject(new Error(error))
+                    }
+                );
+        })
+    }
+
 
     api_request (request: any) {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
@@ -807,6 +839,7 @@ export class ModelService {
     init_config_standalone() {
         console.log('start init config standalone');
         this.load_config_anonymous()
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                     console.log('config standalone data loaded');
                     if (result.state === 'success') {
@@ -827,6 +860,7 @@ export class ModelService {
     init_config() {
         console.log('start init config');
         this.load_config()
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 console.log('config data loaded');
                     if (result.state === 'success') {
@@ -879,6 +913,7 @@ export class ModelService {
 
     load_current_user_profile () {
         this.get_oauth_user_profile()
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
             if (result.state === 'success') {
                 if ( result.data.group_id != null ) {
@@ -990,6 +1025,7 @@ export class ModelService {
             session_key: this.get_session_key_safe()
         };
         this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request)
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if ( result.success === 1 ) {
                     this.storageService.setItem('currentUser', JSON.stringify(result));
@@ -1079,4 +1115,8 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
+    OnDestroy () {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
 }
