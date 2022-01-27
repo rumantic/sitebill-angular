@@ -105,6 +105,7 @@ import {AutoResolverComponent} from "./entity/autoresolver/auto-resolver.compone
 import {CloudTestimonialsComponent} from "./entity/cloud/testimonials/cloud-testimonials.component";
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 import {AutoResolverFormComponent} from "./entity/autoresolver/form/auto-resolver-form.component";
+import {MessagesComponent} from "./entity/messages/messages.component";
 
 const routes = [
     {
@@ -194,6 +195,14 @@ const routes = [
     {
         path: 'metro',
         component: MetroComponent,
+        resolve: {
+            chat: ChatService
+        }
+
+    },
+    {
+        path: 'messages',
+        component: MessagesComponent,
         resolve: {
             chat: ChatService
         }
@@ -348,6 +357,7 @@ const routes = [
         CityComponent,
         DistrictComponent,
         MetroComponent,
+        MessagesComponent,
         StreetComponent,
         GroupComponent,
         ComponentComponent,
@@ -459,7 +469,8 @@ const routes = [
         CloudTestimonialsComponent,
         FrontComponent,
         UserComponent,
-        AutoResolverFormComponent
+        AutoResolverFormComponent,
+        MessagesComponent
     ],
     providers: [
         FilterService,
