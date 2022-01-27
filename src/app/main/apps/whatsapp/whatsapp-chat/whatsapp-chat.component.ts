@@ -268,7 +268,8 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                 const pdf_meta = await this.modelService.api_call_async(apiCall, {data_id: data_id})
                 console.log(pdf_meta);
                 let recursive_dialog_post = <DialogPost> {
-                    message: 'data_id = ' + data_id,
+                    message: dialog_post.message,
+                    files: [pdf_meta['data']]
                 }
                 sendCallbackBundle.data_id = data_id;
                 let result = await this.sendPost(recursive_dialog_post, sendCallbackBundle, false)

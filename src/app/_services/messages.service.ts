@@ -33,6 +33,7 @@ export class MessagesService {
                 id: message.id,
                 content: message.content,
                 isMedia: message.isMedia,
+                file_name: message.filename,
                 chatId: (typeof chatId === 'string' ? chatId : chatId['_serialized']),
                 client_id: client_id,
                 data_id: data_id,

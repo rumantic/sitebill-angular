@@ -171,7 +171,7 @@ export class WhatsAppService {
         return this.mailing_list;
     }
     addToMailingAttachList ( entities: SitebillModelItem[] ) {
-        this.mailing_attach_list = this.mailing_list.concat(entities);
+        this.mailing_attach_list = this.mailing_attach_list.concat(entities);
     }
     getMailingAttachList (): SitebillModelItem[] {
         return this.mailing_attach_list;

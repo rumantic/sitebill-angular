@@ -6,7 +6,7 @@
     <h1>Откройте, пожалуйста, Whatsapp и просканируйте QR-код для активации отправки сообщений через ваш телефон</h1>
     <img [src]="qr_image">
     <div class="p-12">
-        <button mat-raised-button class="red-200-bg" (click)="drawChat()">
+        <button mat-raised-button class="red-200-bg" (click)="drawChat(sendCallbackBundle)">
             <mat-icon>update</mat-icon>
             Нажмите когда просканируете код
         </button>
