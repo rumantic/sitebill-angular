@@ -214,7 +214,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
 
     async update_chat(dialog_post: DialogPost) {
         let sendCallbackBundle = this.sendCallbackBundle;
-
+        let result = null;
         if ( this.whatsAppService.getMailingList().length > 0 ) {
             let phone_cache = [];
             for (const item of this.whatsAppService.getMailingList()) {
@@ -225,17 +225,27 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                             phone_cache.push(item[column_item].value);
                             sendCallbackBundle.phone = item[column_item].value;
                             sendCallbackBundle.entity.set_key_value(item[sendCallbackBundle.entity.get_primary_key()].value)
-                            const result = await this.sendPost(dialog_post, sendCallbackBundle, false );
-                            const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
-                            this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+                            result = await this.sendPost(dialog_post, sendCallbackBundle, false ).catch((err) => {
+                                this._snackService.error('Ошибка при отправке на номер ' + sendCallbackBundle.phone);
+                            });
+                            if ( result ) {
+                                const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
+                                this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+                            }
                         }
                     }
                 }
             }
-
         } else {
-            await this.sendPost(dialog_post, sendCallbackBundle,true);
+            result = await this.sendPost(dialog_post, sendCallbackBundle,true).catch((err) => {
+                this._snackService.error('Ошибка при отправке на номер ' + sendCallbackBundle.phone);
+            });
+            if ( result ) {
+                this._snackService.message('Сообщение отправлено на номер ' + sendCallbackBundle.phone);
+            }
+
         }
+        this.whatsAppService.clearMailingAttachList();
     }
 
     async getAllMessagesInChat (phone: string): Promise<Message[]> {
@@ -266,15 +276,19 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     anonymous: true
                 };
                 const pdf_meta = await this.modelService.api_call_async(apiCall, {data_id: data_id})
-                console.log(pdf_meta);
                 let recursive_dialog_post = <DialogPost> {
                     message: dialog_post.message,
                     files: [pdf_meta['data']]
                 }
                 sendCallbackBundle.data_id = data_id;
-                let result = await this.sendPost(recursive_dialog_post, sendCallbackBundle, false)
-                const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
-                this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+                let result = await this.sendPost(recursive_dialog_post, sendCallbackBundle, false).catch((err) => {
+                    this._snackService.error('Ошибка при отправке файла ' + pdf_meta['data']['normal'] + ' на номер ' + sendCallbackBundle.phone);
+                });
+                if ( result ) {
+                    this._snackService.message('Файл ' + pdf_meta['data']['normal'] + ' отправлен на номер ' + sendCallbackBundle.phone);
+                    const messages = await this.getAllMessagesInChat(sendCallbackBundle.phone);
+                    this.updateChatMessagesOnServer(messages, sendCallbackBundle);
+                }
             }
             return new Promise((resolve, reject) => {
                 resolve('ok');
