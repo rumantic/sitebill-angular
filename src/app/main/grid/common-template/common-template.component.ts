@@ -135,8 +135,8 @@ export class CommonTemplateComponent {
         this.view_galleryEvent.next(event);
     }
 
-    view_whatsapp(row, column, value) {
-        const event = {row: row, column: column, value: value};
+    view_whatsapp(row, column, value, history = false) {
+        const event = {row: row, column: column, value: value, history: history};
         this.view_whatsappEvent.next(event);
     }
 

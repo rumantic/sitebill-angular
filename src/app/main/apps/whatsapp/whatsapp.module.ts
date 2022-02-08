@@ -23,6 +23,7 @@ import { ContactsListComponent } from './whatsapp-chat/dialog/contacts-list/cont
 import {detect_dev_mode} from "../../../_helpers/env";
 import {AttachEntityModalComponent} from "./whatsapp-chat/dialog/attach-entity-modal/attach-entity-modal.component";
 import {GridModule} from "../../grid/grid.module";
+import {ReportModalComponent} from "./report-modal/report-modal.component";
 
 let config: SocketIoConfig = { url: 'https://whatsapp.sitebill.site', options: {} };
 if ( detect_dev_mode() ) {
@@ -36,7 +37,8 @@ if ( detect_dev_mode() ) {
         AttachModalComponent,
         AttachEntityModalComponent,
         WhatsappModalComponent,
-        ContactsListComponent
+        ContactsListComponent,
+        ReportModalComponent
     ],
     exports: [
         WhatsAppChatComponent

@@ -48,6 +48,7 @@ import {SitebillResponse} from "../../_models/sitebill-response";
 import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-modal.component";
 import {WhatsAppService} from "../apps/whatsapp/whatsapp.service";
 import {SendCallbackBundle} from "../apps/whatsapp/types/whatsapp.types";
+import {ReportModalComponent} from "../apps/whatsapp/report-modal/report-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -953,7 +954,11 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         dialogConfig.width = '99vw';
 
-        this.dialog.open(WhatsappModalComponent, dialogConfig);
+        if ( event.history ) {
+            this.dialog.open(ReportModalComponent, dialogConfig);
+        } else {
+            this.dialog.open(WhatsappModalComponent, dialogConfig);
+        }
     }
 
     view_gallery(event) {
