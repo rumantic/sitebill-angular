@@ -485,6 +485,7 @@ const routes = [
         ReportComponent,
         SaveSearchComponent,
         RealtyItemComponent,
+        MessagesComponent
     ]
 
 })

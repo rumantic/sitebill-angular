@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -9,6 +9,10 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations
 })
 export class MessagesComponent extends GridComponent {
+
+    @Input('client_id')
+    client_id: number;
+
     setup_apps() {
         this.entity.set_app_name('messages');
         this.entity.set_table_name('messages');
@@ -27,6 +31,9 @@ export class MessagesComponent extends GridComponent {
             'file_name'
         ];
         this.define_grid_fields(default_columns_list);
+        if ( this.client_id ) {
+            this.entity.set_default_params({client_id: this.client_id});
+        }
 
     }
 }
