@@ -209,6 +209,9 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('complaint_mode')
     complaint_mode = false;
 
+    @Input('disable_fix_table_height')
+    disable_fix_table_height = false;
+
     @Output() total_counterEvent = new EventEmitter<number>();
 
     private after_compose_complete_checked: boolean;
@@ -1464,6 +1467,9 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     getTableHeight() {
+        if ( this.disable_fix_table_height ) {
+            return '';
+        }
         if ( this.modelService.getDomConfigValue('standalone_mode' ) ) {
             return ' table-height ';
         }
