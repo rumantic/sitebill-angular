@@ -7,8 +7,20 @@
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    <div fxLayout="row" class="width-100">
-        <div class="width-100-box">
+    <div fxFlex fxLayout="column" fxLayout.gt-sm="row" class="p-12" fxLayoutAlign="space-between center">
+        <div class="fuse-card p-12 m-8" fxFlex="100" fxFlex.gt-sm="50">
+            <div class="p-16 pt-8">
+                <client-card></client-card>
+            </div>
+        </div>
+        <div class="fuse-card p-12 m-8" fxFlex="100" fxFlex.gt-sm="50">
+            <div class="p-16 pt-8">
+                <stat-card></stat-card>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div fxFlex="100">
             <messages-grid [client_id]="sendCallbackBundle.entity.get_key_value()"></messages-grid>
         </div>
     </div>

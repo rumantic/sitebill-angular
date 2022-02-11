@@ -24,6 +24,8 @@ import {detect_dev_mode} from "../../../_helpers/env";
 import {AttachEntityModalComponent} from "./whatsapp-chat/dialog/attach-entity-modal/attach-entity-modal.component";
 import {GridModule} from "../../grid/grid.module";
 import {ReportModalComponent} from "./report-modal/report-modal.component";
+import { ClientCardComponent } from './report-modal/client-card/client-card.component';
+import { StatCardComponent } from './report-modal/stat-card/stat-card.component';
 
 let config: SocketIoConfig = { url: 'https://whatsapp.sitebill.site', options: {} };
 if ( detect_dev_mode() ) {
@@ -38,10 +40,14 @@ if ( detect_dev_mode() ) {
         AttachEntityModalComponent,
         WhatsappModalComponent,
         ContactsListComponent,
-        ReportModalComponent
+        ReportModalComponent,
+        ClientCardComponent,
+        StatCardComponent
     ],
     exports: [
-        WhatsAppChatComponent
+        WhatsAppChatComponent,
+        ClientCardComponent,
+        StatCardComponent
     ],
     imports: [
         MatIconModule,
