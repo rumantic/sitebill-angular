@@ -106,6 +106,7 @@ import {CloudTestimonialsComponent} from "./entity/cloud/testimonials/cloud-test
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 import {AutoResolverFormComponent} from "./entity/autoresolver/form/auto-resolver-form.component";
 import {MessagesComponent} from "./entity/messages/messages.component";
+import {MessagesReportComponent} from "./entity/messages-report/messages-report.component";
 
 const routes = [
     {
@@ -358,6 +359,7 @@ const routes = [
         DistrictComponent,
         MetroComponent,
         MessagesComponent,
+        MessagesReportComponent,
         StreetComponent,
         GroupComponent,
         ComponentComponent,
@@ -470,7 +472,8 @@ const routes = [
         FrontComponent,
         UserComponent,
         AutoResolverFormComponent,
-        MessagesComponent
+        MessagesComponent,
+        MessagesReportComponent,
     ],
     providers: [
         FilterService,
@@ -485,7 +488,8 @@ const routes = [
         ReportComponent,
         SaveSearchComponent,
         RealtyItemComponent,
-        MessagesComponent
+        MessagesComponent,
+        MessagesReportComponent,
     ]
 
 })
