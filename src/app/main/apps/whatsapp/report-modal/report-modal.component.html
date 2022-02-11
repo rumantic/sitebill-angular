@@ -7,13 +7,11 @@
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    <div fxFlex fxLayout="column" fxLayout.gt-sm="row" class="p-12" fxLayoutAlign="space-between center">
-        <div class="fuse-card p-12 m-8" fxFlex="100" fxFlex.gt-sm="50">
-            <div class="p-16 pt-8">
-                <client-card></client-card>
-            </div>
+    <div fxFlex fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between center">
+        <div class="fuse-card m-8" fxFlex="100" fxFlex.gt-sm="50">
+            <view-static [entity]="sendCallbackBundle.entity" [predefined_ql_items]="client_fields" height="'30vh'"></view-static>
         </div>
-        <div class="fuse-card p-12 m-8" fxFlex="100" fxFlex.gt-sm="50">
+        <div class="fuse-card m-8" fxFlex="100" fxFlex.gt-sm="50">
             <div class="p-16 pt-8">
                 <stat-card></stat-card>
             </div>

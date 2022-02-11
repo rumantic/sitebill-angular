@@ -7,13 +7,14 @@ import {SitebillEntity} from "../../../../../_models";
     styleUrls: ['./client-card.component.scss']
 })
 export class ClientCardComponent implements OnInit {
-    @Input("messages")
+    @Input("entity")
     entity: SitebillEntity;
 
     constructor() {
     }
 
     ngOnInit(): void {
+        console.log(this.entity);
     }
 
 }

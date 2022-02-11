@@ -94,6 +94,10 @@ export class FormConstructorComponent implements OnInit {
     @Input("column_mode")
     column_mode: number;
 
+    @Input("height")
+    height: any;
+
+
     onSave = new EventEmitter();
     afterSave = new EventEmitter();
 
@@ -120,6 +124,9 @@ export class FormConstructorComponent implements OnInit {
         this.lat_center = 55.76;
         this.lng_center = 37.64;
         this.form = this._formBuilder.group({});
+        if ( !this.height ) {
+            this.height = '100vh';
+        }
     }
 
     ngOnInit() {

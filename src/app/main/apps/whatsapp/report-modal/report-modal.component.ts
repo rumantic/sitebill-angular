@@ -9,6 +9,7 @@ import {SendCallbackBundle} from "../types/whatsapp.types";
 })
 export class ReportModalComponent implements OnInit {
     sendCallbackBundle: SendCallbackBundle;
+    public client_fields: {};
 
     constructor(
         protected dialog: MatDialog,
@@ -17,6 +18,11 @@ export class ReportModalComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: SendCallbackBundle
     ) {
         this.sendCallbackBundle = this._data;
+        this.client_fields = {};
+        this.client_fields['company'] = true;
+        this.client_fields['fio'] = true;
+        this.client_fields['phone'] = true;
+        this.client_fields['email'] = true;
     }
 
     ngOnInit(): void {
