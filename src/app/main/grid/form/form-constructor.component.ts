@@ -19,6 +19,7 @@ import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
 import {SitebillResponse} from "../../../_models/sitebill-response";
+import {ChatService, CommentsBlockMeta} from "../../apps/chat/chat.service";
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     showDelay: 1000,
@@ -105,6 +106,7 @@ export class FormConstructorComponent implements OnInit {
 
 
     private visible_items_counter: number;
+    commentsBlockMeta: CommentsBlockMeta = {};
 
 
     constructor (
@@ -137,6 +139,7 @@ export class FormConstructorComponent implements OnInit {
         }
         this.getModel();
         this.initSubscribers();
+
     }
 
     initSubscribers() {

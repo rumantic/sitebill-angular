@@ -397,7 +397,7 @@ const routes = [
         TestimonialsModalComponent,
         BuildingBlocksModalComponent,
         GroupTemplateComponent,
-        FavoritesComponent
+        FavoritesComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),

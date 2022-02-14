@@ -42,34 +42,7 @@
                 </form>
             </div>
             <div class="modal-content__comments" *ngIf="_data.is_enable_comment() && this.modelService.get_access('comment', 'access')">
-                <mat-accordion>
-                    <mat-expansion-panel
-                        class="comments"
-                        (opened)="commentsBlockMeta.isOpened = true"
-                        (closed)="commentsBlockMeta.isOpened = false"
-                        hideToggle
-                    >
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                <mat-icon>comment</mat-icon>
-                                <strong *ngIf="commentsBlockMeta.commentsTotal" class="comments__total">{{ commentsBlockMeta.commentsTotal }}</strong>
-                            </mat-panel-title>
-                            <mat-panel-description *ngIf="!commentsBlockMeta.commentsTotal || commentsBlockMeta.isOpened; else extendedCommentsDescription">
-                                {{ commentsBlockMeta.isOpened ? 'Скрыть' : 'Показать' }} комментарии
-                            </mat-panel-description>
-                            <ng-template #extendedCommentsDescription>
-                                <mat-panel-description>
-                                    <span class="comments__message-preview">{{ commentsBlockMeta?.lastMessage }}</span>
-                                    <span>({{ commentsBlockMeta.isOpened ? 'скрыть' : 'показать' }} комментарии)</span>
-                                </mat-panel-description>
-                            </ng-template>
-                            <mat-icon>{{ commentsBlockMeta.isOpened ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
-                        </mat-expansion-panel-header>
-
-                        <profile-timeline></profile-timeline>
-
-                    </mat-expansion-panel>
-                </mat-accordion>
+                <comments-apps></comments-apps>
             </div>
 
         </ng-container>

@@ -68,6 +68,10 @@
             </div>
         </form>
     </div>
+    <div class="modal-content__comments" *ngIf="_data.is_enable_comment() && this.modelService.get_access('comment', 'access')">
+        <comments-apps [entity]="_data"></comments-apps>
+    </div>
+
 </ng-container>
 
 

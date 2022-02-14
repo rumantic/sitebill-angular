@@ -88,6 +88,7 @@ import {ConfigFormComponent} from "./main/config/config-form/config-form.compone
 import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component";
 import {ExcelModule} from "./main/apps/excel/excel.module";
 import {MessagesService} from "./_services/messages.service";
+import {CommentsComponent} from "./main/grid/comments/comments.component";
 
 @NgModule({
     imports: [
@@ -185,6 +186,7 @@ import {MessagesService} from "./_services/messages.service";
         LoginStandaloneComponent,
         ConfigComponent,
         ConfigFormComponent,
+        CommentsComponent,
         JsonEditorComponent
     ],
     providers: [
@@ -215,6 +217,7 @@ import {MessagesService} from "./_services/messages.service";
         ConfigFormComponent,
         JsonEditorComponent,
         UploaderComponent,
+        CommentsComponent,
         GalleryComponent
     ],
     entryComponents: [
@@ -231,6 +234,7 @@ import {MessagesService} from "./_services/messages.service";
         DemoBannerComponent,
         SearchStringParserComponent,
         ConfigFormComponent,
+        CommentsComponent,
         JsonEditorComponent
     ]
 

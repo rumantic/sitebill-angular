@@ -8,6 +8,13 @@ import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import {FuseUtils} from '@fuse/utils';
 import { ModelService } from 'app/_services/model.service';
 
+export class CommentsBlockMeta {
+    isOpened?: boolean = false;
+    commentsTotal?: number = 0;
+    lastMessage?: string = '';
+}
+
+
 @Injectable()
 export class ChatService implements Resolve<any>
 {

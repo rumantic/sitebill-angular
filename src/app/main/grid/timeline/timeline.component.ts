@@ -1,4 +1,4 @@
-import { Component, OnDestroy, isDevMode, OnInit, ViewEncapsulation, Inject } from '@angular/core';
+import {Component, OnDestroy, isDevMode, OnInit, ViewEncapsulation, Inject, Input} from '@angular/core';
 
 import { fuseAnimations } from '@fuse/animations';
 
@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import {currentUser} from 'app/_models/currentuser';
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
+import {SitebillEntity} from "../../../_models";
 
 
 @Component({
@@ -28,6 +29,10 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
     private _unsubscribeAll: Subject<any>;
     private currentUser: currentUser;
     api_url: string;
+
+    @Input("entity")
+    entity: SitebillEntity;
+
 
     /**
      * Constructor
@@ -59,6 +64,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy
         //console.log('init timeline');
 
         //this._chatService.getChat('5725a680b3249760ea21de52');
+        if ( this.entity ) {
+            this._chatService.getChat(this.entity.get_table_name(), this.entity.get_primary_key(), this.entity.get_key_value());
+        }
 
 
         this._chatService.onChatSelected

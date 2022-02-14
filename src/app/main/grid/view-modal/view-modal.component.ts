@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
-import {ChatService} from 'app/main/apps/chat/chat.service';
+import {ChatService, CommentsBlockMeta} from 'app/main/apps/chat/chat.service';
 import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 import {ModelService} from 'app/_services/model.service';
 import {FormComponent} from '../form/form.component';
@@ -13,11 +13,6 @@ import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {SitebillEntity} from '../../../_models';
 
-class CommentsBlockMeta {
-    isOpened?: boolean = false;
-    commentsTotal?: number = 0;
-    lastMessage?: string = '';
-}
 
 @Component({
     selector: 'view-modal',
