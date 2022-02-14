@@ -25,6 +25,7 @@ export class SitebillEntity {
     private params: {};
     private hidden_items: {};
     private default_values: {};
+    private delete_disabled = false;
 
     constructor() {
         this.columns = [];
@@ -252,6 +253,14 @@ export class SitebillEntity {
             return this.default_values[key];
         }
         return null;
+    }
+
+    disable_delete () {
+        this.delete_disabled = true;
+    }
+
+    is_delete_disabled () {
+        return this.delete_disabled;
     }
 }
 export interface ApiCall {

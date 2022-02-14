@@ -899,10 +899,11 @@ export class GridComponent implements OnInit, OnDestroy
 
     open_form_with_check_access (dialogConfig) {
         if (this.modelService.get_access(this.entity.get_table_name(), 'access')) {
-            this.dialog.open(FormComponent, dialogConfig);
+            return this.dialog.open(FormComponent, dialogConfig);
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию объявлений', 5000);
         }
+        return false;
     }
 
     view_injector (event: any) {

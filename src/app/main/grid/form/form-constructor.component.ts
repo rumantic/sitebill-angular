@@ -132,6 +132,9 @@ export class FormConstructorComponent implements OnInit {
     ngOnInit() {
         // Reactive Form
         this._data.set_readonly(false);
+        if ( this._data.is_delete_disabled() ) {
+            this.disable_delete = true;
+        }
         this.getModel();
         this.initSubscribers();
     }
