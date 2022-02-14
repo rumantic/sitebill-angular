@@ -27,6 +27,9 @@ export class MessagesReportComponent extends GridComponent {
             'address',
             'square_all',
             'cost_meter_per_month4rent',
+            'created_at',
+            'status_id',
+            'comment_text'
         ];
         this.define_grid_fields(default_columns_list);
         if ( this.client_id ) {
