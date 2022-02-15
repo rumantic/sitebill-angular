@@ -800,6 +800,7 @@ export class FormConstructorComponent implements OnInit {
     }
 
     get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
+        //console.log(record);
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
@@ -813,6 +814,9 @@ export class FormConstructorComponent implements OnInit {
         ];
         if ( width_100.indexOf(record.type) > -1 ) {
             return 100;
+        }
+        if ( record.parameters && record.parameters['fxFlex'] ) {
+            return record.parameters['fxFlex'];
         }
 
         if ( record.fxFlex ) {

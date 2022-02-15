@@ -59,6 +59,7 @@ export class MessagesReportComponent extends GridComponent {
                     deal_entity.set_hidden('created_at')
                     deal_entity.set_hidden('message_id')
                     deal_entity.set_hidden('deal_id')
+                    deal_entity.set_hidden('alarm_at')
 
 
                     dialogConfig.disableClose = false;

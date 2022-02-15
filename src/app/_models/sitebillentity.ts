@@ -371,6 +371,7 @@ export class SitebillModelItem {
         this.active = item.active === '1';
         this.fxFlex = item.fxFlex;
         this.api = item.api;
+        this.parameters = item.parameters;
     }
 
     patchDBType () {
