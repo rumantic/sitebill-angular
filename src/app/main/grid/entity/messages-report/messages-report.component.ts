@@ -67,11 +67,13 @@ export class MessagesReportComponent extends GridComponent {
                     dialogConfig.panelClass = 'regular-modal';
                     const modalRef = this.open_form_with_check_access(dialogConfig);
                     if ( modalRef ) {
-                        modalRef.componentInstance.onSave
+                        modalRef.afterClosed()
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((result) => {
                                 this.filterService.empty_share(this.entity)
                             });
+
+
                     }
 
                 } else {
