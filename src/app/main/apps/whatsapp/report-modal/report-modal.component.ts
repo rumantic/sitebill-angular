@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {SendCallbackBundle} from "../types/whatsapp.types";
+import {ReportType, SendCallbackBundle} from "../types/whatsapp.types";
+import {SitebillEntity} from "../../../../_models";
 
 @Component({
     selector: 'report-modal',
@@ -9,7 +10,8 @@ import {SendCallbackBundle} from "../types/whatsapp.types";
 })
 export class ReportModalComponent implements OnInit {
     sendCallbackBundle: SendCallbackBundle;
-    public client_fields: {};
+    public detail_fields: {};
+    public detail_entity: SitebillEntity;
 
     constructor(
         protected dialog: MatDialog,
@@ -18,15 +20,46 @@ export class ReportModalComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public _data: SendCallbackBundle
     ) {
         this.sendCallbackBundle = this._data;
-        this.client_fields = {};
-        this.client_fields['company'] = true;
-        this.client_fields['fio'] = true;
-        this.client_fields['phone'] = true;
-        this.client_fields['email'] = true;
     }
 
     ngOnInit(): void {
+        if ( this._data.report_type === ReportType.data ) {
+            this.setup_data_entity();
+        } else {
+            this.setup_client_entity();
+        }
     }
+
+    setup_client_entity () {
+        this.detail_entity = new SitebillEntity();
+        this.detail_entity.set_app_name('client');
+        this.detail_entity.set_table_name('client');
+        this.detail_entity.primary_key = 'client_id';
+        this.detail_entity.set_key_value(this._data.client_id);
+
+        this.detail_fields = {};
+        this.detail_fields['company'] = true;
+        this.detail_fields['fio'] = true;
+        this.detail_fields['phone'] = true;
+        this.detail_fields['email'] = true;
+    }
+
+    setup_data_entity () {
+        this.detail_entity = new SitebillEntity();
+        this.detail_entity.set_app_name('data');
+        this.detail_entity.set_table_name('data');
+        this.detail_entity.primary_key = 'id';
+        this.detail_entity.set_key_value(this._data.data_id);
+
+        this.detail_fields = {};
+        this.detail_fields['topic_id'] = true;
+        this.detail_fields['optype'] = true;
+        this.detail_fields['street_id'] = true;
+        this.detail_fields['number'] = true;
+        this.detail_fields['square_all'] = true;
+        this.detail_fields['cost_meter_per_month4rent'] = true;
+    }
+
 
     close () {
         this.dialogRef.close();

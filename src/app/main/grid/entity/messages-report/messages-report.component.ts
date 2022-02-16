@@ -37,7 +37,7 @@ export class MessagesReportComponent extends GridComponent {
         this.disable_add_button = true;
         this.disable_delete_button = true;
         //this.disable_edit_button = true;
-        this.disable_header = true;
+        this.disable_header = false;
         this.disable_view_button = true;
     }
 
