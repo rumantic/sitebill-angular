@@ -15,7 +15,7 @@ export class ReportModalComponent implements OnInit {
         protected dialog: MatDialog,
         public _matDialog: MatDialog,
         private dialogRef: MatDialogRef<ReportModalComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: SendCallbackBundle
+        @Inject(MAT_DIALOG_DATA) public _data: SendCallbackBundle
     ) {
         this.sendCallbackBundle = this._data;
         this.client_fields = {};

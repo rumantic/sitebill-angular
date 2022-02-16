@@ -109,7 +109,7 @@
         <mat-icon *ngIf="isWhatsAppAvailable(value)">message</mat-icon>
         <span class="p-4">{{value}}</span>
     </button>
-    <ng-container *ngIf="row['phone'].whatsapp_history > 0">
+    <ng-container *ngIf="row['phone'] && row['phone'].whatsapp_history > 0 && column.model_name !== 'address'">
         <button mat-button (click)="view_whatsapp(row, column, value, true)" color="primary"
                 matBadge="{{row['phone'].whatsapp_history}}" matBadgePosition="after"
                 matBadgeSize="small"

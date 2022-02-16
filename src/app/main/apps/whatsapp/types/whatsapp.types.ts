@@ -1,5 +1,11 @@
 import {SitebillEntity, SitebillModelItem} from "../../../../_models";
 
+export enum ReportType {
+    data = 0,
+    client = 1,
+    summary = 1,
+}
+
 export class Chat {
     chatId: string;
 }
@@ -8,6 +14,8 @@ export class SendCallbackBundle {
     modelItems: SitebillModelItem[];
     data_id?: number;
     phone?:string;
+    report_type?: ReportType;
+    client_id?: number;
 }
 export class MessageContactVcard {
     chatId: string;

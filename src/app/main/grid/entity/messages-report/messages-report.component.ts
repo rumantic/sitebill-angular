@@ -3,8 +3,8 @@ import { GridComponent } from 'app/main/grid/grid.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialogConfig} from "@angular/material/dialog";
 import {takeUntil} from "rxjs/operators";
-import {SitebillEntity, SitebillModelItem} from "../../../../_models";
-import {CollectionModalComponent} from "../../collection-modal/collection-modal.component";
+import {SitebillEntity} from "../../../../_models";
+import {ReportType} from "../../../apps/whatsapp/types/whatsapp.types";
 
 @Component({
     selector: 'messages-report-grid',
@@ -14,12 +14,24 @@ import {CollectionModalComponent} from "../../collection-modal/collection-modal.
 })
 export class MessagesReportComponent extends GridComponent {
 
+    @Input('report_type')
+    report_type: number;
+
     @Input('client_id')
     client_id: number;
 
+    @Input('data_id')
+    data_id: number;
+
     setup_apps() {
-        this.entity.set_app_name('messages_client_report');
-        this.entity.set_table_name('messages_client_report');
+        if ( this.report_type == ReportType.data ) {
+            this.setup_data_report();
+        } else if ( this.report_type == ReportType.client ) {
+            this.setup_client_report();
+        } else {
+            this.setup_summary_report();
+        }
+
         this.entity.primary_key = 'message_id';
         this.enable_select_rows = false;
         this.disable_add_button = true;
@@ -27,8 +39,53 @@ export class MessagesReportComponent extends GridComponent {
         //this.disable_edit_button = true;
         this.disable_header = true;
         this.disable_view_button = true;
+    }
+
+    setup_summary_report () {
+        this.entity.set_app_name('messages_summary_report');
+        this.entity.set_table_name('messages_summary_report');
 
         const default_columns_list = [
+            'client_id',
+            'data_id',
+            'company',
+            'fio',
+            'phone',
+            'address',
+            'square_all',
+            'cost_meter_per_month4rent',
+            'created_at',
+            'status_id',
+            'comment_text'
+        ];
+        this.define_grid_fields(default_columns_list);
+    }
+
+    setup_data_report () {
+        this.entity.set_app_name('messages_data_report');
+        this.entity.set_table_name('messages_data_report');
+
+        const default_columns_list = [
+            'client_id',
+            'company',
+            'fio',
+            'phone',
+            'created_at',
+            'status_id',
+            'comment_text'
+        ];
+        this.define_grid_fields(default_columns_list);
+        if ( this.data_id ) {
+            this.entity.set_default_params({data_id: this.data_id});
+        }
+    }
+
+    setup_client_report () {
+        this.entity.set_app_name('messages_client_report');
+        this.entity.set_table_name('messages_client_report');
+
+        const default_columns_list = [
+            'data_id',
             'address',
             'square_all',
             'cost_meter_per_month4rent',
@@ -40,7 +97,6 @@ export class MessagesReportComponent extends GridComponent {
         if ( this.client_id ) {
             this.entity.set_default_params({client_id: this.client_id});
         }
-
     }
 
     edit_form(item_id: any) {

@@ -19,7 +19,13 @@
     </div>
     <div fxLayout="row">
         <div fxFlex="100" [style.height]="'55vh'">
-            <messages-report-grid [client_id]="sendCallbackBundle.entity.get_key_value()" [disable_fix_table_height]="true"></messages-report-grid>
+            <messages-report-grid
+                [report_type]="_data.report_type"
+                [client_id]="sendCallbackBundle.client_id"
+                [data_id]="sendCallbackBundle.data_id"
+                [disable_fix_table_height]="true">
+
+            </messages-report-grid>
         </div>
     </div>
 </div>

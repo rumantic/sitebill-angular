@@ -1,35 +1,44 @@
-import {Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FuseConfigService} from '@fuse/services/config.service';
-import {DOCUMENT} from '@angular/common';
-import { APP_CONFIG, AppConfig } from 'app/app.config.module';
+import {DOCUMENT, registerLocaleData} from '@angular/common';
+import {APP_CONFIG, AppConfig} from 'app/app.config.module';
 
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import {FuseTranslationLoaderService} from '@fuse/services/translation-loader.service';
 
-import { locale as english } from './i18n/en';
-import { locale as russian } from './i18n/ru';
-import { Subject } from 'rxjs';
-import { FilterService } from 'app/_services/filter.service';
-import { fuseAnimations } from '@fuse/animations';
-import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ModelService } from 'app/_services/model.service';
-import { ViewModalComponent } from './view-modal/view-modal.component';
-import { FormComponent } from './form/form.component';
-import { Page } from './page';
+import {locale as english} from './i18n/en';
+import {locale as russian} from './i18n/ru';
+import {Subject} from 'rxjs';
+import {FilterService} from 'app/_services/filter.service';
+import {fuseAnimations} from '@fuse/animations';
+import {debounceTime, distinctUntilChanged, takeUntil, throttleTime} from 'rxjs/operators';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {ModelService} from 'app/_services/model.service';
+import {ViewModalComponent} from './view-modal/view-modal.component';
+import {FormComponent} from './form/form.component';
+import {Page} from './page';
 import {SitebillEntity, SitebillModelItem} from 'app/_models';
-import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
-import { SnackService } from 'app/_services/snack.service';
+import {ConfirmComponent} from 'app/dialogs/confirm/confirm.component';
+import {SnackService} from 'app/_services/snack.service';
 
 import localeRu from '@angular/common/locales/ru';
-import { registerLocaleData } from '@angular/common';
-import { FormControl } from '@angular/forms';
-import { GalleryModalComponent } from '../gallery/modal/gallery-modal.component';
-import { throttleTime } from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
+import {GalleryModalComponent} from '../gallery/modal/gallery-modal.component';
 import * as moment from 'moment';
-import { CommonTemplateComponent } from './common-template/common-template.component';
+import {CommonTemplateComponent} from './common-template/common-template.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import { Bitrix24Service } from 'app/integrations/bitrix24/bitrix24.service';
+import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {BillingService} from '../../_services/billing.service';
 import {ReportComponent} from "../../dialogs/report/report.component";
 import *  as localization from 'moment/locale/ru';
@@ -44,10 +53,9 @@ import {BuildingBlocksModalComponent} from "./building-blocks-modal/building-blo
 import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-modal.component";
 import {GridSettingsSidenavComponent} from "./sidenavs/settings/settings.component";
 import {ExcelModalComponent} from "../apps/excel/modal/excel-modal.component";
-import {SitebillResponse} from "../../_models/sitebill-response";
 import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-modal.component";
 import {WhatsAppService} from "../apps/whatsapp/whatsapp.service";
-import {SendCallbackBundle} from "../apps/whatsapp/types/whatsapp.types";
+import {ReportType, SendCallbackBundle} from "../apps/whatsapp/types/whatsapp.types";
 import {ReportModalComponent} from "../apps/whatsapp/report-modal/report-modal.component";
 
 registerLocaleData(localeRu, 'ru');
@@ -945,6 +953,32 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     view_whatsapp(event) {
+        let history = false;
+        let report_type = ReportType.client;
+        let client_id = null;
+        let data_id = null;
+
+        if (
+            event['column'] &&
+            event['column']['model_name'] &&
+            event.row &&
+            event.row[event['column']['model_name']] &&
+            event.row[event['column']['model_name']]['parameters'] &&
+            event.row[event['column']['model_name']]['parameters']['report_type'] === 'data'
+        ) {
+            history = true;
+            report_type = ReportType.data;
+            if ( event.row['data_id'] ) {
+                data_id = event.row['data_id'].value;
+            }
+        } else {
+            if ( event.row['client_id'] ) {
+                client_id = event.row['client_id'].value;
+            }
+        }
+        if ( event.history ) {
+            history = true;
+        }
         const dialogConfig = new MatDialogConfig();
         this.entity.set_key_value(event.row[this.entity.get_primary_key()].value)
 
@@ -954,11 +988,14 @@ export class GridComponent implements OnInit, OnDestroy
             entity: this.entity,
             modelItems: event.row,
             phone: event.value,
+            report_type: report_type,
+            data_id: data_id,
+            client_id: client_id,
         };
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
         dialogConfig.width = '99vw';
 
-        if ( event.history ) {
+        if ( history ) {
             this.dialog.open(ReportModalComponent, dialogConfig);
         } else {
             this.dialog.open(WhatsappModalComponent, dialogConfig);
