@@ -107,6 +107,7 @@ import {TestimonialsModalComponent} from "./testimonials-modal/testimonials-moda
 import {AutoResolverFormComponent} from "./entity/autoresolver/form/auto-resolver-form.component";
 import {MessagesComponent} from "./entity/messages/messages.component";
 import {MessagesReportComponent} from "./entity/messages-report/messages-report.component";
+import { SummaryReportComponent } from './entity/messages-report/summary-report/summary-report.component';
 
 const routes = [
     {
@@ -398,6 +399,7 @@ const routes = [
         BuildingBlocksModalComponent,
         GroupTemplateComponent,
         FavoritesComponent,
+        SummaryReportComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -474,6 +476,7 @@ const routes = [
         AutoResolverFormComponent,
         MessagesComponent,
         MessagesReportComponent,
+        SummaryReportComponent,
     ],
     providers: [
         FilterService,

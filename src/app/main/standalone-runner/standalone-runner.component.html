@@ -51,6 +51,10 @@
             <user-grid *ngSwitchCase="'user'">
             </user-grid>
 
+            <summary-report *ngSwitchCase="'summary-report'">
+
+            </summary-report>
+
             <cloud-testimonials-grid *ngSwitchCase="'cloud-testimonials'"
                                      [api_key]="this.modelService.getDomConfigValue('api_key')"
                                      [object_id]="this.modelService.getDomConfigValue('object_id')"
