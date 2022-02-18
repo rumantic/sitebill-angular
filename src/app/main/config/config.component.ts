@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged, takeUntil} from "rxjs/operators";
 import {ModelService} from "../../_services/model.service";
@@ -34,6 +34,12 @@ export class ConfigComponent implements OnInit {
     @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
     @ViewChild(MatSidenav) side_nav: MatSidenav;
 
+    @Input("light_config")
+    light_config: string;
+
+    @Input("config_key")
+    config_key: string;
+
 
     constructor(
         protected modelService: ModelService,
@@ -54,6 +60,7 @@ export class ConfigComponent implements OnInit {
         this.entity.set_table_name('fake_config');
         this.entity.primary_key = 'id';
         this.entity.set_key_value(0);
+        this.entity.set_disable_comment();
 
     }
 
@@ -88,6 +95,7 @@ export class ConfigComponent implements OnInit {
         }
         let filtered = [];
         let tmp_array = _.cloneDeep(array);
+        let lower_value = value.toLocaleLowerCase();
 
 
 
@@ -97,9 +105,9 @@ export class ConfigComponent implements OnInit {
             let f1 = Object.keys(obj)
                 .filter( key =>
                     key.indexOf(value) >= 0
-                    || obj[key].title.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0
-                    || obj[key].hint.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0
-                    || (obj[key].value && obj[key].value.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0)
+                    || obj[key].title.toLocaleLowerCase().indexOf(lower_value) >= 0
+                    || obj[key].hint.toLocaleLowerCase().indexOf(lower_value) >= 0
+                    || (obj[key].value && obj[key].value.indexOf(lower_value) >= 0)
                 )
                 .reduce( (res, key) => (res[key] = obj[key], res), {} );
             if ( Object.keys(f1).length !== 0 ) {
@@ -145,12 +153,17 @@ export class ConfigComponent implements OnInit {
     }
 
     showAppsConfig(index: number, filtered_array = null) {
-        if ( !filtered_array ) {
-            filtered_array = this.filterBy(this.sitebillResponse.data, this.searchControl.value);
-        }
+        if ( this.sitebillResponse.data ) {
+            if ( !filtered_array && !this.config_key) {
+                filtered_array = this.filterBy(this.sitebillResponse.data, this.searchControl.value);
+            }
+            if ( this.config_key ) {
+                filtered_array = this.filterBy(this.sitebillResponse.data, this.config_key);
+            }
 
-        this.itemsList = filtered_array[index];
-        this.menuItems = filtered_array;
+            this.itemsList = filtered_array[index];
+            this.menuItems = filtered_array;
+        }
     }
 
     showSaveButton() {

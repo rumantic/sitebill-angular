@@ -32,7 +32,9 @@
 
             </profile>
 
-            <app-config *ngSwitchCase="'config'">
+            <app-config *ngSwitchCase="'config'"
+                [config_key]="this.modelService.getDomConfigValue('config_key')"
+                [light_config]="this.modelService.getDomConfigValue('light_config')" >
 
             </app-config>
 
