@@ -37,10 +37,8 @@
                 [light_config]="this.modelService.getDomConfigValue('light_config')" >
             </app-config>
 
-            <app-config *ngSwitchCase="'light_config'"
-                        [config_key]="this.modelService.getDomConfigValue('only_field_name')"
-                        [light_config]="'true'" >
-            </app-config>
+            <ng-container *ngSwitchCase="'light_config'">
+            </ng-container>
 
             <cowork-grid  *ngSwitchCase="'coworker'"
                           [disable_header]="false"

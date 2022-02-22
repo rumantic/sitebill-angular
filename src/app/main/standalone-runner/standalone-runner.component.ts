@@ -94,11 +94,14 @@ export class StandaloneRunnerComponent
     }
 
     run_component_modal () {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.panelClass = 'login-form';
+        if ( this.modelService.getDomConfigValue('component') == 'light_config' ) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.disableClose = true;
+            dialogConfig.width='100vw';
+            dialogConfig.panelClass = 'login-form';
 
-        this.dialog.open(ConfigModalComponent, dialogConfig);
+            this.dialog.open(ConfigModalComponent, dialogConfig);
+        }
     }
 
     login_modal() {
