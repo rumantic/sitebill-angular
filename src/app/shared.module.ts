@@ -89,6 +89,7 @@ import {JsonEditorComponent} from "./main/apps/json-editor/json-editor.component
 import {ExcelModule} from "./main/apps/excel/excel.module";
 import {MessagesService} from "./_services/messages.service";
 import {CommentsComponent} from "./main/grid/comments/comments.component";
+import {ConfigModalComponent} from "./main/config/modal/config-modal.component";
 
 @NgModule({
     imports: [
@@ -185,6 +186,7 @@ import {CommentsComponent} from "./main/grid/comments/comments.component";
         SearchStringParserComponent,
         LoginStandaloneComponent,
         ConfigComponent,
+        ConfigModalComponent,
         ConfigFormComponent,
         CommentsComponent,
         JsonEditorComponent
@@ -214,6 +216,7 @@ import {CommentsComponent} from "./main/grid/comments/comments.component";
         LoginModalComponent,
         LoginStandaloneComponent,
         ConfigComponent,
+        ConfigModalComponent,
         ConfigFormComponent,
         JsonEditorComponent,
         UploaderComponent,
@@ -226,6 +229,7 @@ import {CommentsComponent} from "./main/grid/comments/comments.component";
         GalleryModalComponent,
         ViewModalComponent,
         CourseDialogComponent,
+        ConfigModalComponent,
         FormStaticComponent,
         ViewStaticComponent,
         ProfileCardComponent,

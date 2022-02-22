@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {SitebillAuthService} from "../../_services/sitebill-auth.service";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
+import {ConfigModalComponent} from "../config/modal/config-modal.component";
 
 @Component({
     selector   : 'standalone-runner',
@@ -51,6 +52,7 @@ export class StandaloneRunnerComponent
             // Или просто запускаем готовую упаковку (без lazyload)
             this.config_loaded = true;
         }
+        this.run_component_modal();
     }
 
     access_denied () {
@@ -90,6 +92,15 @@ export class StandaloneRunnerComponent
             this.run();
         }
     }
+
+    run_component_modal () {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'login-form';
+
+        this.dialog.open(ConfigModalComponent, dialogConfig);
+    }
+
     login_modal() {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
