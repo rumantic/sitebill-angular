@@ -147,6 +147,7 @@
                     *ngSwitchCase="'uploads'"
                     [hidden]="records[x].hidden"
                     [galleryImages]="galleryImages"
+                    [uploader_title]="records[x].title"
                     [entity]="_data"
                     [image_field]="records[x].name">
 
@@ -157,6 +158,7 @@
                     [hidden]="records[x].hidden"
                     [galleryImages]="galleryImages"
                     [entity]="_data"
+                    [uploader_title]="records[x].title"
                     [image_field]="records[x].name"
                     [max_uploads]="1">
 

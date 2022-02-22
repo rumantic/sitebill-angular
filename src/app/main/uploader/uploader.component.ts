@@ -53,6 +53,7 @@ export class UploaderComponent {
     @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
 
 
+    @Input("uploader_title")
     uploader_title: string = '';
     public show_gallery = false;
 
