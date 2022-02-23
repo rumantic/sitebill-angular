@@ -8,7 +8,7 @@ import { FilterService } from 'app/_services/filter.service';
 @Component({
     selector: 'config-modal',
     templateUrl: './config-modal.component.html',
-    styleUrls: ['./config-modal.component.css']
+    styleUrls: ['./config-modal.component.scss']
 })
 export class ConfigModalComponent implements OnInit {
 

@@ -31,27 +31,17 @@
             </mat-toolbar-row>
         </mat-toolbar>
         <form  [formGroup]="form" (ngSubmit)="save()">
-            <!--h2 mat-dialog-title>Объект</h2-->
-            <div mat-dialog-content class="{{getCommentHeightFix()}} p-12 m-0">
-                <div *ngIf="rows">
-                    <ng-container *ngIf="tabs_keys && form_inited">
-                        <ng-container *ngIf="tabs_keys.length > 1">
-                            <mat-tab-group dynamicHeight>
-                                <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
-                                    <ng-template matTabContent>
-                                        <ng-container *ngTemplateOutlet="tab_item; context: {tab:tab, form:form}">
-                                        </ng-container>
-                                    </ng-template>
-                                </mat-tab>
-                            </mat-tab-group>
-                        </ng-container>
-                        <ng-container *ngIf="tabs_keys.length == 1">
-                            <ng-container *ngTemplateOutlet="tab_item; context: {tab:tabs_keys[0], form:form}">
-                            </ng-container>
-                        </ng-container>
-                    </ng-container>
-                </div>
-            </div>
+
+            <ng-container *ngIf="!disable_mat_dialog_content_tag">
+                <ng-container *ngTemplateOutlet="inner_form_mat_dialog_content_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+                </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="disable_mat_dialog_content_tag">
+                <ng-container *ngTemplateOutlet="inner_form_empty_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+                </ng-container>
+            </ng-container>
+
             <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="space-between center">
                 <div>
                     <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
@@ -73,6 +63,40 @@
     </div>
 </ng-container>
 
+<ng-template #inner_form_mat_dialog_content_selector let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited" let-form="form">
+    <div mat-dialog-content class="{{getCommentHeightFix()}} mat-dialog-content-fixed-width p-12 m-0">
+        <ng-container *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #inner_form_empty_selector let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited" let-form="form">
+    <div class="{{getCommentHeightFix()}} mat-dialog-content-fixed-width p-12 m-0">
+        <ng-container *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #inner_form let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited" let-form="form">
+    <div *ngIf="rows">
+        <ng-container *ngIf="tabs_keys && form_inited">
+            <ng-container *ngIf="tabs_keys.length > 1">
+                <mat-tab-group dynamicHeight>
+                    <mat-tab *ngFor="let tab of tabs_keys" label="{{tab}}">
+                        <ng-template matTabContent>
+                            <ng-container *ngTemplateOutlet="tab_item; context: {tab:tab, form:form}">
+                            </ng-container>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </ng-container>
+            <ng-container *ngIf="tabs_keys.length == 1">
+                <ng-container *ngTemplateOutlet="tab_item; context: {tab:tabs_keys[0], form:form}">
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</ng-template>
 
 <ng-template #tab_item let-tab="tab" let-form="form">
     <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap" *ngIf="tabs">

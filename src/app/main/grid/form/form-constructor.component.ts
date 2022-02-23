@@ -100,6 +100,9 @@ export class FormConstructorComponent implements OnInit {
     @Input("height")
     height: any;
 
+    @Input("disable_mat_dialog_content_tag")
+    disable_mat_dialog_content_tag: boolean = false;
+
 
     onSave = new EventEmitter();
     afterSave = new EventEmitter();
