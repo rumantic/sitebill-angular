@@ -17,7 +17,7 @@
 </ng-container>
 
 <ng-container *ngIf="rows">
-    <div class="dialog-content-wrapper12">
+    <div class="dialog-content-wrapper">
         <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title" *ngIf="_data.get_title() === null">
@@ -32,7 +32,7 @@
         </mat-toolbar>
         <form  [formGroup]="form" (ngSubmit)="save()">
             <!--h2 mat-dialog-title>Объект</h2-->
-            <div mat-dialog-content class="p-12 m-0">
+            <div mat-dialog-content class="{{getCommentHeightFix()}} p-12 m-0">
                 <div *ngIf="rows">
                     <ng-container *ngIf="tabs_keys && form_inited">
                         <ng-container *ngIf="tabs_keys.length > 1">
@@ -69,9 +69,8 @@
         </form>
     </div>
     <div class="modal-content__comments" *ngIf="_data.is_enable_comment() && this.modelService.get_access('comment', 'access')">
-        <comments-apps [entity]="_data"></comments-apps>
+        <comments-apps [entity]="_data" (onToggle)="onCommentToggle($event)"></comments-apps>
     </div>
-
 </ng-container>
 
 

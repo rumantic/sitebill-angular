@@ -20,6 +20,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {ChatService, CommentsBlockMeta} from "../../apps/chat/chat.service";
+import {fuseAnimations} from "../../../../@fuse/animations";
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     showDelay: 1000,
@@ -38,6 +39,7 @@ export function forbiddenNullValue(): ValidatorFn {
     selector: 'form-selector',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css'],
+    animations: fuseAnimations,
     providers: [
         {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
     ],
@@ -107,6 +109,8 @@ export class FormConstructorComponent implements OnInit {
 
     private visible_items_counter: number;
     commentsBlockMeta: CommentsBlockMeta = {};
+
+    private comment_open: boolean = false;
 
 
     constructor (
@@ -954,6 +958,17 @@ export class FormConstructorComponent implements OnInit {
             }
         }
     };
+
+    onCommentToggle(comment_open: boolean) {
+        this.comment_open = comment_open;
+    }
+
+    getCommentHeightFix() {
+        if ( this.comment_open ) {
+            return 'comment-on-height-fix';
+        }
+        return 'comment-off-height-fix';
+    }
 
     /**
      * On destroy

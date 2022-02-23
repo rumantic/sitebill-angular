@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Subject} from "rxjs";
 import {SitebillEntity} from "../../../_models";
@@ -17,6 +17,9 @@ export class CommentsComponent  implements OnInit {
 
     @Input("entity")
     entity: SitebillEntity;
+
+    @Output() onToggle = new EventEmitter<boolean>();
+
 
     constructor(
         protected _chatService: ChatService,
@@ -45,5 +48,9 @@ export class CommentsComponent  implements OnInit {
     OnDestroy () {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    eventOpenClose() {
+        this.onToggle.emit(this.commentsBlockMeta.isOpened)
     }
 }

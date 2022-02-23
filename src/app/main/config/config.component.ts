@@ -180,4 +180,11 @@ export class ConfigComponent implements OnInit {
         }
         return 'mat-sidenav-content-70';
     }
+
+    showToolBar() {
+        if ( this.light_config && !this.saveButton) {
+            return false;
+        }
+        return true;
+    }
 }

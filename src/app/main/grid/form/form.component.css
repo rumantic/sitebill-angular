@@ -89,3 +89,11 @@ textarea {
     border-top: 5px dashed #f5f8fa;
     margin-top: 12px;
 }
+.height-fix {
+    min-height: 80vh;
+}
+.comment-on-height-fix {
+    max-height: 30vh;
+}
+.comment-off-height-fix {
+}
