@@ -104,7 +104,6 @@ export class GalleryComponent implements OnInit {
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
         }
-        console.log(rows_number_calc)
         let height_calc = rows_number_calc * 150;
         height_calc = 200;
 
