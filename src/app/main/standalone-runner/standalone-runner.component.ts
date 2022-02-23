@@ -97,8 +97,11 @@ export class StandaloneRunnerComponent
         if ( this.modelService.getDomConfigValue('component') == 'light_config' ) {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.disableClose = true;
-            dialogConfig.width='100vw';
-            dialogConfig.panelClass = 'login-form';
+            dialogConfig.width = '99vw';
+            dialogConfig.maxWidth = '99vw';
+            dialogConfig.height = '99vh';
+
+            //dialogConfig.panelClass = 'login-form';
 
             this.dialog.open(ConfigModalComponent, dialogConfig);
         }

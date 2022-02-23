@@ -173,4 +173,11 @@ export class ConfigComponent implements OnInit {
     clear_search_text() {
         this.searchControl.patchValue('');
     }
+
+    getSideNavContentClass() {
+        if ( this.light_config ) {
+            return 'mat-sidenav-content';
+        }
+        return 'mat-sidenav-content-70';
+    }
 }

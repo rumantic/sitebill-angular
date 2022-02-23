@@ -32,7 +32,7 @@
 
             </mat-sidenav>
 
-            <mat-sidenav-content class="mat-sidenav-content p-12">
+            <mat-sidenav-content class="{{getSideNavContentClass()}} p-12">
                 <ng-container *ngIf="itemsList">
                     <config-form-selector
                         [entity]="entity"

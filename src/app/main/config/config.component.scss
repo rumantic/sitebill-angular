@@ -1,10 +1,14 @@
 @import "src/@fuse/scss/fuse";
 
+.height-75 {
+    max-height: 75vh !important;
+    min-height: 75vh !important;
+}
+
 .config-container {
     display: flex;
     flex-direction: column;
-    max-height: 75vh;
-    min-height: 75vh;
+    max-height: 100vh;
 
     .example-is-mobile .example-toolbar {
     }
@@ -37,6 +41,10 @@
         flex: 1 0 auto;
     }
     .mat-sidenav-content {
+        background-color: white;
+        max-height: 100vh;
+    }
+    .mat-sidenav-content-70 {
         max-height: 70vh;
         min-height: 70vh;
         background-color: white;
