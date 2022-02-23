@@ -63,19 +63,7 @@ export class GalleryComponent implements OnInit {
     }
 
     recalculate_options() {
-        let rows_number_calc_f = this.galleryImages.length / this.gallery_columns;
-        this.previous_image_count = this.galleryImages.length;
-
-        let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
-        if (rows_number_calc < 1) {
-            rows_number_calc = 1;
-        }
-        let height_calc = rows_number_calc * 100;
-        if (this.gallery_object instanceof NgxGalleryComponent) {
-            this.gallery_object.options[0].thumbnailsColumns = this.gallery_columns;
-            this.gallery_object.options[0].thumbnailsRows = rows_number_calc;
-            this.gallery_object.options[0].height = height_calc + 'px';
-        }
+        return;
     }
 
     replaceFileTypeIcons (galleryImages) {
@@ -116,8 +104,9 @@ export class GalleryComponent implements OnInit {
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
         }
+        console.log(rows_number_calc)
         let height_calc = rows_number_calc * 150;
-        // height_calc = 100;
+        height_calc = 200;
 
         this.previous_image_count = this.galleryImages.length;
 
@@ -134,8 +123,8 @@ export class GalleryComponent implements OnInit {
                 "spinnerIcon": "fa fa-refresh fa-spin fa-3x fa-fw",
                 "previewFullscreen": true,
                 "thumbnailsOrder": 2,
-                thumbnailsColumns: this.gallery_columns,
-                thumbnailsRows: rows_number_calc,
+                thumbnailsColumns: 8,
+                //thumbnailsRows: rows_number_calc,
                 previewCloseOnClick: true,
                 imageBullets: true,
                 imageInfinityMove: true,
@@ -150,11 +139,20 @@ export class GalleryComponent implements OnInit {
                     { icon: 'fa fa-cog fa-sm', onClick: this.openOptions.bind(this), titleText: 'Настройки' },
                 ]
             },
+            {
+                breakpoint: 1600,
+                thumbnailsColumns: 6,
+            },
+            {
+                breakpoint: 1200,
+                thumbnailsColumns: 4,
+            },
             // max-width 800
             {
                 breakpoint: 800,
                 width: '100%',
-                height: '600px',
+                //height: '600px',
+                thumbnailsColumns: 2,
                 previewCloseOnClick: true,
                 imageBullets: true,
                 imageInfinityMove: true,
@@ -166,6 +164,7 @@ export class GalleryComponent implements OnInit {
             // max-width 400
             {
                 breakpoint: 400,
+                thumbnailsColumns: 1,
                 imageBullets: true,
                 previewCloseOnClick: true,
                 imageInfinityMove: true,
