@@ -24,6 +24,10 @@ export class SitebillAuthService {
     }
 
     init () {
+        if ( this.state == 'ready' || this.state == 'auth_failed' ) {
+            console.log('SitebillAuthService.init, already inited');
+            return false;
+        }
         console.log('SitebillAuthService.init, domain: ' + this.modelService.get_api_url());
         this.modelService.init_config_standalone();
         this.modelService.config_loaded_emitter.subscribe(

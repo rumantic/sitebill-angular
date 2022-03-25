@@ -5,6 +5,7 @@ import {FilterService} from "../../../_services/filter.service";
 import {ApiParams, SitebillEntity} from "../../../_models";
 import {ModelService} from "../../../_services/model.service";
 import {AppsDataService} from "./apps-data.service";
+import {SitebillAuthService} from "../../../_services/sitebill-auth.service";
 
 @Component({
     selector: 'apps-data-client',
@@ -26,6 +27,7 @@ export class AppsDataComponent {
         private route: ActivatedRoute,
         public modelService: ModelService,
         public filterService: FilterService,
+        public sitebillAuthService: SitebillAuthService,
         public appsDataService: AppsDataService,
         ) {
         this.switch_trigger = false;
@@ -36,6 +38,7 @@ export class AppsDataComponent {
         this.entity.set_app_name('data');
         this.entity.set_table_name('data');
         this.entity.primary_key = 'id';
+        this.sitebillAuthService.init();
 
 
         this.route.paramMap.subscribe((params: ParamMap) => {

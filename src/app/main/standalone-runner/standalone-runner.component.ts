@@ -62,6 +62,7 @@ export class StandaloneRunnerComponent
 
     ngOnInit() {
         console.log('run standalone ...');
+        
         this.sitebillAuthService.complete_emitter.subscribe(
             (result: any) => {
                 if ( result ) {
