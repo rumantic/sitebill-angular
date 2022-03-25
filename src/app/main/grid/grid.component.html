@@ -141,14 +141,14 @@
                     <!-- / SETTINGS BUTTON -->
 
                     <!-- PDF BUTTON -->
-                    <button *ngIf="only_collections && this.modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1" mat-icon-button (click)="export_collections_pdf('client')"
+                    <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1" mat-icon-button (click)="export_collections_pdf('client')"
                             aria-label="Скачать клиентский PDF" matTooltip="Скачать клиентский PDF" class="mb-4">
                         <mat-icon>picture_as_pdf</mat-icon>
                     </button>
                     <!-- / PDF BUTTON -->
 
                     <!-- PDF BUTTON -->
-                    <button *ngIf="only_collections && this.modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1" mat-icon-button (click)="export_collections_pdf('staff')"
+                    <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1" mat-icon-button (click)="export_collections_pdf('staff')"
                             aria-label="Скачать PDF для сотрудников" matTooltip="Скачать PDF для сотрудников" class="mb-4">
                         <mat-icon>print</mat-icon>
                     </button>

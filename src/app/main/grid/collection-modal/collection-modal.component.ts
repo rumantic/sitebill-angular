@@ -71,7 +71,9 @@ export class CollectionModalComponent  implements OnInit {
 
 
     save(event) {
-        //console.log(event);
+        if ( event.memorylist_id ) {
+            this._snackService.message('Объект добавлен в подборку');
+        }
         this.onSave.emit(event);
 
     }

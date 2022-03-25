@@ -8,8 +8,19 @@
 
             <!-- CONTENT -->
             <div class="content" fxLayout="row">
-                <data-grid [default_params]="default_params" *ngIf="switch_trigger"></data-grid>
-                <data-grid [default_params]="default_params" *ngIf="!switch_trigger"></data-grid>
+                <data-grid
+                    [default_params]="default_params"
+                    [memorylist_id]="memorylist_id"
+                    [enable_collections]="enable_collections"
+                    [only_collections]="only_collections"
+                    *ngIf="switch_trigger"></data-grid>
+
+                <data-grid
+                    [default_params]="default_params"
+                    [memorylist_id]="memorylist_id"
+                    [enable_collections]="enable_collections"
+                    [only_collections]="only_collections"
+                    *ngIf="!switch_trigger"></data-grid>
             </div>
             <!-- / CONTENT -->
 

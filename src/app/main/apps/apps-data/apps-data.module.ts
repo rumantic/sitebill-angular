@@ -11,6 +11,10 @@ import {AppsDataService} from "./apps-data.service";
 const routes = [
     {path: '', redirectTo: 'my', pathMatch: 'full'},
     {
+        path     : 'memorylist/:memorylist_id',
+        component: AppsDataComponent,
+    },
+    {
         path     : ':tag',
         component: AppsDataComponent,
     },

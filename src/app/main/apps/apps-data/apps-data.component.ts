@@ -17,6 +17,9 @@ export class AppsDataComponent {
     public default_params: ApiParams;
     public switch_trigger: boolean;
 
+    public enable_collections = false;
+    public only_collections = false;
+
     private entity: SitebillEntity;
 
     constructor(
@@ -36,7 +39,18 @@ export class AppsDataComponent {
 
 
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.default_params = this.appsDataService.getMenuItemByTag(params.get('tag')).params;
+            if ( params.get('memorylist_id') ) {
+                this.enable_collections = true;
+                this.only_collections = true;
+                this.memorylist_id = params.get('memorylist_id');
+            } else {
+                this.enable_collections = false;
+                this.only_collections = false;
+            }
+
+            if ( params.get('tag') ) {
+                this.default_params = this.appsDataService.getMenuItemByTag(params.get('tag')).params;
+            }
             this.switch_trigger = !this.switch_trigger;
             this.filterService.empty_share(this.entity)
         });

@@ -571,7 +571,6 @@ export class GridComponent implements OnInit, OnDestroy
         if ( concatenate_search_string !== null ) {
             filter_params_json = {...filter_params_json, ...self.parse_params_from_string(concatenate_search_string)};
         }
-        // console.log(filter_params_json);
         return filter_params_json;
     }
 
