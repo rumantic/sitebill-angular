@@ -519,9 +519,11 @@ export class FormConstructorComponent implements OnInit {
     }
 
     initial_select_list (columnName:string, term:string) {
-        this.options_storage_buffer[columnName] = this.options_storage[columnName]
-            .filter(item => item.value.includes(term))
-            .slice(0, this.selectBufferSize);
+        if ( typeof this.options_storage[columnName] === 'object' ) {
+            this.options_storage_buffer[columnName] = this.options_storage[columnName]
+                .filter(item => item.value.includes(term))
+                .slice(0, this.selectBufferSize);
+        }
     }
 
     onSearch(columnName:string) {
