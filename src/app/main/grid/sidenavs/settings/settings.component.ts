@@ -76,6 +76,7 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     init_grid() {
         let grid_items = this.grid_items;
+        let tmp_model_array;
         if (grid_items.length == 0) {
             grid_items = this.entity.default_columns_list;
         }
@@ -90,19 +91,34 @@ export class GridSettingsSidenavComponent implements OnInit, OnDestroy {
         //console.log(grid_items);
         //console.log(this.entity.columns_index);
         //console.log(this.not_active_columns);
+        if ( !Array.isArray(this.entity.model) ) {
+            tmp_model_array = Object.values(this.entity.model);
+        }
 
         grid_items.forEach((item, index) => {
             if (this.entity.columns_index[item] == null) {
                 return;
             }
-            this.active_columns.push(this.entity.model[this.entity.columns_index[item]]);
-        });
-
-        this.entity.model.forEach((item, index) => {
-            if (grid_items.indexOf(item.name) == -1) {
-                this.not_active_columns.push(item);
+            if ( Array.isArray(this.entity.model) ) {
+                this.active_columns.push(this.entity.model[this.entity.columns_index[item]]);
+            } else {
+                this.active_columns.push(tmp_model_array[this.entity.columns_index[item]]);
             }
         });
+
+        if ( Array.isArray(this.entity.model) ) {
+            this.entity.model.forEach((item, index) => {
+                if (grid_items.indexOf(item.name) == -1) {
+                    this.not_active_columns.push(item);
+                }
+            });
+        } else if (typeof this.entity.model === 'object') {
+            Object.values(this.entity.model).forEach((item: SitebillModelItem, index) => {
+                if (grid_items.indexOf(item.name) == -1) {
+                    this.not_active_columns.push(item);
+                }
+            });
+        }
 
 
         this.init_columns_complete = true;
