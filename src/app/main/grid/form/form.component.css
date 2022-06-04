@@ -101,3 +101,8 @@ textarea {
 .mat-dialog-content-fixed-width {
 }
 
+.columnsButtonWrapper {
+    margin-right: 20px;
+    margin-left: auto;
+}
+

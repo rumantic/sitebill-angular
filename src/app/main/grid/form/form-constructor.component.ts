@@ -21,6 +21,7 @@ import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/ma
 import {SitebillResponse} from "../../../_models/sitebill-response";
 import {ChatService, CommentsBlockMeta} from "../../apps/chat/chat.service";
 import {fuseAnimations} from "../../../../@fuse/animations";
+import {StorageService} from '../../../_services/storage.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     showDelay: 1000,
@@ -91,6 +92,9 @@ export class FormConstructorComponent implements OnInit {
     disable_cancel_button: boolean = false;
     fake_save: boolean = false;
 
+    savedNumber = localStorage.getItem('numberOfColumns');
+    numberOfColumns = this.savedNumber ? +this.savedNumber : 3;
+
     @Input("predefined_ql_items")
     predefined_ql_items: any;
 
@@ -115,6 +119,8 @@ export class FormConstructorComponent implements OnInit {
 
     private comment_open: boolean = false;
 
+    storageService: StorageService;
+
 
     constructor (
         protected modelService: ModelService,
@@ -136,6 +142,8 @@ export class FormConstructorComponent implements OnInit {
         if ( !this.height ) {
             this.height = '100vh';
         }
+
+        this.storageService = new StorageService();
     }
 
     ngOnInit() {
@@ -808,6 +816,12 @@ export class FormConstructorComponent implements OnInit {
         return false;
     }
 
+    setNumberOfColumns(n: number): void {
+        this.numberOfColumns = n;
+        localStorage.setItem('numberOfColumns', String(n));
+        console.log(this.storageService);
+    }
+
     get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
         //console.log(record);
         if ( record.type == 'hidden' || record.hidden == true ) {
@@ -824,36 +838,46 @@ export class FormConstructorComponent implements OnInit {
         if ( width_100.indexOf(record.type) > -1 ) {
             return 100;
         }
-        if ( record.parameters && record.parameters['fxFlex'] ) {
+        if (record.parameters && record.parameters['fxFlex']) {
             return record.parameters['fxFlex'];
         }
 
-        if ( record.fxFlex ) {
+        if (record.fxFlex) {
             return record.fxFlex;
         }
-        if ( this.column_mode ) {
+        if (this.column_mode) {
             return this.column_mode;
         }
-        if ( this.get_visible_items_counter() === 1 ) {
+        if (this.get_visible_items_counter() === 1) {
             return 'auto';
         }
-        if ( form_type == FormType.inline ) {
+        if (form_type == FormType.inline) {
             return 100;
         }
-        if ( size == 'lg' ) {
-            return 33;
-        }
-        if ( size == 'xl' ) {
-            return 20;
-        }
-        if ( size == 'md' ) {
-            return 50;
-        }
-        if ( size == 'xs' ) {
-            return 100;
-        }
+        if (this.numberOfColumns === 1) {
+                      return 100;
+            } else if (this.numberOfColumns === 2) {
+            if (size == 'xs') {
+                return 100;
+            } else {
+                return 50;
+            }
+            } else {
+            if (size == 'lg') {
+                return 33;
+            }
+            if (size == 'xl') {
+                return 20;
+            }
+            if (size == 'md') {
+                return 50;
+            }
+            if (size == 'xs') {
+                return 100;
+            }
 
-        return 'auto';
+            return 'auto';
+        }
     }
     get_flex_padding ( size:string, form_type:string, record: SitebillModelItem ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
