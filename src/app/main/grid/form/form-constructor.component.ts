@@ -130,7 +130,7 @@ export class FormConstructorComponent implements OnInit {
         protected bitrix24Service: Bitrix24Service,
         public _matDialog: MatDialog,
         protected cdr: ChangeDetectorRef,
-        private storageService: StorageService
+        protected storageService: StorageService
     ) {
         this._unsubscribeAll = new Subject();
         this.loadingIndicator = true;
@@ -144,8 +144,8 @@ export class FormConstructorComponent implements OnInit {
             this.height = '100vh';
         }
 
-        this.storageService = new StorageService(this.bitrix24Service);
-        this.savedNumber = +localStorage.getItem('numberOfColumns');
+        // this.storageService = new StorageService(this.bitrix24Service);
+        this.savedNumber = +storageService.getItem('numberOfColumns');
         this.numberOfColumns = this.savedNumber ? this.savedNumber : 3;
     }
 
@@ -825,7 +825,7 @@ export class FormConstructorComponent implements OnInit {
     }
 
     get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
-        //console.log(record);
+        // console.log(record);
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
