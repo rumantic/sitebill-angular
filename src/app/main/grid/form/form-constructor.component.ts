@@ -143,7 +143,7 @@ export class FormConstructorComponent implements OnInit {
             this.height = '100vh';
         }
 
-        this.storageService = new StorageService();
+        // this.storageService = new StorageService();
     }
 
     ngOnInit() {
