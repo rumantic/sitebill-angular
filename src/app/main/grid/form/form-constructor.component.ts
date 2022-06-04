@@ -92,8 +92,8 @@ export class FormConstructorComponent implements OnInit {
     disable_cancel_button: boolean = false;
     fake_save: boolean = false;
 
-    savedNumber = localStorage.getItem('numberOfColumns');
-    numberOfColumns = this.savedNumber ? +this.savedNumber : 3;
+    savedNumber: number;
+    numberOfColumns: number;
 
     @Input("predefined_ql_items")
     predefined_ql_items: any;
@@ -143,7 +143,9 @@ export class FormConstructorComponent implements OnInit {
             this.height = '100vh';
         }
 
-        // this.storageService = new StorageService();
+        this.storageService = new StorageService(this.bitrix24Service);
+        this.savedNumber = +localStorage.getItem('numberOfColumns');
+        this.numberOfColumns = this.savedNumber ? this.savedNumber : 3;
     }
 
     ngOnInit() {
@@ -818,8 +820,7 @@ export class FormConstructorComponent implements OnInit {
 
     setNumberOfColumns(n: number): void {
         this.numberOfColumns = n;
-        localStorage.setItem('numberOfColumns', String(n));
-        console.log(this.storageService);
+        this.storageService.setItem('numberOfColumns', String(n));
     }
 
     get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
