@@ -12,6 +12,7 @@ import {SnackService} from '../../../_services/snack.service';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {SitebillEntity} from '../../../_models';
+import {StorageService} from "../../../_services/storage.service";
 
 
 @Component({
@@ -44,7 +45,8 @@ export class ViewModalComponent extends FormComponent implements OnInit {
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
         @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
 
         super(
@@ -57,7 +59,8 @@ export class ViewModalComponent extends FormComponent implements OnInit {
             bitrix24Service,
             config,
             _data,
-            cdr
+            cdr,
+            storageService
         );
 
         this.loadingIndicator = true;

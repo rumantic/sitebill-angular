@@ -13,6 +13,7 @@ import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {SitebillEntity} from '../../../_models';
 import {FormConstructorComponent} from '../form/form-constructor.component';
+import {StorageService} from "../../../_services/storage.service";
 
 class CommentsBlockMeta {
     isOpened?: boolean = false;
@@ -49,7 +50,9 @@ export class ViewStaticComponent extends FormConstructorComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
+
     ) {
 
         super(
@@ -60,6 +63,7 @@ export class ViewStaticComponent extends FormConstructorComponent implements OnI
             bitrix24Service,
             _matDialog,
             cdr,
+            storageService,
         );
 
         this.loadingIndicator = true;
