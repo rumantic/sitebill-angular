@@ -42,7 +42,7 @@ export function forbiddenNullValue(): ValidatorFn {
     styleUrls: ['./form.component.css'],
     animations: fuseAnimations,
     providers: [
-        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+        {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}, StorageService
     ],
 })
 export class FormConstructorComponent implements OnInit {
@@ -119,17 +119,18 @@ export class FormConstructorComponent implements OnInit {
 
     private comment_open: boolean = false;
 
-    storageService: StorageService;
+    // storageService: StorageService;
 
 
-    constructor (
+    constructor(
         protected modelService: ModelService,
         protected _formBuilder: FormBuilder,
         protected _snackService: SnackService,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         public _matDialog: MatDialog,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        private storageService: StorageService
     ) {
         this._unsubscribeAll = new Subject();
         this.loadingIndicator = true;
@@ -167,7 +168,7 @@ export class FormConstructorComponent implements OnInit {
         const primary_key = this._data.primary_key;
         const key_value = this._data.get_key_value();
         const model_name = this._data.get_table_name();
-        //console.log(this.modelService.entity);
+        // console.log(this.modelService.entity);
         this.modelService.entity.set_app_name(this._data.get_app_name());
         this.modelService.entity.set_table_name(this._data.get_table_name());
         this.modelService.entity.primary_key = primary_key;
