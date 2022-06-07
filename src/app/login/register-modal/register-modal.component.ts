@@ -10,6 +10,7 @@ import {FilterService} from '../../_services/filter.service';
 import {Bitrix24Service} from '../../integrations/bitrix24/bitrix24.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SitebillEntity} from '../../_models';
+import {StorageService} from "../../_services/storage.service";
 
 @Component({
     selector: 'register-modal',
@@ -37,7 +38,8 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         public _matDialog: MatDialog,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
         super(
             modelService,
@@ -47,6 +49,7 @@ export class RegisterModalComponent extends FormConstructorComponent implements 
             bitrix24Service,
             _matDialog,
             cdr,
+            storageService
         );
 
         this.valid_domain_through_email = this._formBuilder.group({

@@ -12,6 +12,7 @@ import {FormConstructorComponent, myCustomTooltipDefaults} from './form-construc
 import {FormComponent} from "./form.component";
 import {EntityStorageService} from "../../../_services/entity-storage.service";
 import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
+import {StorageService} from "../../../_services/storage.service";
 
 
 @Component({
@@ -54,7 +55,9 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         protected entityStorageService: EntityStorageService,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
+
     ) {
         super(
             modelService,
@@ -64,6 +67,7 @@ export class FormStaticComponent extends FormConstructorComponent implements OnI
             bitrix24Service,
             _matDialog,
             cdr,
+            storageService
         );
     }
     save() {

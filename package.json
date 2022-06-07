@@ -15,7 +15,7 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "bundle-report": "webpack-bundle-analyzer dist/stats.json"
-    },
+            },
     "private": true,
     "dependencies": {
         "@agm/core": "1.1.0",
