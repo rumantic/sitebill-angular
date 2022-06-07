@@ -14,9 +14,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "bundle-report": "webpack-bundle-analyzer dist/stats.json",
-        "cypress:open": "cypress open"
-    },
+        "bundle-report": "webpack-bundle-analyzer dist/stats.json"
+            },
     "private": true,
     "dependencies": {
         "@agm/core": "1.1.0",
@@ -91,7 +90,6 @@
         "@types/lodash": "4.14.149",
         "@types/node": "12.12.6",
         "codelyzer": "5.2.1",
-        "cypress": "10.0.2",
         "jasmine-core": "3.5.0",
         "jasmine-spec-reporter": "4.2.1",
         "karma": "4.3.0",
