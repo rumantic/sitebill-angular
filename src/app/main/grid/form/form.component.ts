@@ -10,8 +10,8 @@ import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {FormConstructorComponent, myCustomTooltipDefaults} from './form-constructor.component';
-import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
-import {StorageService} from "../../../_services/storage.service";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
+import {StorageService} from '../../../_services/storage.service';
 
 
 
