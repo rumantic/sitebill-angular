@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WhatsappModalComponent } from './whatsapp-modal.component';
 
-describe('WhatsappModalComponent', () => {
+xdescribe('WhatsappModalComponent', () => {
   let component: WhatsappModalComponent;
   let fixture: ComponentFixture<WhatsappModalComponent>;
 
@@ -19,7 +19,7 @@ describe('WhatsappModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  xit('should create', () => {
     expect(component).toBeTruthy();
   });
 });
