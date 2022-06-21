@@ -21,13 +21,13 @@ describe('FormConstructorComponent', () => {
     const fakeSnackService = jasmine.createSpyObj('fakeSnackService', ['message']);
     const fakeMatDialog = jasmine.createSpyObj('fakeMatDialog', ['open']);
     const fakeFilterService = {};
-    const fakeBitrix24Service = {};
+    const fakeBitrix24Service = jasmine.createSpyObj('fakeBitrix24Service',
+        ['init_input_parameters', 'is_bitrix24_inited']);
     // const fakeAppConfig = {};
     // const fakeMatDialogData = jasmine.createSpyObj('fakeMatDialogData', ['set_readonly', 'is_delete_disabled', 'get_key_value', 'get_table_name']);
     const fakeStorageService = jasmine.createSpyObj('fakeStorageService', ['getItem']);
 
     beforeEach(async () => { //
-        TestBed.overrideComponent(FormConstructorComponent, {set: {providers: []}});
         await TestBed.configureTestingModule({
             declarations: [ FormConstructorComponent ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -49,6 +49,13 @@ describe('FormConstructorComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FormConstructorComponent);
         component = fixture.componentInstance;
+
+        let entity = new SitebillEntity();
+        entity.set_table_name('data');
+        entity.set_app_name('data');
+        entity.set_primary_key('id');
+        entity.set_title('Data test');
+        component._data = entity;
         console.log(component);
         fixture.detectChanges();
     });
