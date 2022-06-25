@@ -19,9 +19,9 @@ describe('FormConstructorComponent', () => {
     const fakeData = new Observable((sub) => {
         sub.next(TestDataFake.data);
     });
-    let val = 'OOO';
+    let val: any = 'OOO';
     fakeData.subscribe((vl) => {
-        this.val = vl;
+        val = vl;
     });
 
     const fakeModelService = {
@@ -65,6 +65,7 @@ describe('FormConstructorComponent', () => {
         component._data = entity;
         // console.log(component);
         console.log('xxx', fakeData);
+        console.log('yyy', val);
         fixture.detectChanges();
     });
 
