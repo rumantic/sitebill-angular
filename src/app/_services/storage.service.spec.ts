@@ -16,7 +16,7 @@ describe('StorageService', () => {
             ],
         });
         storageService = TestBed.inject(StorageService);
-        console.log(storageService);
+        storageService.setItem('testItem', 'testValue');
     });
 
     it('should create', () => {
@@ -24,14 +24,21 @@ describe('StorageService', () => {
     });
 
     it('getItem() should have been called', () => {
-        const spy = spyOn(storageService, 'getItem').and.callThrough();
+        const getItem = spyOn(storageService, 'getItem').and.callThrough();
         storageService.getItem('testItem');
-        expect(spy).toHaveBeenCalled();
+        expect(getItem).toHaveBeenCalledWith('testItem');
+    });
+
+    it('getItem() should return value', () => {
+        const getItem = spyOn(storageService, 'getItem').and.callThrough();
+        const val = storageService.getItem('testItem');
+        expect(getItem).toHaveBeenCalledTimes(1);
+        expect(val).toBe('testValue');
     });
 
     it('setItem() should have been called', () => {
-        const spy = spyOn(storageService, 'setItem').and.callThrough();
+        const setItem = spyOn(storageService, 'setItem').and.callThrough();
         storageService.setItem('testItem', 'testValue');
-        expect(spy).toHaveBeenCalled();
+        expect(setItem).toHaveBeenCalledWith('testItem', 'testValue');
     });
 });
