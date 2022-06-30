@@ -182,6 +182,7 @@ export class FormConstructorComponent implements OnInit {
         this.modelService.loadById(model_name, primary_key, key_value, this.predefined_ql_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+                // console.log(result)
                 if (result) {
                     if (result.state == 'error') {
                         this._snackService.message(result.message);
