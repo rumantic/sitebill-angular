@@ -17,7 +17,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "codeCoverage": true,
             "aot": true,
             "outputPath": "dist/fuse",
             "index": "src/index_app.html",
