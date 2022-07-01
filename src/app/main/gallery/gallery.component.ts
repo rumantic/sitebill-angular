@@ -16,8 +16,9 @@ import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
+import { ImageService } from 'app/_services/image.service';
 import { SitebillEntity } from 'app/_models';
-import {HouseSchemaBuilderModalComponent} from "../houseschema/builder/modal/house-schema-builder-modal.component";
+import {HouseSchemaBuilderModalComponent} from '../houseschema/builder/modal/house-schema-builder-modal.component';
 
 
 @Component({
@@ -33,22 +34,22 @@ export class GalleryComponent implements OnInit {
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
     gallery_columns = 8;
 
-    //gallery_object: any;
+    // gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
 
     galleryImages: NgxGalleryImage[];
 
 
-    @Input("galleryImages")
+    @Input('galleryImages')
     galleryImagesInput: NgxGalleryImage[];
 
-    @Input("entity")
+    @Input('entity')
     entity: SitebillEntity;
 
-    @Input("image_field")
+    @Input('image_field')
     image_field: string;
 
-    @Input("disable_gallery_controls")
+    @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
     @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
@@ -58,15 +59,16 @@ export class GalleryComponent implements OnInit {
         private differs: IterableDiffers,
         public _matDialog: MatDialog,
         private modelSerivce: ModelService,
+        private imageService: ImageService,
     ) {
-        //this.galleryImages = [];
+        // this.galleryImages = [];
     }
 
     recalculate_options() {
         return;
     }
 
-    replaceFileTypeIcons (galleryImages) {
+    replaceFileTypeIcons(galleryImages) {
         return galleryImages;
     }
 
@@ -75,21 +77,21 @@ export class GalleryComponent implements OnInit {
         this.galleryImages = [];
         if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
             this.galleryImages = this.galleryImagesInput[this.image_field];
-        } else if(this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
-            let img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
+        } else if (this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+            const img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
 
-            for (var prop in this.entity.model[this.image_field].value) {
+            for (const prop in this.entity.model[this.image_field].value) {
 
                 let small_url = this.modelSerivce.get_api_url() +
                     img_folder +
-                    (this.entity.model[this.image_field].value[prop].preview?this.entity.model[this.image_field].value[prop].preview:this.entity.model[this.image_field].value[prop].normal) +
+                    (this.entity.model[this.image_field].value[prop].preview ? this.entity.model[this.image_field].value[prop].preview : this.entity.model[this.image_field].value[prop].normal) +
                     '?' + new Date().getTime();
                 if ( small_url.indexOf('\.pdf') >= 0 ) {
                     small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
                 }
 
 
-                let gallery_image = {
+                const gallery_image = {
                     small: small_url,
                     medium: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
                     big: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
@@ -99,7 +101,7 @@ export class GalleryComponent implements OnInit {
         }
         this.galleryImages = this.replaceFileTypeIcons(this.galleryImages);
         this.differ =
-            <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
+            this.differs.find(this.galleryImages).create() as DefaultIterableDiffer<any>;
         let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
@@ -115,15 +117,15 @@ export class GalleryComponent implements OnInit {
                 width: '100%',
                 height: height_calc + 'px',
                 image: false,
-                "arrowPrevIcon": "fa fa-arrow-circle-o-left",
-                "arrowNextIcon": "fa fa-arrow-circle-o-right",
-                "closeIcon": "fa fa-window-close",
-                "fullscreenIcon": "fa fa-arrows",
-                "spinnerIcon": "fa fa-refresh fa-spin fa-3x fa-fw",
-                "previewFullscreen": true,
-                "thumbnailsOrder": 2,
+                arrowPrevIcon: 'fa fa-arrow-circle-o-left',
+                arrowNextIcon: 'fa fa-arrow-circle-o-right',
+                closeIcon: 'fa fa-window-close',
+                fullscreenIcon: 'fa fa-arrows',
+                spinnerIcon: 'fa fa-refresh fa-spin fa-3x fa-fw',
+                previewFullscreen: true,
+                thumbnailsOrder: 2,
                 thumbnailsColumns: 8,
-                //thumbnailsRows: rows_number_calc,
+                // thumbnailsRows: rows_number_calc,
                 previewCloseOnClick: true,
                 imageBullets: true,
                 imageInfinityMove: true,
@@ -150,7 +152,7 @@ export class GalleryComponent implements OnInit {
             {
                 breakpoint: 800,
                 width: '100%',
-                //height: '600px',
+                // height: '600px',
                 thumbnailsColumns: 2,
                 previewCloseOnClick: true,
                 imageBullets: true,
@@ -192,7 +194,7 @@ export class GalleryComponent implements OnInit {
         }
     }
 
-    getImgFolder (type: string) {
+    getImgFolder(type: string) {
         if ( type === 'docuploads' ) {
             return '/img/mediadocs/';
         }
@@ -205,11 +207,11 @@ export class GalleryComponent implements OnInit {
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить фото?';
-        //this.confirmDialogRef.componentInstance.;
+        // this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, this.image_field)
+                this.imageService.deleteImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
@@ -227,15 +229,15 @@ export class GalleryComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.width = '99vw';
         dialogConfig.maxWidth = '99vw';
-        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
-        //this.entity.set_key_value(item_id);
+        // dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        // this.entity.set_key_value(item_id);
         dialogConfig.data = {
-            entity:this.entity,
+            entity: this.entity,
             image_field: this.image_field,
             image_index: index,
             galleryImages: this.galleryImages,
         };
-        //console.log(dialogConfig.data);
+        // console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this._matDialog.open(HouseSchemaBuilderModalComponent, dialogConfig);
@@ -248,27 +250,27 @@ export class GalleryComponent implements OnInit {
     }
 
     moveRight(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, index + 1);
+                const tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
                 setTimeout(() => this.reorder(tmp_images), 10);
             });
 
     }
     moveLeft(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, index - 1);
+                const tmp_images = this.array_move(this.galleryImages, index, index - 1);
                 this.galleryImages = [];
                 setTimeout(() => this.reorder(tmp_images), 1);
             });
 
     }
     moveToStart(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, 0);
+                const tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
                 setTimeout(() => this.reorder(tmp_images), 1);
             });
@@ -276,9 +278,9 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateLeft(event, index) {
-        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
+        this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];
                 setTimeout(() => this.reorder(tmp_images), 1);
             });
@@ -286,9 +288,9 @@ export class GalleryComponent implements OnInit {
     }
 
     rotateRight(event, index) {
-        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
+        this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImages);
                 this.galleryImages = [];
                 setTimeout(() => this.reorder(tmp_images), 1);
             });
@@ -297,7 +299,7 @@ export class GalleryComponent implements OnInit {
 
     add_timestamp_prefix(images) {
         if (images) {
-            return images.map(function (image: any) {
+            return images.map(function(image: any) {
 
                 return {
                     small: image.small + '?' + new Date().getTime(),
@@ -328,7 +330,7 @@ export class GalleryComponent implements OnInit {
             new_index += arr.length;
         }
         if (new_index >= arr.length) {
-            var k = new_index - arr.length + 1;
+            let k = new_index - arr.length + 1;
             while (k--) {
                 arr.push(undefined);
             }
@@ -339,9 +341,9 @@ export class GalleryComponent implements OnInit {
     }
 
     ngDoCheck() {
-        //console.log(this.galleryImages);
+        // console.log(this.galleryImages);
         if (this.galleryImages ) {
-            let changes = this.differ.diff(this.galleryImages);
+            const changes = this.differ.diff(this.galleryImages);
             if (changes != null && this.previous_image_count < changes.length) {
                 this.recalculate_options();
                 setTimeout(() => this.moveToEnd(), 10);

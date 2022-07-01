@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { ModelService } from "./model.service";
+import { ModelService } from './model.service';
 
 @Injectable()
 export class ImageService {
@@ -10,11 +10,11 @@ export class ImageService {
         protected modelService: ModelService
     ) {}
 
-    deleteImage(model_name, key_name, key_value, image_id, field_name) {
+    deleteImage(model_name, key_name, key_value, image_id, field_name): any {
         const body = {
-            layer: "native_ajax",
-            action: "dz_imagework",
-            what: "delete",
+            layer: 'native_ajax',
+            action: 'dz_imagework',
+            what: 'delete',
             model_name: model_name,
             key: key_name,
             key_value: key_value,
@@ -28,11 +28,11 @@ export class ImageService {
         );
     }
 
-    deleteAllImages(model_name, key_name, key_value, field_name) {
+    deleteAllImages(model_name, key_name, key_value, field_name): any {
         const body = {
-            layer: "native_ajax",
-            action: "dz_imagework",
-            what: "delete_all",
+            layer: 'native_ajax',
+            action: 'dz_imagework',
+            what: 'delete_all',
             model_name: model_name,
             key: key_name,
             key_value: key_value,
@@ -52,13 +52,13 @@ export class ImageService {
         image_id,
         direction,
         field_name
-    ) {
+    ): any {
         let body = {};
-        if (direction == "make_main") {
+        if (direction === 'make_main') {
             body = {
-                layer: "native_ajax",
-                action: "dz_imagework",
-                what: "make_main",
+                layer: 'native_ajax',
+                action: 'dz_imagework',
+                what: 'make_main',
                 model_name: model_name,
                 key: key_name,
                 key_value: key_value,
@@ -68,9 +68,9 @@ export class ImageService {
             };
         } else {
             body = {
-                layer: "native_ajax",
-                action: "dz_imagework",
-                what: "reorder",
+                layer: 'native_ajax',
+                action: 'dz_imagework',
+                what: 'reorder',
                 reorder: direction,
                 model_name: model_name,
                 key: key_name,
@@ -93,12 +93,12 @@ export class ImageService {
         image_id,
         rot_dir,
         field_name
-    ) {
+    ): any {
         let body = {};
         body = {
-            layer: "native_ajax",
-            action: "dz_imagework",
-            what: "rotate",
+            layer: 'native_ajax',
+            action: 'dz_imagework',
+            what: 'rotate',
             rot_dir: rot_dir,
             model_name: model_name,
             key: key_name,

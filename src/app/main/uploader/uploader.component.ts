@@ -3,6 +3,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, 
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
+import { ImageService } from 'app/_services/image.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
 import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -67,6 +68,7 @@ export class UploaderComponent {
         private _snackService: SnackService,
         protected bitrix24Service: Bitrix24Service,
         protected modelService: ModelService,
+        protected imageService: ImageService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
@@ -252,7 +254,7 @@ export class UploaderComponent {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
+                this.imageService.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
                         this.upload_complete.emit(this.entity);
