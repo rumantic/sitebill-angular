@@ -10,7 +10,7 @@ export class ImageService {
         protected modelService: ModelService
     ) {}
 
-    deleteImage(model_name, key_name, key_value, image_id, field_name): any {
+    deleteImage(model_name, key_name, key_value, image_id, field_name) {
         const body = {
             layer: 'native_ajax',
             action: 'dz_imagework',
@@ -28,7 +28,7 @@ export class ImageService {
         );
     }
 
-    deleteAllImages(model_name, key_name, key_value, field_name): any {
+    deleteAllImages(model_name, key_name, key_value, field_name) {
         const body = {
             layer: 'native_ajax',
             action: 'dz_imagework',
@@ -52,7 +52,7 @@ export class ImageService {
         image_id,
         direction,
         field_name
-    ): any {
+    ) {
         let body = {};
         if (direction === 'make_main') {
             body = {
@@ -93,7 +93,7 @@ export class ImageService {
         image_id,
         rot_dir,
         field_name
-    ): any {
+    ) {
         let body = {};
         body = {
             layer: 'native_ajax',
