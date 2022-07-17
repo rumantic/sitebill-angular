@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Inject, Injectable, Output} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { ModelService } from './model.service';
 
 @Injectable()
 export class ImageService {
+
+    @Output() OnShare: EventEmitter<any> = new EventEmitter();
+
     constructor(
         private http: HttpClient,
-        protected modelService: ModelService
+        protected modelService: ModelService,
     ) {}
+
+    imageGalleryShare(value): any {
+        this.OnShare.emit(value);
+    }
 
     deleteImage(model_name, key_name, key_value, image_id, field_name) {
         const body = {
@@ -22,6 +28,7 @@ export class ImageService {
             field_name: field_name,
             session_key: this.modelService.get_session_key_safe(),
         };
+        this.imageGalleryShare('deleted');
         return this.http.post(
             `${this.modelService.get_api_url()}/apps/api/rest.php`,
             body

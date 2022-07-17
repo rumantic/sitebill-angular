@@ -20,7 +20,6 @@ import { ImageService } from 'app/_services/image.service';
 import { SitebillEntity } from 'app/_models';
 import {HouseSchemaBuilderModalComponent} from '../houseschema/builder/modal/house-schema-builder-modal.component';
 
-
 @Component({
     selector: 'gallery-component',
     templateUrl: './gallery.component.html',
@@ -52,17 +51,16 @@ export class GalleryComponent implements OnInit {
     @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
-    @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
-
+    @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // НЕ РАБОТАЛО !!!
+    @Output() closeGallery: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
+    @Output() rerender: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
 
     constructor(
         private differs: IterableDiffers,
         public _matDialog: MatDialog,
         private modelSerivce: ModelService,
         private imageService: ImageService,
-    ) {
-        // this.galleryImages = [];
-    }
+    ) {}
 
     recalculate_options() {
         return;
@@ -72,19 +70,25 @@ export class GalleryComponent implements OnInit {
         return galleryImages;
     }
 
-
-    ngOnInit(): void {
-        this.galleryImages = [];
+    getImages(): void {  // new
         if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
             this.galleryImages = this.galleryImagesInput[this.image_field];
-        } else if (this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+        } else {
+            this.galleryImages = [];
+          }
+    }
+
+    ngOnInit(): void {
+        this.getImages();
+        if (this.galleryImages.length === 0 && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
             const img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
 
             for (const prop in this.entity.model[this.image_field].value) {
 
                 let small_url = this.modelSerivce.get_api_url() +
                     img_folder +
-                    (this.entity.model[this.image_field].value[prop].preview ? this.entity.model[this.image_field].value[prop].preview : this.entity.model[this.image_field].value[prop].normal) +
+                    (this.entity.model[this.image_field].value[prop].preview ? this.entity.model[this.image_field].value[prop].preview
+                        : this.entity.model[this.image_field].value[prop].normal) +
                     '?' + new Date().getTime();
                 if ( small_url.indexOf('\.pdf') >= 0 ) {
                     small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
@@ -202,6 +206,7 @@ export class GalleryComponent implements OnInit {
     }
 
     deleteImage(event, index) {
+        // this.getImages();  // new
         this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
             disableClose: false
         });
@@ -215,8 +220,10 @@ export class GalleryComponent implements OnInit {
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
-                        this.onGalleryChange.emit(this.galleryImages);
                     });
+                setTimeout(() => {
+                     this.onGalleryChange.emit(this.galleryImages);
+                }, 10);
             }
             this.confirmDialogRef = null;
         });
@@ -237,68 +244,77 @@ export class GalleryComponent implements OnInit {
             image_index: index,
             galleryImages: this.galleryImages,
         };
-        // console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this._matDialog.open(HouseSchemaBuilderModalComponent, dialogConfig);
-
-
     }
-
 
     enable_move() {
     }
 
     moveRight(event, index) {
+        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 10);
+                setTimeout(() => {
+                    this.reorder(tmp_images);
+                }, 10);
             });
-
     }
+
     moveLeft(event, index) {
+        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, index - 1);
                 this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                setTimeout(() => {
+                    this.reorder(tmp_images);
+                }, 10);
             });
-
     }
     moveToStart(event, index) {
+        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                setTimeout(() => {
+                    this.reorder(tmp_images);
+                }, 10);
             });
-
     }
 
     rotateLeft(event, index) {
+        // this.getImages(); // new
         this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
-                const tmp_images = this.add_timestamp_prefix(this.galleryImages);
-                this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
+                this.galleryImages = tmp_images;
+                // this.onGalleryChange.emit(this.galleryImages);
+                setTimeout(() => {
+                    this.onGalleryChange.emit(this.galleryImages);
+                }, 10);
             });
-
     }
 
     rotateRight(event, index) {
+        // this.getImages(); // new
         this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
-                const tmp_images = this.add_timestamp_prefix(this.galleryImages);
-                this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
+                this.galleryImages = tmp_images;
+                setTimeout(() => {
+                    this.onGalleryChange.emit(this.galleryImages);
+                    }, 10);
             });
-
     }
 
     add_timestamp_prefix(images) {
         if (images) {
+            // console.log ('add_time', images);
             return images.map(function(image: any) {
 
                 return {
@@ -313,7 +329,6 @@ export class GalleryComponent implements OnInit {
 
     reorder(tmp_images) {
         this.galleryImages = tmp_images;
-        this.onGalleryChange.emit(this.galleryImages);
     }
 
     array_move(arr, old_index, new_index) {
@@ -341,7 +356,6 @@ export class GalleryComponent implements OnInit {
     }
 
     ngDoCheck() {
-        // console.log(this.galleryImages);
         if (this.galleryImages ) {
             const changes = this.differ.diff(this.galleryImages);
             if (changes != null && this.previous_image_count < changes.length) {
@@ -349,11 +363,8 @@ export class GalleryComponent implements OnInit {
                 setTimeout(() => this.moveToEnd(), 10);
                 this.previous_image_count = changes.length;
             }
-
         }
     }
-
-
 
     moveToEnd() {
         if (this.gallery_object instanceof NgxGalleryComponent) {

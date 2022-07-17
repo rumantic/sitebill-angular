@@ -52,15 +52,12 @@ export class UploaderComponent {
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
     @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
-
+    @Output() close: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
+    @Output() setRerender: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
 
     @Input('uploader_title')
     uploader_title: string = '';
-    public show_gallery = false;
-
-
-
-
+    public show_gallery = false; // new
 
     constructor(
         private modelSerivce: ModelService,
@@ -76,17 +73,10 @@ export class UploaderComponent {
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
         this.humanizeBytes = humanizeBytes;
+
     }
 
-    ngOnInit() {
-        if (this.max_uploads == null) {
-            this.max_uploads = 100;
-        }
-        this.options = { concurrency: 1, maxUploads: this.max_uploads };
-        if ( this.entity.model && this.entity.model[this.image_field]) {
-            this.uploader_title = this.entity.model[this.image_field].title;
-        }
-
+    getImages(): void { // new
         if (!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
             this.galleryImages = [];
             this.galleryImages[this.image_field] = [];
@@ -100,11 +90,13 @@ export class UploaderComponent {
                 this.galleryImages[this.image_field].push(gallery_image);
             }
         } else if (!this.galleryImages) {
-            this.galleryImages = [];
-            this.galleryImages[this.image_field] = [];
-        }
+                this.galleryImages = [];
+                this.galleryImages[this.image_field] = [];
+            }
+    }
 
-        // console.log(this.image_field);
+    ngOnInit() {
+        this.getImages();
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
@@ -119,7 +111,8 @@ export class UploaderComponent {
 
     onUploadOutput(output: UploadOutput): void {
         // console.log('upload event');
-        // console.log(output.type);
+        // console.log('start', output.type);
+        // console.log('start', this.galleryImages);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -156,7 +149,8 @@ export class UploaderComponent {
                                 for (let prop in result.message[this.image_field]['value']) {
                                     let small_url = this.api_url +
                                         img_folder +
-                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result.message[this.image_field]['value'][prop].normal) +
+                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result
+                                            .message[this.image_field]['value'][prop].normal) +
                                         '?' + new Date().getTime();
 
                                     if ( small_url.indexOf('\.pdf') >= 0 ) {
@@ -258,8 +252,6 @@ export class UploaderComponent {
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
                         this.upload_complete.emit(this.entity);
-                        // console.log(this.galleryImages);
-                        // this.recalculate_options();
                     });
             }
             this.confirmDialogRef = null;
@@ -289,7 +281,16 @@ export class UploaderComponent {
         this.uploadInput.emit({ type: 'removeAll' });
     }
 
-    onGalleryChange(image_array: NgxGalleryImage[]) {
-        this.onImageArrayChange.emit(image_array);
+    onGalleryChange(imageArray: NgxGalleryImage[]): void {
+        this.onImageArrayChange.emit(imageArray);
     }
+
+    // rerender(): void { // new
+    //     console.log('UPLOADER RERENDER');
+    //     this.setRerender.emit();
+    // }
+    //
+    // closeGallery(): void { // new
+    //     this.close.emit();
+    // }
 }

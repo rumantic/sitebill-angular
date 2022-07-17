@@ -89,7 +89,7 @@ export class ModelService {
 
     onSitebillStart () {
         if ( !this.sitebill_started ) {
-            console.log('Sitebill started');
+            // console.log('Sitebill started');
             this.init_config();
             this.init_permissions();
             this.sitebill_started = true;
@@ -224,7 +224,7 @@ export class ModelService {
 
     session_key_validate() {
         if ( !this.session_key_validated ) {
-            console.log('session_key_validate');
+            // console.log('session_key_validate');
             this.load_current_user_profile();
         }
         this.session_key_validated = true;
@@ -858,11 +858,11 @@ export class ModelService {
 
 
     init_config() {
-        console.log('start init config');
+        // console.log('start init config');
         this.load_config()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                console.log('config data loaded');
+                // console.log('config data loaded');
                     if (result.state === 'success') {
                         this.sitebill_config = result.data;
                         this.config_loaded = true;
@@ -885,10 +885,10 @@ export class ModelService {
     }
 
     after_config_loaded () {
-        console.log('after_config_loaded');
+        // console.log('after_config_loaded');
         this.config_loaded_emitter.emit(true);
         this.init_config_complete = true;
-        //console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        // console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
         if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
             this.show_navbar();
         }
@@ -897,13 +897,13 @@ export class ModelService {
         }
 
         if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
-            //console.log('default route');
+            // console.log('default route');
             if ( this.is_model_redirect_enabled() ) {
                 this.router.navigate(['grid/data']);
             }
         } else {
-            //console.log('config route');
-            //console.log(this.getConfigValue('apps.realty.default_frontend_route'));
+            // console.log('config route');
+            // console.log(this.getConfigValue('apps.realty.default_frontend_route'));
             if ( this.is_model_redirect_enabled() ) {
                 this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
             }
@@ -1017,7 +1017,7 @@ export class ModelService {
     }
 
     public init_permissions() {
-        console.log('init_permissions');
+        // console.log('init_permissions');
 
         const request = {
             action: 'oauth',
