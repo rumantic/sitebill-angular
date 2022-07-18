@@ -3,15 +3,12 @@ import {
     OnInit,
     Input,
     ViewChild,
-    TemplateRef,
     ElementRef,
-    SimpleChange,
-    OnChanges,
     IterableDiffers,
     DefaultIterableDiffer,
     Output, EventEmitter
 } from '@angular/core';
-import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery-9';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryComponent } from 'ngx-gallery-9';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
@@ -33,11 +30,9 @@ export class GalleryComponent implements OnInit {
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
     gallery_columns = 8;
 
-    // gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
 
     galleryImages: NgxGalleryImage[];
-
 
     @Input('galleryImages')
     galleryImagesInput: NgxGalleryImage[];
@@ -51,9 +46,7 @@ export class GalleryComponent implements OnInit {
     @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
-    @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // НЕ РАБОТАЛО !!!
-    @Output() closeGallery: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
-    @Output() rerender: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
+    @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
 
     constructor(
         private differs: IterableDiffers,
@@ -70,7 +63,7 @@ export class GalleryComponent implements OnInit {
         return galleryImages;
     }
 
-    getImages(): void {  // new
+    getImages(): void {
         if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
             this.galleryImages = this.galleryImagesInput[this.image_field];
         } else {
@@ -129,7 +122,6 @@ export class GalleryComponent implements OnInit {
                 previewFullscreen: true,
                 thumbnailsOrder: 2,
                 thumbnailsColumns: 8,
-                // thumbnailsRows: rows_number_calc,
                 previewCloseOnClick: true,
                 imageBullets: true,
                 imageInfinityMove: true,
@@ -206,13 +198,11 @@ export class GalleryComponent implements OnInit {
     }
 
     deleteImage(event, index) {
-        // this.getImages();  // new
         this.confirmDialogRef = this._matDialog.open(ConfirmComponent, {
             disableClose: false
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить фото?';
-        // this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -221,9 +211,7 @@ export class GalleryComponent implements OnInit {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
                     });
-                setTimeout(() => {
-                     this.onGalleryChange.emit(this.galleryImages);
-                }, 10);
+                this.reorder();
             }
             this.confirmDialogRef = null;
         });
@@ -236,8 +224,6 @@ export class GalleryComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.width = '99vw';
         dialogConfig.maxWidth = '99vw';
-        // dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
-        // this.entity.set_key_value(item_id);
         dialogConfig.data = {
             entity: this.entity,
             image_field: this.image_field,
@@ -249,66 +235,45 @@ export class GalleryComponent implements OnInit {
         this._matDialog.open(HouseSchemaBuilderModalComponent, dialogConfig);
     }
 
-    enable_move() {
-    }
-
     moveRight(event, index) {
-        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
-                setTimeout(() => {
-                    this.reorder(tmp_images);
-                }, 10);
+                this.reorder(tmp_images);
             });
     }
 
     moveLeft(event, index) {
-        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, index - 1);
                 this.galleryImages = [];
-                setTimeout(() => {
-                    this.reorder(tmp_images);
-                }, 10);
+                this.reorder(tmp_images);
             });
     }
     moveToStart(event, index) {
-        // this.getImages(); // new
         this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
-                setTimeout(() => {
-                    this.reorder(tmp_images);
-                }, 10);
+                this.reorder(tmp_images);
             });
     }
 
     rotateLeft(event, index) {
-        // this.getImages(); // new
         this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
-                this.galleryImages = tmp_images;
-                // this.onGalleryChange.emit(this.galleryImages);
-                setTimeout(() => {
-                    this.onGalleryChange.emit(this.galleryImages);
-                }, 10);
+                this.reorder(tmp_images);
             });
     }
 
     rotateRight(event, index) {
-        // this.getImages(); // new
         this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
                 const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
-                this.galleryImages = tmp_images;
-                setTimeout(() => {
-                    this.onGalleryChange.emit(this.galleryImages);
-                    }, 10);
+                this.reorder(tmp_images);
             });
     }
 
@@ -327,8 +292,13 @@ export class GalleryComponent implements OnInit {
         return [];
     }
 
-    reorder(tmp_images) {
-        this.galleryImages = tmp_images;
+    reorder(tmp_images = []) {
+        setTimeout(() => {
+            if (tmp_images.length) {
+                this.galleryImages = tmp_images;
+            }
+            this.onGalleryChange.emit(this.galleryImages);
+        }, 10);
     }
 
     array_move(arr, old_index, new_index) {

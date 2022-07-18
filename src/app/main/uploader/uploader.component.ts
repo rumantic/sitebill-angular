@@ -1,11 +1,10 @@
-import {Component, EventEmitter, Input, isDevMode, Inject, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Inject, Output} from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
 import { ImageService } from 'app/_services/image.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
-import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
@@ -25,7 +24,6 @@ export class UploadResult {
 export class UploaderComponent {
     url: string;
     api_url: string;
-    formData: FormData;
     files: UploadFile[];
     uploadInput: EventEmitter<UploadInput>;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
@@ -51,13 +49,10 @@ export class UploaderComponent {
     disable_gallery_controls: boolean;
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
-    @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
-    @Output() close: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
-    @Output() setRerender: EventEmitter<NgxGalleryImage[]> = new EventEmitter(); // new
 
     @Input('uploader_title')
     uploader_title: string = '';
-    public show_gallery = false; // new
+    public show_gallery = false;
 
     constructor(
         private modelSerivce: ModelService,
@@ -76,7 +71,7 @@ export class UploaderComponent {
 
     }
 
-    getImages(): void { // new
+    getImages(): void {
         if (!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
             this.galleryImages = [];
             this.galleryImages[this.image_field] = [];
@@ -166,17 +161,11 @@ export class UploaderComponent {
                                 }
                             }
                             this.upload_complete.emit(this.entity);
-
-
-                            // this.uppend_uploads();
                         });
-
                 } else {
                     this.uppend_uploads();
                 }
-
             }
-
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);
@@ -244,7 +233,6 @@ export class UploaderComponent {
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все фото?';
-        // this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -282,15 +270,6 @@ export class UploaderComponent {
     }
 
     onGalleryChange(imageArray: NgxGalleryImage[]): void {
-        this.onImageArrayChange.emit(imageArray);
+        this.galleryImages[this.image_field] = imageArray;
     }
-
-    // rerender(): void { // new
-    //     console.log('UPLOADER RERENDER');
-    //     this.setRerender.emit();
-    // }
-    //
-    // closeGallery(): void { // new
-    //     this.close.emit();
-    // }
 }
