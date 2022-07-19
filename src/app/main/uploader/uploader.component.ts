@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, isDevMode, Inject, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Inject, Output} from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
+import { ImageService } from 'app/_services/image.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
-import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
@@ -24,7 +24,6 @@ export class UploadResult {
 export class UploaderComponent {
     url: string;
     api_url: string;
-    formData: FormData;
     files: UploadFile[];
     uploadInput: EventEmitter<UploadInput>;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
@@ -34,32 +33,26 @@ export class UploaderComponent {
     options: UploaderOptions;
     queue_size: number =  0;
 
-    @Input("galleryImages")
+    @Input('galleryImages')
     galleryImages: NgxGalleryImage[];
 
-    @Input("entity")
+    @Input('entity')
     entity: SitebillEntity;
 
-    @Input("image_field")
+    @Input('image_field')
     image_field: string;
 
-    @Input("max_uploads")
+    @Input('max_uploads')
     max_uploads: any;
 
-    @Input("disable_gallery_controls")
+    @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
-    @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
 
-
-    @Input("uploader_title")
+    @Input('uploader_title')
     uploader_title: string = '';
     public show_gallery = false;
-
-
-
-
 
     constructor(
         private modelSerivce: ModelService,
@@ -67,6 +60,7 @@ export class UploaderComponent {
         private _snackService: SnackService,
         protected bitrix24Service: Bitrix24Service,
         protected modelService: ModelService,
+        protected imageService: ImageService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
@@ -74,21 +68,14 @@ export class UploaderComponent {
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
         this.humanizeBytes = humanizeBytes;
+
     }
 
-    ngOnInit() {
-        if (this.max_uploads == null) {
-            this.max_uploads = 100;
-        }
-        this.options = { concurrency: 1, maxUploads: this.max_uploads };
-        if ( this.entity.model && this.entity.model[this.image_field]) {
-            this.uploader_title = this.entity.model[this.image_field].title;
-        }
-
-        if(!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+    getImages(): void {
+        if (!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
             this.galleryImages = [];
             this.galleryImages[this.image_field] = [];
-            for (var prop in this.entity.model[this.image_field].value) {
+            for (let prop in this.entity.model[this.image_field].value) {
 
                 let gallery_image = {
                     small: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].preview + '?' + new Date().getTime(),
@@ -98,11 +85,13 @@ export class UploaderComponent {
                 this.galleryImages[this.image_field].push(gallery_image);
             }
         } else if (!this.galleryImages) {
-            this.galleryImages = [];
-            this.galleryImages[this.image_field] = [];
-        }
+                this.galleryImages = [];
+                this.galleryImages[this.image_field] = [];
+            }
+    }
 
-        //console.log(this.image_field);
+    ngOnInit() {
+        this.getImages();
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
@@ -116,8 +105,9 @@ export class UploaderComponent {
     }
 
     onUploadOutput(output: UploadOutput): void {
-        //console.log('upload event');
-        //console.log(output.type);
+        // console.log('upload event');
+        // console.log('start', output.type);
+        // console.log('start', this.galleryImages);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -131,30 +121,31 @@ export class UploaderComponent {
 
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
             this.queue_size--;
-            //console.log(this.entity);
-            if (this.queue_size == 0) {
+            // console.log(this.entity);
+            if (this.queue_size === 0) {
                 if (this.entity.key_value == null) {
                     this.modelSerivce.new_empty_record(this.entity.get_table_name())
                         .subscribe((result: UploadResult) => {
-                            if (result.state == 'error') {
+                            if (result.state === 'error') {
                                 this._snackService.message('Невозможно загрузить фото к новой записи. Сначала сохраните запись без фото, а потом загрузите к ней фото.', 5000);
                                 return false;
                             }
                             if (result.message[this.entity.primary_key]['value'] != null ) {
                                 this.entity.key_value = result.message[this.entity.primary_key]['value'];
                                 this.modelSerivce.entity.key_value = this.entity.key_value;
-                                //console.log(result.message);
-                                if (this.entity.get_hook() == 'add_to_collections') {
+                                // console.log(result.message);
+                                if (this.entity.get_hook() === 'add_to_collections') {
                                     this.add_to_collections(this.entity.key_value);
                                 }
 
                                 let img_folder = this.getImgFolder(result.message[this.image_field]['type']);
 
 
-                                for (var prop in result.message[this.image_field]['value']) {
+                                for (let prop in result.message[this.image_field]['value']) {
                                     let small_url = this.api_url +
                                         img_folder +
-                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result.message[this.image_field]['value'][prop].normal) +
+                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result
+                                            .message[this.image_field]['value'][prop].normal) +
                                         '?' + new Date().getTime();
 
                                     if ( small_url.indexOf('\.pdf') >= 0 ) {
@@ -170,17 +161,11 @@ export class UploaderComponent {
                                 }
                             }
                             this.upload_complete.emit(this.entity);
-
-
-                            //this.uppend_uploads();
                         });
-
                 } else {
                     this.uppend_uploads();
                 }
-
             }
-
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);
@@ -230,7 +215,7 @@ export class UploaderComponent {
                     prefix = 'user/';
                 }
 
-                for (var prop in result.data) {
+                for (let prop in result.data) {
                     let gallery_image = {
                         small: this.api_url + '/img/data/' + prefix + result.data[prop].preview + '?' + new Date().getTime(),
                         medium: this.api_url + '/img/data/' + prefix + result.data[prop].normal + '?' + new Date().getTime(),
@@ -248,16 +233,13 @@ export class UploaderComponent {
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все фото?';
-        //this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
+                this.imageService.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
                         this.upload_complete.emit(this.entity);
-                        //console.log(this.galleryImages);
-                        //this.recalculate_options();
                     });
             }
             this.confirmDialogRef = null;
@@ -287,7 +269,7 @@ export class UploaderComponent {
         this.uploadInput.emit({ type: 'removeAll' });
     }
 
-    onGalleryChange(image_array: NgxGalleryImage[]) {
-        this.onImageArrayChange.emit(image_array);
+    onGalleryChange(imageArray: NgxGalleryImage[]): void {
+        this.galleryImages[this.image_field] = imageArray;
     }
 }

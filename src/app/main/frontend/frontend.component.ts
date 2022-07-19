@@ -52,13 +52,13 @@ export class FrontendComponent
     ngOnInit() {
         this.modelService.sitebill_loaded_complete_emitter.subscribe((result: any) => {
             if ( this.modelService.getDomConfigValue('standalone_mode') ) {
-                console.log('standalone');
+                // console.log('standalone');
                 this.router.navigate(['/standalone']);
             } else {
-                console.log('run frontend');
-                console.log('standalone_mode = ' + this.modelService.getDomConfigValue('standalone_mode'));
+                // console.log('run frontend');
+                // console.log('standalone_mode = ' + this.modelService.getDomConfigValue('standalone_mode'));
                 if ( !this.modelService.is_logged_in() ) {
-                    console.log('frontend login model (after localstorage!)');
+                    // console.log('frontend login model (after localstorage!)');
                     this.login_modal();
                 }
             }

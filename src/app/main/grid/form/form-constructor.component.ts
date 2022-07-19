@@ -17,10 +17,10 @@ import {ConfirmComponent} from '../../../dialogs/confirm/confirm.component';
 import {FilterService} from '../../../_services/filter.service';
 import {Bitrix24Service} from '../../../integrations/bitrix24/bitrix24.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
-import {SitebillResponse} from "../../../_models/sitebill-response";
-import {ChatService, CommentsBlockMeta} from "../../apps/chat/chat.service";
-import {fuseAnimations} from "../../../../@fuse/animations";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from '@angular/material/tooltip';
+import {SitebillResponse} from '../../../_models/sitebill-response';
+import {ChatService, CommentsBlockMeta} from '../../apps/chat/chat.service';
+import {fuseAnimations} from '../../../../@fuse/animations';
 import {StorageService} from '../../../_services/storage.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -32,7 +32,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 
 export function forbiddenNullValue(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        return control.value == null || control.value == 0 ? {'forbiddenNullValue': {value: control.value}} : null;
+        return control.value == null || control.value == 0 ? {forbiddenNullValue: {value: control.value}} : null;
     };
 }
 
@@ -46,78 +46,6 @@ export function forbiddenNullValue(): ValidatorFn {
     ],
 })
 export class FormConstructorComponent implements OnInit {
-    form: FormGroup;
-    public _data: SitebillEntity;
-    public error_message: string = null;
-    protected _unsubscribeAll: Subject<any>;
-
-    public text_area_editor_storage = {};
-    public parameters_storage = {};
-    public options_storage = {};
-    public options_storage_buffer = {};
-    public loading: Boolean;
-    private selectBufferSize = 100;
-    private numberOfItemsFromEndBeforeFetchingMore = 10;
-    input$ = new Subject<string>();
-    private termsearch = false;
-
-
-
-    form_submitted: boolean = false;
-    form_inited: boolean = false;
-    rows: string[];
-    tabs: any;
-    tabs_keys: string[];
-    records: SitebillModelItem[];
-    api_url: string;
-    render_value_string_array = ['empty', 'select_box', 'select_by_query', 'select_box_structure', 'date'];
-    render_value_array = ['empty', 'textarea_editor', 'safe_string', 'textarea', 'primary_key'];
-    square_options: any[] = [{id: 1, value: 'range', actual: 1}];
-    galleryImages = {};
-    latitude: any;
-    longitude: any;
-    lat: any;
-    lng: any;
-    lat_center: any;
-    lng_center: any;
-    form_title: string;
-
-
-    loadingIndicator: boolean;
-    confirmDialogRef: MatDialogRef<ConfirmComponent>;
-
-    disable_delete: boolean;
-    disable_form_title_bar: boolean;
-    disable_save_button: boolean = false;
-    disable_cancel_button: boolean = false;
-    fake_save: boolean = false;
-
-    savedNumber: number;
-    numberOfColumns: number;
-
-    @Input("predefined_ql_items")
-    predefined_ql_items: any;
-
-    @Input("column_mode")
-    column_mode: number;
-
-    @Input("height")
-    height: any;
-
-    @Input("disable_mat_dialog_content_tag")
-    disable_mat_dialog_content_tag: boolean = false;
-
-
-    onSave = new EventEmitter();
-    afterSave = new EventEmitter();
-
-    @Output() afterFormInited = new EventEmitter();
-
-
-    private visible_items_counter: number;
-    commentsBlockMeta: CommentsBlockMeta = {};
-
-    private comment_open: boolean = false;
 
     // storageService: StorageService;
 
@@ -148,6 +76,168 @@ export class FormConstructorComponent implements OnInit {
         this.savedNumber = +storageService.getItem('numberOfColumns');
         this.numberOfColumns = this.savedNumber ? this.savedNumber : 3;
     }
+    form: FormGroup;
+    public _data: SitebillEntity;
+    public error_message: string = null;
+    protected _unsubscribeAll: Subject<any>;
+
+    public text_area_editor_storage = {};
+    public parameters_storage = {};
+    public options_storage = {};
+    public options_storage_buffer = {};
+    public loading: Boolean;
+    private selectBufferSize = 100;
+    private numberOfItemsFromEndBeforeFetchingMore = 10;
+    input$ = new Subject<string>();
+    private termsearch = false;
+
+
+
+    form_submitted = false;
+    form_inited = false;
+    rows: string[];
+    tabs: any;
+    tabs_keys: string[];
+    records: SitebillModelItem[];
+    api_url: string;
+    render_value_string_array = ['empty', 'select_box', 'select_by_query', 'select_box_structure', 'date'];
+    render_value_array = ['empty', 'textarea_editor', 'safe_string', 'textarea', 'primary_key'];
+    square_options: any[] = [{id: 1, value: 'range', actual: 1}];
+    galleryImages = {};
+    latitude: any;
+    longitude: any;
+    lat: any;
+    lng: any;
+    lat_center: any;
+    lng_center: any;
+    form_title: string;
+
+
+    loadingIndicator: boolean;
+    confirmDialogRef: MatDialogRef<ConfirmComponent>;
+
+    disable_delete: boolean;
+    disable_form_title_bar: boolean;
+    disable_save_button = false;
+    disable_cancel_button = false;
+    fake_save = false;
+
+    savedNumber: number;
+    numberOfColumns: number;
+
+    @Input('predefined_ql_items')
+    predefined_ql_items: any;
+
+    @Input('column_mode')
+    column_mode: number;
+
+    @Input('height')
+    height: any;
+
+    @Input('disable_mat_dialog_content_tag')
+    disable_mat_dialog_content_tag = false;
+
+
+    onSave = new EventEmitter();
+    afterSave = new EventEmitter();
+
+    @Output() afterFormInited = new EventEmitter();
+
+
+    private visible_items_counter: number;
+    commentsBlockMeta: CommentsBlockMeta = {};
+
+    private comment_open = false;
+
+
+    quillConfig = {
+        toolbar: {
+            container:
+                [
+                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                    ['blockquote', 'code-block'],
+
+                    [{header: 1}, {header: 2}],               // custom button values
+                    [{list: 'ordered'}, {list: 'bullet'}],
+                    [{script: 'sub'}, {script: 'super'}],      // superscript/subscript
+                    [{indent: '-1'}, {indent: '+1'}],          // outdent/indent
+                    [{direction: 'rtl'}],                         // text direction
+
+                    [{size: ['small', false, 'large', 'huge']}],  // custom dropdown
+                    [{header: [1, 2, 3, 4, 5, 6, false]}],
+
+                    [{color: []}, {background: []}],          // dropdown with defaults from theme
+                    [{font: []}],
+                    [{align: []}],
+
+                    ['clean']                                    // remove formatting button
+
+                ],
+        },
+        // toolbar: {
+        //   container: [
+        //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        //     ['code-block'],
+        //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        //     //[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        //     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        //     //[{ 'direction': 'rtl' }],                         // text direction
+
+        //     //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        //     //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        //     //[{ 'font': [] }],
+        //     //[{ 'align': [] }],
+
+        //     ['clean'],                                         // remove formatting button
+
+        //     ['link'],
+        //     //['link', 'image', 'video']
+        //     ['emoji'],
+        //   ],
+        //   handlers: {'emoji': function() {}}
+        // },
+    };
+
+    editorOptions = {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container:
+                    [
+                        [{placeholder: ['[GuestName]', '[HotelName]']}], // my custom dropdown
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{header: 1}, {header: 2}],               // custom button values
+                        [{list: 'ordered'}, {list: 'bullet'}],
+                        [{script: 'sub'}, {script: 'super'}],      // superscript/subscript
+                        [{indent: '-1'}, {indent: '+1'}],          // outdent/indent
+                        [{direction: 'rtl'}],                         // text direction
+
+                        [{size: ['small', false, 'large', 'huge']}],  // custom dropdown
+                        [{header: [1, 2, 3, 4, 5, 6, false]}],
+
+                        [{color: []}, {background: []}],          // dropdown with defaults from theme
+                        [{font: []}],
+                        [{align: []}],
+
+                        ['clean']                                    // remove formatting button
+
+                    ],
+                handlers: {
+                    placeholder: function(value) {
+                        if (value) {
+                            const cursorPosition = this.quill.getSelection().index;
+                            this.quill.insertText(cursorPosition, value);
+                            this.quill.setSelection(cursorPosition + value.length);
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     ngOnInit() {
         // Reactive Form
@@ -200,8 +290,8 @@ export class FormConstructorComponent implements OnInit {
                         this.tabs = result.tabs;
                         this.tabs_keys = Object.keys(result.tabs);
                         this.rows = Object.keys(result.data);
-                        //console.log(this.rows);
-                        //console.log(this.tabs);
+                        // console.log(this.rows);
+                        // console.log(this.tabs);
                         this.init_form();
                     }
                     this.cdr.markForCheck();
@@ -212,13 +302,13 @@ export class FormConstructorComponent implements OnInit {
 
     init_form() {
 
-        //Сначала нужно получить значение topic_id
-        //В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
-        //При смене типа в форме, надо перезапускать процесс показа/валидации элементов
+        // Сначала нужно получить значение topic_id
+        // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
+        // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
 
-        for (var i = 0; i < this.rows.length; i++) {
-            //console.log(this.records[this.rows[i]].type);
-            let form_control_item = new FormControl(this.records[this.rows[i]].value);
+        for (let i = 0; i < this.rows.length; i++) {
+            // console.log(this.records[this.rows[i]].type);
+            const form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
             if ( this._data.get_hidden_column_edit(this.rows[i]) ) {
@@ -241,8 +331,8 @@ export class FormConstructorComponent implements OnInit {
             if (this.records[this.rows[i]].name == 'email') {
                 form_control_item.setValidators(Validators.email);
             }
-            //console.log(this.rows[i]);
-            //console.log(form_control_item);
+            // console.log(this.rows[i]);
+            // console.log(form_control_item);
 
             this.form.addControl(this.rows[i], form_control_item);
 
@@ -280,8 +370,8 @@ export class FormConstructorComponent implements OnInit {
             }
 
             if (this.records[this.rows[i]].type == 'date') {
-                //this.form.controls[this.rows[i]].patchValue();
-                //console.log(this.records[this.rows[i]]);
+                // this.form.controls[this.rows[i]].patchValue();
+                // console.log(this.records[this.rows[i]]);
                 if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
                     this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, 'DD.MM.YYYY'));
                 } else {
@@ -342,7 +432,7 @@ export class FormConstructorComponent implements OnInit {
         this.form_inited = true;
         this.after_form_inited();
         this.count_visible_items();
-        //console.log(this.records);
+        // console.log(this.records);
 
     }
 
@@ -351,15 +441,15 @@ export class FormConstructorComponent implements OnInit {
     }
 
 
-    count_visible_items () {
+    count_visible_items() {
         this.visible_items_counter = 0;
-        for (var i = 0; i < this.rows.length; i++) {
+        for (let i = 0; i < this.rows.length; i++) {
             if ( !this.records[this.rows[i]].hidden && this.records[this.rows[i]].type !== 'hidden') {
                 this.visible_items_counter ++;
             }
         }
     }
-    get_visible_items_counter () {
+    get_visible_items_counter() {
         return this.visible_items_counter;
     }
 
@@ -380,17 +470,17 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    get_records ():SitebillModelItem[] {
+    get_records(): SitebillModelItem[] {
         return this.records;
     }
 
-    get_SitebillModelItem (key: string): SitebillModelItem {
+    get_SitebillModelItem(key: string): SitebillModelItem {
         return this.records[key];
     }
 
     init_geodata(columnName) {
         try {
-            //console.log(parseFloat(this.records[columnName].value.lat));
+            // console.log(parseFloat(this.records[columnName].value.lat));
             if (parseFloat(this.records[columnName].value.lat)) {
                 this.lat = parseFloat(this.records[columnName].value.lat);
                 this.lat_center = this.lat;
@@ -410,9 +500,9 @@ export class FormConstructorComponent implements OnInit {
 
     init_photo_image(field_name, image) {
         this.galleryImages[field_name] = [];
-        var self = this;
+        const self = this;
         if (image != '') {
-            let item = {
+            const item = {
                 small: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
                 medium: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
                 big: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime()
@@ -426,9 +516,9 @@ export class FormConstructorComponent implements OnInit {
 
     init_gallery_images(field_name, images) {
         this.galleryImages[field_name] = {};
-        var self = this;
+        const self = this;
         if (images) {
-            this.galleryImages[field_name] = images.map(function (image: any) {
+            this.galleryImages[field_name] = images.map(function(image: any) {
                 if (image.remote === 'true') {
                     return {
                         small: image.preview + '?' + new Date().getTime(),
@@ -446,7 +536,7 @@ export class FormConstructorComponent implements OnInit {
         } else {
             this.galleryImages[field_name] = [];
         }
-        //console.log(this.galleryImages[field_name]);
+        // console.log(this.galleryImages[field_name]);
     }
 
     init_select_box_options(columnName) {
@@ -499,11 +589,11 @@ export class FormConstructorComponent implements OnInit {
 
     }
 
-    onScrollToEnd(columnName:string) {
+    onScrollToEnd(columnName: string) {
         this.fetchMore(columnName);
     }
 
-    onScroll({ end }, columnName:string) {
+    onScroll({ end }, columnName: string) {
         if ( !this.options_storage[columnName] || !this.options_storage_buffer[columnName]) {
             return;
         }
@@ -516,7 +606,7 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    private fetchMore(columnName:string) {
+    private fetchMore(columnName: string) {
         if ( this.termsearch ) {
             return;
         }
@@ -527,10 +617,10 @@ export class FormConstructorComponent implements OnInit {
         setTimeout(() => {
             this.loading = false;
             this.options_storage_buffer[columnName] = this.options_storage_buffer[columnName].concat(more);
-        }, 200)
+        }, 200);
     }
 
-    initial_select_list (columnName:string, term:string) {
+    initial_select_list(columnName: string, term: string) {
         if ( typeof this.options_storage[columnName] === 'object' ) {
             this.options_storage_buffer[columnName] = this.options_storage[columnName]
                 .filter(item => item.value.includes(term))
@@ -538,7 +628,7 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    onSearch(columnName:string) {
+    onSearch(columnName: string) {
         this.input$.pipe(
             debounceTime(200),
             distinctUntilChanged(),
@@ -549,10 +639,10 @@ export class FormConstructorComponent implements OnInit {
 
                 this.termsearch = true;
             }),
-            //map(term => this.options_storage[columnName].filter((x: { title: string }) => x.title.includes(term)))
+            // map(term => this.options_storage[columnName].filter((x: { title: string }) => x.title.includes(term)))
         ).subscribe(data => {
-            //this.options_storage_buffer[columnName] = data.slice(0, this.selectBufferSize);
-        })
+            // this.options_storage_buffer[columnName] = data.slice(0, this.selectBufferSize);
+        });
     }
 
     is_date_type(type: string) {
@@ -571,7 +661,7 @@ export class FormConstructorComponent implements OnInit {
         }
 
         if (current_topic_id != null) {
-            for (var i = 0; i < this.rows.length; i++) {
+            for (let i = 0; i < this.rows.length; i++) {
                 if (
                     this.records[this.rows[i]].active_in_topic != '0' &&
                     this.records[this.rows[i]].active_in_topic != null
@@ -612,11 +702,11 @@ export class FormConstructorComponent implements OnInit {
     }
 
     get_title() {
-        //@todo нужно будет сделать генератор заголовков для всхе сущностей (не только data)
-        let title_items = ['topic_id', 'city_id', 'district_id', 'street_id', 'number', 'price'];
-        let final_title_items = [];
+        // @todo нужно будет сделать генератор заголовков для всхе сущностей (не только data)
+        const title_items = ['topic_id', 'city_id', 'district_id', 'street_id', 'number', 'price'];
+        const final_title_items = [];
         let final_title = '';
-        let title_length = 60;
+        const title_length = 60;
 
         title_items.forEach((row, index) => {
             if (this.records[row] != null) {
@@ -696,7 +786,7 @@ export class FormConstructorComponent implements OnInit {
             this.modelService.native_insert(
                 this._data.get_table_name(),
                 ql_items,
-                this.predefined_ql_items ? 'true': null
+                this.predefined_ql_items ? 'true' : null
             )
                 .subscribe((response: any) => {
                     if (response.state === 'error') {
@@ -720,7 +810,7 @@ export class FormConstructorComponent implements OnInit {
                 this._data.get_table_name(),
                 this._data.key_value,
                 ql_items,
-                this.predefined_ql_items ? 'true': null
+                this.predefined_ql_items ? 'true' : null
             ).subscribe((response: any) => {
                     if (response.state === 'error') {
                         this._snackService.message(response.message);
@@ -736,7 +826,7 @@ export class FormConstructorComponent implements OnInit {
         }
     }
 
-    get_ql_items_from_form () {
+    get_ql_items_from_form() {
         const ql_items = {};
         const now = moment();
 
@@ -774,7 +864,7 @@ export class FormConstructorComponent implements OnInit {
     }
 
     add_to_collections(data_id, items) {
-        let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+        const title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
                 if (response.state == 'error') {
@@ -789,8 +879,8 @@ export class FormConstructorComponent implements OnInit {
 
 
     mapClick(event) {
-        //console.log('map click');
-        //console.log(event);
+        // console.log('map click');
+        // console.log(event);
         if (event.coords) {
             this.lat = event.coords.lat;
             this.lng = event.coords.lng;
@@ -802,7 +892,7 @@ export class FormConstructorComponent implements OnInit {
 
 
 
-    OnDestroy () {
+    OnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
@@ -812,7 +902,7 @@ export class FormConstructorComponent implements OnInit {
         this._unsubscribeAll.complete();
     }
 
-    valid_link (value) {
+    valid_link(value) {
         if ( value !== null ) {
             const reg = '^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
             return !!value.match(reg);
@@ -825,12 +915,12 @@ export class FormConstructorComponent implements OnInit {
         this.storageService.setItem('numberOfColumns', String(n));
     }
 
-    get_flex_width ( size:string, form_type:string, record: SitebillModelItem ) {
+    get_flex_width( size: string, form_type: string, record: SitebillModelItem ) {
         // console.log(record);
         if ( record.type == 'hidden' || record.hidden == true ) {
             return 0;
         }
-        let width_100: Array<string> = [
+        const width_100: Array<string> = [
             'uploads',
             'textarea',
             'textarea_editor',
@@ -882,7 +972,7 @@ export class FormConstructorComponent implements OnInit {
             return 'auto';
         }
     }
-    get_flex_padding ( size:string, form_type:string, record: SitebillModelItem ) {
+    get_flex_padding( size: string, form_type: string, record: SitebillModelItem ) {
         if ( record.type == 'hidden' || record.hidden == true ) {
             return '';
         }
@@ -897,99 +987,9 @@ export class FormConstructorComponent implements OnInit {
         return 'outline';
     }
 
-    updateParametersStorage(value: any, name:string) {
+    updateParametersStorage(value: any, name: string) {
         this.parameters_storage[name] = value;
     }
-
-
-    quillConfig = {
-        toolbar: {
-            container:
-                [
-                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                    ['blockquote', 'code-block'],
-
-                    [{'header': 1}, {'header': 2}],               // custom button values
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                    [{'direction': 'rtl'}],                         // text direction
-
-                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-                    [{'font': []}],
-                    [{'align': []}],
-
-                    ['clean']                                    // remove formatting button
-
-                ],
-        },
-        // toolbar: {
-        //   container: [
-        //     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        //     ['code-block'],
-        //     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        //     //[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        //     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        //     //[{ 'direction': 'rtl' }],                         // text direction
-
-        //     //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        //     //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-        //     //[{ 'font': [] }],
-        //     //[{ 'align': [] }],
-
-        //     ['clean'],                                         // remove formatting button
-
-        //     ['link'],
-        //     //['link', 'image', 'video']
-        //     ['emoji'],
-        //   ],
-        //   handlers: {'emoji': function() {}}
-        // },
-    };
-
-    editorOptions = {
-        theme: 'snow',
-        modules: {
-            toolbar: {
-                container:
-                    [
-                        [{'placeholder': ['[GuestName]', '[HotelName]']}], // my custom dropdown
-                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                        ['blockquote', 'code-block'],
-
-                        [{'header': 1}, {'header': 2}],               // custom button values
-                        [{'list': 'ordered'}, {'list': 'bullet'}],
-                        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                        [{'direction': 'rtl'}],                         // text direction
-
-                        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-                        [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-                        [{'font': []}],
-                        [{'align': []}],
-
-                        ['clean']                                    // remove formatting button
-
-                    ],
-                handlers: {
-                    'placeholder': function (value) {
-                        if (value) {
-                            const cursorPosition = this.quill.getSelection().index;
-                            this.quill.insertText(cursorPosition, value);
-                            this.quill.setSelection(cursorPosition + value.length);
-                        }
-                    }
-                }
-            }
-        }
-    };
 
     onCommentToggle(comment_open: boolean) {
         this.comment_open = comment_open;

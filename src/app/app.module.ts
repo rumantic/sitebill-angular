@@ -63,10 +63,11 @@ import {SitebillAuthService} from "./_services/sitebill-auth.service";
 import {ConfigComponent} from "./main/config/config.component";
 import {detect_mode, SitebillModes} from "./_helpers/env";
 import {WhatsAppModule} from "./main/apps/whatsapp/whatsapp.module";
+import {ImageService} from "./_services/image.service";
 
 
 let appRoutes: Routes = [
-    //Для обычного angular этот маршрут для корня
+    // Для обычного angular этот маршрут для корня
     {path: '', redirectTo: 'frontend', pathMatch: 'full'},
 
 
@@ -154,7 +155,7 @@ let appRoutes: Routes = [
 
 if ( detect_mode() == SitebillModes.standalone ) {
     appRoutes = [
-        //Для standalone
+        // Для standalone
         {
             path: '',
             loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
@@ -233,6 +234,7 @@ if ( detect_mode() == SitebillModes.standalone ) {
         MessageService,
         AuthGuard,
         ModelService,
+        ImageService,
         SitebillAuthService,
         PublicGuard,
         AlertService,
