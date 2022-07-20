@@ -6,21 +6,21 @@ import {ApiCall, SitebillEntity, SitebillModelItem, User} from 'app/_models';
 import {Router} from '@angular/router';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {FilterService} from './filter.service';
-import {StorageService} from "./storage.service";
-import {SnackService} from "./snack.service";
-import {Observable, Subject, timer} from "rxjs";
-import {SitebillSession} from "../_models/sitebillsession";
-import {takeUntil} from "rxjs/operators";
+import {StorageService} from './storage.service';
+import {SnackService} from './snack.service';
+import {Observable, Subject, timer} from 'rxjs';
+import {SitebillSession} from '../_models/sitebillsession';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Injectable()
 export class ModelService {
-    private api_url: string = '';
+    private api_url = '';
     protected currentUser: currentUser;
     public entity: SitebillEntity;
-    private need_reload: boolean = false;
-    private session_key_validated: boolean = false;
-    private nobody_mode: boolean = false;
+    private need_reload = false;
+    private session_key_validated = false;
+    private nobody_mode = false;
     private current_user_profile: UserProfile;
     private sitebill_started: boolean;
     private config_loaded: boolean;
@@ -28,7 +28,7 @@ export class ModelService {
     private current_entity: SitebillEntity;
     private navbar_hidden: boolean;
     private toolbar_hidden: boolean;
-    private model_redirect: boolean = true;
+    private model_redirect = true;
 
     @Output() config_loaded_emitter: EventEmitter<any> = new EventEmitter();
     @Output() sitebill_loaded_complete_emitter: EventEmitter<any> = new EventEmitter();
@@ -39,8 +39,8 @@ export class ModelService {
     private dom_sitebill_config: any;
     private install_mode: boolean;
     private nobody_first_login = false;
-    public init_permissions_complete: boolean = false;
-    public init_config_complete: boolean = false;
+    public init_permissions_complete = false;
+    public init_config_complete = false;
     protected _unsubscribeAll: Subject<any>;
 
 
@@ -78,7 +78,7 @@ export class ModelService {
     get sitebill_session(): SitebillSession {
         return {
             sessionId: this.get_session_key(),
-            clientUrl: ( this.get_api_url()!=='' ? this.get_api_url() : window.location.protocol+'//'+window.location.hostname ),
+            clientUrl: ( this.get_api_url() !== '' ? this.get_api_url() : window.location.protocol + '//' + window.location.hostname ),
         };
     }
 
@@ -87,7 +87,7 @@ export class ModelService {
         this.api_url = api_url;
     }
 
-    onSitebillStart () {
+    onSitebillStart() {
         if ( !this.sitebill_started ) {
             // console.log('Sitebill started');
             this.init_config();
@@ -121,7 +121,7 @@ export class ModelService {
         }
     }
 
-    all_checks_passes () {
+    all_checks_passes() {
         if ( this.get_nobody_mode() || this.get_user_id() > 0 ) {
             console.log('all_checks_passes success');
             return true;
@@ -129,7 +129,7 @@ export class ModelService {
         return false;
     }
 
-    final_state () {
+    final_state() {
         if ( this.init_config_complete && this.init_permissions_complete ) {
             console.log('final_state true');
             return true;
@@ -137,18 +137,18 @@ export class ModelService {
         return false;
     }
 
-    get_nobody_mode () {
+    get_nobody_mode() {
         return this.nobody_mode;
     }
-    enable_nobody_mode () {
+    enable_nobody_mode() {
         this.session_key_validated = true;
         this.nobody_mode = true;
     }
-    disable_nobody_mode () {
+    disable_nobody_mode() {
         this.nobody_mode = false;
     }
 
-    enable_guest_mode () {
+    enable_guest_mode() {
         console.log('apps.realty.enable_guest_mode ' + this.getConfigValue('apps.realty.enable_guest_mode'));
         if ( this.getConfigValue('apps.realty.enable_guest_mode') === '1') {
             if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined ) {
@@ -191,7 +191,7 @@ export class ModelService {
             console.log('guest mode not enabled');
             if ( !this.nobody_first_login ) {
                 this._snackService.message('Для работы с разделом вы должны авторизоваться.');
-                let timerPeriod = 1000;
+                const timerPeriod = 1000;
                 const numbers = timer(timerPeriod);
                 numbers
                     .pipe(takeUntil(this._unsubscribeAll))
@@ -235,7 +235,7 @@ export class ModelService {
         return this.session_key_validated;
     }
 
-    disable_session_key_validity () {
+    disable_session_key_validity() {
         this.session_key_validated = false;
     }
 
@@ -269,7 +269,7 @@ export class ModelService {
                     if ( this.is_model_redirect_enabled() ) {
                         console.log('reset storage');
                         this.reset_local_user_storage();
-                        let refresh_url = this.router.url;
+                        const refresh_url = this.router.url;
                         this.enable_need_reload('get_session_key_safe');
                         this.router.navigate([refresh_url]);
                     }
@@ -298,14 +298,14 @@ export class ModelService {
         return this.currentUser.user_id;
     }
 
-    is_logged_in () {
+    is_logged_in() {
         if ( this.get_user_id() === null || this.get_user_id() === 0 || this.get_user_id() === undefined) {
             return false;
         }
         return true;
     }
 
-    init_nobody_user_storage () {
+    init_nobody_user_storage() {
         this.reset_local_user_storage();
 
         this.init_nobody_session()
@@ -313,7 +313,7 @@ export class ModelService {
             .subscribe((result: any) => {
             if ( result.error === 'check_session_key_failed' ) {
                 this.reset_local_user_storage();
-                let refresh_url = this.router.url;
+                const refresh_url = this.router.url;
                 this.enable_need_reload('init_nobody_user_storage');
                 this.router.navigate([refresh_url]);
             } else {
@@ -446,7 +446,7 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    api_call (api_call: ApiCall, standard_params = {}) {
+    api_call(api_call: ApiCall, standard_params = {}) {
         let request = {
             action: api_call.name,
             do: api_call.method,
@@ -458,7 +458,7 @@ export class ModelService {
         console.log(request);
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
-    async api_call_async (api_call: ApiCall, standard_params = {}) {
+    async api_call_async(api_call: ApiCall, standard_params = {}) {
         return new Promise((resolve, reject) => {
             this.api_call(api_call, standard_params)
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -468,14 +468,14 @@ export class ModelService {
                     },
                     error => {
                         console.log(error);
-                        reject(new Error(error))
+                        reject(new Error(error));
                     }
                 );
-        })
+        });
     }
 
 
-    api_request (request: any) {
+    api_request(request: any) {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
@@ -504,7 +504,7 @@ export class ModelService {
             action: 'model',
             do: 'load_only_model',
             model_name: model_name,
-            anonymous: (anonymous ? 1:''),
+            anonymous: (anonymous ? 1 : ''),
             session_key: this.get_session_key_safe()
         };
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
@@ -534,7 +534,7 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, load_data_request);
     }
 
-    map_model (row_model: any) {
+    map_model(row_model: any) {
         const good_model = [];
         Object.entries(row_model).forEach(
             (key, value) => {
@@ -614,7 +614,7 @@ export class ModelService {
     }
 
     report(model_name, primary_key, key_value, complaint_id) {
-        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, complaint_id:complaint_id, session_key: this.get_session_key_safe()};
+        const body = {action: 'model', do: 'report', model_name: model_name, key_value: key_value, primary_key: primary_key, complaint_id: complaint_id, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
@@ -627,83 +627,6 @@ export class ModelService {
         const body = {action: 'model', do: 'new_empty_record', model_name: model_name, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
-
-    // deleteImage(model_name, key_name, key_value, image_id, field_name) {
-    //     const body = {
-    //         layer: 'native_ajax',
-    //         action: 'dz_imagework',
-    //         what: 'delete',
-    //         model_name: model_name,
-    //         key: key_name,
-    //         key_value: key_value,
-    //         current_position: image_id,
-    //         field_name: field_name,
-    //         session_key: this.get_session_key_safe()
-    //     };
-    //     return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
-    // }
-    //
-    // deleteAllImages(model_name, key_name, key_value, field_name) {
-    //     const body = {
-    //         layer: 'native_ajax',
-    //         action: 'dz_imagework',
-    //         what: 'delete_all',
-    //         model_name: model_name,
-    //         key: key_name,
-    //         key_value: key_value,
-    //         field_name: field_name,
-    //         session_key: this.get_session_key_safe()
-    //     };
-    //     return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
-    // }
-    //
-    // reorderImage(model_name, key_name, key_value, image_id, direction, field_name) {
-    //     let body = {};
-    //     if (direction == 'make_main') {
-    //         body = {
-    //             layer: 'native_ajax',
-    //             action: 'dz_imagework',
-    //             what: 'make_main',
-    //             model_name: model_name,
-    //             key: key_name,
-    //             key_value: key_value,
-    //             current_position: image_id,
-    //             field_name: field_name,
-    //             session_key: this.get_session_key_safe()
-    //         };
-    //     } else {
-    //         body = {
-    //             layer: 'native_ajax',
-    //             action: 'dz_imagework',
-    //             what: 'reorder',
-    //             reorder: direction,
-    //             model_name: model_name,
-    //             key: key_name,
-    //             key_value: key_value,
-    //             current_position: image_id,
-    //             field_name: field_name,
-    //             session_key: this.get_session_key_safe()
-    //         };
-    //     }
-    //     return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
-    // }
-    //
-    // rotateImage(model_name, key_name, key_value, image_id, rot_dir, field_name) {
-    //     let body = {};
-    //     body = {
-    //         layer: 'native_ajax',
-    //         action: 'dz_imagework',
-    //         what: 'rotate',
-    //         rot_dir: rot_dir,
-    //         model_name: model_name,
-    //         key: key_name,
-    //         key_value: key_value,
-    //         current_position: image_id,
-    //         field_name: field_name,
-    //         session_key: this.get_session_key_safe()
-    //     };
-    //     return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
-    // }
 
     load_grid_columns(entity: SitebillEntity) {
         let body = {};
@@ -752,33 +675,33 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    init_nobody_session () {
+    init_nobody_session() {
         let body = {};
         body = { action: 'init_nobody_session', session_key: 'nobody'};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    getConfigValue ( key: string ) {
+    getConfigValue( key: string ) {
         if ( this.is_config_loaded() ) {
             return this.sitebill_config[key];
         }
         return null;
     }
 
-    getDomConfigValue ( key: string ) {
+    getDomConfigValue( key: string ) {
         return this.dom_sitebill_config[key];
     }
 
-    setDomConfigValue ( key: string, value: any ) {
+    setDomConfigValue( key: string, value: any ) {
         return this.dom_sitebill_config[key] = value;
     }
 
 
-    setConfigValue (key, value) {
+    setConfigValue(key, value) {
         this.sitebill_config[key] = value;
     }
 
-    get_access (model_name, function_name) {
+    get_access(model_name, function_name) {
         const storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
         if (storage['structure'] == null) {
             return false;
@@ -795,33 +718,33 @@ export class ModelService {
         return false;
     }
 
-    load_config () {
-        //console.log(this.get_api_url());
+    load_config() {
+        // console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    load_config_anonymous () {
-        //console.log(this.get_api_url());
+    load_config_anonymous() {
+        // console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: ''};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    system_config () {
+    system_config() {
         let body = {};
         body = {action: 'config', do: 'system_config', session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    get_models_list () {
+    get_models_list() {
         let body = {};
         body = {action: 'table', do: 'get_models_list', session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    update_system_config ( ql_items: any ) {
+    update_system_config( ql_items: any ) {
         let body = {};
         body = {
             action: 'config',
@@ -832,7 +755,7 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    is_config_loaded () {
+    is_config_loaded() {
         return this.config_loaded;
     }
 
@@ -884,7 +807,7 @@ export class ModelService {
 
     }
 
-    after_config_loaded () {
+    after_config_loaded() {
         // console.log('after_config_loaded');
         this.config_loaded_emitter.emit(true);
         this.init_config_complete = true;
@@ -911,7 +834,7 @@ export class ModelService {
 
     }
 
-    load_current_user_profile () {
+    load_current_user_profile() {
         this.get_oauth_user_profile()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -973,10 +896,10 @@ export class ModelService {
     }
 
 
-    get_current_user_profile () {
+    get_current_user_profile() {
         return this.current_user_profile;
     }
-    get_profile_img_url () {
+    get_profile_img_url() {
         if ( this.current_user_profile.imgfile.value != null && this.current_user_profile.imgfile.value !== '') {
             return this.get_api_url(true) + '/img/data/user/' + this.current_user_profile.imgfile.value;
         }
@@ -1008,11 +931,11 @@ export class ModelService {
     }
 
 
-    set_current_entity ( entity: SitebillEntity ) {
+    set_current_entity( entity: SitebillEntity ) {
         this.current_entity = entity;
     }
 
-    get_current_entity () {
+    get_current_entity() {
         return this.current_entity;
     }
 
@@ -1036,27 +959,27 @@ export class ModelService {
             });
     }
 
-    show_navbar () {
+    show_navbar() {
         this.navbar_hidden = false;
     }
 
-    hide_navbar () {
+    hide_navbar() {
         this.navbar_hidden = true;
     }
 
-    is_navbar_hidden () {
+    is_navbar_hidden() {
         return this.navbar_hidden;
     }
 
-    show_toolbar () {
+    show_toolbar() {
         this.toolbar_hidden = false;
     }
 
-    hide_toolbar () {
+    hide_toolbar() {
         this.toolbar_hidden = true;
     }
 
-    is_toolbar_hidden () {
+    is_toolbar_hidden() {
         return this.toolbar_hidden;
     }
 
@@ -1084,21 +1007,21 @@ export class ModelService {
     }
 
 
-    set_install_mode ( mode: boolean ) {
+    set_install_mode( mode: boolean ) {
         this.install_mode = mode;
     }
 
-    get_install_mode () {
+    get_install_mode() {
         return this.install_mode;
     }
 
-    disable_model_redirect () {
+    disable_model_redirect() {
         this.model_redirect = false;
     }
-    enable_model_redirect () {
+    enable_model_redirect() {
         this.model_redirect = true;
     }
-    is_model_redirect_enabled () {
+    is_model_redirect_enabled() {
         return this.model_redirect;
     }
 
@@ -1115,7 +1038,7 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, request);
     }
 
-    OnDestroy () {
+    OnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
