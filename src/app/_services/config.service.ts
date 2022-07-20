@@ -1,19 +1,21 @@
 import { Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ModelService } from './model.service';
+import {GetApiUrlService} from './get-api-url.service';
+import {GetSessionKeyService} from './get-session-key.service';
 
 @Injectable()
 export class ConfigService {
 
     constructor(
         private http: HttpClient,
-        protected modelService: ModelService,
+        protected getApiUrlService: GetApiUrlService,
+        protected getSessionKeyService: GetSessionKeyService,
     ) {}
 
     system_config() {
         let body = {};
-        body = {action: 'config', do: 'system_config', session_key: this.modelService.get_session_key_safe()};
-        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
+        body = {action: 'config', do: 'system_config', session_key: this.getSessionKeyService.get_session_key_safe()};
+        return this.http.post(`${this.getApiUrlService.get_api_url()}/apps/api/rest.php`, body);
     }
 
 
@@ -24,9 +26,9 @@ export class ConfigService {
             action: 'config',
             do: 'update',
             ql_items: qlItems,
-            session_key: this.modelService.get_session_key_safe()
+            session_key: this.getSessionKeyService.get_session_key_safe()
         };
-        return this.http.post(`${this.modelService.get_api_url()}/apps/api/rest.php`, body);
+        return this.http.post(`${this.getApiUrlService.get_api_url()}/apps/api/rest.php`, body);
     }
 
 

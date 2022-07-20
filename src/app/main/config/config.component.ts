@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
-// import {ModelService} from '../../_services/model.service';
 import { ConfigService } from 'app/_services/config.service';
 import {SitebillResponse} from '../../_models/sitebill-response';
 import {MediaMatcher} from '@angular/cdk/layout';
@@ -43,7 +42,6 @@ export class ConfigComponent implements OnInit {
 
 
     constructor(
-        // protected modelService: ModelService,
         protected configService: ConfigService,
         protected _snackService: SnackService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher

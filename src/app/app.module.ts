@@ -65,6 +65,8 @@ import {detect_mode, SitebillModes} from './_helpers/env';
 import {WhatsAppModule} from './main/apps/whatsapp/whatsapp.module';
 import {ImageService} from './_services/image.service';
 import {ConfigService} from './_services/config.service';
+import {GetApiUrlService} from './_services/get-api-url.service';
+import {GetSessionKeyService} from './_services/get-session-key.service';
 
 
 let appRoutes: Routes = [
@@ -237,6 +239,8 @@ if ( detect_mode() === SitebillModes.standalone ) {
         ModelService,
         ImageService,
         ConfigService,
+        GetApiUrlService,
+        GetSessionKeyService,
         SitebillAuthService,
         PublicGuard,
         AlertService,
