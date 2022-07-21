@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
-
-import { ModelService } from 'app/_services/model.service';
+// import { ModelService } from 'app/_services/model.service';
+import { ConfigService } from 'app/_services/config.service';
 import {Subject} from "rxjs";
 import {SitebillResponse} from "../../_models/sitebill-response";
 import {SitebillEntity} from "../../_models";
@@ -38,7 +38,8 @@ export class ModelsEditorComponent
     @ViewChild(MatSidenav) side_nav: MatSidenav;
 
     constructor(
-        protected modelService: ModelService,
+        // protected modelService: ModelService,
+        protected configService: ConfigService,
         protected _snackService: SnackService,
         public _modelsEditorService: ModelsEditorService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
@@ -108,7 +109,7 @@ export class ModelsEditorComponent
 
     save(event) {
         let ql_items = this.config_form_child.get_changed_items();
-        this.modelService.update_system_config(ql_items)
+        this.configService.update_system_config(ql_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: SitebillResponse) => {
                 if ( result.state === 'success' ) {

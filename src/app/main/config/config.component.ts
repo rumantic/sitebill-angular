@@ -1,15 +1,15 @@
 import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged, takeUntil} from "rxjs/operators";
-import {ModelService} from "../../_services/model.service";
-import {SitebillResponse} from "../../_models/sitebill-response";
-import {MediaMatcher} from "@angular/cdk/layout";
-import {SitebillEntity} from "../../_models";
-import {ConfigFormComponent} from "./config-form/config-form.component";
-import {SnackService} from "../../_services/snack.service";
-import {FormControl} from "@angular/forms";
-import * as _ from "lodash";
-import {MatSidenav} from "@angular/material/sidenav";
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import { ConfigService } from 'app/_services/config.service';
+import {SitebillResponse} from '../../_models/sitebill-response';
+import {MediaMatcher} from '@angular/cdk/layout';
+import {SitebillEntity} from '../../_models';
+import {ConfigFormComponent} from './config-form/config-form.component';
+import {SnackService} from '../../_services/snack.service';
+import {FormControl} from '@angular/forms';
+import * as _ from 'lodash';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-config',
@@ -18,31 +18,31 @@ import {MatSidenav} from "@angular/material/sidenav";
 })
 export class ConfigComponent implements OnInit {
     protected _unsubscribeAll: Subject<any>;
-    public sitebillResponse:SitebillResponse;
-    public itemsList:any;
-    public menuItems:any;
+    public sitebillResponse: SitebillResponse;
+    public itemsList: any;
+    public menuItems: any;
     entity: SitebillEntity;
     public searchControl: FormControl;
-    private debounce: number = 400;
+    private debounce = 400;
 
 
     mobileQuery: MediaQueryList;
 
     private _mobileQueryListener: () => void;
-    public saveButton: boolean = false;
+    public saveButton = false;
 
     @ViewChild(ConfigFormComponent) config_form_child: ConfigFormComponent;
     @ViewChild(MatSidenav) side_nav: MatSidenav;
 
-    @Input("light_config")
+    @Input('light_config')
     light_config: string;
 
-    @Input("config_key")
+    @Input('config_key')
     config_key: string;
 
 
     constructor(
-        protected modelService: ModelService,
+        protected configService: ConfigService,
         protected _snackService: SnackService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
     ) {
@@ -65,7 +65,7 @@ export class ConfigComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.modelService.system_config()
+        this.configService.system_config()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 Object.assign(this.sitebillResponse, result);
@@ -93,16 +93,16 @@ export class ConfigComponent implements OnInit {
         if (!value || value === '') {
             return array;
         }
-        let filtered = [];
-        let tmp_array = _.cloneDeep(array);
-        let lower_value = value.toLocaleLowerCase();
+        const filtered = [];
+        const tmp_array = _.cloneDeep(array);
+        const lower_value = value.toLocaleLowerCase();
 
 
 
-        for(let i = 0; i < tmp_array.length; i++){
+        for (let i = 0; i < tmp_array.length; i++){
 
-            let obj = Object.assign({}, tmp_array[i].data);
-            let f1 = Object.keys(obj)
+            const obj = Object.assign({}, tmp_array[i].data);
+            const f1 = Object.keys(obj)
                 .filter( key =>
                     key.indexOf(value) >= 0
                     || obj[key].title.toLocaleLowerCase().indexOf(lower_value) >= 0
@@ -111,7 +111,7 @@ export class ConfigComponent implements OnInit {
                 )
                 .reduce( (res, key) => (res[key] = obj[key], res), {} );
             if ( Object.keys(f1).length !== 0 ) {
-                //console.log(f1);
+                // console.log(f1);
                 tmp_array[i].data = f1;
                 filtered.push(tmp_array[i]);
             }
@@ -123,8 +123,8 @@ export class ConfigComponent implements OnInit {
     }
 
     save(event) {
-        let ql_items = this.config_form_child.get_changed_items();
-        this.modelService.update_system_config(ql_items)
+        const ql_items = this.config_form_child.get_changed_items();
+        this.configService.update_system_config(ql_items)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: SitebillResponse) => {
                 if ( result.state === 'success' ) {

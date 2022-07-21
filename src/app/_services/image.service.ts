@@ -1,6 +1,7 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ModelService } from './model.service';
+import {GetApiUrlService} from './get-api-url.service';
+import {GetSessionKeyService} from './get-session-key.service';
 
 @Injectable()
 export class ImageService {
@@ -9,7 +10,8 @@ export class ImageService {
 
     constructor(
         private http: HttpClient,
-        protected modelService: ModelService,
+        protected getApiUrlService: GetApiUrlService,
+        protected getSessionKeyService: GetSessionKeyService,
     ) {}
 
     imageGalleryShare(value): any {
@@ -26,11 +28,11 @@ export class ImageService {
             key_value: key_value,
             current_position: image_id,
             field_name: field_name,
-            session_key: this.modelService.get_session_key_safe(),
+            session_key: this.getSessionKeyService.get_session_key_safe(),
         };
         this.imageGalleryShare('deleted');
         return this.http.post(
-            `${this.modelService.get_api_url()}/apps/api/rest.php`,
+            `${this.getApiUrlService.get_api_url()}/apps/api/rest.php`,
             body
         );
     }
@@ -44,10 +46,10 @@ export class ImageService {
             key: key_name,
             key_value: key_value,
             field_name: field_name,
-            session_key: this.modelService.get_session_key_safe(),
+            session_key: this.getSessionKeyService.get_session_key_safe(),
         };
         return this.http.post(
-            `${this.modelService.get_api_url()}/apps/api/rest.php`,
+            `${this.getApiUrlService.get_api_url()}/apps/api/rest.php`,
             body
         );
     }
@@ -71,7 +73,7 @@ export class ImageService {
                 key_value: key_value,
                 current_position: image_id,
                 field_name: field_name,
-                session_key: this.modelService.get_session_key_safe(),
+                session_key: this.getSessionKeyService.get_session_key_safe(),
             };
         } else {
             body = {
@@ -84,11 +86,11 @@ export class ImageService {
                 key_value: key_value,
                 current_position: image_id,
                 field_name: field_name,
-                session_key: this.modelService.get_session_key_safe(),
+                session_key: this.getSessionKeyService.get_session_key_safe(),
             };
         }
         return this.http.post(
-            `${this.modelService.get_api_url()}/apps/api/rest.php`,
+            `${this.getApiUrlService.get_api_url()}/apps/api/rest.php`,
             body
         );
     }
@@ -112,10 +114,10 @@ export class ImageService {
             key_value: key_value,
             current_position: image_id,
             field_name: field_name,
-            session_key: this.modelService.get_session_key_safe(),
+            session_key: this.getSessionKeyService.get_session_key_safe(),
         };
         return this.http.post(
-            `${this.modelService.get_api_url()}/apps/api/rest.php`,
+            `${this.getApiUrlService.get_api_url()}/apps/api/rest.php`,
             body
         );
     }
