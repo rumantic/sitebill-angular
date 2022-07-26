@@ -37,7 +37,7 @@ import { FuseShortcutsComponent } from './shortcuts.component';
         FuseShortcutsComponent
     ],
     providers   : [
-        CookieService
+        CookieService,
     ]
 })
 export class FuseShortcutsModule
