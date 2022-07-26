@@ -67,6 +67,7 @@ import {ImageService} from './_services/image.service';
 import {ConfigService} from './_services/config.service';
 import {GetApiUrlService} from './_services/get-api-url.service';
 import {GetSessionKeyService} from './_services/get-session-key.service';
+import {UiService} from './_services/ui.service';
 
 
 let appRoutes: Routes = [
@@ -236,6 +237,7 @@ if ( detect_mode() === SitebillModes.standalone ) {
     providers: [
         MessageService,
         AuthGuard,
+        UiService,
         ModelService,
         ImageService,
         ConfigService,

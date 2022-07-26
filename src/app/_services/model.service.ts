@@ -83,7 +83,7 @@ export class ModelService {
     }
 
 
-    set_api_url(api_url: string) {
+    set_api_url(api_url: string) { // get-api
         this.api_url = api_url;
     }
 
@@ -100,7 +100,7 @@ export class ModelService {
     }
 
 
-    get_api_url(ignore_entity_url = false) {
+    get_api_url(ignore_entity_url = false) {  // get-api
         if ( !ignore_entity_url ) {
             try {
                 if (this.get_current_entity().get_app_url() != null) {
@@ -239,7 +239,7 @@ export class ModelService {
         this.session_key_validated = false;
     }
 
-    get_session_key() {
+    get_session_key() { // get-session
         try {
             if (this.get_current_entity().get_app_session_key() != null) {
                 return this.get_current_entity().get_app_session_key();
@@ -258,7 +258,7 @@ export class ModelService {
         return this.currentUser.session_key;
     }
 
-    get_session_key_safe() {
+    get_session_key_safe() {  // get-session
         const session_key = this.get_session_key();
         if (!this.is_validated_session_key()) {
             this.validateKey(session_key)
@@ -365,7 +365,7 @@ export class ModelService {
     }
 
 
-    disable_menu() {
+    disable_menu() { // ui
         // console.log('disable menu');
         this._fuseConfigService.config = {
             layout: {
@@ -681,25 +681,29 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    getConfigValue( key: string ) {
+// ==================================================================== config-auxiliary
+
+    getConfigValue( key: string ) { // config
         if ( this.is_config_loaded() ) {
             return this.sitebill_config[key];
         }
         return null;
     }
 
-    getDomConfigValue( key: string ) {
+    getDomConfigValue( key: string ) { // config
         return this.dom_sitebill_config[key];
     }
 
-    setDomConfigValue( key: string, value: any ) {
+    setDomConfigValue( key: string, value: any ) { // config
         return this.dom_sitebill_config[key] = value;
     }
 
 
-    setConfigValue(key, value) {
+    setConfigValue(key, value) { // config
         this.sitebill_config[key] = value;
     }
+
+// ===============================================================
 
     get_access(model_name, function_name) {
         const storage = JSON.parse(this.storageService.getItem('currentUser')) || [];
@@ -718,21 +722,21 @@ export class ModelService {
         return false;
     }
 
-    load_config() {
+    load_config() {  // config ?
         // console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    load_config_anonymous() {
+    load_config_anonymous() { // config ?
         // console.log(this.get_api_url());
         let body = {};
         body = {action: 'model', do: 'load_config', anonymous: true, session_key: ''};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    system_config() {
+    system_config() { // config
         let body = {};
         body = {action: 'config', do: 'system_config', session_key: this.get_session_key_safe()};
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
@@ -744,7 +748,7 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    update_system_config( ql_items: any ) {
+    update_system_config( ql_items: any ) { // config
         let body = {};
         body = {
             action: 'config',
@@ -755,11 +759,11 @@ export class ModelService {
         return this.http.post(`${this.get_api_url()}/apps/api/rest.php`, body);
     }
 
-    is_config_loaded() {
+    is_config_loaded() { // config
         return this.config_loaded;
     }
 
-    init_config_standalone() {
+    init_config_standalone() { // config
         console.log('start init config standalone');
         this.load_config_anonymous()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -780,7 +784,7 @@ export class ModelService {
     }
 
 
-    init_config() {
+    init_config() { // config
         // console.log('start init config');
         this.load_config()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -807,7 +811,7 @@ export class ModelService {
 
     }
 
-    after_config_loaded() {
+    after_config_loaded() { // config
         // console.log('after_config_loaded');
         this.config_loaded_emitter.emit(true);
         this.init_config_complete = true;
@@ -959,27 +963,27 @@ export class ModelService {
             });
     }
 
-    show_navbar() {
+    show_navbar() { // ui
         this.navbar_hidden = false;
     }
 
-    hide_navbar() {
+    hide_navbar() { // ui
         this.navbar_hidden = true;
     }
 
-    is_navbar_hidden() {
+    is_navbar_hidden() { // ui
         return this.navbar_hidden;
     }
 
-    show_toolbar() {
+    show_toolbar() { // ui
         this.toolbar_hidden = false;
     }
 
-    hide_toolbar() {
+    hide_toolbar() { // ui
         this.toolbar_hidden = true;
     }
 
-    is_toolbar_hidden() {
+    is_toolbar_hidden() { // ui
         return this.toolbar_hidden;
     }
 

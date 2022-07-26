@@ -8,7 +8,7 @@ import {StorageService} from './storage.service';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {SnackService} from './snack.service';
 import {GetApiUrlService} from './get-api-url.service';
-import {SitebillEntity} from '../_models';
+import {UiService} from './ui.service';
 
 @Injectable()
 export class GetSessionKeyService {
@@ -24,8 +24,6 @@ export class GetSessionKeyService {
     private sitebillConfig: any;
     private configLoaded: boolean;
     public initConfigComplete = false;
-    private navbarHidden: boolean;
-    private toolbarHidden: boolean;
 
     @Output() needReloadEmitter: EventEmitter<any> = new EventEmitter();
     @Output() validUserEmitter: EventEmitter<any> = new EventEmitter();
@@ -37,10 +35,12 @@ export class GetSessionKeyService {
         public storageService: StorageService,
         protected _snackService: SnackService,
         protected getApiUrlService: GetApiUrlService,
+        protected uiService: UiService,
         protected _fuseConfigService: FuseConfigService,
     ) {
         this._unsubscribeAll = new Subject();
         this.currentUser = JSON.parse(this.storageService.getItem('currentUser')) || [];
+        this.sitebillConfig = {};
     }
 
     get_session_key_safe() {
@@ -125,10 +125,6 @@ export class GetSessionKeyService {
         this.needReload = true;
     }
 
-    getDomConfigValue( key: string ) {
-        return this.domSitebillConfig[key];
-    }
-
     session_key_validate(): void {
         if ( !this.sessionKeyValidated ) {
             // console.log('session_key_validate');
@@ -203,23 +199,6 @@ export class GetSessionKeyService {
         return false;
     }
 
-    disable_menu(): void {
-        // console.log('disable menu');
-        this._fuseConfigService.config = {
-            layout: {
-                navbar: {
-                    hidden: true
-                },
-                toolbar: {
-                    hidden: true
-                },
-                footer: {
-                    hidden: true
-                }
-            }
-        };
-    }
-
     disable_session_key_validity(): void {
         this.sessionKeyValidated = false;
     }
@@ -230,7 +209,7 @@ export class GetSessionKeyService {
         const body = {action: 'oauth', do: 'logout', session_key: this.currentUser.session_key};
         const url = `${this.getApiUrlService.get_api_url()}/apps/api/rest.php`;
 
-        this.disable_menu();
+        this.uiService.disable_menu();
         this.reset_local_user_storage();
         this.disable_session_key_validity();
         this.currentUserProfile = new UserProfile();
@@ -276,16 +255,58 @@ export class GetSessionKeyService {
         // console.log('reinit complete');
     }
 
-    is_config_loaded() {
+// =========================================================================
+    is_config_loaded() { // config
         return this.configLoaded;
     }
 
-    getConfigValue( key: string ) {
+    getDomConfigValue( key: string ) { // config ? used here
+        return this.domSitebillConfig[key];
+    }
+
+    getConfigValue( key: string ) { // config
         if ( this.is_config_loaded() ) {
             return this.sitebillConfig[key];
         }
         return null;
     }
+
+    setDomConfigValue( key: string, value: any ) { // config
+        return this.domSitebillConfig[key] = value;
+    }
+
+
+    setConfigValue(key, value) { // config
+        this.sitebillConfig[key] = value;
+    }
+
+    after_config_loaded(): void { // config
+        // console.log('after_config_loaded');
+        this.configLoadedEmitter.emit(true);
+        this.initConfigComplete = true;
+        // console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
+        if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
+            this.uiService.show_navbar();
+        }
+        if (this.getConfigValue('apps.realty.enable_toolbar') === '1') {
+            this.uiService.show_toolbar();
+        }
+
+        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
+            // console.log('default route');
+            if ( this.is_model_redirect_enabled() ) {
+                this.router.navigate(['grid/data']);
+            }
+        } else {
+            // console.log('config route');
+            // console.log(this.getConfigValue('apps.realty.default_frontend_route'));
+            if ( this.is_model_redirect_enabled() ) {
+                this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
+            }
+        }
+    }
+
+// =========================================================================
 
     enable_guest_mode(): void {
         console.log('apps.realty.enable_guest_mode ' + this.getConfigValue('apps.realty.enable_guest_mode'));
@@ -338,56 +359,6 @@ export class GetSessionKeyService {
         }
     }
 
-    show_navbar(): void {
-        this.navbarHidden = false;
-    }
-
-    hide_navbar(): void {
-        this.navbarHidden = true;
-    }
-
-    is_navbar_hidden(): boolean {
-        return this.navbarHidden;
-    }
-
-    show_toolbar(): void {
-        this.toolbarHidden = false;
-    }
-
-    hide_toolbar(): void {
-        this.toolbarHidden = true;
-    }
-
-    is_toolbar_hidden(): boolean {
-        return this.toolbarHidden;
-    }
-
-    after_config_loaded(): void {
-        // console.log('after_config_loaded');
-        this.configLoadedEmitter.emit(true);
-        this.initConfigComplete = true;
-        // console.log('apps.realty.default_frontend_route = ' + this.getConfigValue('apps.realty.default_frontend_route'));
-        if (this.getConfigValue('apps.realty.enable_navbar') === '1') {
-            this.show_navbar();
-        }
-        if (this.getConfigValue('apps.realty.enable_toolbar') === '1') {
-            this.show_toolbar();
-        }
-
-        if ( this.getConfigValue('apps.realty.default_frontend_route') === null || this.getConfigValue('apps.realty.default_frontend_route') === undefined) {
-            // console.log('default route');
-            if ( this.is_model_redirect_enabled() ) {
-                this.router.navigate(['grid/data']);
-            }
-        } else {
-            // console.log('config route');
-            // console.log(this.getConfigValue('apps.realty.default_frontend_route'));
-            if ( this.is_model_redirect_enabled() ) {
-                this.router.navigate([this.getConfigValue('apps.realty.default_frontend_route')]);
-            }
-        }
-    }
-
     init_nobody_session() {
         let body = {};
         body = { action: 'init_nobody_session', session_key: 'nobody'};
@@ -411,5 +382,10 @@ export class GetSessionKeyService {
                     this.enable_nobody_mode();
                 }
             });
+    }
+
+    OnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }

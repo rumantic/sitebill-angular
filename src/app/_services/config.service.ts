@@ -12,13 +12,16 @@ export class ConfigService {
         protected getSessionKeyService: GetSessionKeyService,
     ) {}
 
+    // is_config_loaded()
+    // init_config_standalone()
+    // init_config()
+    // after_config_loaded()
+
     system_config() {
         let body = {};
         body = {action: 'config', do: 'system_config', session_key: this.getSessionKeyService.get_session_key_safe()};
         return this.http.post(`${this.getApiUrlService.get_api_url()}/apps/api/rest.php`, body);
     }
-
-
 
     update_system_config( qlItems: any ) {
         let body = {};
@@ -30,6 +33,5 @@ export class ConfigService {
         };
         return this.http.post(`${this.getApiUrlService.get_api_url()}/apps/api/rest.php`, body);
     }
-
 
 }
