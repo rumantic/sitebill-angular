@@ -29,142 +29,168 @@
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
-            <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
-                <!-- BOARD SELECTION BUTTON -->
-                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
-                    <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись
-                    </button>
-                    <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">
-                        <mat-icon>add</mat-icon>
-                    </button>
+        <div class="header-standalone-wrapper" fxLayout="column"  *ngIf="!disable_header">
+            <div class="header-standalone-top p-8" fxLayout="column">
+                <div class="select-button-wrapper">
+                    <button class="select-button disabled-text selected">ПРОДАЖА</button>
+                    <button class="select-button disabled-text">АРЕНДА</button>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button
-                        class="amber ml-12"
-                        *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
-                        mat-raised-button
-                        (click)="reset_filters()"
-                        color="teal"
-                        matTooltip="Сбросить фильтры">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
-                    </button>
+                <div class="select-button-wrapper">
+                    <button class="select-button second-line">ДОМА</button>
+                    <button class="select-button second-line">ЖИЛАЯ</button>
+                    <button class="select-button second-line selected">КОММЕРЦИЯ</button>
                 </div>
-
-                <!-- / BOARD SELECTION BUTTON -->
-                <!-- SEARCH -->
-                <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-
-                    <div fxLayout="column" *ngIf="!disable_wild_search">
-                        <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
-                            <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                                <mat-icon color="primary">search</mat-icon>
-                                <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
-                                <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
-                            <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
-                        </ng-container>
+            </div>
+            <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
+                <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
+                    <!-- BOARD SELECTION BUTTON -->
+                    <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
+                        <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись
+                        </button>
+                        <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">
+                            <mat-icon>add</mat-icon>
+                        </button>
                     </div>
-                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
-                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
-                        <mat-icon>save</mat-icon>
-                    </button>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button
+                            class="amber ml-12"
+                            *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
+                            mat-raised-button
+                            (click)="reset_filters()"
+                            color="teal"
+                            matTooltip="Сбросить фильтры">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
+                        </button>
+                    </div>
 
-                    <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()" mat-icon-button (click)="login_modal()"
-                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
-                        <mat-icon>save</mat-icon>
-                    </button>
+                    <!-- / BOARD SELECTION BUTTON -->
+                    <!-- SEARCH -->
+                    <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
 
+                        <div fxLayout="column" *ngIf="!disable_wild_search">
+
+                            <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
+                                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon color="primary">search</mat-icon>
+                                    <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
+                                    <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
+                                <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
+                            </ng-container>
+                        </div>
+                        <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
+                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                            <mat-icon>save</mat-icon>
+                        </button>
+
+                        <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()" mat-icon-button (click)="login_modal()"
+                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                            <mat-icon>save</mat-icon>
+                        </button>
+
+                    </div>
+                    <!-- / SEARCH -->
+
+                    <div class="btn-icon-and-text-wrapper">
+                        <button mat-icon-button class="icon-and-text">
+                            <mat-icon>perm_identity</mat-icon>
+                            <div>Мои</div>
+                        </button>
+                        <button mat-icon-button class="icon-and-text">
+                            <mat-icon>view_comfy_alt</mat-icon>
+                            <div>Архив</div>
+                        </button>
+                    </div>
+
+                    <!-- TOOLBAR -->
+                    <div class="angular-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
+
+                        <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
+                            <input autocomplete="off"
+                                   matTooltip="Выбрать период времени для отображения записей"
+                                   matInput
+                                   type="text"
+                                   ngxDaterangepickerMd
+                                   [ranges]="ranges"
+                                   opens="left"
+                                   [locale]="date_range_locale"
+                                   (change)="date_range_change($event, date_range_key)"
+                                   alwaysShowCalendars="true"
+                                   [(ngModel)]="selected_date_filter"
+                                   class="date-range-control"/>
+                            <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>calendar_today</mat-icon>
+                            <ng-template #clearDatepicker>
+                                <mat-icon class="toolbar__daterange-clear" color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close
+                                </mat-icon>
+                            </ng-template>
+                        </mat-form-field>
+                        <!--                    <button *ngIf="selected_date_filter_has_values" mat-icon-button matTooltip="Очистить фильтр по дате"-->
+                        <!--                            (click)="clear_selected_date_filter(date_range_key)">-->
+                        <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
+                        <!--                    </button>-->
+
+                        <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
+                            <mat-icon>autorenew</mat-icon>
+                        </button>
+
+                        <!-- SENDER BUTTON -->
+                        <button mat-icon-button (click)="whatsapp_list_sender(entity)"
+                                aria-label="Рассылка WhatsApp" matTooltip="Рассылка WhatsApp"
+                                *ngIf="show_whatsapp() && entity.get_app_name() === 'client'"
+                                class="mb-4">
+                            <mat-icon>message</mat-icon>
+                        </button>
+                        <!-- / SENDER BUTTON -->
+
+
+                        <!-- EXCEL IMPORT BUTTON -->
+                        <button mat-icon-button (click)="excel_modal()"
+                                aria-label="Импорт из Excel" matTooltip="Импорт из Excel" class="mb-4">
+                            <mat-icon>cloud_upload</mat-icon>
+                        </button>
+                        <!-- / EXCEL IMPORT BUTTON -->
+
+                        <!-- EXCEL EXPORT BUTTON -->
+                        <button mat-icon-button (click)="excel_export()"
+                                aria-label="Экспорт в Excel" matTooltip="Экспорт в Excel" class="mb-4">
+                            <mat-icon>cloud_download</mat-icon>
+                        </button>
+                        <!-- / EXCEL EXPORT BUTTON -->
+
+                        <!-- SETTINGS BUTTON -->
+                        <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button (click)="settings_modal()"
+                                aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+                        <!-- / SETTINGS BUTTON -->
+
+                        <!-- PDF BUTTON -->
+                        <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1" mat-icon-button (click)="export_collections_pdf('client')"
+                                aria-label="Скачать клиентский PDF" matTooltip="Скачать клиентский PDF" class="mb-4">
+                            <mat-icon>picture_as_pdf</mat-icon>
+                        </button>
+                        <!-- / PDF BUTTON -->
+
+                        <!-- PDF BUTTON -->
+                        <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1" mat-icon-button (click)="export_collections_pdf('staff')"
+                                aria-label="Скачать PDF для сотрудников" matTooltip="Скачать PDF для сотрудников" class="mb-4">
+                            <mat-icon>print</mat-icon>
+                        </button>
+                        <!-- / PDF BUTTON -->
+
+                        <!-- SHARE MEMORYLIST BUTTON -->
+                        <button *ngIf="only_collections &&
+                        this.modelService.getConfigValue('apps.memorylist.link_access') == 1"
+                                mat-icon-button (click)="share_memorylist()"
+                                aria-label="Ссылка на подборку" matTooltip="Ссылка на подборку" class="mb-4">
+                            <mat-icon>share</mat-icon>
+                        </button>
+                        <!-- / SHARE MEMORYLIST BUTTON -->
+
+                    </div>
+                    <!-- / TOOLBAR -->
                 </div>
-                <!-- / SEARCH -->
-                <!-- TOOLBAR -->
-                <div class="angular-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
-
-                    <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
-                        <input autocomplete="off"
-                               matTooltip="Выбрать период времени для отображения записей"
-                               matInput
-                               type="text"
-                               ngxDaterangepickerMd
-                               [ranges]="ranges"
-                               opens="left"
-                               [locale]="date_range_locale"
-                               (change)="date_range_change($event, date_range_key)"
-                               alwaysShowCalendars="true"
-                               [(ngModel)]="selected_date_filter"
-                               class="date-range-control"/>
-                        <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>calendar_today</mat-icon>
-                        <ng-template #clearDatepicker>
-                            <mat-icon class="toolbar__daterange-clear" color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close
-                            </mat-icon>
-                        </ng-template>
-                    </mat-form-field>
-                    <!--                    <button *ngIf="selected_date_filter_has_values" mat-icon-button matTooltip="Очистить фильтр по дате"-->
-                    <!--                            (click)="clear_selected_date_filter(date_range_key)">-->
-                    <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
-                    <!--                    </button>-->
-
-                    <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
-                        <mat-icon>autorenew</mat-icon>
-                    </button>
-
-                    <!-- SENDER BUTTON -->
-                    <button mat-icon-button (click)="whatsapp_list_sender(entity)"
-                            aria-label="Рассылка WhatsApp" matTooltip="Рассылка WhatsApp"
-                            *ngIf="show_whatsapp() && entity.get_app_name() === 'client'"
-                            class="mb-4">
-                        <mat-icon>message</mat-icon>
-                    </button>
-                    <!-- / SENDER BUTTON -->
-
-
-                    <!-- EXCEL IMPORT BUTTON -->
-                    <button mat-icon-button (click)="excel_modal()"
-                            aria-label="Импорт из Excel" matTooltip="Импорт из Excel" class="mb-4">
-                        <mat-icon>cloud_upload</mat-icon>
-                    </button>
-                    <!-- / EXCEL IMPORT BUTTON -->
-
-                    <!-- EXCEL EXPORT BUTTON -->
-                    <button mat-icon-button (click)="excel_export()"
-                            aria-label="Экспорт в Excel" matTooltip="Экспорт в Excel" class="mb-4">
-                        <mat-icon>cloud_download</mat-icon>
-                    </button>
-                    <!-- / EXCEL EXPORT BUTTON -->
-
-                    <!-- SETTINGS BUTTON -->
-                    <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button (click)="settings_modal()"
-                            aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
-                        <mat-icon>settings</mat-icon>
-                    </button>
-                    <!-- / SETTINGS BUTTON -->
-
-                    <!-- PDF BUTTON -->
-                    <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1" mat-icon-button (click)="export_collections_pdf('client')"
-                            aria-label="Скачать клиентский PDF" matTooltip="Скачать клиентский PDF" class="mb-4">
-                        <mat-icon>picture_as_pdf</mat-icon>
-                    </button>
-                    <!-- / PDF BUTTON -->
-
-                    <!-- PDF BUTTON -->
-                    <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1" mat-icon-button (click)="export_collections_pdf('staff')"
-                            aria-label="Скачать PDF для сотрудников" matTooltip="Скачать PDF для сотрудников" class="mb-4">
-                        <mat-icon>print</mat-icon>
-                    </button>
-                    <!-- / PDF BUTTON -->
-
-                    <!-- SHARE MEMORYLIST BUTTON -->
-                    <button *ngIf="only_collections &&
-                    this.modelService.getConfigValue('apps.memorylist.link_access') == 1"
-                            mat-icon-button (click)="share_memorylist()"
-                            aria-label="Ссылка на подборку" matTooltip="Ссылка на подборку" class="mb-4">
-                        <mat-icon>share</mat-icon>
-                    </button>
-                    <!-- / SHARE MEMORYLIST BUTTON -->
-
-                </div>
-                <!-- / TOOLBAR -->
             </div>
         </div>
         <!-- / HEADER -->

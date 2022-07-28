@@ -221,7 +221,8 @@ import {ConfigModalComponent} from "./main/config/modal/config-modal.component";
         JsonEditorComponent,
         UploaderComponent,
         CommentsComponent,
-        GalleryComponent
+        GalleryComponent,
+        ViewModalComponent
     ],
     entryComponents: [
         LoginModalComponent,
