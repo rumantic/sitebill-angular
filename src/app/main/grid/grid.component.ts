@@ -223,8 +223,23 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('header_top_panel')
     header_top_panel = false;
 
-    @Input('show_filter_my_button')
-    show_filter_my_button = false;
+    @Input('showFilterMyButton')
+    showFilterMyButton = false;
+
+    @Input('showFilterArhButton')
+    showFilterArhButton = false;
+
+    @Input('showFilterNewButton')
+    showFilterNewButton = false;
+
+    @Input('showFilterExButton')
+    showFilterExButton = false;
+
+    @Input('showFilterTemporarilyButton')
+    showFilterTemporarilyButton = false;
+
+    @Input('showSelectionButton')
+    showSelectionButton = false;
 
     @Output() total_counterEvent = new EventEmitter<number>();
 

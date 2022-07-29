@@ -93,27 +93,35 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <button mat-icon-button class="icon-and-text" *ngIf="show_filter_my_button">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
+                            <mat-icon>expand_more</mat-icon>
+                            <div>Фил</div>
+                        </button>
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
+                            <mat-icon>expand_more</mat-icon>
+                            <div>Все</div>
+                        </button>
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
                             <mat-icon>perm_identity</mat-icon>
                             <div>Мои</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton">
                             <mat-icon>view_comfy_alt</mat-icon>
                             <div>Арх</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterNewButton">
                             <mat-icon>get_app</mat-icon>
-                            <div>New</div>
+                            <div>Нов</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton">
                             <mat-icon>card_giftcard</mat-icon>
                             <div>Экс</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton">
                             <mat-icon>power_settings_new</mat-icon>
                             <div>ВНП</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showSelectionButton">
                             <mat-icon>pageview</mat-icon>
                             <div>Подбор</div>
                         </button>
@@ -122,6 +130,8 @@
                     <!-- TOOLBAR -->
                     <div class="angular-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
 
+
+                        <!--                            БЕЛАЯ ЛИНИЯ см ниже -->
                         <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
                             <input autocomplete="off"
                                    matTooltip="Выбрать период времени для отображения записей"
