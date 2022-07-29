@@ -220,6 +220,12 @@ export class GridComponent implements OnInit, OnDestroy
     @Input('disable_fix_table_height')
     disable_fix_table_height = false;
 
+    @Input('header_top_panel')
+    header_top_panel = false;
+
+    @Input('show_filter_my_button')
+    show_filter_my_button = false;
+
     @Output() total_counterEvent = new EventEmitter<number>();
 
     private after_compose_complete_checked: boolean;

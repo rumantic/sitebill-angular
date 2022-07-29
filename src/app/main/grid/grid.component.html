@@ -30,7 +30,7 @@
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
         <div class="header-standalone-wrapper" fxLayout="column"  *ngIf="!disable_header">
-            <div class="header-standalone-top p-8" fxLayout="column">
+            <div class="header-standalone-top p-8" fxLayout="column" *ngIf="header_top_panel">
                 <div class="select-button-wrapper">
                     <button class="select-button disabled-text selected">ПРОДАЖА</button>
                     <button class="select-button disabled-text">АРЕНДА</button>
@@ -93,7 +93,7 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <button mat-icon-button class="icon-and-text">
+                        <button mat-icon-button class="icon-and-text" *ngIf="show_filter_my_button">
                             <mat-icon>perm_identity</mat-icon>
                             <div>Мои</div>
                         </button>
