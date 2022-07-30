@@ -32,13 +32,14 @@
         <div class="header-standalone-wrapper" fxLayout="column"  *ngIf="!disable_header">
             <div class="header-standalone-top p-8" fxLayout="column" *ngIf="header_top_panel">
                 <div class="select-button-wrapper">
-                    <button class="select-button disabled-text selected">ПРОДАЖА</button>
-                    <button class="select-button disabled-text">АРЕНДА</button>
+                    <button class="select-button selected">ПРОДАЖА</button>
+                    <button class="select-button ">АРЕНДА</button>
                 </div>
                 <div class="select-button-wrapper">
-                    <button class="select-button second-line">ДОМА</button>
-                    <button class="select-button second-line">ЖИЛАЯ</button>
-                    <button class="select-button second-line selected">КОММЕРЦИЯ</button>
+                    <button class="select-button second-line "><mat-icon>home</mat-icon><div>ДОМА</div></button>
+                    <button class="select-button second-line "><mat-icon>business</mat-icon><div>ЖИЛАЯ</div></button>
+                    <button class="select-button second-line selected selected-second-line"><mat-icon>fastfood
+                    </mat-icon><div>КОММЕРЦИЯ</div></button>
                 </div>
             </div>
             <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
@@ -64,16 +65,21 @@
 
                     <!-- / BOARD SELECTION BUTTON -->
                     <!-- SEARCH -->
-                    <div class="ml-sm-32 header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+                    <div class="header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
 
-                        <div fxLayout="column" *ngIf="!disable_wild_search">
+                        <div fxLayout="column" [ngClass]="{searchMode: activeSearchMode}"
+                             *ngIf="!disable_wild_search" >
 
-                            <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search">
+                            <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search"
+                                 (click)="setSearchMode()">
                                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                                     <mat-icon color="primary">search</mat-icon>
                                     <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
                                     <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
                                 </div>
+                                <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
+                                          (click)="disableSearchMode($event)">close
+                                </mat-icon>
                             </div>
                             <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
                                 <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
@@ -93,11 +99,11 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton">
                             <mat-icon>expand_more</mat-icon>
                             <div>Фил</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton">
                             <mat-icon>expand_more</mat-icon>
                             <div>Все</div>
                         </button>

@@ -3,6 +3,7 @@
 mat-sidenav-container {
     width: 100%;
     height: 100%;
+    // position: relative;
 
     mat-sidenav {
         width: 320px !important;
@@ -185,8 +186,9 @@ mat-sidenav-container {
                     width: 112px;
                     padding: 4px 0;
                     text-align: center;
-                    border-radius: 16px;
-                    border: solid 1px #cccccc;
+                    border-radius: 8px;
+                    border: none;
+                    color: #0000008a;
                     background-color: transparent;
                     cursor: pointer;
 
@@ -195,17 +197,23 @@ mat-sidenav-container {
                     }
 
                     &:hover {
+                        color: #000000;
                         font-weight: 800;
                         font-size: 13px;
                     }
                 }
 
                 .second-line {
-                    color: #3f51b5;
+                    border: solid 1px #0000008a;
+                    // color: #3f51b5;
                 }
 
                 .selected {
+                    color: #000000;
                     font-weight: bold;
+                }
+
+                .selected-second-line {
                     box-shadow: 2px 2px 2px #9EA1A9;
                 }
             }
@@ -215,7 +223,7 @@ mat-sidenav-container {
 
             .hidden-lt-md,
             .amber {
-                border-radius: 16px;
+                // border-radius: 16px;
             }
 
             .header__search-row {
@@ -249,6 +257,26 @@ mat-sidenav-container {
                             cursor: pointer;
                         }
                     }
+                    .closeSearch {
+                        z-index: 7;
+                        position: relative;
+                        left: -10px;
+                        top: 10px;
+                        color: red;
+                        cursor: pointer;
+                    }
+                }
+                .searchMode {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 5;
+                    padding: 130px 10% 100vh;
+                    min-width: calc(100vw - 10%);
+                    background-color: rgba(130, 130, 130, 0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
 
@@ -256,7 +284,7 @@ mat-sidenav-container {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-right: 4px;
+                margin-right: 40px;
 
                 .icon-and-text {
                     width: 56px;

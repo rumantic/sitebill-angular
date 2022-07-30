@@ -107,6 +107,7 @@ export class GridComponent implements OnInit, OnDestroy
     selectionType = '';
     grouped: any;
     footerHeight: number;
+    activeSearchMode = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -222,6 +223,12 @@ export class GridComponent implements OnInit, OnDestroy
 
     @Input('header_top_panel')
     header_top_panel = false;
+
+    @Input('showFilterAllButton')
+    showFilterAllButton = false;
+
+    @Input('showFilterFilButton')
+    showFilterFilButton = false;
 
     @Input('showFilterMyButton')
     showFilterMyButton = false;
@@ -421,6 +428,16 @@ export class GridComponent implements OnInit, OnDestroy
             });
         // this.cdr.markForCheck();
 
+    }
+
+
+    setSearchMode(): void {
+        this.activeSearchMode = true;
+    }
+
+   disableSearchMode(event): void {
+        event.stopPropagation();
+        this.activeSearchMode = false;
     }
 
 
