@@ -29,26 +29,47 @@
 
     <div id="ngx-datatable" class="page-layout simple fullwidth">
         <!-- HEADER -->
-        <div class="header-standalone-wrapper" fxLayout="column"  *ngIf="!disable_header">
+        <div class="header-standalone-wrapper" fxLayout="column" *ngIf="!disable_header">
             <div class="header-standalone-top p-8" fxLayout="column" *ngIf="header_top_panel">
                 <div class="select-button-wrapper">
-                    <button class="select-button selected">ПРОДАЖА</button>
-                    <button class="select-button ">АРЕНДА</button>
+                    <button class="select-button" [ngClass]="{selected: activeSale}" (click)="toggleDialType('sale')">
+                        ПРОДАЖА
+                    </button>
+                    <button class="select-button" [ngClass]="{selected: activeRent}" (click)="toggleDialType('rent')">
+                        АРЕНДА
+                    </button>
                 </div>
                 <div class="select-button-wrapper">
-                    <button class="select-button second-line "><mat-icon>home</mat-icon><div>ДОМА</div></button>
-                    <button class="select-button second-line "><mat-icon>business</mat-icon><div>ЖИЛАЯ</div></button>
-                    <button class="select-button second-line selected selected-second-line"><mat-icon>fastfood
-                    </mat-icon><div>КОММЕРЦИЯ</div></button>
+                    <button class="select-button second-line"
+                            [ngClass]="{selected: activeHouse, selectedSecondLine: activeHouse}"
+                            (click)="toggleObjectType('house')">
+                        <mat-icon>home</mat-icon>
+                        <div>ДОМА</div>
+                    </button>
+                    <button class="select-button second-line"
+                            [ngClass]="{selected: activeApartment, selectedSecondLine: activeApartment}"
+                            (click)="toggleObjectType('apartment')">
+                        <mat-icon>business</mat-icon>
+                        <div>ЖИЛАЯ</div>
+                    </button>
+                    <button class="select-button second-line"
+                            [ngClass]="{selected: activeBusiness, selectedSecondLine: activeBusiness}"
+                            (click)="toggleObjectType('business')">
+                        <mat-icon>fastfood
+                        </mat-icon>
+                        <div>КОММЕРЦИЯ</div>
+                    </button>
                 </div>
             </div>
-            <div class="header-standalone p-8 p-md-8 accent" fxLayout="column"  *ngIf="!disable_header">
+            <div class="header-standalone p-8 p-md-8 accent" fxLayout="column" *ngIf="!disable_header">
                 <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                     <!-- BOARD SELECTION BUTTON -->
                     <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
-                        <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">Добавить запись
+                        <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white"
+                                matTooltip="Добавить запись">Добавить запись
                         </button>
-                        <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white" matTooltip="Добавить запись">
+                        <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white"
+                                matTooltip="Добавить запись">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -59,7 +80,8 @@
                             mat-raised-button
                             (click)="reset_filters()"
                             color="teal"
-                            matTooltip="Сбросить фильтры">Сбросить фильтры ({{filterService.count_share_array(entity.get_app_name())}})
+                            matTooltip="Сбросить фильтры">Сбросить фильтры
+                            ({{filterService.count_share_array(entity.get_app_name())}})
                         </button>
                     </div>
 
@@ -68,30 +90,39 @@
                     <div class="header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
 
                         <div fxLayout="column" [ngClass]="{searchMode: activeSearchMode}"
-                             *ngIf="!disable_wild_search" >
+                             *ngIf="!disable_wild_search">
 
                             <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search"
                                  (click)="setSearchMode()">
                                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                                     <mat-icon color="primary">search</mat-icon>
-                                    <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям" placeholder="Поиск по слову">
-                                    <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary" matSuffix (click)="clear_search_text()">close</mat-icon>
+                                    <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям"
+                                           placeholder="Поиск по слову">
+                                    <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary"
+                                              matSuffix (click)="clear_search_text()">close
+                                    </mat-icon>
                                 </div>
                                 <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
                                           (click)="disableSearchMode($event)">close
                                 </mat-icon>
                             </div>
-                            <ng-container *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
-                                <search-string-parser [search_string]="searchInput.value" [entity]="entity"></search-string-parser>
+                            <ng-container
+                                *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
+                                <search-string-parser [search_string]="searchInput.value"
+                                                      [entity]="entity"></search-string-parser>
                             </ng-container>
                         </div>
-                        <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()" mat-icon-button (click)="save_search()"
-                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                        <button
+                            *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()"
+                            mat-icon-button (click)="save_search()"
+                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
                             <mat-icon>save</mat-icon>
                         </button>
 
-                        <button *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()" mat-icon-button (click)="login_modal()"
-                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                        <button
+                            *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()"
+                            mat-icon-button (click)="login_modal()"
+                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
                             <mat-icon>save</mat-icon>
                         </button>
 
@@ -151,9 +182,12 @@
                                    alwaysShowCalendars="true"
                                    [(ngModel)]="selected_date_filter"
                                    class="date-range-control"/>
-                            <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>calendar_today</mat-icon>
+                            <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>
+                                calendar_today
+                            </mat-icon>
                             <ng-template #clearDatepicker>
-                                <mat-icon class="toolbar__daterange-clear" color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close
+                                <mat-icon class="toolbar__daterange-clear" color="white" matSuffix
+                                          (click)="clear_selected_date_filter(date_range_key)">close
                                 </mat-icon>
                             </ng-template>
                         </mat-form-field>
@@ -162,7 +196,8 @@
                         <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
                         <!--                    </button>-->
 
-                        <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()" matTooltip="Обновить таблицу" class="mb-4">
+                        <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()"
+                                matTooltip="Обновить таблицу" class="mb-4">
                             <mat-icon>autorenew</mat-icon>
                         </button>
 
@@ -191,22 +226,28 @@
                         <!-- / EXCEL EXPORT BUTTON -->
 
                         <!-- SETTINGS BUTTON -->
-                        <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button (click)="settings_modal()"
+                        <button *ngIf="!freeze_default_columns_list && entity && entity.model" mat-icon-button
+                                (click)="settings_modal()"
                                 aria-label="Настройки таблицы" matTooltip="Настройки таблицы" class="mb-4">
                             <mat-icon>settings</mat-icon>
                         </button>
                         <!-- / SETTINGS BUTTON -->
 
                         <!-- PDF BUTTON -->
-                        <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1" mat-icon-button (click)="export_collections_pdf('client')"
-                                aria-label="Скачать клиентский PDF" matTooltip="Скачать клиентский PDF" class="mb-4">
+                        <button
+                            *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_client_report') == 1"
+                            mat-icon-button (click)="export_collections_pdf('client')"
+                            aria-label="Скачать клиентский PDF" matTooltip="Скачать клиентский PDF" class="mb-4">
                             <mat-icon>picture_as_pdf</mat-icon>
                         </button>
                         <!-- / PDF BUTTON -->
 
                         <!-- PDF BUTTON -->
-                        <button *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1" mat-icon-button (click)="export_collections_pdf('staff')"
-                                aria-label="Скачать PDF для сотрудников" matTooltip="Скачать PDF для сотрудников" class="mb-4">
+                        <button
+                            *ngIf="only_collections && modelService.getConfigValue('apps.pdfreport.enable_api_staff_report') == 1"
+                            mat-icon-button (click)="export_collections_pdf('staff')"
+                            aria-label="Скачать PDF для сотрудников" matTooltip="Скачать PDF для сотрудников"
+                            class="mb-4">
                             <mat-icon>print</mat-icon>
                         </button>
                         <!-- / PDF BUTTON -->
@@ -279,7 +320,8 @@
                                     let-isVisible="isVisible">
                                     <div class="page-count">
                                         <ng-container *ngIf="enable_select_rows && selectedCount > 0">
-                                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation()"
+                                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                    (click)="$event.stopPropagation()"
                                                     fxHide.xs>
                                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                                             </button>
@@ -291,7 +333,8 @@
                                                     <span>Добавить в рассылку</span>
                                                 </button>
                                                 <button mat-menu-item (click)="deleteSelected($event)"
-                                                        [matTooltip]="'Удалить выбранные'" aria-label="Удалить выбранные">
+                                                        [matTooltip]="'Удалить выбранные'"
+                                                        aria-label="Удалить выбранные">
                                                     <mat-icon class="secondary-text">delete</mat-icon>
                                                     <span>Удалить выбранные</span>
                                                 </button>

@@ -86,7 +86,7 @@ export class GridComponent implements OnInit, OnDestroy
     rows_index = [];
     grid_columns_for_compose = [];
     data_columns = [];
-    compose_complete: boolean = false;
+    compose_complete = false;
     columns_client_all = [];
     columns_data_all = [];
     columns_client_my = [];
@@ -100,23 +100,28 @@ export class GridComponent implements OnInit, OnDestroy
     objectKeys = Object.keys;
     page = new Page();
     entity: SitebillEntity;
-    refresh_complete: boolean = false;
+    refresh_complete = false;
     searchInput: FormControl;
-    error: boolean = false;
+    error = false;
     error_message: string;
     selectionType = '';
     grouped: any;
     footerHeight: number;
     activeSearchMode = false;
+    activeSale = true;
+    activeRent = false;
+    activeHouse = false;
+    activeApartment = true;
+    activeBusiness = false;
 
 
     @ViewChild('gridTable') table: any;
 
 
-    date_range_enable: boolean = false;
+    date_range_enable = false;
     date_range_key: string;
     selected_date_filter;
-    selected_date_filter_has_values: boolean = false;
+    selected_date_filter_has_values = false;
     ranges: any = {
         'Сегодня': [moment(), moment()],
         'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -145,7 +150,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     // Private
     protected _unsubscribeAll: Subject<any>;
-    protected template_ready: boolean = false;
+    protected template_ready = false;
     protected predefined_grid_fields = [];
     protected predefined_grid_params = {};
 
@@ -286,7 +291,7 @@ export class GridComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 54;
         this.entity = new SitebillEntity();
-        //console.log('template loaded = ' + this.commonTemplate.template_loaded);
+        // console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
         this.page.pageNumber = 0;
         this.page.size = 0;
@@ -312,7 +317,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.initFooterHeight();
         this.entity.set_app_url(null);
         if (this.disable_menu) {
-            //console.log(this.disable_menu);
+            // console.log(this.disable_menu);
         } else {
             this._fuseConfigService.config = {
                 layout: {
@@ -340,7 +345,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
         this.rows = [];
         this.rows_my = [];
-        //console.log('init');
+        // console.log('init');
         this.params_filter = this.route.snapshot.paramMap.get('params_filter');
 
         if ( this.modelService.getConfigValue('apps.realty.data.global_freeze_default_columns_list') === '1' ) {
@@ -369,17 +374,17 @@ export class GridComponent implements OnInit, OnDestroy
                 ) {
                     this.selected_date_filter = {};
                     this.selected_date_filter_has_values = true;
-                    //console.log('set range from filterService');
-                    //console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
-                    //console.log(this.selected_date_filter);
-                    //console.log(this.selected_date_filter.startDate);
+                    // console.log('set range from filterService');
+                    // console.log(this.filterService.share_array[this.entity.app_name][this.date_range_key]);
+                    // console.log(this.selected_date_filter);
+                    // console.log(this.selected_date_filter.startDate);
 
-                    //this.selected_date_filter['startDate'] = null;
-                    //this.selected_date_filter['endDate'] = null;
+                    // this.selected_date_filter['startDate'] = null;
+                    // this.selected_date_filter['endDate'] = null;
 
                     this.selected_date_filter['startDate'] = moment(this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].startDate);
                     this.selected_date_filter['endDate'] = moment(this.filterService.get_share_array(this.entity.get_app_name())[this.date_range_key].endDate);
-                    //selected_date_filter: { startDate: Moment, endDate: Moment };
+                    // selected_date_filter: { startDate: Moment, endDate: Moment };
                 }
             }
         }
@@ -387,10 +392,10 @@ export class GridComponent implements OnInit, OnDestroy
         this.filterService.share
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((entity: SitebillEntity) => {
-            if (entity.get_app_name() == this.entity.get_app_name()) {
+            if (entity.get_app_name() === this.entity.get_app_name()) {
                 if (this.refresh_complete) {
                     this.resizeSubject.next(0);
-                    this.ngxHeaderHeight = "auto";
+                    this.ngxHeaderHeight = 'auto';
                 }
 
             }
@@ -407,8 +412,8 @@ export class GridComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
 
-            //console.log('subscirbe');
-            //console.log(entity);
+            // console.log('subscirbe');
+            // console.log(entity);
             if (this.refresh_complete) {
                 this.refresh_complete = false;
                 this.refresh();
@@ -422,12 +427,38 @@ export class GridComponent implements OnInit, OnDestroy
                 distinctUntilChanged()
             )
             .subscribe(searchText => {
-                //console.log(searchText);
-                //console.log('search string share');
+                // console.log(searchText);
+                // console.log('search string share');
                 this.filterService.share_data(this.entity, 'concatenate_search', searchText);
             });
         // this.cdr.markForCheck();
 
+    }
+
+    toggleDialType(type): void {
+        if (type === 'sale') {
+            this.activeRent = false;
+            this.activeSale = true;
+        } else {
+            this.activeRent = true;
+            this.activeSale = false;
+        }
+    }
+
+    toggleObjectType(type): void {
+        if (type === 'house') {
+            this.activeHouse = true;
+            this.activeApartment = false;
+            this.activeBusiness = false;
+        } else if (type === 'apartment') {
+            this.activeHouse = false;
+            this.activeApartment = true;
+            this.activeBusiness = false;
+        } else {
+            this.activeHouse = false;
+            this.activeApartment = false;
+            this.activeBusiness = true;
+        }
     }
 
 
