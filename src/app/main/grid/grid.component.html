@@ -99,11 +99,13 @@
                                     <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям"
                                            placeholder="Поиск по слову">
                                     <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary"
-                                              matSuffix (click)="clear_search_text()">close
+                                              matSuffix (click)="clear_search_text()" aria-label="Очистить поиск"
+                                              matTooltip="Очистить поиск">close
                                     </mat-icon>
                                 </div>
                                 <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
-                                          (click)="disableSearchMode($event)">close
+                                          (click)="disableSearchMode($event)" aria-label="Свернуть окно поиска"
+                                          matTooltip="Свернуть окно поиска">close
                                 </mat-icon>
                             </div>
                             <ng-container
@@ -130,35 +132,49 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton">
-                            <mat-icon>expand_more</mat-icon>
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton" aria-label="Филиалы"
+                                matTooltip="Филиалы">
+                            <mat-icon>expand_more
+                            </mat-icon>
                             <div>Фил</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton"
+                                aria-label="Сортировка по сотрудникам"
+                                matTooltip="Сортировка по сотрудникам">
                             <mat-icon>expand_more</mat-icon>
                             <div>Все</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
+                                aria-label="Список моих объектов"
+                                matTooltip="Список моих объектов">
                             <mat-icon>perm_identity</mat-icon>
                             <div>Мои</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton" aria-label="Архивные"
+                                matTooltip="Архивные">
                             <mat-icon>view_comfy_alt</mat-icon>
                             <div>Арх</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterNewButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterNewButton" aria-label="Новые"
+                                matTooltip="Новые">
                             <mat-icon>get_app</mat-icon>
                             <div>Нов</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton"
+                                aria-label="Эксклюзивные"
+                                matTooltip="Эксклюзивные">
                             <mat-icon>card_giftcard</mat-icon>
                             <div>Экс</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton"
+                                aria-label="Временно не продается"
+                                matTooltip="Временно не продается">
                             <mat-icon>power_settings_new</mat-icon>
                             <div>ВНП</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showSelectionButton">
+                        <button mat-icon-button class="icon-and-text" *ngIf="showSelectionButton"
+                                aria-label="Подбор объекта по параметрам"
+                                matTooltip="Подбор объекта по параметрам">
                             <mat-icon>pageview</mat-icon>
                             <div>Подбор</div>
                         </button>
@@ -182,7 +198,10 @@
                                    alwaysShowCalendars="true"
                                    [(ngModel)]="selected_date_filter"
                                    class="date-range-control"/>
-                            <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix>
+                            <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix
+                                      aria-label="Перейти к выбору дат"
+                                      matTooltip="Перейти к выбору дат"
+                                      style="cursor: pointer">
                                 calendar_today
                             </mat-icon>
                             <ng-template #clearDatepicker>
