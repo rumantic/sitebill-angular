@@ -113,6 +113,13 @@ export class GridComponent implements OnInit, OnDestroy
     activeHouse = false;
     activeApartment = true;
     activeBusiness = false;
+    calendarHidden = true;
+    filialsList = ['Фил', 'Одесса', 'Николаев', 'Днепр', 'город', 'город'];
+    selectedFil = this.filialsList[0];
+    activeFils = false;
+    groupsList = ['Все', 'Список 1', 'Список 2'];
+    selectedGroup = this.groupsList[0];
+    activeGroups = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -469,6 +476,26 @@ export class GridComponent implements OnInit, OnDestroy
    disableSearchMode(event): void {
         event.stopPropagation();
         this.activeSearchMode = false;
+    }
+
+    toggleOptionsList(type): void {
+        if (type === 'fils') {
+            this.activeFils = !this.activeFils;
+        } else {
+            this.activeGroups = !this.activeGroups;
+        }
+    }
+
+    selectFil(ind): void {
+        this.selectedFil = this.filialsList[ind];
+    }
+
+    selectGroup(ind): void {
+        this.selectedGroup = this.groupsList[ind];
+    }
+
+    goToSelectDate(): void {
+        this.calendarHidden = false;
     }
 
 
@@ -918,6 +945,7 @@ export class GridComponent implements OnInit, OnDestroy
         const event = null;
         this.selected_date_filter = null;
         this.filterService.share_data(this.entity, column_name, event);
+        this.calendarHidden = true;
     }
 
     enable_date_range(key) {

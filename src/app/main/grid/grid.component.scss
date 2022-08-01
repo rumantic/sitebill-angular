@@ -287,20 +287,49 @@ mat-sidenav-container {
                 margin-right: 40px;
 
                 .icon-and-text {
-                    width: 56px;
+                    min-width: 56px;
+                    width: auto;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                }
 
-                    &:not(:last-child) {
-                        margin-right: 4px;
+                .selectWrapper {
+                    position: relative;
+                    margin-right: 8px;
+                }
+                .optionsList {
+                    position: absolute;
+                    left: -20px;
+                    top: 45px;
+                    z-index: 3;
+                    padding: 4px;
+                    border: none;
+                    border-radius: 4px;
+                    background-color: #ededed;
+                    option {
+                        padding: 2px;
                     }
                 }
             }
 
             .angular-toolbar {
                 .pt-12 {
-                    min-width: 225px;
+                    // min-width: 225px;
+                    width: 25px;
+                    // height: 25px;
+                    overflow: hidden;
+                    .rectangle {
+                        width: 25px;
+                        height: 10px;
+                        position: absolute;
+                        top: 30px;
+                        background-color: #039BE5;
+                        z-index: 3;
+                    }
+                }
+                .calendar {
+                    width: 225px;
                 }
                 &__daterange {
                     width: 220px;

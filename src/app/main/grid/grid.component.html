@@ -132,18 +132,31 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton" aria-label="Филиалы"
-                                matTooltip="Филиалы">
-                            <mat-icon>expand_more
-                            </mat-icon>
-                            <div>Фил</div>
-                        </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton"
-                                aria-label="Сортировка по сотрудникам"
-                                matTooltip="Сортировка по сотрудникам">
-                            <mat-icon>expand_more</mat-icon>
-                            <div>Все</div>
-                        </button>
+                        <div class="selectWrapper">
+                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton"
+                                    aria-label="Филиалы"
+                                    matTooltip="Филиалы" (click)="toggleOptionsList('fils')">
+                                <mat-icon>expand_more
+                                </mat-icon>
+                                <div>{{selectedFil}}</div>
+                            </button>
+                            <select size="4" *ngIf="activeFils" class="optionsList">
+                                <option *ngFor="let fil of filialsList, let i = index"
+                                        (click)="selectFil(i)">{{fil}}</option>
+                            </select>
+                        </div>
+                        <div class="selectWrapper">
+                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton"
+                                    aria-label="Сортировка по сотрудникам"
+                                    matTooltip="Сортировка по сотрудникам" (click)="toggleOptionsList('groups')">
+                                <mat-icon>expand_more</mat-icon>
+                                <div>{{selectedGroup}}</div>
+                            </button>
+                            <select size="3" *ngIf="activeGroups" class="optionsList">
+                                <option *ngFor="let group of groupsList, let i = index"
+                                        (click)="selectGroup(i)">{{group}}</option>
+                            </select>
+                        </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
                                 aria-label="Список моих объектов"
                                 matTooltip="Список моих объектов">
@@ -185,7 +198,8 @@
 
 
                         <!--                            БЕЛАЯ ЛИНИЯ см ниже -->
-                        <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable">
+                        <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable"
+                                        [ngClass]="{calendar: !calendarHidden}">
                             <input autocomplete="off"
                                    matTooltip="Выбрать период времени для отображения записей"
                                    matInput
@@ -201,9 +215,11 @@
                             <mat-icon *ngIf="!selected_date_filter_has_values; else clearDatepicker" matSuffix
                                       aria-label="Перейти к выбору дат"
                                       matTooltip="Перейти к выбору дат"
-                                      style="cursor: pointer">
+                                      style="cursor: pointer"
+                                      (click)="goToSelectDate()">
                                 calendar_today
                             </mat-icon>
+                            <div [ngClass]="{rectangle: calendarHidden}"></div>
                             <ng-template #clearDatepicker>
                                 <mat-icon class="toolbar__daterange-clear" color="white" matSuffix
                                           (click)="clear_selected_date_filter(date_range_key)">close
@@ -214,6 +230,7 @@
                         <!--                            (click)="clear_selected_date_filter(date_range_key)">-->
                         <!--                        <mat-icon color="white" matSuffix (click)="clear_selected_date_filter(date_range_key)">close</mat-icon>-->
                         <!--                    </button>-->
+
 
                         <button *ngIf="!disable_refresh_button" mat-icon-button (click)="refresh()"
                                 matTooltip="Обновить таблицу" class="mb-4">
