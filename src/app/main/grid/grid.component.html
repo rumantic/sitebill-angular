@@ -138,24 +138,32 @@
                                     matTooltip="Филиалы" (click)="toggleOptionsList('fils')">
                                 <mat-icon>expand_more
                                 </mat-icon>
-                                <div>{{selectedFil}}</div>
+                                <div>Фил</div>
                             </button>
-                            <select size="4" *ngIf="activeFils" class="optionsList">
-                                <option *ngFor="let fil of filialsList, let i = index"
-                                        (click)="selectFil(i)">{{fil}}</option>
-                            </select>
+                                    <ng-select
+                                        [ngClass]="{hideOptionsList: !activeFils}"
+                                        class="optionsList"
+                                        appendTo="body"
+                                        [multiple]="true"
+                                        [hideSelected]="true"
+                                        [items]="filialsList"
+                                        >
+                                    </ng-select>
                         </div>
                         <div class="selectWrapper">
                             <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton"
                                     aria-label="Сортировка по сотрудникам"
                                     matTooltip="Сортировка по сотрудникам" (click)="toggleOptionsList('groups')">
                                 <mat-icon>expand_more</mat-icon>
-                                <div>{{selectedGroup}}</div>
+                                <div>Все</div>
                             </button>
-                            <select size="3" *ngIf="activeGroups" class="optionsList">
-                                <option *ngFor="let group of groupsList, let i = index"
-                                        (click)="selectGroup(i)">{{group}}</option>
-                            </select>
+                            <ng-select
+                                [ngClass]="{hideOptionsList: !activeGroups}"
+                                class="optionsList"
+                                appendTo="body"
+                                [items]="groupsList"
+                            >
+                            </ng-select>
                         </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
                                 aria-label="Список моих объектов"

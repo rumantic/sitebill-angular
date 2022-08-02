@@ -298,7 +298,12 @@ mat-sidenav-container {
                     position: relative;
                     margin-right: 8px;
                 }
+                .hideOptionsList {
+                    visibility: hidden;
+                }
+
                 .optionsList {
+                    width: 130px;
                     position: absolute;
                     left: -20px;
                     top: 45px;
@@ -307,9 +312,7 @@ mat-sidenav-container {
                     border: none;
                     border-radius: 4px;
                     background-color: #ededed;
-                    option {
-                        padding: 2px;
-                    }
+                    // visibility: hidden;
                 }
             }
 
