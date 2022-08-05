@@ -41,7 +41,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {BillingService} from '../../_services/billing.service';
 import {ReportComponent} from "../../dialogs/report/report.component";
-import *  as localization from 'moment/locale/ru';
+import * as localization from 'moment/locale/ru';
 import {LocaleConfig} from "ngx-daterangepicker-material";
 import {SaveSearchComponent} from "../../dialogs/save-search/save-search.component";
 import {LoginModalComponent} from "../../login/modal/login-modal.component";
@@ -114,7 +114,9 @@ export class GridComponent implements OnInit, OnDestroy
     activeApartment = true;
     activeBusiness = false;
     calendarHidden = true;
-    filialsList = ['Фил', 'Одесса', 'Николаев', 'Днепр', 'город', 'город'];
+    filialsList = [{ id: 1, fil: 'Фил'}, {id: 2, fil: 'Одесса'}, {id: 3, fil: 'Николаев'},
+        {id: 4, fil: 'Днепр'}, {id: 5, fil: 'город'}, {id: 6, fil: 'город'}];
+    selectedFils = [2, 3];
     selectedFil = this.filialsList[0];
     activeFils = false;
     groupsList = ['Все', 'Список 1', 'Список 2'];

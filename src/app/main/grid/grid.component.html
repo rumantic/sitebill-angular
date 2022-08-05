@@ -141,9 +141,12 @@
                                 <div>Фил</div>
                             </button>
                                     <ng-select
-                                        [ngClass]="{hideOptionsList: !activeFils}"
+                                        *ngIf="activeFils"
+                                        [(ngModel)]="selectedFils"
                                         class="optionsList"
                                         appendTo="body"
+                                        bindValue="id"
+                                        bindLabel="fil"
                                         [multiple]="true"
                                         [hideSelected]="true"
                                         [items]="filialsList"
@@ -157,13 +160,6 @@
                                 <mat-icon>expand_more</mat-icon>
                                 <div>Все</div>
                             </button>
-                            <ng-select
-                                [ngClass]="{hideOptionsList: !activeGroups}"
-                                class="optionsList"
-                                appendTo="body"
-                                [items]="groupsList"
-                            >
-                            </ng-select>
                         </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
                                 aria-label="Список моих объектов"
