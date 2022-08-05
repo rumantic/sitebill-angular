@@ -160,6 +160,7 @@
                                 <mat-icon>expand_more</mat-icon>
                                 <div>Все</div>
                             </button>
+                            <filter-comp [columnObject]=filterExampleColumn [entity]="entity"></filter-comp>
                         </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
                                 aria-label="Список моих объектов"

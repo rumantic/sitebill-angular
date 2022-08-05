@@ -114,8 +114,15 @@ export class GridComponent implements OnInit, OnDestroy
     activeApartment = true;
     activeBusiness = false;
     calendarHidden = true;
-    filialsList = [{ id: 1, fil: 'Фил'}, {id: 2, fil: 'Одесса'}, {id: 3, fil: 'Николаев'},
-        {id: 4, fil: 'Днепр'}, {id: 5, fil: 'город'}, {id: 6, fil: 'город'}];
+    filialsList = [
+        {id: 1, fil: 'Фил'},
+        {id: 2, fil: 'Одесса'},
+        {id: 3, fil: 'Николаев'},
+        {id: 4, fil: 'Днепр'},
+        {id: 5, fil: 'город'},
+        {id: 6, fil: 'город'}
+    ];
+
     selectedFils = [2, 3];
     selectedFil = this.filialsList[0];
     activeFils = false;
@@ -270,6 +277,8 @@ export class GridComponent implements OnInit, OnDestroy
     public group_key: string;
     public scrollbarH: boolean = true;
 
+    public filterExampleColumn: any;
+
 
 
     /**
@@ -300,6 +309,16 @@ export class GridComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
         this.ngxHeaderHeight = 54;
         this.entity = new SitebillEntity();
+        this.filterExampleColumn = {
+            headerTemplate: null,
+            cellTemplate: null,
+            type: 'select_by_query',
+            ngx_name: 'user_id.title',
+            model_name: 'user_id',
+            title: 'Сотрудники',
+            width: 100,
+            prop: null
+        };
         // console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
         this.page.pageNumber = 0;
