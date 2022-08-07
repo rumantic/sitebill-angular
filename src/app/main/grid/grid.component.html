@@ -132,37 +132,31 @@
                     <!-- / SEARCH -->
 
                     <div class="btn-icon-and-text-wrapper">
-                        <div class="selectWrapper">
-                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterFilButton"
+                        <div class="selectWrapper" *ngIf="showFilterFilButton">
+                            <button mat-icon-button class="icon-and-text"
                                     aria-label="Филиалы"
                                     matTooltip="Филиалы" (click)="toggleOptionsList('fils')">
                                 <mat-icon>expand_more
                                 </mat-icon>
                                 <div>Фил</div>
                             </button>
-                                    <ng-select
-                                        *ngIf="activeFils"
-                                        [(ngModel)]="selectedFils"
-                                        class="optionsList"
-                                        appendTo="body"
-                                        bindValue="id"
-                                        bindLabel="fil"
-                                        [multiple]="true"
-                                        [hideSelected]="true"
-                                        [items]="filialsList"
-                                        >
-                                    </ng-select>
+                            <div class="optionsList" *ngIf="activeFils">
+                                <filter-comp [columnObject]=filterFilExampleColumn [entity]="entity"></filter-comp>
+                            </div>
                         </div>
-                        <div class="selectWrapper">
-                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterAllButton"
+                        <div class="selectWrapper" *ngIf="showFilterAllButton">
+                            <button mat-icon-button class="icon-and-text"
                                     aria-label="Сортировка по сотрудникам"
                                     matTooltip="Сортировка по сотрудникам" (click)="toggleOptionsList('groups')">
                                 <mat-icon>expand_more</mat-icon>
                                 <div>Все</div>
                             </button>
-                            <filter-comp [columnObject]=filterExampleColumn [entity]="entity"></filter-comp>
+                            <div class="optionsList" *ngIf="activeGroups">
+                                <filter-comp [columnObject]=filterExampleColumn [entity]="entity"
+                                             [extraParam]="extraParam"></filter-comp>
+                            </div>
                         </div>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterMyButton"
+                        <button mat-icon-button class="icon-and-text"
                                 aria-label="Список моих объектов"
                                 matTooltip="Список моих объектов">
                             <mat-icon>perm_identity</mat-icon>

@@ -1,8 +1,17 @@
 ::ng-deep .ng-dropdown-panel.select_options {
     width: auto !important;
 }
+
+::ng-deep .ng-select {
+    padding: 0;
+}
+
 ::ng-deep .ng-select.ng-select-container {
     width: auto !important;
+}
+
+::ng-deep .ng-placeholder {
+    padding: 2px 1px;
 }
 
 ::ng-deep .gold_bg {
@@ -82,9 +91,13 @@
 
 ::ng-deep .room_count {
 }
+
 .hover {
     border: 1px solid green;
 }
+
 .hover:hover {
     display: none;
 }
+
+

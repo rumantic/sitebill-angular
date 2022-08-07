@@ -298,21 +298,19 @@ mat-sidenav-container {
                     position: relative;
                     margin-right: 8px;
                 }
-                .hideOptionsList {
-                    visibility: hidden;
-                }
 
                 .optionsList {
-                    width: 130px;
+                    width: 75px;
                     position: absolute;
-                    left: -20px;
+                    left: -8px;
                     top: 45px;
                     z-index: 3;
-                    padding: 4px;
-                    border: none;
+                    padding: 2px;
+                    border: solid 1px #ededed;
                     border-radius: 4px;
-                    background-color: #ededed;
-                    // visibility: hidden;
+                    background-color: #FFFFFF;
+                    color: #0000008a;
+                    font-size: 12px;
                 }
             }
 

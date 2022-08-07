@@ -275,9 +275,11 @@ export class GridComponent implements OnInit, OnDestroy
     private params_filter: string;
     public enable_grouping: boolean;
     public group_key: string;
-    public scrollbarH: boolean = true;
+    public scrollbarH = true;
+    public extraParam = false;
 
     public filterExampleColumn: any;
+    public filterFilExampleColumn: any;
 
 
 
@@ -316,6 +318,18 @@ export class GridComponent implements OnInit, OnDestroy
             ngx_name: 'user_id.title',
             model_name: 'user_id',
             title: 'Сотрудники',
+            shortTitle: ' Сотр-ки',
+            width: 100,
+            prop: null
+        };
+        this.filterFilExampleColumn = {
+            headerTemplate: null,
+            cellTemplate: null,
+            type: 'select_by_query',
+            ngx_name: 'user_id.title',
+            model_name: 'user_id',
+            title: 'Филиалы',
+            shortTitle: ' Ф-лы',
             width: 100,
             prop: null
         };

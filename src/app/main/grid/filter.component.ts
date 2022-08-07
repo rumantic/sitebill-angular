@@ -27,25 +27,26 @@ export class FilterComponent {
     @Input() entity: SitebillEntity;
     api_url: string;
     selectedFilter: any;
-    filter_enable: boolean = false;
-    select_filter_enable: boolean = false;
-    select_box_filter_enable: boolean = false;
-    string_filter_enable: boolean = false;
-    checkbox_filter_enable: boolean = false;
-    focus_complete: boolean = false;
+    filter_enable = false;
+    select_filter_enable = false;
+    select_box_filter_enable = false;
+    string_filter_enable = false;
+    checkbox_filter_enable = false;
+    focus_complete = false;
     hoverElement: boolean;
+    @Input() extraParam: boolean;
 
     price_selector: any;
-    price_filter_enable: boolean = false;
+    price_filter_enable = false;
     price_options: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
-    price_min: number = 0;
-    price_max: number = 10000000;
+    price_min = 0;
+    price_max = 10000000;
     options_price_zero_10m: Options = {
         floor: 0,
         ceil: 10000000,
         step: 1000
     };
-    highValue: number = 100;
+    highValue = 100;
     slider_value = 0;
     value: any;
 
