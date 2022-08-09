@@ -14,7 +14,7 @@ import {StorageService} from "../../_services/storage.service";
 
 @Component({
     selector: 'register-modal',
-    // templateUrl: '../../main/grid/form/form.component.html',
+    // templateUrl: '../../main/grid/form/selection-form.component.html',
     templateUrl: './register-modal.component.html',
     styleUrls: ['./register-modal.component.scss'],
     animations: fuseAnimations

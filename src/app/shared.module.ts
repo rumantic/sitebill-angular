@@ -90,6 +90,9 @@ import {ExcelModule} from "./main/apps/excel/excel.module";
 import {MessagesService} from "./_services/messages.service";
 import {CommentsComponent} from "./main/grid/comments/comments.component";
 import {ConfigModalComponent} from "./main/config/modal/config-modal.component";
+import {SelectionFormComponent} from './main/apps/selection/selection-form.component';
+import {SelectionFormConstructorComponent} from './main/apps/selection/selection-form-constructor.component';
+import {SelectionFormStaticComponent} from './main/apps/selection/selection-form-static.component';
 
 @NgModule({
     imports: [
@@ -162,6 +165,9 @@ import {ConfigModalComponent} from "./main/config/modal/config-modal.component";
         FormComponent,
         FormConstructorComponent,
         FormStaticComponent,
+        SelectionFormComponent,
+        SelectionFormConstructorComponent,
+        SelectionFormStaticComponent,
         ViewStaticComponent,
         UploaderComponent,
         GalleryComponent,
@@ -208,6 +214,8 @@ import {ConfigModalComponent} from "./main/config/modal/config-modal.component";
         NgxUploaderModule,
         FormComponent,
         FormStaticComponent,
+        SelectionFormComponent,
+        SelectionFormStaticComponent,
         ViewStaticComponent,
         ProfileTimelineComponent,
         ProfileCardComponent,

@@ -168,7 +168,7 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\app\main\grid\filter.component.ts" />
-    <TypeScriptCompile Include="src\app\main\grid\form\form.component.ts" />
+    <TypeScriptCompile Include="src\app\main\grid\form\selection-form.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\grid.component.ts" />
     <TypeScriptCompile Include="src\app\main\grid\grid.module.ts" />
     <TypeScriptCompile Include="src\app\main\grid\i18n\en.ts" />
@@ -444,7 +444,7 @@
     <TypeScriptCompile Include="src\app\main\sample\sample.module.ts" />
     <Content Include="src\app\main\search-form\search-form.component.html" />
     <Content Include="src\app\main\search-form\search-form.component.css" />
-    <TypeScriptCompile Include="src\app\main\search-form\search-form.component.ts" />
+    <TypeScriptCompile Include="src\app\main\search-form\search-selection-form.component.ts" />
     <TypeScriptCompile Include="src\app\main\search-form\word.service.ts" />
     <Content Include="src\app\main\slider\slider.component.html" />
     <Content Include="src\app\main\slider\slider.component.css" />
@@ -531,7 +531,7 @@
     <TypeScriptCompile Include="src\app\main\sample\i18n\en.ts" />
     <TypeScriptCompile Include="src\app\main\sample\i18n\ru.ts" />
     <Content Include="src\app\main\search-form\ankonsul\search-form.component_konsul.html" />
-    <TypeScriptCompile Include="src\app\main\search-form\ankonsul\ankonsul.search-form.component.ts" />
+    <TypeScriptCompile Include="src\app\main\search-form\ankonsul\ankonsul.search-selection-form.component.ts" />
     <Content Include="src\app\main\search-form\dialogs\select-district\select-district.component.html" />
     <Content Include="src\app\main\search-form\dialogs\select-district\select-district.component.css" />
     <TypeScriptCompile Include="src\app\main\search-form\dialogs\select-district\select-district.component.ts" />

@@ -50,7 +50,7 @@ export class DataComponent extends GridComponent {
                 (limit: any) => {
                     if ( limit.data > 0 ) {
                         this.open_form_with_check_access(dialogConfig);
-                        //this.dialog.open(FormComponent, dialogConfig);
+                        //this.dialog.open(SelectionFormComponent, dialogConfig);
                     } else {
                         this._snackService.message('Закончился лимит добавления эксклюзивных вариантов', 5000);
                     }
@@ -58,7 +58,7 @@ export class DataComponent extends GridComponent {
             );
         } else {
             this.open_form_with_check_access(dialogConfig);
-            //this.dialog.open(FormComponent, dialogConfig);
+            //this.dialog.open(SelectionFormComponent, dialogConfig);
         }
 
     }

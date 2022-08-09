@@ -2,9 +2,9 @@ import {ChangeDetectorRef, Component, EventEmitter, Input} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, takeUntil, switchMap} from 'rxjs/operators';
 import {FilterService} from 'app/_services/filter.service';
-import { SitebillEntity } from 'app/_models';
-import { Options, ChangeContext } from 'ng5-slider';
-import { ModelService } from 'app/_services/model.service';
+import {SitebillEntity} from 'app/_models';
+import {Options, ChangeContext} from 'ng5-slider';
+import {ModelService} from 'app/_services/model.service';
 import {NgSelectConfig} from '@ng-select/ng-select';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ComposeModalComponent} from './compose-modal/compose-modal.component';
@@ -21,9 +21,10 @@ interface Dict {
 })
 export class FilterComponent {
     options: any;
-    options_checkbox: number[] =  [1,0];
+    options_checkbox: number[] = [1, 0];
     options_select_box: any;
     @Input() columnObject: any;
+    columnObjectTitle: string;
     @Input() entity: SitebillEntity;
     api_url: string;
     selectedFilter: any;
@@ -38,7 +39,7 @@ export class FilterComponent {
 
     price_selector: any;
     price_filter_enable = false;
-    price_options: any[] = [{ id: 0, value: 'Все', actual: 0 }, { id: 5, value: 'range' }];
+    price_options: any[] = [{id: 0, value: 'Все', actual: 0}, {id: 5, value: 'range'}];
     price_min = 0;
     price_max = 10000000;
     options_price_zero_10m: Options = {
@@ -76,7 +77,8 @@ export class FilterComponent {
         this.typeahead
             .pipe(
                 debounceTime(200),
-                switchMap(term => this.modelSerivce.load_dictionary_model(this.entity.get_table_name(), this.columnObject.model_name, term))
+                switchMap(term => this.modelSerivce.load_dictionary_model(this.entity.get_table_name(),
+                    this.columnObject.model_name, term))
             )
             .subscribe(items => {
                 this.items = items['data'];
@@ -89,12 +91,17 @@ export class FilterComponent {
     // tslint:disable-next-line:use-life-cycle-interface
     ngOnInit(): void {
         // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
-        if (this.filterService.get_share_array(this.entity.get_app_name()) !== null && this.filterService.get_share_array(this.entity.get_app_name()) !== undefined) {
+        if (this.filterService.get_share_array(this.entity.get_app_name()) !== null &&
+            this.filterService.get_share_array(this.entity.get_app_name()) !== undefined) {
             // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
-            if (this.filterService.get_share_array(this.entity.get_app_name())[this.columnObject.model_name] !== undefined) {
+            if (this.filterService.get_share_array(this.entity.get_app_name())[this.columnObject.model_name] !==
+                undefined) {
                 this.onFocus();
             }
         }
+
+        this.columnObjectTitle =
+            this.columnObject && this.columnObject.shortTitle ? this.columnObject.shortTitle : this.columnObject.title;
 
         switch (this.columnObject.type) {
             case 'select_by_query': {
@@ -152,7 +159,8 @@ export class FilterComponent {
 
     initSelectBox() {
         try {
-            this.options_select_box = this.entity.model[this.entity.columns_index[this.columnObject.model_name]].select_data_indexed;
+            this.options_select_box =
+                this.entity.model[this.entity.columns_index[this.columnObject.model_name]].select_data_indexed;
         } catch (e) {
             console.log(e);
         }
@@ -173,12 +181,12 @@ export class FilterComponent {
         this.modelSerivce.get_max(entity.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                if ( result.state === 'success' ) {
+                if (result.state === 'success') {
                     this.price_max = result.message;
                     this.options_price_zero_10m.ceil = result.message;
                 }
                 if (this.filterService.get_share_array(this.entity.get_app_name()) !== null) {
-                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min'] ) {
+                    if (this.filterService.get_share_array(this.entity.get_app_name())['price_min']) {
                         this.price_min = this.filterService.get_share_array(this.entity.get_app_name())['price_min'];
                     }
                     if (this.filterService.get_share_array(this.entity.get_app_name())['price_max']) {
@@ -192,7 +200,6 @@ export class FilterComponent {
                 this.cdr.markForCheck();
             });
     }
-
 
 
     selectItem(value) {
@@ -225,12 +232,13 @@ export class FilterComponent {
 
 
     onPriceSelectorClose() {
-        if (this.price_selector !== 0 ) {
+        if (this.price_selector !== 0) {
             this.filterService.share_data(this.entity, 'price_min', this.price_min);
             this.filterService.share_data(this.entity, 'price_max', this.price_max);
         }
         this.cdr.markForCheck();
     }
+
     onPriceSelectorChange() {
         // console.log(this.price_selector);
         if (this.price_selector === 0) {
@@ -254,11 +262,11 @@ export class FilterComponent {
 
     get_compose_params_counter(columnObject: any) {
         const share_data = this.filterService.get_share_data(this.entity.get_app_name(), columnObject.model_name);
-        if ( share_data != null) {
+        if (share_data != null) {
             // console.log(share_data);
             // console.log(typeof share_data);
 
-            if ( typeof share_data === 'object') {
+            if (typeof share_data === 'object') {
                 return true;
             }
         }

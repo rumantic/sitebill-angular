@@ -27,6 +27,7 @@ import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog
 import {ModelService} from 'app/_services/model.service';
 import {ViewModalComponent} from './view-modal/view-modal.component';
 import {FormComponent} from './form/form.component';
+import {SelectionFormComponent} from '../apps/selection/selection-form.component';
 import {Page} from './page';
 import {SitebillEntity, SitebillModelItem} from 'app/_models';
 import {ConfirmComponent} from 'app/dialogs/confirm/confirm.component';
@@ -1017,28 +1018,33 @@ export class GridComponent implements OnInit, OnDestroy
         });
     }
 
-    edit_form(item_id: any) {
+    selectObjects() {
+        // @ts-ignore
+        this.edit_form(null, SelectionFormComponent);
+    }
+
+    edit_form(item_id: any, comp = FormComponent) {
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        //dialogConfig.width = '99vw';
-        //dialogConfig.maxWidth = '99vw';
-        //dialogConfig.height = '99vh';
+        // dialogConfig.width = '99vw';
+        // dialogConfig.maxWidth = '99vw';
+        // dialogConfig.height = '99vh';
 
-        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        // dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
         if (this.only_collections) {
             this.entity.set_hook('add_to_collections');
         }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'regular-modal';
-        this.open_form_with_check_access(dialogConfig);
+        this.open_form_with_check_access(dialogConfig, comp);
     }
 
-    open_form_with_check_access (dialogConfig) {
+    open_form_with_check_access (dialogConfig, comp = FormComponent) {
         if (this.modelService.get_access(this.entity.get_table_name(), 'access')) {
-            return this.dialog.open(FormComponent, dialogConfig);
+            return this.dialog.open(comp, dialogConfig);
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию объявлений', 5000);
         }

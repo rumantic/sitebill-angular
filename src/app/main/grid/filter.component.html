@@ -20,7 +20,7 @@
                    [closeOnSelect]="false"
                    (focus)="onFocus($event)"
                    (ngModelChange)="selectItem($event)"
-                   placeholder="{{columnObject.shortTitle ? columnObject.shortTitle : columnObject.title}}">
+                   placeholder="{{columnObjectTitle}}">
 
             <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
                 <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}

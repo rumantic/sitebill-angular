@@ -184,12 +184,15 @@
                             <mat-icon>power_settings_new</mat-icon>
                             <div>ВНП</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showSelectionButton"
-                                aria-label="Подбор объекта по параметрам"
-                                matTooltip="Подбор объекта по параметрам">
-                            <mat-icon>pageview</mat-icon>
-                            <div>Подбор</div>
-                        </button>
+                        <!-- SELECTION -->
+                        <div *ngIf="showSelectionButton" (click)="selectObjects()">
+                            <button mat-icon-button class="icon-and-text"
+                                    aria-label="Подбор объекта по параметрам"
+                                    matTooltip="Подбор объекта по параметрам">
+                                <mat-icon>pageview</mat-icon>
+                                <div>Подбор</div>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- TOOLBAR -->

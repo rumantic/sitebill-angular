@@ -401,7 +401,7 @@ const routes = [
         FavoritesComponent,
         SummaryReportComponent,
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         TranslateModule,

@@ -28,7 +28,7 @@ export interface Progress {
 
 @Component({
     selector: 'register-domain-modal',
-    // templateUrl: '../../main/grid/form/form.component.html',
+    // templateUrl: '../../main/grid/form/selection-form.component.html',
     templateUrl: './register-domain-modal.component.html',
     styleUrls: ['./register-domain-modal.component.scss'],
     animations: fuseAnimations
