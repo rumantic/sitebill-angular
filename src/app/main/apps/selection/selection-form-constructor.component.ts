@@ -77,7 +77,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.numberOfColumns = this.savedNumber ? this.savedNumber : 3;
     }
     form: FormGroup;
-    public _data: SitebillEntity;
+    public _data: {entity: SitebillEntity, selectionMode: boolean};
     public error_message: string = null;
     protected _unsubscribeAll: Subject<any>;
 
@@ -85,7 +85,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     public parameters_storage = {};
     public options_storage = {};
     public options_storage_buffer = {};
-    public loading: Boolean;
+    public loading: boolean;
     private selectBufferSize = 100;
     private numberOfItemsFromEndBeforeFetchingMore = 10;
     input$ = new Subject<string>();
@@ -241,8 +241,8 @@ export class SelectionFormConstructorComponent implements OnInit {
 
     ngOnInit() {
         // Reactive Form
-        this._data.set_readonly(false);
-        if ( this._data.is_delete_disabled() ) {
+        this._data.entity.set_readonly(false);
+        if ( this._data.entity.is_delete_disabled() ) {
             this.disable_delete = true;
         }
         this.getModel();
@@ -255,16 +255,16 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
 
     getModel(): void {
-        const primary_key = this._data.primary_key;
-        const key_value = this._data.get_key_value();
-        const model_name = this._data.get_table_name();
+        const primary_key = this._data.entity.primary_key;
+        const key_value = this._data.entity.get_key_value();
+        const model_name = this._data.entity.get_table_name();
         // console.log(this.modelService.entity);
-        this.modelService.entity.set_app_name(this._data.get_app_name());
-        this.modelService.entity.set_table_name(this._data.get_table_name());
+        this.modelService.entity.set_app_name(this._data.entity.get_app_name());
+        this.modelService.entity.set_table_name(this._data.entity.get_table_name());
         this.modelService.entity.primary_key = primary_key;
         this.modelService.entity.key_value = key_value;
         if ( this.predefined_ql_items ) {
-            this._data.set_hidden(primary_key);
+            this._data.entity.set_hidden(primary_key);
             this.modelService.entity.set_hidden(primary_key);
         }
 
@@ -274,7 +274,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             .subscribe((result: any) => {
                 // console.log(result)
                 if (result) {
-                    if (result.state == 'error') {
+                    if (result.state === 'error') {
                         this._snackService.message(result.message);
                         this.close();
                         this.error_message = result.message;
@@ -284,7 +284,7 @@ export class SelectionFormConstructorComponent implements OnInit {
                         for (const [key_obj, value_obj] of Object.entries(result.data)) {
                             this.records[key_obj] = new SitebillModelItem(value_obj);
                         }
-                        this._data.model = this.records;
+                        this._data.entity.model = this.records;
                         // console.log(this.records);
 
                         this.tabs = result.tabs;
@@ -311,24 +311,24 @@ export class SelectionFormConstructorComponent implements OnInit {
             const form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
-            if ( this._data.get_hidden_column_edit(this.rows[i]) ) {
+            if ( this._data.entity.get_hidden_column_edit(this.rows[i]) ) {
                 this.records[this.rows[i]].hidden = true;
             } else {
                 this.records[this.rows[i]].hidden = false;
             }
-            if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
+            if (this.records[this.rows[i]].active_in_topic !== '0' && this.records[this.rows[i]].active_in_topic != null) {
                 this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
             } else {
                 this.records[this.rows[i]].active_in_topic_array = null;
             }
 
-            if (this.records[this.rows[i]].required == 'on') {
+            if (this.records[this.rows[i]].required === 'on') {
                 if (!this.records[this.rows[i]].hidden) {
                     form_control_item.setValidators(forbiddenNullValue());
                     this.records[this.rows[i]].required_boolean = true;
                 }
             }
-            if (this.records[this.rows[i]].name == 'email') {
+            if (this.records[this.rows[i]].name === 'email') {
                 form_control_item.setValidators(Validators.email);
             }
             // console.log(this.rows[i]);
@@ -340,28 +340,28 @@ export class SelectionFormConstructorComponent implements OnInit {
                 this.form.controls[this.rows[i]].patchValue(moment());
             }
 
-            if (this.records[this.rows[i]].type == 'textarea_editor') {
+            if (this.records[this.rows[i]].type === 'textarea_editor') {
                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
 
-            if (this.records[this.rows[i]].type == 'parameter') {
+            if (this.records[this.rows[i]].type === 'parameter') {
                 this.parameters_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
             }
 
             if (
-                this.records[this.rows[i]].type == 'select_by_query' ||
-                this.records[this.rows[i]].type == 'select_by_query_multiple' ||
-                this.records[this.rows[i]].type == 'select_by_query_multi'
+                this.records[this.rows[i]].type === 'select_by_query' ||
+                this.records[this.rows[i]].type === 'select_by_query_multiple' ||
+                this.records[this.rows[i]].type === 'select_by_query_multi'
             ) {
                 this.init_select_by_query_options(this.records[this.rows[i]].name, i);
-                if (this.records[this.rows[i]].value == 0) {
+                if (this.records[this.rows[i]].value === 0) {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
             }
             if (
-                this.records[this.rows[i]].type == 'select_box_structure' ||
-                this.records[this.rows[i]].type == 'select_box_structure_simple_multiple' ||
-                this.records[this.rows[i]].type == 'select_box_structure_multiple_checkbox'
+                this.records[this.rows[i]].type === 'select_box_structure' ||
+                this.records[this.rows[i]].type === 'select_box_structure_simple_multiple' ||
+                this.records[this.rows[i]].type === 'select_box_structure_multiple_checkbox'
             ) {
                 this.init_select_by_query_options(this.records[this.rows[i]].name, i);
                 if (this.records[this.rows[i]].value == 0) {
@@ -369,59 +369,59 @@ export class SelectionFormConstructorComponent implements OnInit {
                 }
             }
 
-            if (this.records[this.rows[i]].type == 'date') {
+            if (this.records[this.rows[i]].type === 'date') {
                 // this.form.controls[this.rows[i]].patchValue();
                 // console.log(this.records[this.rows[i]]);
-                if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
+                if (this.records[this.rows[i]].value_string !== '' && this.records[this.rows[i]].value_string != null) {
                     this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, 'DD.MM.YYYY'));
                 } else {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
             }
 
-            if (this.records[this.rows[i]].type == 'dttime') {
+            if (this.records[this.rows[i]].type === 'dttime') {
                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value.slice(10, 16));
             }
 
-            if (this.records[this.rows[i]].type == 'select_box') {
+            if (this.records[this.rows[i]].type === 'select_box') {
                 this.init_select_box_options(this.records[this.rows[i]].name);
-                if (this.records[this.rows[i]].value_string == '' && this.records[this.rows[i]].value == '') {
+                if (this.records[this.rows[i]].value_string === '' && this.records[this.rows[i]].value === '') {
                     this.form.controls[this.rows[i]].patchValue(null);
                 }
 
             }
 
 
-            if (this.records[this.rows[i]].type == 'checkbox') {
-                if (this.records[this.rows[i]].value != 1) {
+            if (this.records[this.rows[i]].type === 'checkbox') {
+                if (this.records[this.rows[i]].value !== 1) {
                     this.form.controls[this.rows[i]].patchValue(false);
                 }
             }
 
-            if (this.records[this.rows[i]].type == 'geodata') {
+            if (this.records[this.rows[i]].type === 'geodata') {
                 this.init_geodata(this.records[this.rows[i]].name);
             }
 
-            if (this.records[this.rows[i]].type == 'photo') {
+            if (this.records[this.rows[i]].type === 'photo') {
                 this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
 
-            if (this.records[this.rows[i]].type == 'uploads') {
+            if (this.records[this.rows[i]].type === 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
             if (this.records[this.rows[i]].parameters != null) {
-                if (this.records[this.rows[i]].parameters.dadata == 1) {
+                if (this.records[this.rows[i]].parameters.dadata === 1) {
                     this.hide_dadata(this.rows[i]);
                 }
 
             }
-            if (this._data.is_hidden(this.rows[i])) {
+            if (this._data.entity.is_hidden(this.rows[i])) {
                 this.hide_row(this.rows[i]);
             }
-            if (this._data.get_default_value(this.rows[i])) {
-                this.records[this.rows[i]].value = this._data.get_default_value(this.rows[i]);
+            if (this._data.entity.get_default_value(this.rows[i])) {
+                this.records[this.rows[i]].value = this._data.entity.get_default_value(this.rows[i]);
                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
             }
 
@@ -501,7 +501,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     init_photo_image(field_name, image) {
         this.galleryImages[field_name] = [];
         const self = this;
-        if (image != '') {
+        if (image !== '') {
             const item = {
                 small: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
                 medium: self.api_url + '/img/data/user/' + image + '?' + new Date().getTime(),
@@ -561,7 +561,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     init_select_by_query_options(columnName, rowIndex = 0) {
         // console.log(this._data.get_default_params());
         this.termsearch = false;
-        this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
+        this.modelService.load_dictionary_model_with_params(this._data.entity.get_table_name(), columnName, this.get_ql_items_from_form(), true)
         // this.modelService.load_dictionary_model_all(this._data.get_table_name(), columnName)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -646,7 +646,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
 
     is_date_type(type: string) {
-        if (type == 'dtdatetime' || type == 'dtdate' || type == 'dttime' || type == 'date') {
+        if (type === 'dtdatetime' || type === 'dtdate' || type === 'dttime' || type === 'date') {
             return true;
         }
         return false;
@@ -663,7 +663,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         if (current_topic_id != null) {
             for (let i = 0; i < this.rows.length; i++) {
                 if (
-                    this.records[this.rows[i]].active_in_topic != '0' &&
+                    this.records[this.rows[i]].active_in_topic !== '0' &&
                     this.records[this.rows[i]].active_in_topic != null
                 ) {
                     if (
@@ -684,7 +684,7 @@ export class SelectionFormConstructorComponent implements OnInit {
                     }
                 }
                 if (this.records[this.rows[i]].parameters != null) {
-                    if (this.records[this.rows[i]].parameters.dadata == 1) {
+                    if (this.records[this.rows[i]].parameters.dadata === 1) {
                         this.hide_dadata(this.rows[i]);
                     }
                 }
@@ -710,9 +710,9 @@ export class SelectionFormConstructorComponent implements OnInit {
 
         title_items.forEach((row, index) => {
             if (this.records[row] != null) {
-                if (this.records[row].value_string != '' && this.records[row].value_string != null) {
+                if (this.records[row].value_string !== '' && this.records[row].value_string != null) {
                     final_title_items.push(this.records[row].value_string);
-                } else if (this.records[row].value != 0) {
+                } else if (this.records[row].value !== 0) {
                     final_title_items.push(this.records[row].value);
                 }
             }
@@ -735,17 +735,17 @@ export class SelectionFormConstructorComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelService.delete(this._data.get_table_name(), this._data.primary_key, this._data.key_value)
+                this.modelService.delete(this._data.entity.get_table_name(), this._data.entity.primary_key, this._data.entity.key_value)
                     .subscribe((response: any) => {
                         console.log(response);
 
-                        if (response.state == 'error') {
+                        if (response.state === 'error') {
                             this._snackService.message(response.message);
                             return null;
                         } else {
                             this._snackService.message('Запись удалена успешно');
-                            this._data.set_hook('afterDelete');
-                            this.filterService.empty_share(this._data);
+                            this._data.entity.set_hook('afterDelete');
+                            this.filterService.empty_share(this._data.entity);
                             this.close();
                         }
                     });
@@ -774,7 +774,7 @@ export class SelectionFormConstructorComponent implements OnInit {
 
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
-        this._data.set_ql_items(ql_items);
+        this._data.entity.set_ql_items(ql_items);
         this.onSave.emit(ql_items);
 
         if ( this.fake_save ) {
@@ -782,9 +782,9 @@ export class SelectionFormConstructorComponent implements OnInit {
         }
 
 
-        if (this._data.key_value == null) {
+        if (this._data.entity.key_value == null) {
             this.modelService.native_insert(
-                this._data.get_table_name(),
+                this._data.entity.get_table_name(),
                 ql_items,
                 this.predefined_ql_items ? 'true' : null
             )
@@ -794,21 +794,21 @@ export class SelectionFormConstructorComponent implements OnInit {
                         return null;
                     } else {
                         this._snackService.message('Запись создана успешно');
-                        this._data.set_key_value(response.data['new_record_id']);
+                        this._data.entity.set_key_value(response.data['new_record_id']);
                         this.afterSave.emit(this._data);
-                        if (this._data.get_hook() === 'add_to_collections') {
+                        if (this._data.entity.get_hook() === 'add_to_collections') {
                             this.add_to_collections(response.data['new_record_id'], response.data['items']);
                         } else {
-                            this._data.set_hook('afterSuccessCreate');
-                            this.filterService.empty_share(this._data);
+                            this._data.entity.set_hook('afterSuccessCreate');
+                            this.filterService.empty_share(this._data.entity);
                             this.close();
                         }
                     }
                 });
         } else {
             this.modelService.native_update(
-                this._data.get_table_name(),
-                this._data.key_value,
+                this._data.entity.get_table_name(),
+                this._data.entity.key_value,
                 ql_items,
                 this.predefined_ql_items ? 'true' : null
             ).subscribe((response: any) => {
@@ -816,10 +816,10 @@ export class SelectionFormConstructorComponent implements OnInit {
                         this._snackService.message(response.message);
                         return null;
                     } else {
-                        this._data.set_hook('afterSuccessSave');
+                        this._data.entity.set_hook('afterSuccessSave');
                         this._snackService.message('Запись сохранена успешно');
                         this.afterSave.emit(this._data);
-                        this.filterService.empty_share(this._data);
+                        this.filterService.empty_share(this._data.entity);
                         this.close();
                     }
                 });
@@ -871,7 +871,7 @@ export class SelectionFormConstructorComponent implements OnInit {
                     this._snackService.message(response.message);
                 } else {
                     this.bitrix24Service.comment_add(data_id, items, 'add');
-                    this.filterService.empty_share(this._data);
+                    this.filterService.empty_share(this._data.entity);
                     this.close();
                 }
             });
@@ -917,7 +917,7 @@ export class SelectionFormConstructorComponent implements OnInit {
 
     get_flex_width( size: string, form_type: string, record: SitebillModelItem ) {
         // console.log(record);
-        if ( record.type == 'hidden' || record.hidden == true ) {
+        if ( record.type === 'hidden' || record.hidden === true ) {
             return 0;
         }
         const width_100: Array<string> = [
@@ -944,28 +944,28 @@ export class SelectionFormConstructorComponent implements OnInit {
         if (this.get_visible_items_counter() === 1) {
             return 'auto';
         }
-        if (form_type == FormType.inline) {
+        if (form_type === FormType.inline) {
             return 100;
         }
         if (this.numberOfColumns === 1) {
                       return 100;
             } else if (this.numberOfColumns === 2) {
-            if (size == 'xs') {
+            if (size === 'xs') {
                 return 100;
             } else {
                 return 50;
             }
             } else {
-            if (size == 'lg') {
+            if (size === 'lg') {
                 return 33;
             }
-            if (size == 'xl') {
+            if (size === 'xl') {
                 return 20;
             }
-            if (size == 'md') {
+            if (size === 'md') {
                 return 50;
             }
-            if (size == 'xs') {
+            if (size === 'xs') {
                 return 100;
             }
 
@@ -973,7 +973,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         }
     }
     get_flex_padding( size: string, form_type: string, record: SitebillModelItem ) {
-        if ( record.type == 'hidden' || record.hidden == true ) {
+        if ( record.type === 'hidden' || record.hidden === true ) {
             return '';
         }
         let css_class = 'p-12';

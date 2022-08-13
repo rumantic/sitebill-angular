@@ -20,11 +20,17 @@
     <div class="dialog-content-wrapper">
         <mat-toolbar class="mat-accent m-0" *ngIf="!disable_form_title_bar">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title" *ngIf="_data.get_title() === null">
-                <ng-container *ngIf="_data.get_key_value()">Редактировать запись</ng-container>
-                <ng-container *ngIf="!_data.get_key_value()">Создать запись</ng-container>
+            <span class="title dialog-title" *ngIf="_data.entity.get_title() === null">
+<!--                from FormComponent-->
+                <ng-container *ngIf="_data.entity.get_key_value() && !_data.selectionMode">Редактировать
+                    запись</ng-container>
+                <ng-container *ngIf="!_data.entity.get_key_value() && !_data.selectionMode">Создать
+                    запись</ng-container>
+<!--                END from FormComponent-->
+                <div>Задать фильтры для объектов</div>
             </span>
-                <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
+                <span class="title dialog-title" *ngIf="_data.entity.get_title() !== null">Создание записи
+                    {{_data.entity.get_title()}}</span>
                 <div class="columnsButtonWrapper">
                     <button mat-button (click)="setNumberOfColumns(3)">авто</button>
                     <button mat-button (click)="setNumberOfColumns(2)">&#9776; &#9776;</button>
@@ -57,14 +63,16 @@
                     </button>
 
                 </div>
-                <button *ngIf="_data.key_value != null && !disable_delete" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
+                <button *ngIf="_data.entity.key_value != null && !disable_delete" mat-icon-button (click)="delete()"
+                        type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
         </form>
     </div>
-    <div class="modal-content__comments" *ngIf="_data.is_enable_comment() && this.modelService.get_access('comment', 'access')">
-        <comments-apps [entity]="_data" (onToggle)="onCommentToggle($event)"></comments-apps>
+    <div class="modal-content__comments" *ngIf="_data.entity.is_enable_comment() && this.modelService.get_access('comment',
+     'access')">
+        <comments-apps [entity]="_data.entity" (onToggle)="onCommentToggle($event)"></comments-apps>
     </div>
 </ng-container>
 
@@ -108,14 +116,14 @@
 
         <span
             *ngFor="let x of tabs[tab]"
-            class="{{get_flex_padding('xl', _data.get_form_type(), records[x])}}"
-            fxFlex.xl="{{get_flex_width('xl', _data.get_form_type(), records[x])}}"
-            fxFlex.lg="{{get_flex_width('lg', _data.get_form_type(), records[x])}}"
-            fxFlex.lt-md="{{get_flex_width('md', _data.get_form_type(), records[x])}}"
-            fxFlex.md="{{get_flex_width('md', _data.get_form_type(), records[x])}}"
-            fxFlex.xs="{{get_flex_width('xs', _data.get_form_type(), records[x])}}"
-            fxFlex.gt-xs="{{get_flex_width('xs', _data.get_form_type(), records[x])}}"
-            [hidden]="records[x].hidden || records[x].type == 'hidden'"
+            class="{{get_flex_padding('xl', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.xl="{{get_flex_width('xl', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.lg="{{get_flex_width('lg', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.lt-md="{{get_flex_width('md', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.md="{{get_flex_width('md', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.xs="{{get_flex_width('xs', _data.entity.get_form_type(), records[x])}}"
+            fxFlex.gt-xs="{{get_flex_width('xs', _data.entity.get_form_type(), records[x])}}"
+            [hidden]="records[x].hidden || records[x].type === 'hidden'"
         >
 
             <span [ngSwitch]="records[x].type">
@@ -171,26 +179,26 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <uploader-component
-                    *ngSwitchCase="'uploads'"
-                    [hidden]="records[x].hidden"
-                    [galleryImages]="galleryImages"
-                    [uploader_title]="records[x].title"
-                    [entity]="_data"
-                    [image_field]="records[x].name">
+<!--                <uploader-component-->
+<!--                    *ngSwitchCase="'uploads'"-->
+<!--                    [hidden]="records[x].hidden"-->
+<!--                    [galleryImages]="galleryImages"-->
+<!--                    [uploader_title]="records[x].title"-->
+<!--                    [entity]="_data.entity"-->
+<!--                    [image_field]="records[x].name">-->
 
-                </uploader-component>
+<!--                </uploader-component>-->
 
-                <uploader-component
-                    *ngSwitchCase="'photo'"
-                    [hidden]="records[x].hidden"
-                    [galleryImages]="galleryImages"
-                    [entity]="_data"
-                    [uploader_title]="records[x].title"
-                    [image_field]="records[x].name"
-                    [max_uploads]="1">
+<!--                <uploader-component-->
+<!--                    *ngSwitchCase="'photo'"-->
+<!--                    [hidden]="records[x].hidden"-->
+<!--                    [galleryImages]="galleryImages"-->
+<!--                    [entity]="_data.entity"-->
+<!--                    [uploader_title]="records[x].title"-->
+<!--                    [image_field]="records[x].name"-->
+<!--                    [max_uploads]="1">-->
 
-                </uploader-component>
+<!--                </uploader-component>-->
 
                 <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
                     <ng-select [formControlName]="records[x].name"
@@ -378,8 +386,9 @@
                 </mat-form-field>
 
                 <div [hidden]="records[x].hidden" *ngSwitchCase="'injector'">
-                    <sb-booking *ngIf="records[x].name === 'booking'" [keyValue]="_data.key_value"></sb-booking>
-                    <house-schema-builder *ngIf="records[x].name === 'house_schema_builder'" [keyValue]="_data.key_value"></house-schema-builder>
+                    <sb-booking *ngIf="records[x].name === 'booking'" [keyValue]="_data.entity.key_value"></sb-booking>
+                    <house-schema-builder *ngIf="records[x].name === 'house_schema_builder'"
+                                          [keyValue]="_data.entity.key_value"></house-schema-builder>
                     <user-profile *ngIf="records[x].name === 'user_profile'" [user_id]="this.modelService.get_user_id()"></user-profile>
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </div>

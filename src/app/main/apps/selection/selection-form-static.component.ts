@@ -26,7 +26,7 @@ import {StorageService} from "../../../_services/storage.service";
 })
 export class SelectionFormStaticComponent extends SelectionFormConstructorComponent implements OnInit {
     @Input("entity")
-    _data: SitebillEntity;
+    _data: {entity: SitebillEntity, selectionMode: boolean};
 
     @Input("disable_delete")
     disable_delete: boolean;
@@ -83,9 +83,9 @@ export class SelectionFormStaticComponent extends SelectionFormConstructorCompon
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        //dialogConfig.width = '99vw';
-        //dialogConfig.maxWidth = '99vw';
-        //dialogConfig.height = '99vh';
+        // dialogConfig.width = '99vw';
+        // dialogConfig.maxWidth = '99vw';
+        // dialogConfig.height = '99vh';
 
         let entity = new SitebillEntity();
         if ( this.entityStorageService.get_entity(record.primary_key_table) ) {
@@ -98,13 +98,16 @@ export class SelectionFormStaticComponent extends SelectionFormConstructorCompon
         }
         entity.set_form_type(FormType.inline);
 
-        dialogConfig.data = entity;
+        dialogConfig.data = {
+            entity: entity,
+            selectionMode: true
+        };
         dialogConfig.panelClass = 'regular-modal';
-        //console.log(model_name);
+        // console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {
             const modalRef = this._matDialog.open(SelectionFormComponent, dialogConfig);
-            modalRef.componentInstance.afterSave.subscribe((result:SitebillEntity) => {
+            modalRef.componentInstance.afterSave.subscribe((result: SitebillEntity) => {
                 this.init_select_by_query_options(record.name);
                 this.form.controls[record.name].patchValue(result.get_key_value());
             });

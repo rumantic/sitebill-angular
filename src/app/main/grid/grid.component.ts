@@ -1019,9 +1019,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     selectObjects() {
-        //Из-за этого тега, не отобразилась реальная пробелма с передачей аргумента другого типа
-        // SelectionFormComponent != FormComponent, поэтому и ничего не выходило @ts-ignore
-
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
@@ -1030,14 +1027,18 @@ export class GridComponent implements OnInit, OnDestroy
         if (this.only_collections) {
             this.entity.set_hook('add_to_collections');
         }
-        dialogConfig.data = this.entity;
+        dialogConfig.data =  {
+            entity: this.entity,
+            selectionMode: true
+        };
         dialogConfig.panelClass = 'regular-modal';
         console.log('selectObjects');
+        console.log(dialogConfig.data);
 
         return this.dialog.open(SelectionFormComponent, dialogConfig);
     }
 
-    edit_form(item_id: any, comp = FormComponent) {
+    edit_form(item_id: any) {
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
@@ -1053,12 +1054,12 @@ export class GridComponent implements OnInit, OnDestroy
         }
         dialogConfig.data = this.entity;
         dialogConfig.panelClass = 'regular-modal';
-        this.open_form_with_check_access(dialogConfig, comp);
+        this.open_form_with_check_access(dialogConfig);
     }
 
-    open_form_with_check_access (dialogConfig, comp = FormComponent) {
+    open_form_with_check_access (dialogConfig) {
         if (this.modelService.get_access(this.entity.get_table_name(), 'access')) {
-            return this.dialog.open(comp, dialogConfig);
+            return this.dialog.open(FormComponent, dialogConfig);
         } else {
             this._snackService.message('Нет доступа к добавлению/редактированию объявлений', 5000);
         }

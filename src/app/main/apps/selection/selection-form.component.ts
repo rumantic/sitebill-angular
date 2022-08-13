@@ -34,7 +34,7 @@ export class SelectionFormComponent extends SelectionFormConstructorComponent im
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
-        @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
+        @Inject(MAT_DIALOG_DATA) public _data: {entity: SitebillEntity, selectionMode: boolean},
         protected cdr: ChangeDetectorRef,
         protected storageService: StorageService
     ) {
@@ -61,22 +61,25 @@ export class SelectionFormComponent extends SelectionFormConstructorComponent im
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        //dialogConfig.width = '99vw';
-        //dialogConfig.maxWidth = '99vw';
-        //dialogConfig.height = '99vh';
-        let entity = new SitebillEntity();
+        // dialogConfig.width = '99vw';
+        // dialogConfig.maxWidth = '99vw';
+        // dialogConfig.height = '99vh';
+        const entity = new SitebillEntity();
         entity.set_table_name(record.primary_key_table);
         entity.set_app_name(record.primary_key_table);
         entity.set_primary_key(record.primary_key_name);
         entity.set_title(record.title);
         entity.set_form_type(FormType.inline);
-        dialogConfig.data = entity;
+        dialogConfig.data = {
+            entity: entity,
+            selectionMode: true
+        };
         dialogConfig.panelClass = 'regular-modal';
-        //console.log(model_name);
+        // console.log(model_name);
 
         if (this.modelService.get_access(entity.get_table_name(), 'access')) {
             const modalRef = this._matDialog.open(SelectionFormComponent, dialogConfig);
-            modalRef.componentInstance.afterSave.subscribe((result:SitebillEntity) => {
+            modalRef.componentInstance.afterSave.subscribe((result: SitebillEntity) => {
                 this.init_select_by_query_options(record.name);
                 this.form.controls[record.name].patchValue(result.get_key_value());
             });
