@@ -1019,8 +1019,22 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     selectObjects() {
-        // @ts-ignore
-        this.edit_form(null, SelectionFormComponent);
+        //Из-за этого тега, не отобразилась реальная пробелма с передачей аргумента другого типа
+        // SelectionFormComponent != FormComponent, поэтому и ничего не выходило @ts-ignore
+
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        this.entity.set_key_value(null);
+        if (this.only_collections) {
+            this.entity.set_hook('add_to_collections');
+        }
+        dialogConfig.data = this.entity;
+        dialogConfig.panelClass = 'regular-modal';
+        console.log('selectObjects');
+
+        return this.dialog.open(SelectionFormComponent, dialogConfig);
     }
 
     edit_form(item_id: any, comp = FormComponent) {
