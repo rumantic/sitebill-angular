@@ -22,12 +22,12 @@
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title" *ngIf="_data.entity.get_title() === null">
 <!--                from FormComponent-->
-                <ng-container *ngIf="_data.entity.get_key_value() && !_data.selectionMode">Редактировать
+                <ng-container *ngIf="getEditingMode()">Редактировать
                     запись</ng-container>
-                <ng-container *ngIf="!_data.entity.get_key_value() && !_data.selectionMode">Создать
+                <ng-container *ngIf="getCreationMode()">Создать
                     запись</ng-container>
 <!--                END from FormComponent-->
-                <div>Задать фильтры для объектов</div>
+                <div *ngIf="_data.selectionMode">Задать фильтры для объектов</div>
             </span>
                 <span class="title dialog-title" *ngIf="_data.entity.get_title() !== null">Создание записи
                     {{_data.entity.get_title()}}</span>
@@ -70,8 +70,7 @@
             </div>
         </form>
     </div>
-    <div class="modal-content__comments" *ngIf="_data.entity.is_enable_comment() && this.modelService.get_access('comment',
-     'access')">
+    <div class="modal-content__comments" *ngIf="getAnableComments()">
         <comments-apps [entity]="_data.entity" (onToggle)="onCommentToggle($event)"></comments-apps>
     </div>
 </ng-container>
@@ -179,26 +178,26 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-<!--                <uploader-component-->
-<!--                    *ngSwitchCase="'uploads'"-->
-<!--                    [hidden]="records[x].hidden"-->
-<!--                    [galleryImages]="galleryImages"-->
-<!--                    [uploader_title]="records[x].title"-->
-<!--                    [entity]="_data.entity"-->
-<!--                    [image_field]="records[x].name">-->
+                <uploader-component
+                    *ngSwitchCase="'uploads'"
+                    [hidden]="records[x].hidden"
+                    [galleryImages]="galleryImages"
+                    [uploader_title]="records[x].title"
+                    [entity]="_data.entity"
+                    [image_field]="records[x].name">
 
-<!--                </uploader-component>-->
+                </uploader-component>
 
-<!--                <uploader-component-->
-<!--                    *ngSwitchCase="'photo'"-->
-<!--                    [hidden]="records[x].hidden"-->
-<!--                    [galleryImages]="galleryImages"-->
-<!--                    [entity]="_data.entity"-->
-<!--                    [uploader_title]="records[x].title"-->
-<!--                    [image_field]="records[x].name"-->
-<!--                    [max_uploads]="1">-->
+                <uploader-component
+                    *ngSwitchCase="'photo'"
+                    [hidden]="records[x].hidden"
+                    [galleryImages]="galleryImages"
+                    [entity]="_data.entity"
+                    [uploader_title]="records[x].title"
+                    [image_field]="records[x].name"
+                    [max_uploads]="1">
 
-<!--                </uploader-component>-->
+                </uploader-component>
 
                 <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
                     <ng-select [formControlName]="records[x].name"

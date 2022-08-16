@@ -288,7 +288,7 @@ export class SelectionFormConstructorComponent implements OnInit {
                         // console.log(this.records);
 
                         this.tabs = result.tabs;
-                        this.tabs_keys = Object.keys(result.tabs);
+                        this.tabs_keys = !this._data.selectionMode ? Object.keys(result.tabs) : [Object.keys(result.tabs)[0]];
                         this.rows = Object.keys(result.data);
                         // console.log(this.rows);
                         // console.log(this.tabs);
@@ -298,6 +298,24 @@ export class SelectionFormConstructorComponent implements OnInit {
                 }
 
             });
+    }
+
+    initSelectForm(): any {
+        this.rows = [];
+    }
+
+    getEditingMode(): boolean {
+        return this._data.entity.get_key_value() && !this._data.selectionMode;
+    }
+
+    getCreationMode(): boolean {
+        return !this._data.entity.get_key_value() && !this._data.selectionMode;
+    }
+
+    getAnableComments(): boolean {
+        return !this._data.selectionMode && this._data.entity.is_enable_comment() &&
+            this.modelService.get_access('comment',
+                'access');
     }
 
     init_form() {
@@ -311,6 +329,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             const form_control_item = new FormControl(this.records[this.rows[i]].value);
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
+
             if ( this._data.entity.get_hidden_column_edit(this.rows[i]) ) {
                 this.records[this.rows[i]].hidden = true;
             } else {
@@ -423,6 +442,10 @@ export class SelectionFormConstructorComponent implements OnInit {
             if (this._data.entity.get_default_value(this.rows[i])) {
                 this.records[this.rows[i]].value = this._data.entity.get_default_value(this.rows[i]);
                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
+            }
+
+            if (this.rows[i] === 'id' || this.rows[i] === 'user_id') {
+                this.records[this.rows[i]].hidden = true;
             }
 
         }

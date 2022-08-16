@@ -1032,8 +1032,7 @@ export class GridComponent implements OnInit, OnDestroy
             selectionMode: true
         };
         dialogConfig.panelClass = 'regular-modal';
-        console.log('selectObjects');
-        console.log(dialogConfig.data);
+        // console.log(dialogConfig.data);
 
         return this.dialog.open(SelectionFormComponent, dialogConfig);
     }

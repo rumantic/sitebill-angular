@@ -55,7 +55,7 @@ export class AppsDataComponent {
                 this.default_params = this.appsDataService.getMenuItemByTag(params.get('tag')).params;
             }
             this.switch_trigger = !this.switch_trigger;
-            this.filterService.empty_share(this.entity)
+            this.filterService.empty_share(this.entity);
         });
     }
 }
