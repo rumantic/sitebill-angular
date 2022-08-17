@@ -280,18 +280,7 @@ export class SelectionFormConstructorComponent implements OnInit {
                         this.error_message = result.message;
                         return false;
                     } else {
-                        this.records = result.data;
-                        for (const [key_obj, value_obj] of Object.entries(result.data)) {
-                            this.records[key_obj] = new SitebillModelItem(value_obj);
-                        }
-                        this._data.entity.model = this.records;
-                        // console.log(this.records);
-
-                        this.tabs = result.tabs;
-                        this.tabs_keys = !this._data.selectionMode ? Object.keys(result.tabs) : [Object.keys(result.tabs)[0]];
-                        this.rows = Object.keys(result.data);
-                        // console.log(this.rows);
-                        // console.log(this.tabs);
+                        this.initSelectForm();
                         this.init_form();
                     }
                     this.cdr.markForCheck();
@@ -301,8 +290,101 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
 
     initSelectForm(): any {
+        let item1 =
+            {
+                name: "hot",
+                title: "Спецразмещение",
+                value: "0",
+                type: "checkbox",
+                primary_key_name: "",
+                primary_key_table: "",
+                value_string: "",
+                query: "",
+                value_name: "",
+                title_default: "",
+                value_default: "",
+                value_table: "",
+                value_primary_key: "",
+                value_field: "",
+                assign_to: "",
+                dbtype: "1",
+                table_name: "data",
+                primary_key: "",
+                primary_key_value: "",
+                action: "",
+                tab: "",
+                hint: "Для размещения объявления в специальный раздел VIP ,поставьте галочку.",
+                active_in_topic: "0",
+                entity: "",
+                parameters: [],
+                required: "off",
+                required_boolean: "0",
+                unique: "off",
+                columns_id: "57",
+                table_id: "7",
+                active: "1"
+            };
+
+        let item2 =
+            {
+                name: "new_item",
+                title: "Этого поля нет в базе",
+                value: "0",
+                type: "new_type", // у него свой собственный тип
+                primary_key_name: "",
+                primary_key_table: "",
+                value_string: "",
+                query: "",
+                value_name: "",
+                title_default: "",
+                value_default: "",
+                value_table: "",
+                value_primary_key: "",
+                value_field: "",
+                assign_to: "",
+                dbtype: "1",
+                table_name: "data",
+                primary_key: "",
+                primary_key_value: "",
+                action: "",
+                tab: "",
+                hint: "Мы его вручную создаем в компоненте",
+                active_in_topic: "0",
+                entity: "",
+                parameters: [],
+                required: "off",
+                required_boolean: "0",
+                unique: "off",
+                columns_id: "57",
+                table_id: "7",
+                active: "1"
+            };
+
+
+        let items_array = {
+            hot:item1,
+            new_item:item2,
+        };
+        //@ts-ignore
+        this.records = items_array;
+
+        for (const [key_obj, value_obj] of Object.entries(items_array)) {
+            this.records[key_obj] = new SitebillModelItem(value_obj);
+        }
         this.rows = [];
+
+        this._data.entity.model = this.records;
+        this.tabs = {
+            Основное: [
+                "hot",
+                "new_item",
+            ]
+        };
+        this.tabs_keys = [Object.keys(this.tabs)[0]];
+        this.rows.push('hot');
+        this.rows.push('new_item');
     }
+
 
     getEditingMode(): boolean {
         return this._data.entity.get_key_value() && !this._data.selectionMode;

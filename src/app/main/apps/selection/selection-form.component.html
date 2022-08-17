@@ -129,6 +129,12 @@
 
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'new_type'" [hidden]="records[x].hidden">
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
+                    Тут шаблон для поля с типом new_type
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
