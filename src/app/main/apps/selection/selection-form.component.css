@@ -34,10 +34,10 @@ textarea {
 .level9 {
     padding-left: 90px;
 }
-::ng-deep .ng-select.ng-invalid .ng-select-container {
-    border-bottom: 1px solid #f44336;
-    color: #f44336 !important;
-}
+/*::ng-deep .ng-select.ng-invalid .ng-select-container {*/
+/*    border-bottom: 1px solid #f44336;*/
+/*    color: #f44336 !important;*/
+/*}*/
 .form-checkbox {
     margin: 6px 12px 6px 0;
 }
@@ -68,6 +68,12 @@ textarea {
 }
 .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: 0 !important;
+}
+
+::ng-deep .mat-form-field-infix {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .reducer .mat-form-field {

@@ -12,6 +12,8 @@ import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {SelectionFormConstructorComponent, myCustomTooltipDefaults} from './selection-form-constructor.component';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
 import {StorageService} from '../../../_services/storage.service';
+import * as moment from 'moment';
+import {LocaleConfig} from 'ngx-daterangepicker-material';
 
 
 
@@ -49,7 +51,6 @@ export class SelectionFormComponent extends SelectionFormConstructorComponent im
             storageService,
         );
     }
-
 
     close() {
         this._unsubscribeAll.next();

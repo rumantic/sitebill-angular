@@ -68,7 +68,7 @@ xdescribe('FormConstructorComponent', () => {
         entity.set_app_name('data');
         entity.set_primary_key('id');
         entity.set_title('Data test');
-        component._data = entity;
+        // component._data = entity;
         // console.log(component);
         console.log('xxx', fakeData);
         console.log('yyy', val);

@@ -129,9 +129,37 @@
 
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'new_type'" [hidden]="records[x].hidden">
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dateInterval'"
+                                [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    Тут шаблон для поля с типом new_type
+                    <span>дд.мм.гггг - дд.мм.гггг</span>
+                    <mat-icon aria-label="Перейти к выбору дат"
+                              matTooltip="Перейти к выбору дат"
+                              style="cursor: pointer; margin-left: auto"
+                    >
+                        calendar_today
+                    </mat-icon>
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'rieltor'"
+                                [hidden]="records[x].hidden">
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
+                    СПИСОК РИЭЛТОРОВ
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'filial'"
+                                [hidden]="records[x].hidden">
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
+                    СПИСОК ФИЛИАЛОВ
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'residentialComplex'"
+                                [hidden]="records[x].hidden">
+                    <mat-label [innerHTML]="records[x].title"></mat-label>
+                    СПИСОК ЖК
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 
@@ -240,7 +268,7 @@
                     records[x].type === 'select_by_query_multi'? records[x].type : '' "
                     [hidden]="records[x].hidden">
                     <div fxLayout="row" fxLayoutAlign="space-between">
-                        <div fxFlex.gt-xs="85" fxFlex.xs="80" class="min-select">
+                        <div fxFlex.gt-xs="100" fxFlex.xs="100" class="min-select">
                             <ng-select [formControlName]="records[x].name"
                                        [required]="records[x].required_boolean"
                                        appendTo="body"
@@ -274,11 +302,13 @@
                             <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
                             <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                         </div>
-                        <div fxFlex.gt-xs="5" fxFlex.xs="10" class="pt-4 mr-16"  *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
-                            <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
-                                <mat-icon>add</mat-icon>
-                            </a>
-                        </div>
+                        <ng-container *ngIf="!_data.selectionMode">
+                            <div fxFlex.gt-xs="5" fxFlex.xs="10" class="pt-4 mr-16"  *ngIf="modelService.get_access(records[x].primary_key_table, 'access')">
+                                <a mat-mini-fab (click)="inline_create(records[x])" color="fuse-white" matTooltip="Добавить запись">
+                                    <mat-icon>add</mat-icon>
+                                </a>
+                            </div>
+                        </ng-container>
                     </div>
                 </span>
 

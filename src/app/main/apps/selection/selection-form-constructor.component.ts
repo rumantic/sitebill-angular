@@ -22,6 +22,8 @@ import {SitebillResponse} from '../../../_models/sitebill-response';
 import {ChatService, CommentsBlockMeta} from '../../apps/chat/chat.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {StorageService} from '../../../_services/storage.service';
+import {SelectionItems} from './selection-items';
+
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     showDelay: 1000,
@@ -148,6 +150,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     commentsBlockMeta: CommentsBlockMeta = {};
 
     private comment_open = false;
+
 
 
     quillConfig = {
@@ -280,7 +283,20 @@ export class SelectionFormConstructorComponent implements OnInit {
                         this.error_message = result.message;
                         return false;
                     } else {
-                        this.initSelectForm();
+                        // const selectionList = ['city_id', 'district_id', 'mkrn_id', 'street_id', 'topic_id', 'planningtype_id' ];
+                        // const selectionArray = [];
+                        // selectionList.forEach(item => {
+                        //     selectionArray[item] = result.data[item];
+                        // });
+                        //
+                        // const selectionList2 = ['number', 'room_count', 'bathroom', 'balcony', 'walls_id' ];
+                        // const selectionArray2 = [];
+                        // selectionList2.forEach(item => {
+                        //     selectionArray2[item] = result.data[item];
+                        // });
+                        // console.log(result.data);
+                        this.initSelectForm(result.data);
+                        // this.initSelectForm(selectionArray, selectionList, selectionArray2, selectionList2);
                         this.init_form();
                     }
                     this.cdr.markForCheck();
@@ -289,101 +305,75 @@ export class SelectionFormConstructorComponent implements OnInit {
             });
     }
 
-    initSelectForm(): any {
-        let item1 =
-            {
-                name: "hot",
-                title: "Спецразмещение",
-                value: "0",
-                type: "checkbox",
-                primary_key_name: "",
-                primary_key_table: "",
-                value_string: "",
-                query: "",
-                value_name: "",
-                title_default: "",
-                value_default: "",
-                value_table: "",
-                value_primary_key: "",
-                value_field: "",
-                assign_to: "",
-                dbtype: "1",
-                table_name: "data",
-                primary_key: "",
-                primary_key_value: "",
-                action: "",
-                tab: "",
-                hint: "Для размещения объявления в специальный раздел VIP ,поставьте галочку.",
-                active_in_topic: "0",
-                entity: "",
-                parameters: [],
-                required: "off",
-                required_boolean: "0",
-                unique: "off",
-                columns_id: "57",
-                table_id: "7",
-                active: "1"
-            };
-
-        let item2 =
-            {
-                name: "new_item",
-                title: "Этого поля нет в базе",
-                value: "0",
-                type: "new_type", // у него свой собственный тип
-                primary_key_name: "",
-                primary_key_table: "",
-                value_string: "",
-                query: "",
-                value_name: "",
-                title_default: "",
-                value_default: "",
-                value_table: "",
-                value_primary_key: "",
-                value_field: "",
-                assign_to: "",
-                dbtype: "1",
-                table_name: "data",
-                primary_key: "",
-                primary_key_value: "",
-                action: "",
-                tab: "",
-                hint: "Мы его вручную создаем в компоненте",
-                active_in_topic: "0",
-                entity: "",
-                parameters: [],
-                required: "off",
-                required_boolean: "0",
-                unique: "off",
-                columns_id: "57",
-                table_id: "7",
-                active: "1"
-            };
+    initSelectForm(data): any {
+        const items_array = data;
+        const unusedItems = ['exclusive_agrrement', 'image', 'geo', 'active', 'Internal_notes', 'hot', 'korpnr',
+            'meta_description', 'meta_keywords', 'meta_title', 'owner_fio', 'planning_en', 'planning_ua', 'region_id',
+            'rayon_id', 'text', 'text_en', 'text_ua', 'view_count', 'youtube', 'date_added', 'id'];
+        unusedItems.forEach(item => {
+            delete items_array[item];
+        });
 
 
-        let items_array = {
-            hot:item1,
-            new_item:item2,
-        };
-        //@ts-ignore
-        this.records = items_array;
+        // const names = SelectionItems.names.concat(list, SelectionItems.names2, list2);
 
-        for (const [key_obj, value_obj] of Object.entries(items_array)) {
+        const itemsNames = Object.keys(items_array);
+
+        const names = SelectionItems.names.concat(itemsNames, SelectionItems.names2);
+
+        itemsNames.forEach(item => {
+            items_array[item].hint = '';
+            items_array[item].required = 'off';
+        });
+
+        items_array.postponded_to.type = 'checkbox';
+        items_array.postponded_to.title = 'Отложено';
+
+        const itemsArray = Object.assign(SelectionItems.items, items_array, SelectionItems.items2);
+
+        console.log(itemsArray);
+
+        this.records = itemsArray;
+
+        for (const [key_obj, value_obj] of Object.entries(itemsArray)) {
             this.records[key_obj] = new SitebillModelItem(value_obj);
         }
-        this.rows = [];
+
+        this.rows = names;
 
         this._data.entity.model = this.records;
         this.tabs = {
-            Основное: [
-                "hot",
-                "new_item",
-            ]
+            Основное: names
         };
         this.tabs_keys = [Object.keys(this.tabs)[0]];
-        this.rows.push('hot');
-        this.rows.push('new_item');
     }
+
+
+    // initSelectForm(arr, list, arr2, list2): any {
+    //     const items_array =  Object.assign(SelectionItems.items, arr, SelectionItems.items2, arr2);
+    //     items_array.street_id.hint = '';
+    //     console.log(items_array);
+    //     // @ts-ignore
+    //     this.records = items_array;
+    //
+    //     for (const [key_obj, value_obj] of Object.entries(items_array)) {
+    //         this.records[key_obj] = new SitebillModelItem(value_obj);
+    //     }
+    //     this.rows = [];
+    //
+    //     const names = SelectionItems.names.concat(list, SelectionItems.names2, list2);
+    //
+    //     console.log(names);
+    //
+    //     this._data.entity.model = this.records;
+    //     this.tabs = {
+    //         Основное: names
+    //     };
+    //     // console.log(this.tabs);
+    //     this.tabs_keys = [Object.keys(this.tabs)[0]];
+    //     this.rows = names;
+    //     // console.log(this.rows);
+    // }
 
 
     getEditingMode(): boolean {
@@ -526,9 +516,9 @@ export class SelectionFormConstructorComponent implements OnInit {
                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
             }
 
-            if (this.rows[i] === 'id' || this.rows[i] === 'user_id') {
-                this.records[this.rows[i]].hidden = true;
-            }
+            // if (this.rows[i] === 'id' || this.rows[i] === 'user_id') {
+            //     this.records[this.rows[i]].hidden = true;
+            // }
 
         }
 
