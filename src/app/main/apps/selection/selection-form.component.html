@@ -132,13 +132,20 @@
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dateInterval'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <span>дд.мм.гггг - дд.мм.гггг</span>
-                    <mat-icon aria-label="Перейти к выбору дат"
-                              matTooltip="Перейти к выбору дат"
-                              style="cursor: pointer; margin-left: auto"
-                    >
-                        calendar_today
-                    </mat-icon>
+                    <app-interval style="width: 100%"></app-interval>
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                </mat-form-field>
+
+                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'fromTo'"
+                                 [hidden]="records[x].hidden">
+<!--                     <mat-label class="fromToLabel" [innerHTML]="records[x].title"></mat-label>-->
+                     <span class="backgroundLabel">{{records[x].title}}</span>
+                     <span class="fromToLabel">{{records[x].title}}</span>
+                     <div class="twoInputsWrapper">
+                        <input class="fromToInput" placeholder="От">
+                        <input class="fromToInput" placeholder="До"
+                               value="{{getInputValue(records[x].name)}}">
+                    </div>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 

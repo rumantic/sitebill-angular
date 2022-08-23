@@ -94,7 +94,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     private termsearch = false;
 
 
-
+    currentYear = (new Date()).getFullYear()
     form_submitted = false;
     form_inited = false;
     rows: string[];
@@ -283,20 +283,8 @@ export class SelectionFormConstructorComponent implements OnInit {
                         this.error_message = result.message;
                         return false;
                     } else {
-                        // const selectionList = ['city_id', 'district_id', 'mkrn_id', 'street_id', 'topic_id', 'planningtype_id' ];
-                        // const selectionArray = [];
-                        // selectionList.forEach(item => {
-                        //     selectionArray[item] = result.data[item];
-                        // });
-                        //
-                        // const selectionList2 = ['number', 'room_count', 'bathroom', 'balcony', 'walls_id' ];
-                        // const selectionArray2 = [];
-                        // selectionList2.forEach(item => {
-                        //     selectionArray2[item] = result.data[item];
-                        // });
                         // console.log(result.data);
                         this.initSelectForm(result.data);
-                        // this.initSelectForm(selectionArray, selectionList, selectionArray2, selectionList2);
                         this.init_form();
                     }
                     this.cdr.markForCheck();
@@ -314,9 +302,6 @@ export class SelectionFormConstructorComponent implements OnInit {
             delete items_array[item];
         });
 
-
-        // const names = SelectionItems.names.concat(list, SelectionItems.names2, list2);
-
         const itemsNames = Object.keys(items_array);
 
         const names = SelectionItems.names.concat(itemsNames, SelectionItems.names2);
@@ -324,8 +309,18 @@ export class SelectionFormConstructorComponent implements OnInit {
         itemsNames.forEach(item => {
             items_array[item].hint = '';
             items_array[item].required = 'off';
+            if (items_array[item].type === 'select_by_query' || items_array[item].type === 'select_box') {
+                items_array[item].type = 'select_by_query_multi';
+            }
         });
 
+        const fromToArray = ['year', 'price', 'room_count', 'floor', 'floor_count', 'square_all', 'square_live', 'square_kitchen', 'land_area', 'ceiling_height'];
+
+        fromToArray.forEach(item => {
+            items_array[item].type = 'fromTo';
+        });
+
+        items_array.year.type = 'fromTo';
         items_array.postponded_to.type = 'checkbox';
         items_array.postponded_to.title = 'Отложено';
 
@@ -348,34 +343,6 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.tabs_keys = [Object.keys(this.tabs)[0]];
     }
 
-
-    // initSelectForm(arr, list, arr2, list2): any {
-    //     const items_array =  Object.assign(SelectionItems.items, arr, SelectionItems.items2, arr2);
-    //     items_array.street_id.hint = '';
-    //     console.log(items_array);
-    //     // @ts-ignore
-    //     this.records = items_array;
-    //
-    //     for (const [key_obj, value_obj] of Object.entries(items_array)) {
-    //         this.records[key_obj] = new SitebillModelItem(value_obj);
-    //     }
-    //     this.rows = [];
-    //
-    //     const names = SelectionItems.names.concat(list, SelectionItems.names2, list2);
-    //
-    //     console.log(names);
-    //
-    //     this._data.entity.model = this.records;
-    //     this.tabs = {
-    //         Основное: names
-    //     };
-    //     // console.log(this.tabs);
-    //     this.tabs_keys = [Object.keys(this.tabs)[0]];
-    //     this.rows = names;
-    //     // console.log(this.rows);
-    // }
-
-
     getEditingMode(): boolean {
         return this._data.entity.get_key_value() && !this._data.selectionMode;
     }
@@ -388,6 +355,12 @@ export class SelectionFormConstructorComponent implements OnInit {
         return !this._data.selectionMode && this._data.entity.is_enable_comment() &&
             this.modelService.get_access('comment',
                 'access');
+    }
+
+    getInputValue(name) {
+        if (name === 'year') {
+            return this.currentYear;
+        }
     }
 
     init_form() {
