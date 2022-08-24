@@ -73,15 +73,17 @@
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
-                    <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="filtersOffWrapper ml-12 mr-12">
                         <button
-                            class="amber ml-12"
+                            class="amber"
                             *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
                             mat-raised-button
                             (click)="reset_filters()"
                             color="teal"
-                            matTooltip="Сбросить фильтры">Сбросить фильтры
-                            ({{filterService.count_share_array(entity.get_app_name())}})
+                            matTooltip="Сбросить фильтры">
+                            <mat-icon class="material-icons filtersOff" color="yellow">
+                                filter_{{getFiltersCount()}}
+                            </mat-icon>
                         </button>
                     </div>
 

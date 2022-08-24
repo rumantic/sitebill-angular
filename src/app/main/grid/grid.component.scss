@@ -458,8 +458,26 @@ mat-sidenav-container {
 }
 
 .date-range {
+    z-index: 30;
     @include media-breakpoint('lt-sm') {
         display: none;
     }
+}
+
+.date-range ::ng-deep .mat-form-field-flex {
+    display: flex;
+    flex-direction: column-reverse;
+    // justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.filtersOffWrapper ::ng-deep .mat-raised-button {
+    padding: 0px;
+    min-width: 48px;
+}
+
+.filtersOff {
+   width: 16px !important;
 }
 

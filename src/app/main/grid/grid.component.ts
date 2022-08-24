@@ -534,6 +534,14 @@ export class GridComponent implements OnInit, OnDestroy
         this.calendarHidden = false;
     }
 
+    getFiltersCount() {
+        if (this.filterService.count_share_array(this.entity.get_app_name()) <= 9 ) {
+            return this.filterService.count_share_array(this.entity.get_app_name());
+        } else {
+            return '9_plus';
+            }
+    }
+
 
     ngAfterViewChecked() {
         /*

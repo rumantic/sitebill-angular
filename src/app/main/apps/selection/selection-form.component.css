@@ -64,14 +64,14 @@ textarea {
     margin: 0 !important;
 }
 
-::ng-deep .mat-form-field-wrapper {
+.selectionItems ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0 !important;
 }
 
 .reducer .mat-form-field-appearance-outline {
     margin: 0 !important;
 }
-.mat-form-field-appearance-outline .mat-form-field-wrapper {
+.selectionItems .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -145,5 +145,23 @@ textarea {
 .fromToInput {
     width: calc(50% - 5px);
     padding-left: 5px;
+}
 
+::ng-deep .ng-clear-wrapper {
+    z-index: 30;
+    height: 24px;
+    width: 18px;
+    display: block !important;
+    cursor: pointer;
+}
+
+::ng-deep .ng-clear-wrapper::after {
+    content: "X";
+    position: absolute;
+    left: 5px;
+    top: -8px;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+    display: none !important;
+    pointer-events: auto !important;
 }

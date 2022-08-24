@@ -125,7 +125,7 @@
             [hidden]="records[x].hidden || records[x].type === 'hidden'"
         >
 
-            <span [ngSwitch]="records[x].type">
+            <span [ngSwitch]="records[x].type" class="selectionItems">
 
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
