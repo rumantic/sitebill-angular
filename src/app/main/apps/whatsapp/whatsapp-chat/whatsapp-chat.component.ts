@@ -104,19 +104,6 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         if ( !this.subscribed ) {
             this.receiveChatSocketSubscriber(this.sendCallbackBundle);
         }
-        /*
-        this.whatsAppService.getHostDevice()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                console.log(result);
-            });
-
-        this.whatsAppService.getAllMessagesInChat({chatId:'79535888981@c.us'})
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                console.log(result);
-            });
-         */
 
     }
 
