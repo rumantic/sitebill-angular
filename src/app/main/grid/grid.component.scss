@@ -314,33 +314,6 @@ mat-sidenav-container {
                 }
             }
 
-            .angular-toolbar {
-                .pt-12 {
-                    // min-width: 225px;
-                    width: 25px;
-                    // height: 25px;
-                    overflow: hidden;
-                    .rectangle {
-                        width: 25px;
-                        height: 10px;
-                        position: absolute;
-                        top: 30px;
-                        background-color: #039BE5;
-                        z-index: 3;
-                    }
-                }
-                .calendar {
-                    width: 225px;
-                }
-                &__daterange {
-                    width: 220px;
-                }
-
-                &__daterange-clear {
-                    cursor: pointer;
-                }
-            }
-
             @include media-breakpoint('lt-md') {
                 position: relative;
                 flex-direction: column;
@@ -385,10 +358,6 @@ mat-sidenav-container {
                             display: inline-block;
                         }
                     }
-                }
-
-                .angular-toolbar {
-                    margin: 0 0 0 auto;
                 }
             }
         }
@@ -457,11 +426,37 @@ mat-sidenav-container {
     }
 }
 
+
+.angular-toolbar {
+    position: relative;
+    margin: 0 0 0 auto;
+    .date-range {
+        z-index: 30;
+        position: relative;
+        top: 11px;
+        left: 0;
+        overflow: hidden;
+    }
+    .calendar {
+         width: 225px;
+     }
+    &__daterange {
+        width: 220px;
+    }
+
+    &__daterange-clear {
+        cursor: pointer;
+    }
+}
+
 .date-range {
-    z-index: 30;
     @include media-breakpoint('lt-sm') {
         display: none;
     }
+}
+
+.date-range ::ng-deep .mat-form-field-wrapper {
+    max-width: 190px;
 }
 
 .date-range ::ng-deep .mat-form-field-flex {
@@ -469,7 +464,24 @@ mat-sidenav-container {
     flex-direction: column-reverse;
     // justify-content: center;
     align-items: center;
-    z-index: 10;
+    position: relative;
+    .mat-form-field-infix {
+        position: absolute;
+        .mat-input-element {
+            font-size: 14px;
+        }
+    }
+    .mat-form-field-suffix{
+        position: relative;
+        .clearSelectedDate {
+            position: relative;
+            left: 80px;
+            cursor: pointer;
+        }
+    }
+    .mat-form-field-underline {
+        width: 190px !important;
+    }
 }
 
 .filtersOffWrapper ::ng-deep .mat-raised-button {

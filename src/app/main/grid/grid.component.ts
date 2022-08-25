@@ -542,6 +542,14 @@ export class GridComponent implements OnInit, OnDestroy
             }
     }
 
+    getCalendarStyle(): boolean {
+        if (!this.calendarHidden || this.selected_date_filter_has_values) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     ngAfterViewChecked() {
         /*

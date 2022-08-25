@@ -202,8 +202,8 @@
 
 
                         <!--                            БЕЛАЯ ЛИНИЯ см ниже -->
-                        <mat-form-field class="pt-12 pr-8 date-range toolbar__daterange" *ngIf="date_range_enable"
-                                        [ngClass]="{calendar: !calendarHidden}">
+                        <mat-form-field class="date-range toolbar__daterange" *ngIf="date_range_enable"
+                                        [ngClass]="{calendar: getCalendarStyle()}">
                             <input autocomplete="off"
                                    matTooltip="Выбрать период времени для отображения записей"
                                    matInput
@@ -223,9 +223,11 @@
                                       (click)="goToSelectDate()">
                                 calendar_today
                             </mat-icon>
-                            <div [ngClass]="{rectangle: calendarHidden}"></div>
+<!--                            <div [ngClass]="{rectangle: calendarHidden}"></div>-->
                             <ng-template #clearDatepicker>
-                                <mat-icon class="toolbar__daterange-clear" color="white" matSuffix
+                                <mat-icon class="toolbar__daterange-clear clearSelectedDate" color="white" matSuffix
+                                          aria-label="Очистить поле выбора дат"
+                                          matTooltip="Очистить поле выбора дат"
                                           (click)="clear_selected_date_filter(date_range_key)">close
                                 </mat-icon>
                             </ng-template>

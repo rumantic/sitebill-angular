@@ -55,10 +55,18 @@
 
             <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="space-between center">
                 <div>
-                    <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
-                        Сохранить
+                    <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"
+                            aria-label="Сохранить фильтры" matTooltip="Сохранить фильтры">
+                        Искать
                     </button>
-                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button" (click)="close()" aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
+                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button"
+                            (click)="close()"
+                            aria-label="Очистить форму" matTooltip="Очистить форму">
+                        Очистить
+                    </button>
+                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button" color="warn"
+                            (click)="close()"
+                            aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
                         Отмена
                     </button>
 

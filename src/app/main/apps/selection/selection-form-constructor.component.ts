@@ -114,6 +114,8 @@ export class SelectionFormConstructorComponent implements OnInit {
     lng_center: any;
     form_title: string;
 
+    selectionParams = {};
+
 
     loadingIndicator: boolean;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
@@ -826,82 +828,24 @@ export class SelectionFormConstructorComponent implements OnInit {
     save() {
         this.form_submitted = true;
 
-        if (!this.form.valid) {
-            const required_fields = [];
-            this.rows.forEach((row) => {
-                const control = this.form.controls[row];
-                if ( control.status === 'INVALID' ) {
-                    required_fields.push(this.records[row].title);
-                    this.form.controls[row].markAsTouched();
-
-                }
-            });
-            this._snackService.message('Проверьте поля формы, возможно некоторые заполнены неправильно: ' + required_fields.join(', '));
-            return;
-        }
-
         let ql_items = {};
         ql_items = this.get_ql_items_from_form();
-        this._data.entity.set_ql_items(ql_items);
-        this.onSave.emit(ql_items);
-
-        if ( this.fake_save ) {
-            return;
-        }
-
-
-        if (this._data.entity.key_value == null) {
-            this.modelService.native_insert(
-                this._data.entity.get_table_name(),
-                ql_items,
-                this.predefined_ql_items ? 'true' : null
-            )
-                .subscribe((response: any) => {
-                    if (response.state === 'error') {
-                        this._snackService.message(response.message);
-                        return null;
-                    } else {
-                        this._snackService.message('Запись создана успешно');
-                        this._data.entity.set_key_value(response.data['new_record_id']);
-                        this.afterSave.emit(this._data);
-                        if (this._data.entity.get_hook() === 'add_to_collections') {
-                            this.add_to_collections(response.data['new_record_id'], response.data['items']);
-                        } else {
-                            this._data.entity.set_hook('afterSuccessCreate');
-                            this.filterService.empty_share(this._data.entity);
-                            this.close();
-                        }
-                    }
-                });
-        } else {
-            this.modelService.native_update(
-                this._data.entity.get_table_name(),
-                this._data.entity.key_value,
-                ql_items,
-                this.predefined_ql_items ? 'true' : null
-            ).subscribe((response: any) => {
-                    if (response.state === 'error') {
-                        this._snackService.message(response.message);
-                        return null;
-                    } else {
-                        this._data.entity.set_hook('afterSuccessSave');
-                        this._snackService.message('Запись сохранена успешно');
-                        this.afterSave.emit(this._data);
-                        this.filterService.empty_share(this._data.entity);
-                        this.close();
-                    }
-                });
-        }
+        console.log(ql_items);
+        this.rows.forEach((row) => {
+            const type = this.records[row].type;
+            const control = this.form.controls[row];
+            console.log(type, control);
+        });
     }
 
     get_ql_items_from_form() {
         const ql_items = {};
         const now = moment();
 
-
         this.rows.forEach((row) => {
             const type = this.records[row].type;
             const control = this.form.controls[row];
+            // console.log(type, control);
             if ( control !== undefined && control !== null) {
                 if (this.text_area_editor_storage[row]) {
                     ql_items[row] = this.text_area_editor_storage[row];
