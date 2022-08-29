@@ -7,7 +7,7 @@ import {
     Output
 } from '@angular/core';
 import {ModelService} from '../../../_services/model.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, FormArray, ValidatorFn, Validators} from '@angular/forms';
 import {SnackService} from '../../../_services/snack.service';
 import {debounceTime, distinctUntilChanged, map, takeUntil} from 'rxjs/operators';
 import {FormType, SitebillEntity, SitebillModelItem} from '../../../_models';
@@ -114,7 +114,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     lng_center: any;
     form_title: string;
 
-    selectionParams = {};
+    selectionParams: any = {param: 'param'};
 
 
     loadingIndicator: boolean;
@@ -301,7 +301,9 @@ export class SelectionFormConstructorComponent implements OnInit {
             'meta_description', 'meta_keywords', 'meta_title', 'owner_fio', 'planning_en', 'planning_ua', 'region_id',
             'rayon_id', 'text', 'text_en', 'text_ua', 'view_count', 'youtube', 'date_added', 'id'];
         unusedItems.forEach(item => {
-            delete items_array[item];
+            if (items_array[item]) {
+                delete items_array[item];
+            }
         });
 
         const itemsNames = Object.keys(items_array);
@@ -319,7 +321,9 @@ export class SelectionFormConstructorComponent implements OnInit {
         const fromToArray = ['year', 'price', 'room_count', 'floor', 'floor_count', 'square_all', 'square_live', 'square_kitchen', 'land_area', 'ceiling_height'];
 
         fromToArray.forEach(item => {
-            items_array[item].type = 'fromTo';
+            if (items_array[item]) {
+                items_array[item].type = 'fromTo';
+            }
         });
 
         items_array.year.type = 'fromTo';
@@ -328,7 +332,7 @@ export class SelectionFormConstructorComponent implements OnInit {
 
         const itemsArray = Object.assign(SelectionItems.items, items_array, SelectionItems.items2);
 
-        console.log(itemsArray);
+        // console.log(itemsArray);
 
         this.records = itemsArray;
 
@@ -343,6 +347,28 @@ export class SelectionFormConstructorComponent implements OnInit {
             Основное: names
         };
         this.tabs_keys = [Object.keys(this.tabs)[0]];
+        this.setSelectedParams(names, itemsArray, fromToArray);
+    }
+
+    setSelectedParams(names, items, fromTo): void {
+        names.forEach(item => {
+            this.selectionParams[item] = items[item].value;
+        });
+
+        // fromTo.forEach(item => {
+        //     this.selectionParams[item] = {};
+        //     this.selectionParams[item] = {
+        //         min: '',
+        //         max: ''
+        //
+        //     };
+        // });
+        //
+        // console.log(this.selectionParams['year']);
+        //
+        // this.selectionParams['year'].min = '2015';
+
+        // console.log(this.selectionParams);
     }
 
     getEditingMode(): boolean {
@@ -824,18 +850,24 @@ export class SelectionFormConstructorComponent implements OnInit {
         });
     }
 
+    // getValue(name) {
+    //    console.log(name);
+    // }
+
 
     save() {
         this.form_submitted = true;
 
-        let ql_items = {};
-        ql_items = this.get_ql_items_from_form();
-        console.log(ql_items);
-        this.rows.forEach((row) => {
-            const type = this.records[row].type;
-            const control = this.form.controls[row];
-            console.log(type, control);
-        });
+        const ql_items = this.get_ql_items_from_form();
+        const prevSelected = this.selectionParams;
+        this.selectionParams = Object.assign(prevSelected, ql_items );
+
+        // console.log(this.selectionParams);
+        // this.rows.forEach((row) => {
+        //     const type = this.records[row].type;
+        //     const control = this.form.controls[row];
+        //     console.log(type, control);
+        // });
     }
 
     get_ql_items_from_form() {
@@ -845,8 +877,10 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.rows.forEach((row) => {
             const type = this.records[row].type;
             const control = this.form.controls[row];
+            const name = this.records[row].name;
             // console.log(type, control);
             if ( control !== undefined && control !== null) {
+                if (name === 'year' && this.form.controls.fromTo) { console.log(this.form.controls.fromTo.value); }
                 if (this.text_area_editor_storage[row]) {
                     ql_items[row] = this.text_area_editor_storage[row];
                 } else if (type === 'checkbox' && !control.value) {

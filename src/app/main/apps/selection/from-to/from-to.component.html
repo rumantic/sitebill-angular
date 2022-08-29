@@ -1,0 +1,9 @@
+<ng-container [formGroup]="parentForm">
+    <ng-container formGroupName="fromTo">
+<!--        <label></label>-->
+        <input class="fromToInput" name="minValue" formControlName="minValue" placeholder="От" >
+
+<!--        <label></label>-->
+        <input class="fromToInput" name="maxValue" formControlName="maxValue" placeholder="До" value="{{defValue}}" >
+    </ng-container>
+</ng-container>

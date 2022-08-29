@@ -94,6 +94,7 @@ import {SelectionFormComponent} from './main/apps/selection/selection-form.compo
 import {SelectionFormConstructorComponent} from './main/apps/selection/selection-form-constructor.component';
 import {SelectionFormStaticComponent} from './main/apps/selection/selection-form-static.component';
 import {IntervalComponent} from './main/apps/interval/interval.component';
+import {FromToComponent} from './main/apps/selection/from-to/from-to.component';
 
 @NgModule({
     imports: [
@@ -170,6 +171,7 @@ import {IntervalComponent} from './main/apps/interval/interval.component';
         SelectionFormConstructorComponent,
         SelectionFormStaticComponent,
         IntervalComponent,
+        FromToComponent,
         ViewStaticComponent,
         UploaderComponent,
         GalleryComponent,
@@ -219,6 +221,7 @@ import {IntervalComponent} from './main/apps/interval/interval.component';
         SelectionFormComponent,
         SelectionFormStaticComponent,
         IntervalComponent,
+        FromToComponent,
         ViewStaticComponent,
         ProfileTimelineComponent,
         ProfileCardComponent,
