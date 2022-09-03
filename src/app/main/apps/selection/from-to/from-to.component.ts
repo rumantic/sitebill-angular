@@ -15,6 +15,8 @@ export class FromToComponent implements OnInit {
     formGroup: FormGroup ;
     fromToControls;
 
+    @Input() currency = '$';
+
     constructor() {
     }
 

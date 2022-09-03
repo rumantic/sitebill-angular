@@ -150,6 +150,7 @@
                      <span class="backgroundLabel">{{records[x].title}}</span>
                      <span class="fromToLabel">{{records[x].title}}</span>
                      <app-from-to [parentForm]="form"
+                                  [currency]="currency"
                                   [filterName]="records[x].name" class="fromTo"></app-from-to>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
@@ -289,6 +290,7 @@
                                        bindLabel="value"
                                        [items]="options_storage_buffer[records[x].name]"
                                        [virtualScroll]="true"
+                                       (ngModelChange)="changeCurrency($event, records[x].name)"
                                        [loading]="loading"
                                        (scroll)="onScroll($event, records[x].name)"
                                        (scrollToEnd)="onScrollToEnd(records[x].name)"

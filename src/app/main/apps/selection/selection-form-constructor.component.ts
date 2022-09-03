@@ -117,6 +117,7 @@ export class SelectionFormConstructorComponent implements OnInit {
 
     selectionParams: any = {};
     itemsArray: any = {};
+    currency = '$';
 
 
     loadingIndicator: boolean;
@@ -328,6 +329,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             }
         });
 
+        items_array.currency_id.type = 'select_by_query';
         items_array.year.type = 'fromTo';
         items_array.postponded_to.type = 'checkbox';
         items_array.postponded_to.title = 'Отложено';
@@ -350,6 +352,21 @@ export class SelectionFormConstructorComponent implements OnInit {
         };
         this.tabs_keys = [Object.keys(this.tabs)[0]];
         // this.setSelectedParams(names, fromToArray);
+    }
+
+    changeCurrency(event, name): void {
+        if (name === 'currency_id') {
+            switch (event) {
+                case '3':
+                    this.currency = '€';
+                    break;
+                case '4':
+                    this.currency = '₴';
+                    break;
+                default:
+                    this.currency = '$';
+            }
+        }
     }
 
     setSelectedParams(names, fromTo): void {
