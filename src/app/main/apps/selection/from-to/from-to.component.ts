@@ -9,14 +9,33 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class FromToComponent implements OnInit {
 
     @Input() parentForm!: FormGroup;
-    @Input() defValue;
-    readonly formGroup = new FormGroup({
-        minValue: new FormControl(),
-        maxValue: new FormControl(this.defValue)
-    });
+    @Input() filterName;
+    formName: string;
+    currentYear = (new Date()).getFullYear();
+    formGroup: FormGroup ;
+    fromToControls;
+
+    constructor() {
+    }
+
 
     ngOnInit(): void {
-        console.log(this.defValue);
-        this.parentForm.addControl('fromTo', this.formGroup);
+        this.formGroup = new FormGroup({
+            minValue: new FormControl('', Validators.pattern('[0-9]*')),
+            maxValue: new FormControl(this.getInputValue(), Validators.pattern('[0-9]*'))
+        });
+        this.formName = `${this.filterName}FromTo`;
+        this.parentForm.addControl(`${this.formName}`, this.formGroup);
+        this.fromToControls = this.parentForm.controls[this.formName]['controls'];
+    }
+
+    getInputValue(): number {
+        if (this.filterName === 'year') {
+            return this.currentYear;
+        }
+    }
+
+    show() {
+        // console.log(this);
     }
 }

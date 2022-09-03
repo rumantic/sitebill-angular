@@ -142,9 +142,9 @@ textarea {
     padding: 0 4px;
 }
 
-.fromToInput {
-    width: calc(50% - 5px);
-    padding-left: 5px;
+.fromTo {
+    width: 100%;
+    display: flex;
 }
 
 ::ng-deep .ng-clear-wrapper {

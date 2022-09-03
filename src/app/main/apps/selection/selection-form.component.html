@@ -140,7 +140,7 @@
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dateInterval'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <app-interval style="width: 100%"></app-interval>
+                    <app-interval [parentForm]="form" [filterName]="records[x].name" style="width: 100%"></app-interval>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 
@@ -149,12 +149,8 @@
                      <mat-label class="fromToLabel" [innerHTML]="records[x].title"></mat-label>
                      <span class="backgroundLabel">{{records[x].title}}</span>
                      <span class="fromToLabel">{{records[x].title}}</span>
-                     <app-from-to defValue="{{getInputValue(records[x].name)}}" [parentForm]="form"></app-from-to>
-<!--                     <div class="twoInputsWrapper">-->
-<!--                        <input class="fromToInput" placeholder="От">-->
-<!--                        <input class="fromToInput" placeholder="До"-->
-<!--                               value="{{getInputValue(records[x].name)}}">-->
-<!--                    </div>-->
+                     <app-from-to [parentForm]="form"
+                                  [filterName]="records[x].name" class="fromTo"></app-from-to>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 
