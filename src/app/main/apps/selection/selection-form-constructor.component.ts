@@ -255,10 +255,25 @@ export class SelectionFormConstructorComponent implements OnInit {
         }
         this.getModel();
         this.initSubscribers();
+        this.getCurrency();
 
     }
 
     initSubscribers() {
+
+    }
+
+    getCurrency () {
+        this.modelService.loadById('currency', 'currency', null)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                console.log(result)
+            });
+        this.modelService.load('currency', null, null, null, null, null)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                console.log(result)
+            });
 
     }
 
