@@ -925,6 +925,7 @@ export class GridComponent implements OnInit, OnDestroy
                     break;
 
                 case 'select_by_query_multi':
+                    console.log(this.commonTemplate.select_by_query_multi_Tmpl);
                     cellTemplate = this.commonTemplate.select_by_query_multi_Tmpl;
                     break;
 

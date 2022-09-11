@@ -79,8 +79,10 @@
 </ng-template>
 
 <ng-template #select_by_query_multi_Tmpl let-column="column" let-row="row" let-value="value">
-	{{row[column['model_name']].value_string_implode}}
+	VALUE{{row[column['model_name']]}}
 </ng-template>
+
+<!--.value_string_implode-->
 
 <ng-template #photoTmpl let-column="column" let-row="row" let-value="value">
 	<button mat-icon-button (click)="view_gallery(row, column, value, disable_gallery_controls)">
