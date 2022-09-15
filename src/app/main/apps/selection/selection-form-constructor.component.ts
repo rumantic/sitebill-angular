@@ -281,6 +281,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.getModel();
         this.initSubscribers();
         this.getCurrency();
+        this.getCommmercialtype();
 
         const filters = this.filterService.get_share_array(this._data.entity.get_app_name());
         console.log(filters);
@@ -301,6 +302,22 @@ export class SelectionFormConstructorComponent implements OnInit {
             .subscribe((result: any) => {
                 this.currencyList = result.rows;
                 // console.log(this.currencyList);
+            });
+    }
+
+    getCommmercialtype(): void {
+        console.log('RES');
+        this.modelService
+            .loadById('commmercialtype', 'commmercialtype', null)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+                // console.log(result);
+            });
+        this.modelService
+            .load('commmercialtype', null, null, null, null, null)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: any) => {
+               // console.log('RES', result.rows);
             });
     }
 
@@ -360,8 +377,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         const itemsNames = Object.keys(items_array);
 
         const names = SelectionItems.names.concat(
-            itemsNames,
-            SelectionItems.names2
+            itemsNames
         );
 
         itemsNames.forEach((item) => {
@@ -398,14 +414,16 @@ export class SelectionFormConstructorComponent implements OnInit {
         items_array.year.type = 'fromTo';
         items_array.postponded_to.type = 'checkbox';
         items_array.postponded_to.title = 'Отложено';
+        items_array.commercialtype_id.hidden = false;
 
         this.itemsArray = Object.assign(
             SelectionItems.items,
-            items_array,
-            SelectionItems.items2
+            items_array
         );
 
-        // console.log(this.itemsArray);
+        console.log (this.itemsArray.commercialtype_id.hidden);
+
+        console.log(this.itemsArray);
 
         this.records = this.itemsArray;
 
@@ -479,11 +497,11 @@ export class SelectionFormConstructorComponent implements OnInit {
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
 
-            if (this._data.entity.get_hidden_column_edit(this.rows[i])) {
-                this.records[this.rows[i]].hidden = true;
-            } else {
-                this.records[this.rows[i]].hidden = false;
-            }
+            // if (this._data.entity.get_hidden_column_edit(this.rows[i])) {
+            //     this.records[this.rows[i]].hidden = true;
+            // } else {
+            //     this.records[this.rows[i]].hidden = false;
+            // }
             if (
                 this.records[this.rows[i]].active_in_topic !== '0' &&
                 this.records[this.rows[i]].active_in_topic != null
@@ -1106,7 +1124,12 @@ export class SelectionFormConstructorComponent implements OnInit {
         // console.log(controls);
 
         console.log(this.selectionParams);
-        this.filterService.share_data(this._data.entity, 'city_id', this.selectionParams.city_id);
+        objectKeys(this.selectionParams).forEach(item => {
+            if (this.selectionParams[item]) {
+                this.filterService.share_data(this._data.entity, item, this.selectionParams[item]);
+            }
+        });
+        // this.filterService.share_data(this._data.entity, 'city_id', this.selectionParams.city_id);
     }
 
     get_ql_items_from_form() {
