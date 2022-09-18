@@ -263,13 +263,17 @@ export class SelectionFormConstructorComponent implements OnInit {
         'planning_ua',
         'region_id',
         'rayon_id',
+        'flatnumber',
+        'owner_phone',
+        'translit_alias',
+        'walls',
         'text',
         'text_en',
         'text_ua',
         'view_count',
         'youtube',
         'date_added',
-        'id',
+        // 'id',
     ];
 
     ngOnInit() {
@@ -281,10 +285,9 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.getModel();
         this.initSubscribers();
         this.getCurrency();
-        this.getCommmercialtype();
 
         const filters = this.filterService.get_share_array(this._data.entity.get_app_name());
-        console.log(filters);
+        // console.log(filters);
     }
 
     initSubscribers() {}
@@ -302,22 +305,6 @@ export class SelectionFormConstructorComponent implements OnInit {
             .subscribe((result: any) => {
                 this.currencyList = result.rows;
                 // console.log(this.currencyList);
-            });
-    }
-
-    getCommmercialtype(): void {
-        console.log('RES');
-        this.modelService
-            .loadById('commmercialtype', 'commmercialtype', null)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-                // console.log(result);
-            });
-        this.modelService
-            .load('commmercialtype', null, null, null, null, null)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: any) => {
-               // console.log('RES', result.rows);
             });
     }
 
@@ -372,7 +359,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             }
         });
 
-        console.log(items_array);
+        // console.log(items_array);
 
         const itemsNames = Object.keys(items_array);
 
@@ -385,45 +372,49 @@ export class SelectionFormConstructorComponent implements OnInit {
             items_array[item].required = 'off';
             if (
                 items_array[item].type === 'select_by_query' ||
-                items_array[item].type === 'select_box'
+                items_array[item].type === 'select_box' ||
+                items_array[item].type === 'safe_string'
             ) {
                 items_array[item].type = 'select_by_query_multi';
             }
         });
 
-        const fromToArray = [
-            'year',
-            'price',
-            'room_count',
-            'floor',
-            'floor_count',
-            'square_all',
-            'square_live',
-            'square_kitchen',
-            'land_area',
-            'ceiling_height',
-        ];
-
-        fromToArray.forEach((item) => {
-            if (items_array[item]) {
-                items_array[item].type = 'fromTo';
-            }
-        });
+        // const fromToArray = [
+        //     'year',
+        //     'price',
+        //     'room_count',
+        //     'floor',
+        //     'floor_count',
+        //     'square_all',
+        //     'square_live',
+        //     'square_kitchen',
+        //     'land_area',
+        //     'ceiling_height',
+        // ];
+        //
+        // fromToArray.forEach((item) => {
+        //     if (items_array[item]) {
+        //         items_array[item].type = 'fromTo';
+        //     }
+        // });
 
         items_array.currency_id.type = 'select_by_query';
+        items_array.price.type = 'fromTo';
         items_array.year.type = 'fromTo';
         items_array.postponded_to.type = 'checkbox';
         items_array.postponded_to.title = 'Отложено';
-        items_array.commercialtype_id.hidden = false;
+        // items_array.commercialtype_id.hidden = false;
 
         this.itemsArray = Object.assign(
             SelectionItems.items,
             items_array
         );
 
-        console.log (this.itemsArray.commercialtype_id.hidden);
+       //  objectKeys(this.itemsArray).forEach(item => {
+       //     console.log(this.itemsArray[item].name, this.itemsArray[item].type);
+       // });
 
-        console.log(this.itemsArray);
+        // console.log(this.itemsArray);
 
         this.records = this.itemsArray;
 
@@ -488,20 +479,20 @@ export class SelectionFormConstructorComponent implements OnInit {
         // Сначала нужно получить значение topic_id
         // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
         // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
-
+        // console.log(this.rows);
         for (let i = 0; i < this.rows.length; i++) {
-            // console.log(this.records[this.rows[i]].type);
+            // console.log(this.records);
             const form_control_item = new FormControl(
                 this.records[this.rows[i]].value
             );
             form_control_item.clearValidators();
             this.records[this.rows[i]].required_boolean = false;
 
-            // if (this._data.entity.get_hidden_column_edit(this.rows[i])) {
-            //     this.records[this.rows[i]].hidden = true;
-            // } else {
-            //     this.records[this.rows[i]].hidden = false;
-            // }
+            if (this._data.entity.get_hidden_column_edit(this.rows[i])) {
+                this.records[this.rows[i]].hidden = true;
+            } else {
+                this.records[this.rows[i]].hidden = false;
+            }
             if (
                 this.records[this.rows[i]].active_in_topic !== '0' &&
                 this.records[this.rows[i]].active_in_topic != null
@@ -1097,14 +1088,14 @@ export class SelectionFormConstructorComponent implements OnInit {
         const fromToArray = [
             'year',
             'price',
-            'room_count',
-            'floor',
-            'floor_count',
-            'square_all',
-            'square_live',
-            'square_kitchen',
-            'land_area',
-            'ceiling_height',
+            // 'room_count',
+            // 'floor',
+            // 'floor_count',
+            // 'square_all',
+            // 'square_live',
+            // 'square_kitchen',
+            // 'land_area',
+            // 'ceiling_height',
         ];
 
         objectKeys(controls).forEach((item) => {
@@ -1116,16 +1107,24 @@ export class SelectionFormConstructorComponent implements OnInit {
             delete this.selectionParams[`${item}FromTo`];
         });
 
-        this.selectionParams.dateInterval =
-            this.selectionParams.childDateInterval.dateInterval;
+        this.selectionParams.date_added = this.selectionParams.childDateInterval.dateInterval;
 
         delete this.selectionParams.childDateInterval;
+
+
+
+        this.selectionParams.price_max = +this.selectionParams.price.maxValue;
+        this.selectionParams.price_min = +this.selectionParams.price.minValue;
+
+        delete this.selectionParams.price;
+
+        // console.log(this.selectionParams.date_added);
 
         // console.log(controls);
 
         console.log(this.selectionParams);
         objectKeys(this.selectionParams).forEach(item => {
-            if (this.selectionParams[item]) {
+            if (this.selectionParams[item] && this.selectionParams[item] !== '0' && this.selectionParams[item].length !== 0) {
                 this.filterService.share_data(this._data.entity, item, this.selectionParams[item]);
             }
         });

@@ -137,7 +137,7 @@
 
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dateInterval'"
+                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date_added'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <app-interval [parentForm]="form" [filterName]="records[x].name" style="width: 100%"></app-interval>

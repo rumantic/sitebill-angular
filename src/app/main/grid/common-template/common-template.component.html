@@ -79,7 +79,7 @@
 </ng-template>
 
 <ng-template #select_by_query_multi_Tmpl let-column="column" let-row="row" let-value="value">
-	VALUE{{row[column['model_name']]}}
+	{{row[column['model_name']] ? row[column['model_name']].value_string_implod : '****'}}
 </ng-template>
 
 <!--.value_string_implode-->

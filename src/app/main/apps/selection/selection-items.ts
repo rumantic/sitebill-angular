@@ -1,6 +1,6 @@
 export class SelectionItems {
     public static names = [
-        'dateInterval',
+        'date_added',
         'objectId',
         'filial',
     ];
@@ -11,11 +11,11 @@ export class SelectionItems {
     ];
 
     public static items = {
-        dateInterval: {
-            name: 'dateInterval',
+        date_added: {
+            name: 'date_added',
             title: 'Объекты за период от до',
             value: '0',
-            type: 'dateInterval',
+            type: 'date_added',
             primary_key_name: '',
             primary_key_table: '',
             value_string: '',
@@ -49,7 +49,7 @@ export class SelectionItems {
             name: 'objectId',
             title: 'Поиск по ID',
             value: '0',
-            type: 'objectId',
+            type: 'select_by_query_multi',
             primary_key_name: '',
             primary_key_table: '',
             value_string: '',
