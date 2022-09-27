@@ -65,7 +65,7 @@ if ( detect_dev_mode() ) {
         MatProgressBarModule,
         SharedModule,
         ReactiveFormsModule,
-        SocketIoModule.forRoot(config),
+        //SocketIoModule.forRoot(config),
         GridModule,
     ],
     providers: [

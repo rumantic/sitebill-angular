@@ -79,6 +79,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         this.scrollToBottom();
         //this.getAllChatsGroups();
 
+/*
         this.whatsAppService.isConnected(this.modelService.sitebill_session)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
@@ -104,6 +105,7 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
         if ( !this.subscribed ) {
             this.receiveChatSocketSubscriber(this.sendCallbackBundle);
         }
+*/
 
     }
 

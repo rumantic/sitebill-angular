@@ -449,10 +449,8 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
-                    <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
-                    <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
+                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [hidden]="true" placeholder="{{records[x].title}}">
+                    <selection-filter-comp class="datatable-header__filter" [columnObject]=records[x] [entity]="entity"></selection-filter-comp>
                 </mat-form-field>
             </span>
         </span>

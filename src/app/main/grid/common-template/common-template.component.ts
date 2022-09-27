@@ -205,6 +205,7 @@ export class CommonTemplateComponent {
         }
         this.whatsAppCheckStorage[value] = false;
 
+/*
         this.whatsAppService.checkNumberStatus(value)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
@@ -220,6 +221,7 @@ export class CommonTemplateComponent {
                 console.log(error);
                 this.whatsAppCheckStorage[value] = false;
             });
+*/
         return false;
     }
 

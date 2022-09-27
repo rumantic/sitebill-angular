@@ -99,6 +99,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
     form: FormGroup;
     public _data: { entity: SitebillEntity; selectionMode: boolean };
+    public entity: SitebillEntity;
     public error_message: string = null;
     protected _unsubscribeAll: Subject<any>;
 
@@ -287,6 +288,7 @@ export class SelectionFormConstructorComponent implements OnInit {
         this.getCurrency();
 
         const filters = this.filterService.get_share_array(this._data.entity.get_app_name());
+        this.entity = this._data.entity;
         // console.log(filters);
     }
 
@@ -371,9 +373,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             items_array[item].hint = '';
             items_array[item].required = 'off';
             if (
-                items_array[item].type === 'select_by_query' ||
-                items_array[item].type === 'select_box' ||
-                items_array[item].type === 'safe_string'
+                items_array[item].type === 'select_by_query'
             ) {
                 items_array[item].type = 'select_by_query_multi';
             }

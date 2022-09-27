@@ -23,18 +23,19 @@ export class WhatsAppService {
         private http: HttpClient,
         private modelService: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        private socket: Socket
     )
     {
-        this.isLoggedIn(this.modelService.sitebill_session)
-            .subscribe(
-                (result ) => {
-                    if ( result ) {
-                        console.log('WhatsAppService isConnected');
-                        this.readyState = true;
+        if ( this.hostname !== '192.168.1.37' ) {
+            this.isLoggedIn(this.modelService.sitebill_session)
+                .subscribe(
+                    (result ) => {
+                        if ( result ) {
+                            console.log('WhatsAppService isConnected');
+                            this.readyState = true;
+                        }
                     }
-                }
-            );
+                );
+        }
     }
 
     get readyState(): boolean {
@@ -158,10 +159,12 @@ export class WhatsAppService {
     }
 
     sendChatSocket(message){
-        this.socket.emit('msgToServer', {session: this.modelService.sitebill_session,message: message});
+
+        //this.socket.emit('msgToServer', {session: this.modelService.sitebill_session,message: message});
     }
     receiveChatSocket(session: SitebillSession){
-        return this.socket.fromEvent('msgToClient/'+session.sessionId);
+        return null;
+        //return this.socket.fromEvent('msgToClient/'+session.sessionId);
     }
 
     addToMailingList ( entities: SitebillModelItem[] ) {

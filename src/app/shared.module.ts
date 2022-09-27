@@ -95,6 +95,7 @@ import {SelectionFormConstructorComponent} from './main/apps/selection/selection
 import {SelectionFormStaticComponent} from './main/apps/selection/selection-form-static.component';
 import {IntervalComponent} from './main/apps/interval/interval.component';
 import {FromToComponent} from './main/apps/selection/from-to/from-to.component';
+import {SelectionFilterComponent} from "./main/apps/selection/selection-filter/selection-filter.component";
 
 @NgModule({
     imports: [
@@ -199,7 +200,8 @@ import {FromToComponent} from './main/apps/selection/from-to/from-to.component';
         ConfigModalComponent,
         ConfigFormComponent,
         CommentsComponent,
-        JsonEditorComponent
+        JsonEditorComponent,
+        SelectionFilterComponent
     ],
     providers: [
         ChatService,
