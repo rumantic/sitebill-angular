@@ -8,6 +8,7 @@ import {ModelService} from 'app/_services/model.service';
 import {NgSelectConfig} from '@ng-select/ng-select';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {HttpClient} from '@angular/common/http';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 interface Dict {
     data: any[];
@@ -19,6 +20,12 @@ interface Dict {
     styleUrls: ['./selection-filter.component.scss']
 })
 export class SelectionFilterComponent {
+
+    @Input() parentForm!: FormGroup;
+    @Input() filterName;
+    formGroup: FormGroup ;
+    formName;
+
     options: any;
     options_checkbox: number[] = [1, 0];
     options_select_box: any;
@@ -89,6 +96,13 @@ export class SelectionFilterComponent {
 
     // tslint:disable-next-line:use-life-cycle-interface
     ngOnInit(): void {
+        this.formGroup = new FormGroup({
+            selectedValues: new FormControl('')
+        });
+        this.formName = `${this.filterName}SelectedValues`;
+        this.parentForm.addControl(`${this.formName}`, this.formGroup);
+        console.log(this.formName, this.formGroup);
+
         this.columnObject.model_name = this.columnObject.name;
         // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
         if (this.filterService.get_share_array(this.entity.get_app_name()) !== null &&
@@ -211,7 +225,7 @@ export class SelectionFilterComponent {
             }
         }
         // console.log('selectItem');
-        this.filterService.share_data(this.entity, this.columnObject.model_name, value);
+        // this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 
     load_dictionary(columnName) {

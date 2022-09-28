@@ -176,10 +176,10 @@
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
-                    <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
-                </mat-form-field>
+<!--                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">-->
+<!--                    <mat-label [innerHTML]="records[x].title"></mat-label>-->
+<!--                    <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">-->
+<!--                </mat-form-field>-->
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
@@ -450,7 +450,11 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [hidden]="true" placeholder="{{records[x].title}}">
-                    <selection-filter-comp class="datatable-header__filter" [columnObject]=records[x] [entity]="entity"></selection-filter-comp>
+                    <selection-filter-comp [parentForm]="form" [filterName]="records[x].name"
+                                           class="datatable-header__filter"
+                                           [columnObject]=records[x]
+                                            [entity]="entity"></selection-filter-comp>
+                    <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
             </span>
         </span>
