@@ -1,24 +1,26 @@
-<ng-container [formGroup]="parentForm">
-    <ng-container formGroupName="{{formName}}">
+
+    <ng-container>
 <!--        <label>&& fromToControls['minValue'].touched</label>-->
         <div class="fromToInputWrapper">
-            <input class="fromToInput" name="minValue" formControlName="minValue" placeholder="От" (change)="show()">
+            <input class="fromToInput" name="minValue" placeholder="От" [(ngModel)]="selectedFilterMin"
+                   (ngModelChange)="selectItem($event, 'min')">
             <div class="incorrect"
-                 *ngIf="fromToControls['minValue'].invalid ">
+                 *ngIf="invalidMin">
                 Некорректные данные
             </div>
         </div>
 
 <!--        <label> && fromToControls['maxValue'].touched</label>-->
         <div class="fromToInputWrapper">
-            <input class="fromToInput" name="maxValue" formControlName="maxValue" placeholder="До" >
+            <input class="fromToInput" name="maxValue" placeholder="До" [(ngModel)]="selectedFilterMax"
+                   (ngModelChange)="selectItem($event, 'max')">
             <div class="incorrect"
-                 *ngIf="fromToControls['maxValue'].invalid">
+                 *ngIf="invalidMax">
                 Некорректные данные
             </div>
         </div>
 
-        <div *ngIf="formName === 'priceFromTo'">{{currency}}</div>
+        <div *ngIf="columnObject === 'price'">{{currency}}</div>
 
     </ng-container>
-</ng-container>
+

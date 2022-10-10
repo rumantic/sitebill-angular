@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FilterService} from '../../../../_services/filter.service';
+import {SitebillEntity} from 'app/_models';
 
 @Component({
   selector: 'app-from-to',
@@ -7,37 +8,41 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./from-to.component.scss']
 })
 export class FromToComponent implements OnInit {
-
-    @Input() parentForm!: FormGroup;
-    @Input() filterName;
-    formName: string;
     currentYear = (new Date()).getFullYear();
-    formGroup: FormGroup ;
-    fromToControls;
+    invalidMin = false;
+    invalidMax = false;
 
     @Input() currency = '$';
+    @Input() entity: SitebillEntity;
+    @Input() columnObject: any;
+    selectedFilterMax: any;
+    selectedFilterMin: any;
 
-    constructor() {
+    constructor(
+        private filterService: FilterService,
+    ) {
     }
 
 
     ngOnInit(): void {
-        this.formGroup = new FormGroup({
-            minValue: new FormControl('', Validators.pattern('[0-9]*')),
-            maxValue: new FormControl(this.getInputValue(), Validators.pattern('[0-9]*'))
-        });
-        this.formName = `${this.filterName}FromTo`;
-        this.parentForm.addControl(`${this.formName}`, this.formGroup);
-        this.fromToControls = this.parentForm.controls[this.formName]['controls'];
-    }
-
-    getInputValue(): number {
-        if (this.filterName === 'year') {
-            return this.currentYear;
+        if (this.columnObject === 'year') {
+            this.selectedFilterMax = this.currentYear;
         }
     }
 
-    show() {
-        // console.log(this);
+    selectItem(value, determinant): void {
+        const filterName = `${this.columnObject}_${determinant}`;
+        console.log(this.columnObject);
+
+        // console.log(this.entity);
+        if (isNaN(+value) === false) {
+            this.invalidMin = false;
+            this.invalidMax = false;
+            this.filterService.share_data(this.entity, filterName, value);
+        } else if (determinant === 'min') {
+            this.invalidMin = true;
+        } else {
+            this.invalidMax = true;
+        }
     }
 }

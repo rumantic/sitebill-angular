@@ -21,7 +21,7 @@ interface Dict {
 })
 export class SelectionFilterComponent {
 
-    @Input() parentForm!: FormGroup;
+    // @Input() parentForm!: FormGroup;
     @Input() filterName;
     formGroup: FormGroup ;
     formName;
@@ -96,12 +96,12 @@ export class SelectionFilterComponent {
 
     // tslint:disable-next-line:use-life-cycle-interface
     ngOnInit(): void {
-        this.formGroup = new FormGroup({
-            selectedValues: new FormControl('')
-        });
-        this.formName = `${this.filterName}SelectedValues`;
-        this.parentForm.addControl(`${this.formName}`, this.formGroup);
-        console.log(this.formName, this.formGroup);
+        // this.formGroup = new FormGroup({
+        //     selectedValues: new FormControl('')
+        // });
+        // this.formName = `${this.filterName}SelectedValues`;
+        // this.parentForm.addControl(`${this.formName}`, this.formGroup);
+        // console.log(this.formName, this.formGroup);
 
         this.columnObject.model_name = this.columnObject.name;
         // console.log(this.filterService.get_share_array(this.entity.get_app_name()));
@@ -224,8 +224,9 @@ export class SelectionFilterComponent {
                 return;
             }
         }
-        // console.log('selectItem');
-        // this.filterService.share_data(this.entity, this.columnObject.model_name, value);
+        // console.log(this.columnObject.model_name);
+        console.log(this.entity);
+        this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 
     load_dictionary(columnName) {

@@ -56,7 +56,7 @@
             <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="space-between center">
                 <div>
                     <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"
-                            aria-label="Сохранить фильтры" matTooltip="Сохранить фильтры">
+                            (click)="close()" aria-label="Сохранить фильтры" matTooltip="Сохранить фильтры">
                         Искать
                     </button>
                     <button *ngIf="!disable_cancel_button" mat-raised-button type="button"
@@ -149,8 +149,9 @@
                      <mat-label class="fromToLabel" [innerHTML]="records[x].title"></mat-label>
                      <span class="backgroundLabel">{{records[x].title}}</span>
                      <span class="fromToLabel">{{records[x].title}}</span>
-                     <app-from-to [parentForm]="form"
+                     <app-from-to [entity]="entity"
                                   [currency]="currency"
+                                  [columnObject]="records[x].name"
                                   [filterName]="records[x].name" class="fromTo"></app-from-to>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                 </mat-form-field>
@@ -450,7 +451,7 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [hidden]="true" placeholder="{{records[x].title}}">
-                    <selection-filter-comp [parentForm]="form" [filterName]="records[x].name"
+                    <selection-filter-comp [filterName]="records[x].name"
                                            class="datatable-header__filter"
                                            [columnObject]=records[x]
                                             [entity]="entity"></selection-filter-comp>
