@@ -113,6 +113,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     input$ = new Subject<string>();
     private termsearch = false;
 
+    filterValue: any;
     currentYear = new Date().getFullYear();
     form_submitted = false;
     form_inited = false;
@@ -434,10 +435,16 @@ export class SelectionFormConstructorComponent implements OnInit {
         // this.setSelectedParams(names, fromToArray);
     }
 
-    changeCurrency(event, name): void {
+    selectItem(value, name): void {
+        console.log('AAA');
+        this.changeCurrency(value, name);
+        this.filterService.share_data(this.entity, name, value);
+    }
+
+    changeCurrency(value, name): void {
         if (name === 'currency_id') {
            this.currencyList.forEach(item => {
-             if (item.currency_id.value === event) {
+             if (item.currency_id.value === value) {
                  this.currency = item.name.value;
              }
            });

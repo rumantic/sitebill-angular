@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {LocaleConfig} from 'ngx-daterangepicker-material';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FilterService} from '../../../_services/filter.service';
+import {SitebillEntity} from 'app/_models';
 
 @Component({
   selector: 'app-interval',
@@ -10,11 +11,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class IntervalComponent implements OnInit {
 
-  @Input() parentForm!: FormGroup;
-  @Input() filterName;
-  formGroup: FormGroup ;
-  // formName = 'childDateInterval';
-
+  // @Input() filterName;
+  @Input() entity: SitebillEntity;
   calendarHidden = false;
   date_range_enable = true;
   date_range_key: string;
@@ -39,13 +37,13 @@ export class IntervalComponent implements OnInit {
         monthNames: moment.months()
   };
 
-  constructor() { }
+    constructor(
+        private filterService: FilterService,
+    ) {
+    }
 
   ngOnInit(): void {
-      this.formGroup = new FormGroup({
-          dateInterval: new FormControl('DATE')
-      });
-      this.parentForm.addControl('childDateInterval', this.formGroup);
+
   }
 
     date_range_change(event, column_name) {
@@ -60,5 +58,9 @@ export class IntervalComponent implements OnInit {
       this.selected_date_filter = null;
       this.selected_date_filter_has_values = false;
     }
+
+    selectItem(value): void {
+            this.filterService.share_data(this.entity, 'date_added', value);
+        }
 
 }

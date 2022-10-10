@@ -119,7 +119,7 @@
 </ng-template>
 
 <ng-template #tab_item let-tab="tab" let-form="form">
-    <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap" *ngIf="tabs">
+    <div fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap" *ngIf="tabs">
 
         <span
             *ngFor="let x of tabs[tab]"
@@ -135,13 +135,13 @@
 
             <span [ngSwitch]="records[x].type" class="selectionItems">
 
-                <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
+                <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput placeholder="{{records[x].title}}">
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date_added'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <app-interval [parentForm]="form" [filterName]="records[x].name" style="width: 100%"></app-interval>
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <app-interval [entity]="entity" style="width: 100%"></app-interval>
+                    <input matInput [hidden]="true">
                 </mat-form-field>
 
                  <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'fromTo'"
@@ -152,29 +152,29 @@
                      <app-from-to [entity]="entity"
                                   [currency]="currency"
                                   [columnObject]="records[x].name"
-                                  [filterName]="records[x].name" class="fromTo"></app-from-to>
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                                  class="fromTo"></app-from-to>
+                    <input matInput [hidden]="true">
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'rieltor'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     СПИСОК РИЭЛТОРОВ
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <input matInput [hidden]="true">
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'filial'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     СПИСОК ФИЛИАЛОВ
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <input matInput [hidden]="true">
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'residentialComplex'"
                                 [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     СПИСОК ЖК
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <input matInput [hidden]="true">
                 </mat-form-field>
 
 <!--                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">-->
@@ -184,7 +184,7 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                    <input matInput [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
                                     panelClass="example-month-picker">
@@ -193,14 +193,14 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
+                    <input matInput [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                     <mat-icon matSuffix>access_time</mat-icon>
                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                    <input matInput [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
                                     panelClass="example-month-picker">
@@ -209,7 +209,7 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'docuploads'">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <input matInput [hidden]="true">
                     <ng-container *ngIf="records[x].value.length > 0">
                         <span *ngFor="let doc of records[x].value">
                             <a href="{{doc.normal_url}}" target="_blank">{{doc.normal}}</a> |
@@ -219,7 +219,7 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                    <input matInput [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp
                                     panelClass="example-month-picker">
@@ -249,7 +249,7 @@
 
                 <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'
                 || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
-                    <ng-select [formControlName]="records[x].name"
+                    <ng-select
                                [required]="records[x].required_boolean"
                                appendTo="body"
                                bindValue="id"
@@ -273,7 +273,7 @@
                             </span>
                         </ng-template>
                     </ng-select>
-                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+<!--                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>-->
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
@@ -284,7 +284,7 @@
                     [hidden]="records[x].hidden">
                     <div fxLayout="row" fxLayoutAlign="space-between">
                         <div fxFlex.gt-xs="100" fxFlex.xs="100" class="min-select">
-                            <ng-select [formControlName]="records[x].name"
+                            <ng-select [(ngModel)]="filterValue"
                                        [required]="records[x].required_boolean"
                                        appendTo="body"
                                        class="auto-grow"
@@ -292,7 +292,7 @@
                                        bindLabel="value"
                                        [items]="options_storage_buffer[records[x].name]"
                                        [virtualScroll]="true"
-                                       (ngModelChange)="changeCurrency($event, records[x].name)"
+                                       (ngModelChange)="selectItem($event, records[x].name)"
                                        [loading]="loading"
                                        (scroll)="onScroll($event, records[x].name)"
                                        (scrollToEnd)="onScrollToEnd(records[x].name)"
@@ -315,7 +315,7 @@
                                     </span>
                                 </ng-template>
                             </ng-select>
-                            <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+<!--                            <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>-->
                             <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                         </div>
                         <ng-container *ngIf="!_data.selectionMode">
@@ -329,7 +329,7 @@
                 </span>
 
                 <span *ngSwitchCase="'select_box'" [hidden]="records[x].hidden">
-                    <ng-select [formControlName]="records[x].name"
+                    <ng-select
                                [required]="records[x].required_boolean"
                                appendTo="body"
                                bindValue="id"
@@ -351,7 +351,7 @@
                             </span>
                         </ng-template>
                     </ng-select>
-                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+<!--                    <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>-->
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
@@ -361,7 +361,7 @@
                         class="form-checkbox"
                         [required]="records[x].required_boolean"
                         matInput
-                        [formControlName]="records[x].name">
+                        >
                         <div [innerHTML]="records[x].title" class="checkbox-wrap"></div>
                     </mat-checkbox>
 
@@ -409,7 +409,7 @@
                                     </ng-container>
                                 </agm-map>
 
-                                <input [formControlName]="records[x].name" matInput [hidden]="true">
+                                <input  matInput [hidden]="true">
                                 <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                                 <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                             </mat-form-field>
@@ -424,14 +424,14 @@
 
                 <mat-form-field appearance="{{get_appearance()}}" [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <textarea matInput matTextareaAutosize [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
+                    <textarea matInput matTextareaAutosize [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'password'">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
-                    <input matInput type="password" [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
+                    <input matInput type="password" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </mat-form-field>
@@ -445,17 +445,17 @@
                 </div>
 
                 <mat-form-field [hidden]="false" *ngSwitchCase="'parameter'">
-                    <json-editor [json]="form.controls[records[x].name].value" (onChange)="updateParametersStorage($event, records[x].name)"></json-editor>
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+<!--                    <json-editor [json]="form.controls[records[x].name].value" (onChange)="updateParametersStorage($event, records[x].name)"></json-editor>-->
+                    <input  matInput [hidden]="true">
                 </mat-form-field>
 
                 <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
-                    <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [hidden]="true" placeholder="{{records[x].title}}">
+                    <input matInput [required]="records[x].required_boolean" [hidden]="true" placeholder="{{records[x].title}}">
                     <selection-filter-comp [filterName]="records[x].name"
                                            class="datatable-header__filter"
                                            [columnObject]=records[x]
                                             [entity]="entity"></selection-filter-comp>
-                    <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <input  matInput [hidden]="true">
                 </mat-form-field>
             </span>
         </span>
