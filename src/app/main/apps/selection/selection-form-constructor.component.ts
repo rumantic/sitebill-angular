@@ -113,7 +113,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     input$ = new Subject<string>();
     private termsearch = false;
 
-    filterValue: any;
+    filterValue = {};
     currentYear = new Date().getFullYear();
     form_submitted = false;
     form_inited = false;
@@ -378,6 +378,7 @@ export class SelectionFormConstructorComponent implements OnInit {
             ) {
                 items_array[item].type = 'select_by_query_multi';
             }
+            this.filterValue[item] = '';
         });
 
         // const fromToArray = [

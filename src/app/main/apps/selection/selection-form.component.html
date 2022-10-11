@@ -284,7 +284,8 @@
                     [hidden]="records[x].hidden">
                     <div fxLayout="row" fxLayoutAlign="space-between">
                         <div fxFlex.gt-xs="100" fxFlex.xs="100" class="min-select">
-                            <ng-select [(ngModel)]="filterValue"
+                            <ng-select [(ngModel)]="filterValue[records[x].name]"
+                                       (ngModelChange)="selectItem($event, records[x].name)"
                                        [required]="records[x].required_boolean"
                                        appendTo="body"
                                        class="auto-grow"
@@ -292,7 +293,6 @@
                                        bindLabel="value"
                                        [items]="options_storage_buffer[records[x].name]"
                                        [virtualScroll]="true"
-                                       (ngModelChange)="selectItem($event, records[x].name)"
                                        [loading]="loading"
                                        (scroll)="onScroll($event, records[x].name)"
                                        (scrollToEnd)="onScrollToEnd(records[x].name)"
@@ -357,6 +357,8 @@
 
                 <span *ngSwitchCase="'checkbox'">
                     <mat-checkbox
+                        [(ngModel)]="filterValue[records[x].name]"
+                        (ngModelChange)="selectItem($event, records[x].name)"
                         [hidden]="records[x].hidden"
                         class="form-checkbox"
                         [required]="records[x].required_boolean"
