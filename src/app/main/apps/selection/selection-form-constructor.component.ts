@@ -1092,50 +1092,50 @@ export class SelectionFormConstructorComponent implements OnInit {
         // const prevSelected = this.selectionParams;
         // this.selectionParams = Object.assign(prevSelected, ql_items );
 
-        const controls = this.form.controls;
-        const fromToArray = [
-            'year',
-            'price',
-            // 'room_count',
-            // 'floor',
-            // 'floor_count',
-            // 'square_all',
-            // 'square_live',
-            // 'square_kitchen',
-            // 'land_area',
-            // 'ceiling_height',
-        ];
+        // const controls = this.form.controls;
+        // const fromToArray = [
+        //     'year',
+        //     'price',
+        //     // 'room_count',
+        //     // 'floor',
+        //     // 'floor_count',
+        //     // 'square_all',
+        //     // 'square_live',
+        //     // 'square_kitchen',
+        //     // 'land_area',
+        //     // 'ceiling_height',
+        // ];
+        //
+        // objectKeys(controls).forEach((item) => {
+        //     this.selectionParams[item] = controls[item].value;
+        // });
 
-        objectKeys(controls).forEach((item) => {
-            this.selectionParams[item] = controls[item].value;
-        });
+        // fromToArray.forEach((item) => {
+        //     this.selectionParams[item] = this.selectionParams[`${item}FromTo`];
+        //     delete this.selectionParams[`${item}FromTo`];
+        // });
+        //
+        // this.selectionParams.date_added = this.selectionParams.childDateInterval.dateInterval;
 
-        fromToArray.forEach((item) => {
-            this.selectionParams[item] = this.selectionParams[`${item}FromTo`];
-            delete this.selectionParams[`${item}FromTo`];
-        });
-
-        this.selectionParams.date_added = this.selectionParams.childDateInterval.dateInterval;
-
-        delete this.selectionParams.childDateInterval;
-
-
-
-        this.selectionParams.price_max = +this.selectionParams.price.maxValue;
-        this.selectionParams.price_min = +this.selectionParams.price.minValue;
-
-        delete this.selectionParams.price;
+        // delete this.selectionParams.childDateInterval;
+        //
+        //
+        //
+        // this.selectionParams.price_max = +this.selectionParams.price.maxValue;
+        // this.selectionParams.price_min = +this.selectionParams.price.minValue;
+        //
+        // delete this.selectionParams.price;
 
         // console.log(this.selectionParams.date_added);
 
         // console.log(controls);
 
-        console.log(this.selectionParams);
-        objectKeys(this.selectionParams).forEach(item => {
-            if (this.selectionParams[item] && this.selectionParams[item] !== '0' && this.selectionParams[item].length !== 0) {
-                this.filterService.share_data(this._data.entity, item, this.selectionParams[item]);
-            }
-        });
+        // console.log(this.selectionParams);
+        // objectKeys(this.selectionParams).forEach(item => {
+        //     if (this.selectionParams[item] && this.selectionParams[item] !== '0' && this.selectionParams[item].length !== 0) {
+        //         this.filterService.share_data(this._data.entity, item, this.selectionParams[item]);
+        //     }
+        // });
         // this.filterService.share_data(this._data.entity, 'city_id', this.selectionParams.city_id);
     }
 
