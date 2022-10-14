@@ -402,7 +402,8 @@ export class SelectionFormConstructorComponent implements OnInit {
 
         items_array.currency_id.type = 'select_by_query';
         items_array.price.type = 'fromTo';
-        items_array.year.type = 'fromTo';
+        // временно закомментировано - пока в базу не добавлен год постройки
+        // items_array.year.type = 'fromTo';
         items_array.postponded_to.type = 'checkbox';
         items_array.postponded_to.title = 'Отложено';
         // items_array.commercialtype_id.hidden = false;

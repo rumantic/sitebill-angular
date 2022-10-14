@@ -60,13 +60,15 @@ export class IntervalComponent implements OnInit {
     }
 
     selectItem(value): void {
-       const val = JSON.parse(JSON.stringify(value));
-       const start = val.startDate.slice(0, 10);
-       const end = val.endDate.slice(0, 10);
-       delete val.endDate;
-       val.startDate = start;
-       val.endDate = end;
-       this.filterService.share_data(this.entity, 'date_added', val);
+        if (value) {
+            const val = JSON.parse(JSON.stringify(value));
+            const start = val.startDate.slice(0, 10);
+            const end = val.endDate.slice(0, 10);
+            delete val.endDate;
+            val.startDate = start;
+            val.endDate = end;
+            this.filterService.share_data(this.entity, 'date_added', val);
+        }
     }
 
 }

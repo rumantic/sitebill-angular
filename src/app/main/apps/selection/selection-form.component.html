@@ -355,20 +355,20 @@
                     <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                 </span>
 
-                <span *ngSwitchCase="'checkbox'">
-                    <mat-checkbox
-                        [(ngModel)]="filterValue[records[x].name]"
-                        (ngModelChange)="selectItem($event, records[x].name)"
-                        [hidden]="records[x].hidden"
-                        class="form-checkbox"
-                        [required]="records[x].required_boolean"
-                        matInput
-                        >
-                        <div [innerHTML]="records[x].title" class="checkbox-wrap"></div>
-                    </mat-checkbox>
+<!--                <span *ngSwitchCase="'checkbox'">-->
+<!--                    <mat-checkbox-->
+<!--                        [(ngModel)]="filterValue[records[x].name]"-->
+<!--                        (ngModelChange)="selectItem($event, records[x].name)"-->
+<!--                        [hidden]="records[x].hidden"-->
+<!--                        class="form-checkbox"-->
+<!--                        [required]="records[x].required_boolean"-->
+<!--                        matInput-->
+<!--                        >-->
+<!--                        <div [innerHTML]="records[x].title" class="checkbox-wrap"></div>-->
+<!--                    </mat-checkbox>-->
 
-                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
-                </span>
+<!--                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>-->
+<!--                </span>-->
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
                     <quill-editor
