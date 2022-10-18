@@ -482,6 +482,7 @@ export class GridComponent implements OnInit, OnDestroy
         if (type === 'sale') {
             this.activeRent = false;
             this.activeSale = true;
+            // this.filterService.share_data(this.entity, name, value);
         } else {
             this.activeRent = true;
             this.activeSale = false;

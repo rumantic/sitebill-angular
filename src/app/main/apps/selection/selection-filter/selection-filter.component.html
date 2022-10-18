@@ -1,4 +1,4 @@
-<span (click)="hoverElement=true"  matTooltip="{{columnObject.title}}">
+<span class="selectionFilterWrapper" (click)="hoverElement=true"  >
     <ng-container *ngIf="!hoverElement && !get_compose_params_counter(columnObject)">
         <div class="column-title">
             {{columnObject.title}}
@@ -9,7 +9,6 @@
                    [(ngModel)]="selectedFilter"
                    appendTo="body"
                    bindValue="id"
-                   bindLabel="value"
                    class="select_options"
                    [ngClass]="{extraFilter: true}"
                    [items]="options"
@@ -20,7 +19,7 @@
                    [closeOnSelect]="false"
                    (focus)="onFocus($event)"
                    (ngModelChange)="selectItem($event)"
-                   placeholder="{{columnObjectTitle}}">
+                   >
 
             <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
                 <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
@@ -34,7 +33,6 @@
                    [(ngModel)]="selectedFilter"
                    appendTo="body"
                    bindValue="id"
-                   bindLabel="value"
                    [ngClass]="{extraFilter: true}"
                    [items]="options_select_box"
                    [clearOnBackspace]="false"
@@ -45,7 +43,7 @@
                    [hideSelected]="false"
                    [closeOnSelect]="false"
                    (ngModelChange)="selectItem($event)"
-                   placeholder="{{columnObject.title}}">
+                  >
 
             <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
                 <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.value}}
@@ -65,7 +63,7 @@
                    [closeOnSelect]="false"
                    [typeahead]="typeahead"
                    (ngModelChange)="selectItem($event)"
-                   placeholder="{{columnObject.title}}">
+                   >
 
             <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
                 <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item}}
@@ -86,7 +84,7 @@
                    [hideSelected]="false"
                    [closeOnSelect]="false"
                    (ngModelChange)="selectItem($event)"
-                   placeholder="{{columnObject.title}}">
+                   >
 
             <ng-template ng-label-tmp let-item="item" let-index="index">
                 <ng-container *ngIf="item == 1"> Да</ng-container><ng-container *ngIf="item == 0"> Нет</ng-container>
@@ -100,7 +98,6 @@
         <ng-select *ngIf="price_filter_enable"
                    [(ngModel)]="price_selector"
                    bindValue="id"
-                   bindLabel="value"
                    appendTo="body"
                    [ngClass]="{extraFilter: true}"
                    [ngStyle]="{ 'width': '250px'}"
@@ -113,7 +110,7 @@
                    (focus)="onFocus($event)"
                    (change)="onPriceSelectorChange($event)"
                    (close)="onPriceSelectorClose()"
-                   placeholder="{{columnObject.title}}">
+                   >
             <ng-template ng-label-tmp let-item="item" let-index="index">
         <span *ngIf="item.value == 'range'">
             от {{price_min}} до {{price_max}}
@@ -143,14 +140,14 @@
 
             </ng-template>
         </ng-select>
-        <div *ngIf="compose_enable">
-            <button mat-button color="accent" (click)="compose_modal(columnObject)">
-                {{columnObject.title}}
-                <mat-icon *ngIf="get_compose_params_counter(columnObject)">playlist_add_check</mat-icon>
-            </button>
-        </div>
-        <div *ngIf="!filter_enable">
-            {{columnObject.title}}
-        </div>
+<!--        <div *ngIf="compose_enable">-->
+<!--            <button mat-button color="accent" (click)="compose_modal(columnObject)">-->
+<!--                {{columnObject.title}}-->
+<!--                <mat-icon *ngIf="get_compose_params_counter(columnObject)">playlist_add_check</mat-icon>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--        <div *ngIf="!filter_enable">-->
+<!--            {{columnObject.title}}-->
+<!--        </div>-->
     </ng-container>
 </span>

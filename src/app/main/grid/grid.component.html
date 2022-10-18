@@ -105,6 +105,10 @@
                                               matTooltip="Очистить поиск">close
                                     </mat-icon>
                                 </div>
+                                <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value !== ''"
+                                          (click)="disableSearchMode($event)" aria-label="Смотреть результаты"
+                                          matTooltip="Смотреть результаты">input
+                                </mat-icon>
                                 <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
                                           (click)="disableSearchMode($event)" aria-label="Свернуть окно поиска"
                                           matTooltip="Свернуть окно поиска">close

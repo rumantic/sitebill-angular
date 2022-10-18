@@ -165,3 +165,10 @@ textarea {
     display: none !important;
     pointer-events: auto !important;
 }
+
+.datatable-header__filter {
+    cursor: pointer;
+    display: block;
+    width: 98%;
+}
+
