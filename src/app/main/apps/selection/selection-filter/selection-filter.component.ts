@@ -215,9 +215,8 @@ export class SelectionFilterComponent {
             });
     }
 
-
     selectItem(value) {
-        // console.log(this.selectedFilter);
+        // console.log(value);
         if (this.columnObject.type === 'checkbox') {
             if (value == null) {
                 this.filterService.unshare_data(this.entity, this.columnObject.model_name);
@@ -225,7 +224,7 @@ export class SelectionFilterComponent {
             }
         }
         // console.log(this.columnObject.model_name);
-        console.log(this.entity);
+        // console.log(this.entity);
         this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 

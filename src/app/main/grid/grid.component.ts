@@ -109,10 +109,10 @@ export class GridComponent implements OnInit, OnDestroy
     grouped: any;
     footerHeight: number;
     activeSearchMode = false;
-    activeSale = true;
+    activeSale = false;
     activeRent = false;
     activeHouse = false;
-    activeApartment = true;
+    activeApartment = false;
     activeBusiness = false;
     calendarHidden = true;
     filialsList = [
@@ -478,15 +478,28 @@ export class GridComponent implements OnInit, OnDestroy
 
     }
 
+    resetToggleButtons(): void {
+        this.activeRent = false;
+        this.activeSale = false;
+        this.activeHouse = false;
+        this.activeApartment = false;
+        this.activeBusiness = false;
+    }
+
     toggleDialType(type): void {
+        let value = [];
         if (type === 'sale') {
             this.activeRent = false;
             this.activeSale = true;
-            // this.filterService.share_data(this.entity, name, value);
+            value = [];
+            value.push('6121');
         } else {
             this.activeRent = true;
             this.activeSale = false;
+            value = [];
+            value.push('6134');
         }
+        this.filterService.share_data(this.entity, 'topic_id', value);
     }
 
     toggleObjectType(type): void {
@@ -1516,6 +1529,7 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     reset_filters () {
+        this.resetToggleButtons();
         this.clear_search_text();
         this.clear_selected_date_filter(this.date_range_key);
         this.filterService.reset(this.entity);

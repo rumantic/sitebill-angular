@@ -438,7 +438,6 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
 
     selectItem(value, name): void {
-        console.log('AAA');
         this.changeCurrency(value, name);
         this.filterService.share_data(this.entity, name, value);
     }
@@ -955,6 +954,7 @@ export class SelectionFormConstructorComponent implements OnInit {
     }
 
     apply_topic_activity() {
+        return null;
         let current_topic_id = 0;
         if (this.form.controls['topic_id'] != null) {
             if (this.form.controls['topic_id'].value != null) {

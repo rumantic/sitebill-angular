@@ -247,7 +247,7 @@
 
                 </uploader-component>
 
-                <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'
+                <span *ngSwitchCase="records[x].type === 'select_box_structure_simple_multiple'
                 || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
                     <ng-select
                                [required]="records[x].required_boolean"
