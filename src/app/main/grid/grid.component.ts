@@ -108,28 +108,39 @@ export class GridComponent implements OnInit, OnDestroy
     selectionType = '';
     grouped: any;
     footerHeight: number;
+
     activeSearchMode = false;
     activeSale = false;
     activeRent = false;
     activeHouse = false;
     activeApartment = false;
     activeBusiness = false;
-    calendarHidden = true;
-    filialsList = [
-        {id: 1, fil: 'Фил'},
-        {id: 2, fil: 'Одесса'},
-        {id: 3, fil: 'Николаев'},
-        {id: 4, fil: 'Днепр'},
-        {id: 5, fil: 'город'},
-        {id: 6, fil: 'город'}
-    ];
+    typeFilter = [];
+    saleHouse = ['6124', '6162', '6141', '6126'];
+    saleApartment = ['6123', '6161', '6127', '3', '6159'];
+    saleBusiness = ['6128', '6129', '6130', '6131', '6132', '6133'];
+    rentHouse = ['6144', '6156'];
+    rentApartment = ['6136', '6156', '6151', '6157', '6147', '6153', '6154', '6167', '6155'];
+    rentBusiness = ['6168', '6137', '6138', '6139', '6140', '6158'];
 
-    selectedFils = [2, 3];
-    selectedFil = this.filialsList[0];
+    calendarHidden = true;
+    // filialsList = [
+    //     {id: 1, fil: 'Фил'},
+    //     {id: 2, fil: 'Одесса'},
+    //     {id: 3, fil: 'Николаев'},
+    //     {id: 4, fil: 'Днепр'},
+    //     {id: 5, fil: 'город'},
+    //     {id: 6, fil: 'город'}
+    // ];
+
+    // selectedFils = [2, 3];
+    // selectedFil = this.filialsList[0];
     activeFils = false;
     groupsList = ['Все', 'Список 1', 'Список 2'];
     selectedGroup = this.groupsList[0];
     activeGroups = false;
+    activeArh = false;
+    activeNew = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -281,6 +292,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     public filterExampleColumn: any;
     public filterFilExampleColumn: any;
+    public filterArhExampleColumn: any;
 
 
 
@@ -331,6 +343,17 @@ export class GridComponent implements OnInit, OnDestroy
             model_name: 'user_id',
             title: 'Филиалы',
             shortTitle: ' Ф-лы',
+            width: 100,
+            prop: null
+        };
+        this.filterArhExampleColumn = {
+            headerTemplate: null,
+            cellTemplate: null,
+            type: 'checkbox',
+            ngx_name: 'archived.title',
+            model_name: 'archived',
+            title: 'archived',
+            shortTitle: ' Apx',
             width: 100,
             prop: null
         };
@@ -487,34 +510,52 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     toggleDialType(type): void {
-        let value = [];
         if (type === 'sale') {
-            this.activeRent = false;
+            this.resetToggleButtons();
             this.activeSale = true;
-            value = [];
-            value.push('6121');
+            this.typeFilter = this.saleApartment.concat(this.saleHouse, this.saleBusiness);
         } else {
+            this.resetToggleButtons();
             this.activeRent = true;
-            this.activeSale = false;
-            value = [];
-            value.push('6134');
+            this.typeFilter = this.rentApartment.concat(this.rentHouse, this.rentBusiness);
         }
-        this.filterService.share_data(this.entity, 'topic_id', value);
+        this.filterService.share_data(this.entity, 'topic_id', this.typeFilter);
     }
 
     toggleObjectType(type): void {
+        const dial = this.activeSale || this.activeRent;
         if (type === 'house') {
             this.activeHouse = true;
             this.activeApartment = false;
             this.activeBusiness = false;
+            if ( this.activeSale || !dial) {
+                this.typeFilter = this.saleHouse;
+            } else {
+                this.typeFilter = this.rentHouse;
+            }
         } else if (type === 'apartment') {
             this.activeHouse = false;
             this.activeApartment = true;
             this.activeBusiness = false;
+            if ( this.activeSale || !dial) {
+                this.typeFilter = this.saleApartment;
+            } else {
+                this.typeFilter = this.rentApartment;
+            }
         } else {
             this.activeHouse = false;
             this.activeApartment = false;
             this.activeBusiness = true;
+            if ( this.activeSale || !dial) {
+                this.typeFilter = this.saleBusiness;
+            } else {
+                this.typeFilter = this.rentBusiness;
+            }
+        }
+        // console.log(this.typeFilter);
+        this.filterService.share_data(this.entity, 'topic_id', this.typeFilter);
+        if (!dial) {
+            this.activeSale = true;
         }
     }
 
@@ -531,13 +572,27 @@ export class GridComponent implements OnInit, OnDestroy
     toggleOptionsList(type): void {
         if (type === 'fils') {
             this.activeFils = !this.activeFils;
-        } else {
+        } else if ((type === 'groups')) {
             this.activeGroups = !this.activeGroups;
+        } else if ((type === 'arh')) {
+            this.activeArh = !this.activeArh;
         }
     }
 
+    selectNew(): void {
+        const end = moment().subtract(0, 'days').format('YYYY-MM-DD');
+        const start = moment().subtract(3, 'days').format('YYYY-MM-DD');
+        const val = {
+           startDate: start,
+           endDate: end
+        };
+
+        this.filterService.share_data(this.entity, 'date_added', val);
+        this.activeNew = true;
+}
+
     selectFil(ind): void {
-        this.selectedFil = this.filialsList[ind];
+        // this.selectedFil = this.filialsList[ind];
     }
 
     selectGroup(ind): void {
@@ -579,17 +634,17 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     refresh() {
-        //console.log('refresh');
-        //console.log(this.refresh_complete);
-        //console.log(this.entity.app_name);
-        //this.load_grid_data(this.app_name, [], []);
-        //const params = { owner: true };
-        //this.load_grid_data(this.app_name, [], params);
-        //let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+        // console.log('refresh');
+        // console.log(this.refresh_complete);
+        // console.log(this.entity.app_name);
+        // this.load_grid_data(this.app_name, [], []);
+        // const params = { owner: true };
+        // this.load_grid_data(this.app_name, [], params);
+        // let f = this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
         this.modelService.set_current_entity(this.entity);
         this.setPage({ offset: this.page.pageNumber });
 
-        //this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
+        // this.debounce(this.setPage({ offset: this.page.pageNumber }), 1000);
 
 
     }
@@ -619,8 +674,8 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     init_grid(params) {
-        //console.log('init grid');
-        //console.log(params);
+        // console.log('init grid');
+        // console.log(params);
         let predefined_grid_fields = this.get_predefined_grid_fiels();
         if (predefined_grid_fields != null) {
             this.load_grid_data(this.entity.get_app_name(), predefined_grid_fields, params);
@@ -628,7 +683,7 @@ export class GridComponent implements OnInit, OnDestroy
             this.modelService.load_grid_columns(this.entity)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
-                    //console.log(result);
+                    // console.log(result);
                     if (result.state == 'error' && result.error == 'check_session_key_failed') {
                         this.router.navigate(['/login']);
                         return false;
@@ -705,8 +760,8 @@ export class GridComponent implements OnInit, OnDestroy
                 ) {
                     concatenate_search_string = obj[item];
                 } else {
-                    //console.log(obj[item].length);
-                    //console.log(typeof obj[item]);
+                    // console.log(obj[item].length);
+                    // console.log(typeof obj[item]);
                     if (obj[item] != null ) {
                         if (obj[item].length != 0) {
                             filter_params_json[item] = obj[item];
@@ -762,21 +817,21 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelService.load(table_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //this.loadingIndicator = true;
-                //console.log(result_f1);
+                // this.loadingIndicator = true;
+                // console.log(result_f1);
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
-                    //this.item_model = result.rows[0];
+                    // this.item_model = result.rows[0];
                     this.entity.model = result_f1.columns;
-                    //this.item_model = result.columns;
+                    // this.item_model = result.columns;
                     this.columns_index = result_f1.columns_index;
                     this.rows_index = result_f1.rows_index;
                     if ( !this.freeze_default_columns_list ) {
                         this.entity.default_columns_list = result_f1.default_columns_list;
                     }
                     this.entity.columns_index = result_f1.columns_index;
-                    //console.log(this.item_model);
+                    // console.log(this.item_model);
                     this.loadGridComplete = true;
                     this.page.totalElements = result_f1.total_count;
                     this.set_total_counter(result_f1.total_count);
@@ -795,14 +850,14 @@ export class GridComponent implements OnInit, OnDestroy
                     let model_compose = this.entity.model;
                     this.compose_columns(this.grid_columns_for_compose, model_compose);
 
-                    //console.log(this.item_model);
+                    // console.log(this.item_model);
                     this.rows_data = result_f1.rows;
                     this.data_all = result_f1.rows.length;
                     // this.group();
 
 
-                    //this.init_selected_rows(this.rows, selected);
-                    //this.loadingIndicator = false;
+                    // this.init_selected_rows(this.rows, selected);
+                    // this.loadingIndicator = false;
                 }
                 this.refresh_complete = true;
             });
@@ -842,20 +897,20 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     compose_columns(columns_list, model:SitebillModelItem[]) {
-        //console.log('compose columns');
-        //console.log(model);
-        //console.log(model.length);
-        //console.log(model[0]);
-        //console.log(columns_list);
-        //console.log(this.columns_index);
+        // console.log('compose columns');
+        // console.log(model);
+        // console.log(model.length);
+        // console.log(model[0]);
+        // console.log(columns_list);
+        // console.log(this.columns_index);
 
         if (this.compose_complete) {
             //return;
         }
         delete (this.data_columns);
         this.data_columns = [];
-        //проходим по columns_list
-        //для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
+        // проходим по columns_list
+        // для каждой вытягиваем из model информацию и добавляем в объект КОЛОНКИ
         if ( this.enable_select_rows ) {
             this.data_columns = [{
                 cellTemplate: this.commonTemplate.gridCheckboxTmpl,
@@ -865,7 +920,7 @@ export class GridComponent implements OnInit, OnDestroy
                 resizeable: false,
             }];
         }
-        //this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
+        // this.entity.add_column(model[this.columns_index[this.entity.primary_key]].name);
 
         this.data_columns.push(this.get_control_column());
 
@@ -882,8 +937,8 @@ export class GridComponent implements OnInit, OnDestroy
                 if (this.grid_meta['columns'] != null) {
                     if (this.grid_meta['columns'][model[this.columns_index[row]].name] != null) {
                         width = this.grid_meta['columns'][model[this.columns_index[row]].name].width;
-                        //console.log(model[this.columns_index[row]].name);
-                        //console.log(width);
+                        // console.log(model[this.columns_index[row]].name);
+                        // console.log(width);
                     }
                 }
             }
@@ -897,7 +952,7 @@ export class GridComponent implements OnInit, OnDestroy
 
                 case 'textarea':
                 case 'textarea_editor':
-                    //console.log(model[this.columns_index[row]].name);
+                    // console.log(model[this.columns_index[row]].name);
                     cellTemplate = this.commonTemplate.textTmpl;
                     break;
 
@@ -1014,6 +1069,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.selected_date_filter = null;
         this.filterService.share_data(this.entity, column_name, event);
         this.calendarHidden = true;
+        this.activeNew = false;
     }
 
     enable_date_range(key) {
@@ -1104,18 +1160,18 @@ export class GridComponent implements OnInit, OnDestroy
 
 
     view(item_id: any) {
-        //console.log('view');
-        //console.log(item_id);
+        // console.log('view');
+        // console.log(item_id);
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
         dialogConfig.width = '99vw';
         dialogConfig.maxWidth = '99vw';
-        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
+        // dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
         this.entity.set_key_value(item_id);
         dialogConfig.data = this.entity;
-        //console.log(dialogConfig.data);
+        // console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this.dialog.open(ViewModalComponent, dialogConfig);
@@ -1358,7 +1414,7 @@ export class GridComponent implements OnInit, OnDestroy
             this.modelService.update_column_meta(this.entity.get_table_name(), event.column.model_name, 'columns', params)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((response: any) => {
-                    //console.log(response);
+                    // console.log(response);
                 });
         }
     }
@@ -1372,7 +1428,7 @@ export class GridComponent implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-        //this.resizeObservable.next(0);
+        // this.resizeObservable.next(0);
         this.resizeSubject.complete();
     }
 
@@ -1384,7 +1440,7 @@ export class GridComponent implements OnInit, OnDestroy
         }
         for (let entry of selected) {
             rows.forEach((row, index) => {
-                if (row.id.value == entry.id.value) {
+                if (row.id.value === entry.id.value) {
                     this.selected.push(rows[index]);
                 }
             });
@@ -1497,7 +1553,7 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.disableClose = false;
         dialogConfig.panelClass = 'regular-modal';
         dialogConfig.minWidth = '400px';
-        //this.entity.set_key_value(item_id);
+        // this.entity.set_key_value(item_id);
         this.entity.set_param('id', item_id);
         dialogConfig.data = this.entity;
 
@@ -1515,7 +1571,7 @@ export class GridComponent implements OnInit, OnDestroy
         dialogConfig.disableClose = false;
         dialogConfig.panelClass = 'regular-modal';
         dialogConfig.minWidth = '400px';
-        //this.entity.set_key_value(item_id);
+        // this.entity.set_key_value(item_id);
         this.entity.set_param('id', item_id);
         dialogConfig.data = this.entity;
 
@@ -1533,6 +1589,10 @@ export class GridComponent implements OnInit, OnDestroy
         this.clear_search_text();
         this.clear_selected_date_filter(this.date_range_key);
         this.filterService.reset(this.entity);
+        this.activeFils = false;
+        this.activeGroups = false;
+        this.activeArh = false;
+        this.activeNew = false;
     }
 
     login_modal () {
@@ -1640,7 +1700,7 @@ export class GridComponent implements OnInit, OnDestroy
             && this.entity.get_table_name() === 'data' ) {
             if ( this.get_grid_items(null).includes('complex_id') ) {
                 this.enable_grouping = true;
-                //this.scrollbarH = false;
+                // this.scrollbarH = false;
                 this.group_key = 'complex_id';
                 this.grouped = this.groupBy(this.rows_data, item => item[this.group_key].value_string);
 
@@ -1674,7 +1734,7 @@ export class GridComponent implements OnInit, OnDestroy
                         .subscribe((response: any) => {
                             this.selected = [];
 
-                            if (response.state == 'error') {
+                            if (response.state === 'error') {
                                 this._snackService.message(response.message);
                                 return null;
                             } else {

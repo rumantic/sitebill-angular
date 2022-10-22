@@ -168,15 +168,23 @@
                             <mat-icon>perm_identity</mat-icon>
                             <div>Мои</div>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton" aria-label="Архивные"
-                                matTooltip="Архивные">
-                            <mat-icon>view_comfy_alt</mat-icon>
-                            <div>Арх</div>
-                        </button>
+                        <div class="selectWrapper" *ngIf="showFilterArhButton">
+                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton" aria-label="Архивные"
+                                    matTooltip="Архивные"
+                                    (click)="toggleOptionsList('arh')">
+                                <mat-icon>view_comfy_alt</mat-icon>
+                                <div>Арх</div>
+                            </button>
+                            <div class="optionsList" *ngIf="activeArh">
+                                <filter-comp [columnObject]=filterArhExampleColumn [entity]="entity"
+                                             [extraParam]="extraParam"></filter-comp>
+                            </div>
+                        </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterNewButton" aria-label="Новые"
-                                matTooltip="Новые">
+                                matTooltip="Новые" (click)="selectNew()">
                             <mat-icon>get_app</mat-icon>
                             <div>Нов</div>
+                            <mat-icon *ngIf="activeNew" class="activeNew">done</mat-icon>
                         </button>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton"
                                 aria-label="Эксклюзивные"
