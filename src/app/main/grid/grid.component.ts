@@ -58,6 +58,7 @@ import {WhatsappModalComponent} from "../apps/whatsapp/whatsapp-modal/whatsapp-m
 import {WhatsAppService} from "../apps/whatsapp/whatsapp.service";
 import {ReportType, SendCallbackBundle} from "../apps/whatsapp/types/whatsapp.types";
 import {ReportModalComponent} from "../apps/whatsapp/report-modal/report-modal.component";
+import {AppsDataService, MenuItem} from '../apps/apps-data/apps-data.service';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -109,6 +110,7 @@ export class GridComponent implements OnInit, OnDestroy
     grouped: any;
     footerHeight: number;
 
+    item: MenuItem;
     activeSearchMode = false;
     activeSale = false;
     activeRent = false;
@@ -136,11 +138,12 @@ export class GridComponent implements OnInit, OnDestroy
     // selectedFils = [2, 3];
     // selectedFil = this.filialsList[0];
     activeFils = false;
-    groupsList = ['Все', 'Список 1', 'Список 2'];
-    selectedGroup = this.groupsList[0];
+    // groupsList = ['Все', 'Список 1', 'Список 2'];
+    // selectedGroup = this.groupsList[0];
     activeGroups = false;
     activeArh = false;
     activeNew = false;
+    activeExcl = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -293,6 +296,7 @@ export class GridComponent implements OnInit, OnDestroy
     public filterExampleColumn: any;
     public filterFilExampleColumn: any;
     public filterArhExampleColumn: any;
+    public filterExclExampleColumn: any;
 
 
 
@@ -318,6 +322,7 @@ export class GridComponent implements OnInit, OnDestroy
         public filterService: FilterService,
         protected stringParserService: StringParserService,
         protected whatsAppService: WhatsAppService,
+        public appsDataService: AppsDataService,
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, russian);
@@ -356,6 +361,24 @@ export class GridComponent implements OnInit, OnDestroy
             shortTitle: ' Apx',
             width: 100,
             prop: null
+        };
+        this.filterExclExampleColumn = {
+            headerTemplate: null,
+            cellTemplate: null,
+            type: 'checkbox',
+            ngx_name: 'exclusive.title',
+            model_name: 'exclusive',
+            title: 'exclusive',
+            shortTitle: ' Exc',
+            width: 100,
+            prop: null
+        };
+        this.item = {
+            params: {
+                user_id: '166'
+            },
+            tag: 'my',
+            title: 'Мои',
         };
         // console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
@@ -513,11 +536,13 @@ export class GridComponent implements OnInit, OnDestroy
         if (type === 'sale') {
             this.resetToggleButtons();
             this.activeSale = true;
-            this.typeFilter = this.saleApartment.concat(this.saleHouse, this.saleBusiness);
+            this.typeFilter = ['6121'];
+                // this.saleApartment.concat(this.saleHouse, this.saleBusiness);
         } else {
             this.resetToggleButtons();
             this.activeRent = true;
-            this.typeFilter = this.rentApartment.concat(this.rentHouse, this.rentBusiness);
+            this.typeFilter = ['6134'];
+                // this.rentApartment.concat(this.rentHouse, this.rentBusiness);
         }
         this.filterService.share_data(this.entity, 'topic_id', this.typeFilter);
     }
@@ -576,6 +601,8 @@ export class GridComponent implements OnInit, OnDestroy
             this.activeGroups = !this.activeGroups;
         } else if ((type === 'arh')) {
             this.activeArh = !this.activeArh;
+        } else if ((type === 'excl')) {
+            this.activeExcl = !this.activeExcl;
         }
     }
 
@@ -591,13 +618,14 @@ export class GridComponent implements OnInit, OnDestroy
         this.activeNew = true;
 }
 
+
     selectFil(ind): void {
         // this.selectedFil = this.filialsList[ind];
     }
 
-    selectGroup(ind): void {
-        this.selectedGroup = this.groupsList[ind];
-    }
+    // selectGroup(ind): void {
+    //     this.selectedGroup = this.groupsList[ind];
+    // }
 
     goToSelectDate(): void {
         this.calendarHidden = false;
@@ -1593,6 +1621,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.activeGroups = false;
         this.activeArh = false;
         this.activeNew = false;
+        this.activeExcl = false;
     }
 
     login_modal () {

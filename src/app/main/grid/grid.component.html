@@ -159,10 +159,11 @@
                             </button>
                             <div class="optionsList" *ngIf="activeGroups">
                                 <filter-comp [columnObject]=filterExampleColumn [entity]="entity"
-                                             [extraParam]="extraParam"></filter-comp>
+                                             [extraParam]="extraParam">
+                                </filter-comp>
                             </div>
                         </div>
-                        <button mat-icon-button class="icon-and-text"
+                        <button mat-icon-button class="icon-and-text" (click)="appsDataService.setActiveMenuItem(item)"
                                 aria-label="Список моих объектов"
                                 matTooltip="Список моих объектов">
                             <mat-icon>perm_identity</mat-icon>
@@ -177,7 +178,8 @@
                             </button>
                             <div class="optionsList" *ngIf="activeArh">
                                 <filter-comp [columnObject]=filterArhExampleColumn [entity]="entity"
-                                             [extraParam]="extraParam"></filter-comp>
+                                             [extraParam]="extraParam">
+                                </filter-comp>
                             </div>
                         </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterNewButton" aria-label="Новые"
@@ -186,12 +188,19 @@
                             <div>Нов</div>
                             <mat-icon *ngIf="activeNew" class="activeNew">done</mat-icon>
                         </button>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton"
-                                aria-label="Эксклюзивные"
-                                matTooltip="Эксклюзивные">
-                            <mat-icon>card_giftcard</mat-icon>
-                            <div>Экс</div>
-                        </button>
+                        <div class="selectWrapper" *ngIf="showFilterExButton">
+                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterExButton"
+                                    aria-label="Эксклюзивные" (click)="toggleOptionsList('excl')"
+                                    matTooltip="Эксклюзивные">
+                                <mat-icon>card_giftcard</mat-icon>
+                                <div>Экс</div>
+                            </button>
+                            <div class="optionsList" *ngIf="activeExcl">
+                                <filter-comp [columnObject]=filterExclExampleColumn [entity]="entity"
+                                             [extraParam]="extraParam">
+                                </filter-comp>
+                            </div>
+                        </div>
                         <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton"
                                 aria-label="Временно не продается"
                                 matTooltip="Временно не продается">
