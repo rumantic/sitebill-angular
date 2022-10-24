@@ -201,12 +201,19 @@
                                 </filter-comp>
                             </div>
                         </div>
-                        <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton"
-                                aria-label="Временно не продается"
-                                matTooltip="Временно не продается">
-                            <mat-icon>power_settings_new</mat-icon>
-                            <div>ВНП</div>
-                        </button>
+                        <div class="selectWrapper" *ngIf="showFilterTemporarilyButton">
+                            <button mat-icon-button class="icon-and-text" *ngIf="showFilterTemporarilyButton"
+                                    aria-label="Временно не продается" (click)="toggleOptionsList('post')"
+                                    matTooltip="Временно не продается">
+                                <mat-icon>power_settings_new</mat-icon>
+                                <div>ВНП</div>
+                            </button>
+                            <div class="optionsList" *ngIf="activePost">
+                                <filter-comp [columnObject]=filterPostExampleColumn [entity]="entity"
+                                             [extraParam]="extraParam">
+                                </filter-comp>
+                            </div>
+                        </div>
                         <!-- SELECTION -->
                         <div *ngIf="showSelectionButton" (click)="selectObjects()">
                             <button mat-icon-button class="icon-and-text"

@@ -51,7 +51,7 @@ export class AppsDataService {
     }
 
     setActiveMenuItem(item: MenuItem) {
-        console.log('ITEM');
+        // console.log(item);
         this.active_menu_item = item;
     }
 

@@ -210,7 +210,7 @@ export class FilterComponent {
                 return;
             }
         }
-        console.log(value);
+        // console.log(value);
         this.filterService.share_data(this.entity, this.columnObject.model_name, value);
     }
 

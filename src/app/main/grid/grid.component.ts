@@ -144,6 +144,7 @@ export class GridComponent implements OnInit, OnDestroy
     activeArh = false;
     activeNew = false;
     activeExcl = false;
+    activePost = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -297,6 +298,7 @@ export class GridComponent implements OnInit, OnDestroy
     public filterFilExampleColumn: any;
     public filterArhExampleColumn: any;
     public filterExclExampleColumn: any;
+    public filterPostExampleColumn: any;
 
 
 
@@ -373,9 +375,20 @@ export class GridComponent implements OnInit, OnDestroy
             width: 100,
             prop: null
         };
+        this.filterPostExampleColumn = {
+            headerTemplate: null,
+            cellTemplate: null,
+            type: 'checkbox',
+            ngx_name: 'postponded_to.title',
+            model_name: 'postponded_to',
+            title: 'postponded_to',
+            shortTitle: ' ВНП',
+            width: 100,
+            prop: null
+        };
         this.item = {
             params: {
-                user_id: '166'
+                user_id: this.modelService.get_user_id()
             },
             tag: 'my',
             title: 'Мои',
@@ -603,19 +616,26 @@ export class GridComponent implements OnInit, OnDestroy
             this.activeArh = !this.activeArh;
         } else if ((type === 'excl')) {
             this.activeExcl = !this.activeExcl;
+        } else if ((type === 'post')) {
+            this.activePost = !this.activePost;
         }
     }
 
     selectNew(): void {
-        const end = moment().subtract(0, 'days').format('YYYY-MM-DD');
-        const start = moment().subtract(3, 'days').format('YYYY-MM-DD');
-        const val = {
-           startDate: start,
-           endDate: end
-        };
+        if (!this.activeNew) {
+            const end = moment().subtract(0, 'days').format('YYYY-MM-DD');
+            const start = moment().subtract(3, 'days').format('YYYY-MM-DD');
+            const val = {
+                startDate: start,
+                endDate: end
+            };
 
-        this.filterService.share_data(this.entity, 'date_added', val);
-        this.activeNew = true;
+            this.filterService.share_data(this.entity, 'date_added', val);
+            this.activeNew = true;
+        } else {
+            this.filterService.share_data(this.entity, 'date_added', null);
+            this.activeNew = false;
+        }
 }
 
 
@@ -1622,6 +1642,7 @@ export class GridComponent implements OnInit, OnDestroy
         this.activeArh = false;
         this.activeNew = false;
         this.activeExcl = false;
+        this.activePost = false;
     }
 
     login_modal () {
