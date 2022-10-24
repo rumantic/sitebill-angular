@@ -110,7 +110,8 @@ export class GridComponent implements OnInit, OnDestroy
     grouped: any;
     footerHeight: number;
 
-    item: MenuItem;
+    my: MenuItem;
+    all: MenuItem;
     activeSearchMode = false;
     activeSale = false;
     activeRent = false;
@@ -145,6 +146,7 @@ export class GridComponent implements OnInit, OnDestroy
     activeNew = false;
     activeExcl = false;
     activePost = false;
+    activeMy = false;
 
 
     @ViewChild('gridTable') table: any;
@@ -386,12 +388,19 @@ export class GridComponent implements OnInit, OnDestroy
             width: 100,
             prop: null
         };
-        this.item = {
+        this.my = {
             params: {
                 user_id: this.modelService.get_user_id()
             },
             tag: 'my',
             title: 'Мои',
+        };
+        this.all = {
+            title: 'Все',
+            tag: 'all',
+            params: {
+
+            }
         };
         // console.log('template loaded = ' + this.commonTemplate.template_loaded);
 
@@ -636,7 +645,17 @@ export class GridComponent implements OnInit, OnDestroy
             this.filterService.share_data(this.entity, 'date_added', null);
             this.activeNew = false;
         }
-}
+    }
+
+    selectMy(): void {
+        if (!this.activeMy) {
+            this.appsDataService.setActiveMenuItem(this.my);
+            this.activeMy = true;
+        } else {
+            this.appsDataService.setActiveMenuItem(this.all);
+            this.activeMy = false;
+        }
+    }
 
 
     selectFil(ind): void {

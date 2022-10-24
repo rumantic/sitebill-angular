@@ -163,11 +163,12 @@
                                 </filter-comp>
                             </div>
                         </div>
-                        <button mat-icon-button class="icon-and-text" (click)="appsDataService.setActiveMenuItem(item)"
+                        <button mat-icon-button class="icon-and-text" (click)="selectMy()"
                                 aria-label="Список моих объектов"
                                 matTooltip="Список моих объектов">
                             <mat-icon>perm_identity</mat-icon>
                             <div>Мои</div>
+                            <mat-icon *ngIf="activeMy" class="activeNew">done</mat-icon>
                         </button>
                         <div class="selectWrapper" *ngIf="showFilterArhButton">
                             <button mat-icon-button class="icon-and-text" *ngIf="showFilterArhButton" aria-label="Архивные"
