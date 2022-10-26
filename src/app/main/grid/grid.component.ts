@@ -383,7 +383,7 @@ export class GridComponent implements OnInit, OnDestroy
             type: 'checkbox',
             ngx_name: 'postponded_to.title',
             model_name: 'postponded_to',
-            title: 'postponded_to',
+            title: 'отложено',
             shortTitle: ' ВНП',
             width: 100,
             prop: null
@@ -632,6 +632,7 @@ export class GridComponent implements OnInit, OnDestroy
 
     selectNew(): void {
         if (!this.activeNew) {
+            this.clear_selected_date_filter(this.date_range_key);
             const end = moment().subtract(0, 'days').format('YYYY-MM-DD');
             const start = moment().subtract(3, 'days').format('YYYY-MM-DD');
             const val = {
@@ -644,6 +645,7 @@ export class GridComponent implements OnInit, OnDestroy
         } else {
             this.filterService.share_data(this.entity, 'date_added', null);
             this.activeNew = false;
+            this.clear_selected_date_filter(this.date_range_key);
         }
     }
 
@@ -1128,6 +1130,7 @@ export class GridComponent implements OnInit, OnDestroy
                     'startDate':event.startDate.local().format('YYYY-MM-DD').toString(),
                     'endDate':event.endDate.local().format('YYYY-MM-DD').toString()
                 });
+            this.activeNew = false;
         }
     }
     clear_selected_date_filter(column_name) {
@@ -1174,6 +1177,8 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     selectObjects() {
+        this.clear_selected_date_filter(this.date_range_key);
+        this.activeNew = false;
         const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = false;

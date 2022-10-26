@@ -315,6 +315,12 @@ mat-sidenav-container {
                 }
             }
 
+            @include media-breakpoint('lg') {
+                .btn-icon-and-text-wrapper {
+                   margin-bottom: 50px;
+                }
+            }
+
             @include media-breakpoint('lt-md') {
                 position: relative;
                 flex-direction: column;
@@ -379,6 +385,7 @@ mat-sidenav-container {
         height: 54px;
         min-height: 54px;
         user-select: none;
+        padding: 5px 0;
 
         .datatable-header-cell {
             max-height: 100%;
@@ -410,10 +417,14 @@ mat-sidenav-container {
         }
     }
     ::ng-deep .ng-select-container {
-        border: 1px solid green;
+        border: 0.5px solid #ecefec;
         max-height: 100px;
+        .ng-value-container {
+            max-height: 80px;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
     }
-
 }
 
 ::ng-deep ngx-datatable {
