@@ -64,80 +64,89 @@
             <div class="header-standalone p-8 p-md-8 accent" fxLayout="column" *ngIf="!disable_header">
                 <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
                     <!-- BOARD SELECTION BUTTON -->
-                    <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
-                        <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white"
-                                matTooltip="Добавить запись">Добавить запись
-                        </button>
-                        <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white"
-                                matTooltip="Добавить запись">
-                            <mat-icon>add</mat-icon>
-                        </button>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="start center" class="filtersOffWrapper ml-12 mr-12">
-                        <button
-                            class="amber"
-                            *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
-                            mat-raised-button
-                            (click)="reset_filters()"
-                            color="teal"
-                            matTooltip="Сбросить фильтры">
-                            <mat-icon class="material-icons filtersOff" color="yellow">
-                                filter_{{getFiltersCount()}}
-                            </mat-icon>
-                        </button>
-                    </div>
+                    <div class="leftPartWrapper">
+                        <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!disable_add_button">
+                            <button class="hidden-lt-md" mat-raised-button (click)="edit_form(null)" color="fuse-white"
+                                    matTooltip="Добавить запись">Добавить запись
+                            </button>
+                            <button class="hidden-gt-sm" mat-mini-fab (click)="edit_form(null)" color="fuse-white"
+                                    matTooltip="Добавить запись">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" class="filtersOffWrapper ml-12 mr-12">
+                            <button
+                                class="amber"
+                                *ngIf="filterService.count_share_array(entity.get_app_name()) > get_apps_realty_min_filter_reset_count()"
+                                mat-raised-button
+                                (click)="reset_filters()"
+                                color="teal"
+                                matTooltip="Сбросить фильтры">
+                                <mat-icon class="material-icons filtersOff" color="yellow">
+                                    filter_{{getFiltersCount()}}
+                                </mat-icon>
+                            </button>
+                        </div>
 
-                    <!-- / BOARD SELECTION BUTTON -->
-                    <!-- SEARCH -->
-                    <div class="header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+                        <!-- / BOARD SELECTION BUTTON -->
+                        <!-- SEARCH -->
+                        <div class="header__search-row" fxLayout="row" fxLayoutAlign="center center" fxFlex>
 
-                        <div fxLayout="column" [ngClass]="{searchMode: activeSearchMode}"
-                             *ngIf="!disable_wild_search">
+                            <div fxLayout="column" [ngClass]="{searchMode: activeSearchMode}"
+                                 *ngIf="!disable_wild_search">
 
-                            <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search"
-                                 (click)="setSearchMode()">
-                                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                                    <mat-icon color="primary">search</mat-icon>
-                                    <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям"
-                                           placeholder="Поиск по слову">
-                                    <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary"
-                                              matSuffix (click)="clear_search_text()" aria-label="Очистить поиск"
-                                              matTooltip="Очистить поиск">close
+                                <div class="search-wrapper mt-sm-0" *ngIf="!disable_wild_search"
+                                     (click)="setSearchMode()">
+                                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon color="primary">search</mat-icon>
+                                        <input [formControl]="searchInput" matTooltip="Выполняет поиск по текстовым полям"
+                                               placeholder="Поиск по слову">
+                                        <mat-icon *ngIf="searchInput.value !== ''" class="search__clear" color="primary"
+                                                  matSuffix (click)="clear_search_text()" aria-label="Очистить поиск"
+                                                  matTooltip="Очистить поиск">close
+                                        </mat-icon>
+                                    </div>
+                                    <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value !== ''"
+                                              (click)="disableSearchMode($event)" aria-label="Смотреть результаты"
+                                              matTooltip="Смотреть результаты">input
+                                    </mat-icon>
+                                    <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
+                                              (click)="disableSearchMode($event)" aria-label="Свернуть окно поиска"
+                                              matTooltip="Свернуть окно поиска">close
                                     </mat-icon>
                                 </div>
-                                <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value !== ''"
-                                          (click)="disableSearchMode($event)" aria-label="Смотреть результаты"
-                                          matTooltip="Смотреть результаты">input
-                                </mat-icon>
-                                <mat-icon class="closeSearch" *ngIf="activeSearchMode && searchInput.value === ''"
-                                          (click)="disableSearchMode($event)" aria-label="Свернуть окно поиска"
-                                          matTooltip="Свернуть окно поиска">close
-                                </mat-icon>
+                                <ng-container
+                                    *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
+                                    <search-string-parser [search_string]="searchInput.value"
+                                                          [entity]="entity"></search-string-parser>
+                                </ng-container>
                             </div>
-                            <ng-container
-                                *ngIf="entity.get_app_name() && modelService.getConfigValue('apps.realty.search_string_parser.enable') === '1'">
-                                <search-string-parser [search_string]="searchInput.value"
-                                                      [entity]="entity"></search-string-parser>
-                            </ng-container>
+                            <button
+                                *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()"
+                                mat-icon-button (click)="save_search()"
+                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                                <mat-icon>save</mat-icon>
+                            </button>
+
+                            <button
+                                *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()"
+                                mat-icon-button (click)="login_modal()"
+                                aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
+                                <mat-icon>save</mat-icon>
+                            </button>
+
                         </div>
-                        <button
-                            *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && modelService.is_logged_in()"
-                            mat-icon-button (click)="save_search()"
-                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
-                            <mat-icon>save</mat-icon>
-                        </button>
-
-                        <button
-                            *ngIf="modelService.getConfigValue('apps.mysearch.enable') == 1 && !modelService.is_logged_in()"
-                            mat-icon-button (click)="login_modal()"
-                            aria-label="Сохранить поиск" matTooltip="Сохранить поиск" class="mb-4">
-                            <mat-icon>save</mat-icon>
-                        </button>
-
+                        <!-- / SEARCH -->
                     </div>
-                    <!-- / SEARCH -->
-
-                    <div class="btn-icon-and-text-wrapper">
+                    <button mat-icon-button class="icon-and-text toggleModeBtn" matTooltip="Фильтры" (click)="setFiltersMode()">
+                        <mat-icon>fingerprint</mat-icon>
+                        <div>Filters</div>
+                    </button>
+                    <div class="btn-icon-and-text-wrapper" [ngClass]="{filtersMode: activeFiltersMode}">
+                        <mat-icon *ngIf="activeFiltersMode" class="closeSearch closeFilters"
+                                  (click)="disableFiltersMode($event)" aria-label="Свернуть фильтры"
+                                  matTooltip="Свернуть фильтры">close
+                        </mat-icon>
                         <div class="selectWrapper" *ngIf="showFilterFilButton">
                             <button mat-icon-button class="icon-and-text"
                                     aria-label="Филиалы"

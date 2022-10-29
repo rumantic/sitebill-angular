@@ -113,6 +113,7 @@ export class GridComponent implements OnInit, OnDestroy
     my: MenuItem;
     all: MenuItem;
     activeSearchMode = false;
+    activeFiltersMode = false;
     activeSale = false;
     activeRent = false;
     activeHouse = false;
@@ -611,9 +612,18 @@ export class GridComponent implements OnInit, OnDestroy
         this.activeSearchMode = true;
     }
 
+    setFiltersMode(): void {
+        this.activeFiltersMode = true;
+    }
+
    disableSearchMode(event): void {
         event.stopPropagation();
         this.activeSearchMode = false;
+    }
+
+    disableFiltersMode(event): void {
+        // event.stopPropagation();
+        this.activeFiltersMode = false;
     }
 
     toggleOptionsList(type): void {
