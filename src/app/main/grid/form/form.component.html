@@ -310,6 +310,7 @@
                 </span>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
+                    <span>{{records[x].title}}</span>
                     <quill-editor
                         [(ngModel)]="text_area_editor_storage[records[x].name]"
                         (ngModelChange)="onChangeTextarea($event, records[x].name)"
