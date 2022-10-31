@@ -58,7 +58,7 @@ export function forbiddenNullValue(): ValidatorFn {
 @Component({
     selector: 'form-selector',
     templateUrl: './selection-form.component.html',
-    styleUrls: ['./selection-form.component.css'],
+    styleUrls: ['./selection-form.component.scss'],
     animations: fuseAnimations,
     providers: [
         {

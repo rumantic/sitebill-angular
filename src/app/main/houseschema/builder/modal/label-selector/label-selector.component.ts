@@ -16,7 +16,7 @@ import {StorageService} from "../../../../../_services/storage.service";
 @Component({
     selector   : 'label-selector',
     templateUrl: '../../../../grid/form/form.component.html',
-    styleUrls  : ['../../../../grid/form/form.component.css']
+    styleUrls  : ['../../../../grid/form/form.component.scss']
 })
 export class LabelSelectorComponent extends FormComponent
 {

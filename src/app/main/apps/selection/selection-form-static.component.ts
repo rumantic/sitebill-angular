@@ -18,7 +18,7 @@ import {StorageService} from "../../../_services/storage.service";
 @Component({
     selector: 'form-static',
     templateUrl: './selection-form.component.html',
-    styleUrls: ['./selection-form.component.css'],
+    styleUrls: ['./selection-form.component.scss'],
     providers: [
         {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
     ],

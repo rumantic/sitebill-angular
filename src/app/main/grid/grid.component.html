@@ -21,7 +21,7 @@
     (view_injectorEvent)="view_injector($event)"
     (toggle_activeEvent)="toggle_active($event)"
     (toggle_collectionEvent)="toggle_collection($event)"
->
+    xmlns:filtersMode="http://www.w3.org/1999/xhtml">
 
 </common-template>
 
@@ -138,11 +138,14 @@
                         </div>
                         <!-- / SEARCH -->
                     </div>
-                    <button mat-icon-button class="icon-and-text toggleModeBtn" matTooltip="Фильтры" (click)="setFiltersMode()">
+                    <button *ngIf="!activeFiltersMode" mat-icon-button class="icon-and-text toggleModeBtn"
+                            matTooltip="Фильтры"
+                             (click)="setFiltersMode()">
                         <mat-icon>fingerprint</mat-icon>
                         <div>Filters</div>
                     </button>
-                    <div class="btn-icon-and-text-wrapper" [ngClass]="{filtersMode: activeFiltersMode}">
+                    <div class="btnIconAndTextWrapper" [ngStyle.lt-md]="activeFiltersMode ? {'display': 'flex'} :
+                    {'display': 'none'}">
                         <mat-icon *ngIf="activeFiltersMode" class="closeSearch closeFilters"
                                   (click)="disableFiltersMode($event)" aria-label="Свернуть фильтры"
                                   matTooltip="Свернуть фильтры">close

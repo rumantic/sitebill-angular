@@ -222,6 +222,7 @@ mat-sidenav-container {
         .header-standalone {
             .header-content {
                 justify-content: space-between;
+                position: relative;
 
                 .hidden-lt-md,
                 .amber {
@@ -301,7 +302,7 @@ mat-sidenav-container {
                     display: none;
                 }
 
-                .btn-icon-and-text-wrapper {
+                .btnIconAndTextWrapper {
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -337,7 +338,7 @@ mat-sidenav-container {
                 }
 
                 @include media-breakpoint('lt-xl') { // > 1280
-                    .btn-icon-and-text-wrapper {
+                    .btnIconAndTextWrapper {
                         margin-top: 20px;
                         margin-bottom: 20px;
                     }
@@ -364,25 +365,21 @@ mat-sidenav-container {
                         }
                     }
 
-                    .btn-icon-and-text-wrapper {
+                    .btnIconAndTextWrapper {
                         display: none;
+                        z-index: 20;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        position: absolute;
+                        min-height: 450px;
+                        margin: 0;
+                        padding: 10px;
+                        border-radius: 10px;
+                        background-color: #319fd4;
+                        .closeFilters {
+                            color: red;
+                        }
                     }
-
-                    //&__search-row {
-                    //    padding-left: 16px;
-                    //}
-                    //
-                    //.search {
-                    //    height: 40px !important;
-                    //    line-height: 40px !important;
-                    //    padding: 0 12px !important;
-                    //
-                    //    input {
-                    //        height: 40px !important;
-                    //        min-height: 40px !important;
-                    //        max-height: 40px !important;
-                    //    }
-                    //}
 
                     ::ng-deep .md-drppicker {
                         width: 290px !important;
@@ -503,6 +500,9 @@ mat-sidenav-container {
     }
     .calendar {
          width: 225px;
+        @include media-breakpoint('lt-md') {
+            width: 205px;
+        }
      }
     &__daterange {
         width: 220px;

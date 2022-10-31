@@ -1,3 +1,5 @@
+@import "src/@fuse/scss/fuse";
+
 .mat-form-field {
     display: block;
 }
@@ -104,5 +106,8 @@ textarea {
 .columnsButtonWrapper {
     margin-right: 20px;
     margin-left: auto;
+    @include media-breakpoint('lt-sm') {
+        display: none;
+    }
 }
 

@@ -1,3 +1,5 @@
+@import "src/@fuse/scss/fuse";
+
 .mat-form-field {
     display: block;
 }
@@ -113,9 +115,18 @@ textarea {
 .mat-dialog-content-fixed-width {
 }
 
+//.selectionTitle {
+//    @include media-breakpoint('sm') {
+//        font-size: 16px;
+//    }
+//}
+
 .columnsButtonWrapper {
     margin-right: 20px;
     margin-left: auto;
+    @include media-breakpoint('lt-sm') {
+        display: none;
+    }
 }
 
 .twoInputsWrapper {

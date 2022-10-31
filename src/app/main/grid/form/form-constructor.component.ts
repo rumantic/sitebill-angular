@@ -39,7 +39,7 @@ export function forbiddenNullValue(): ValidatorFn {
 @Component({
     selector: 'form-selector',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.css'],
+    styleUrls: ['./form.component.scss'],
     animations: fuseAnimations,
     providers: [
         {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}, StorageService

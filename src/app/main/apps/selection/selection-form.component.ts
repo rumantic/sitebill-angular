@@ -20,7 +20,7 @@ import {LocaleConfig} from 'ngx-daterangepicker-material';
 @Component({
     selector: 'form-selector',
     templateUrl: './selection-form.component.html',
-    styleUrls: ['./selection-form.component.css'],
+    styleUrls: ['./selection-form.component.scss'],
     providers: [
         {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
     ],

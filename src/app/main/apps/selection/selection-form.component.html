@@ -27,7 +27,7 @@
                 <ng-container *ngIf="getCreationMode()">Создать
                     запись</ng-container>
 <!--                END from FormComponent-->
-                <div *ngIf="_data.selectionMode">Задать фильтры для объектов</div>
+                <div class="selectionTitle" *ngIf="_data.selectionMode">Задать фильтры</div>
             </span>
                 <span class="title dialog-title" *ngIf="_data.entity.get_title() !== null">Создание записи
                     {{_data.entity.get_title()}}</span>
