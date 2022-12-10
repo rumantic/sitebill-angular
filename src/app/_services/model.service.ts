@@ -101,6 +101,7 @@ export class ModelService {
 
 
     get_api_url(ignore_entity_url = false) {
+        return 'https://devrel.sitebill.site';
         if ( !ignore_entity_url ) {
             try {
                 if (this.get_current_entity().get_app_url() != null) {
