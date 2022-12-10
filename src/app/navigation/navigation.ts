@@ -3,7 +3,7 @@ import { FuseNavigation } from '@fuse/types';
 export const navigation: FuseNavigation[] = [
     {
         id: 'data',
-        title: 'Объекты',
+        title: 'Специалисты',
         type: 'item',
         icon: 'home',
         url: 'grid/data',
@@ -16,6 +16,7 @@ export const navigation: FuseNavigation[] = [
         }
         */
     },
+    /*
     {
         id: 'parser',
         title: 'Парсер',
@@ -35,11 +36,12 @@ export const navigation: FuseNavigation[] = [
         icon: 'location_city',
         url: 'grid/complex',
     },
+    */
     {
         id: 'client',
-        title: 'Клиенты',
+        title: 'Сообщества',
         type: 'item',
-        icon: 'favorite',
+        icon: 'free_breakfast',
         url: 'grid/client',
         /*
         badge    : {
@@ -58,7 +60,6 @@ export const navigation: FuseNavigation[] = [
         icon: 'playlist_add',
         url: 'grid/collections',
     },
-    */
     {
         id: 'dictionaries',
         title: 'Справочники',
@@ -130,6 +131,7 @@ export const navigation: FuseNavigation[] = [
             },
         ]
     },
+    */
 
     {
         id: 'user',
@@ -146,6 +148,8 @@ export const navigation: FuseNavigation[] = [
         }
         */
     },
+
+/*
     {
         id: 'config',
         title: 'Настройки',
@@ -160,6 +164,7 @@ export const navigation: FuseNavigation[] = [
         icon: 'developer_board',
         url: 'models-editor',
     },
+*/
 
     /*
     {
@@ -200,6 +205,7 @@ export const navigation: FuseNavigation[] = [
     },
     */
 
+/*
     {
         id: 'access',
         title: 'Доступ',
@@ -226,6 +232,7 @@ export const navigation: FuseNavigation[] = [
             },
         ]
     },
+*/
 
     {
         id: 'login',

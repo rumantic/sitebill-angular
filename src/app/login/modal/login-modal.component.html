@@ -14,13 +14,6 @@
         <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" *ngIf="show_login">
 
             <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-                <mat-form-field *ngIf="!hide_domain">
-                    <input matInput placeholder="Сайт" formControlName="domain" name="domain" >
-                    <mat-error *ngIf="loginFormErrors.domain.required">
-                        укажите ваш сайт
-                    </mat-error>
-                </mat-form-field>
-
                 <mat-form-field>
                     <input matInput placeholder="Email" formControlName="username" name="username">
                     <mat-error *ngIf="loginFormErrors.username.required">
@@ -51,13 +44,6 @@
                 </button>
 
             </form>
-
-            <ng-container *ngIf="!hide_domain">
-                <div class="register" fxLayout="column" fxLayoutAlign="center center">
-                    <span class="text">Еще нет аккаунта?</span>
-                    <button mat-button color="accent" (click)="show_register_domain_form()">Создать сайт</button>
-                </div>
-            </ng-container>
 
             <ng-container *ngIf="this.modelService.getConfigValue('allow_register_account') == 1 && hide_domain">
                 <div class="register" fxLayout="column" fxLayoutAlign="center center">
