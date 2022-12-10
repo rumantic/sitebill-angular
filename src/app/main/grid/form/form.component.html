@@ -146,10 +146,21 @@
                                     panelClass="example-month-picker">
                     </mat-datepicker>
                 </mat-form-field>
+<!--
 
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'docuploads'">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
+                    <uploader-component
+                        *ngSwitchCase="'uploads'"
+                        [hidden]="records[x].hidden"
+                        [galleryImages]="galleryImages"
+                        [uploader_title]="records[x].title"
+                        [entity]="_data"
+                        [image_field]="records[x].name">
+
+                    </uploader-component>
+
                     <ng-container *ngIf="records[x].value.length > 0">
                         <span *ngFor="let doc of records[x].value">
                             <a href="{{doc.normal_url}}" target="_blank">{{doc.normal}}</a> |
@@ -157,6 +168,7 @@
                     </ng-container>
                 </mat-form-field>
 
+-->
                 <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
@@ -165,6 +177,16 @@
                                     panelClass="example-month-picker">
                     </mat-datepicker>
                 </mat-form-field>
+
+                <uploader-component
+                    *ngSwitchCase="'docuploads'"
+                    [hidden]="records[x].hidden"
+                    [galleryImages]="galleryImages"
+                    [uploader_title]="records[x].title"
+                    [entity]="_data"
+                    [image_field]="records[x].name">
+
+                </uploader-component>
 
                 <uploader-component
                     *ngSwitchCase="'uploads'"

@@ -304,6 +304,10 @@ export class FormConstructorComponent implements OnInit {
                 this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
+            if (this.records[this.rows[i]].type == 'docuploads') {
+                this.init_docuploads_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
+            }
+
 
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
@@ -394,6 +398,10 @@ export class FormConstructorComponent implements OnInit {
         } catch {
         }
 
+    }
+
+    init_docuploads_image(field_name, image) {
+        this.galleryImages[field_name] = [];
     }
 
     init_photo_image(field_name, image) {
