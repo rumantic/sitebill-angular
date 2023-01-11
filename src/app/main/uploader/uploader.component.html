@@ -11,10 +11,11 @@
                 <div class="fuse-widget-front w-100-p">
                     <div class="pl-8 pr-8 py-8 w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
 
-                        <div class="h3">Всего фото: {{galleryImages[image_field].length}}</div>
+                        <div class="h3">Всего {{filesType}}: {{galleryImages[image_field].length > 0 ?
+                            galleryImages[image_field].length : ''}}</div>
                         <div>
-                                <button color="warn" mat-raised-button type="button" aria-label="Удалить все фото" (click)="delete_all_images()" *ngIf="galleryImages[image_field].length > 0">
-                                    Удалить все фото
+                                <button color="warn" mat-raised-button type="button" aria-label="Удалить все {{filesType}}" (click)="delete_all_images()" *ngIf="galleryImages[image_field].length > 0">
+                                    Удаление всех {{filesType}}
                                 </button>
                         </div>
                     </div>
@@ -23,7 +24,7 @@
                             <div class="upload-box-content">
                                 <div class="drop-container" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput">
                                     <p align="center">
-                                        Для добавления фото
+                                        Для добавления {{filesType}}
                                         <label class="upload-button">
                                             <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple> нажмите здесь
                                         </label> или переместите сюда файлы для загрузки

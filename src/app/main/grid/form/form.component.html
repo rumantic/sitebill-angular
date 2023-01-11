@@ -181,6 +181,7 @@
                 <uploader-component
                     *ngSwitchCase="'docuploads'"
                     [hidden]="records[x].hidden"
+                    [binaryFile]="true"
                     [galleryImages]="galleryImages"
                     [uploader_title]="records[x].title"
                     [entity]="_data"
