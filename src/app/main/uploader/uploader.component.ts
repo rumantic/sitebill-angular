@@ -59,6 +59,7 @@ export class UploaderComponent {
     @Input('uploader_title')
     uploader_title = '';
     filesType = 'фото';
+    filesTypeVariant = 'фото';
     public show_gallery = false;
 
 
@@ -119,6 +120,7 @@ export class UploaderComponent {
         this.show_gallery = true;
 
         this.filesType = this.binaryFile ? 'файлов' : 'фото';
+        this.filesTypeVariant = this.binaryFile ? 'файлы' : 'фото';
     }
 
 
@@ -255,7 +257,7 @@ export class UploaderComponent {
             disableClose: false
         });
 
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все фото?';
+        this.confirmDialogRef.componentInstance.confirmMessage = `Вы уверены, что хотите удалить все ${this.filesTypeVariant}?`;
         // this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {

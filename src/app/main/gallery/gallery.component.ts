@@ -204,7 +204,7 @@ export class GalleryComponent implements OnInit {
             disableClose: false
         });
 
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить фото?';
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить файл?';
         //this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
