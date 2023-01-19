@@ -400,8 +400,18 @@ export class FormConstructorComponent implements OnInit {
 
     }
 
-    init_docuploads_image(field_name, image) {
-        this.galleryImages[field_name] = [];
+    init_docuploads_image(field_name, images) {
+        if (images) {
+            this.galleryImages[field_name] = images.map(function (image: any) {
+                return {
+                    small: 'https://www.sitebill.ru/storage/icons/file.png?v=1',
+                    medium: image.normal + '?' + new Date().getTime(),
+                    big: image.normal + '?' + new Date().getTime()
+                };
+            });
+        } else {
+            this.galleryImages[field_name] = [];
+        }
     }
 
     init_photo_image(field_name, image) {
@@ -823,6 +833,7 @@ export class FormConstructorComponent implements OnInit {
         }
         let width_100: Array<string> = [
             'uploads',
+            'docuploads',
             'textarea',
             'textarea_editor',
             'injector',

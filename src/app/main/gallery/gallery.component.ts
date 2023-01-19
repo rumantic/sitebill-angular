@@ -86,6 +86,8 @@ export class GalleryComponent implements OnInit {
                     '?' + new Date().getTime();
                 if ( small_url.indexOf('\.pdf') >= 0 ) {
                     small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
+                } else if ( this.entity.model[this.image_field].value[prop].normal.indexOf('\.xls') >= 0 || this.entity.model[this.image_field].value[prop].normal.indexOf('\.xlsx') >= 0) {
+                    small_url = 'https://www.sitebill.ru/storage/icons/file.png';
                 }
 
 
