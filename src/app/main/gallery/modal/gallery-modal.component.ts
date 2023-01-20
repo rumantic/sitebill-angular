@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit, Input} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { APP_CONFIG, AppConfig } from 'app/app.config.module';
 import { ModelService } from 'app/_services/model.service';
 import { FilterService } from 'app/_services/filter.service';
-
 
 @Component({
     selector: 'gallery-modal',
@@ -14,6 +13,8 @@ import { FilterService } from 'app/_services/filter.service';
 export class GalleryModalComponent implements OnInit {
     max_uploads: number = 100;
 
+    data: any;
+
     constructor(
         private dialogRef: MatDialogRef<GalleryModalComponent>,
         private modelSerivce: ModelService,
@@ -21,6 +22,7 @@ export class GalleryModalComponent implements OnInit {
         @Inject(APP_CONFIG) private config: AppConfig,
         @Inject(MAT_DIALOG_DATA) public _data: any
     ) {
+        this.data = this._data;
     }
 
     ngOnInit() {
@@ -35,5 +37,4 @@ export class GalleryModalComponent implements OnInit {
         }
         this.dialogRef.close();
     }
-
 }

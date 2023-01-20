@@ -14,11 +14,12 @@ import {ModelService} from 'app/_services/model.service';
 import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
-import {FormStaticComponent} from "../../grid/form/form-static.component";
-import {EntityStorageService} from "../../../_services/entity-storage.service";
-import {takeUntil} from "rxjs/operators";
-import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
-import {myCustomTooltipDefaults} from "../../grid/form/form-constructor.component";
+import {FormStaticComponent} from '../../grid/form/form-static.component';
+import {EntityStorageService} from '../../../_services/entity-storage.service';
+import {takeUntil} from 'rxjs/operators';
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
+import {myCustomTooltipDefaults} from '../../grid/form/form-constructor.component';
+import {StorageService} from '../../../_services/storage.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit,O
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         protected entityStorageService: EntityStorageService,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
         super(
             modelService,
@@ -55,7 +57,8 @@ export class ConfigFormComponent extends FormStaticComponent implements OnInit,O
             bitrix24Service,
             entityStorageService,
             cdr,
-        );
+            storageService,
+    );
     }
 
     getModel(): void {

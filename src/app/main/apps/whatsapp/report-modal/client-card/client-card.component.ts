@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SitebillEntity} from "../../../../../_models";
+import {SitebillEntity} from '../../../../../_models';
 
 @Component({
     selector: 'client-card',
@@ -7,7 +7,7 @@ import {SitebillEntity} from "../../../../../_models";
     styleUrls: ['./client-card.component.scss']
 })
 export class ClientCardComponent implements OnInit {
-    @Input("entity")
+    @Input('entity')
     entity: SitebillEntity;
 
     constructor() {

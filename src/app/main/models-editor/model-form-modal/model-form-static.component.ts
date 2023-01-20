@@ -13,6 +13,7 @@ import {takeUntil} from "rxjs/operators";
 import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
 import {myCustomTooltipDefaults} from "../../grid/form/form-constructor.component";
 import {ApiParams} from "../../../_models";
+import {StorageService} from "../../../_services/storage.service";
 
 
 @Component({
@@ -36,7 +37,8 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
         protected entityStorageService: EntityStorageService,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
         super(
             modelService,
@@ -47,6 +49,7 @@ export class ModelFormStaticComponent extends FormStaticComponent implements OnI
             bitrix24Service,
             entityStorageService,
             cdr,
+            storageService,
         );
     }
 

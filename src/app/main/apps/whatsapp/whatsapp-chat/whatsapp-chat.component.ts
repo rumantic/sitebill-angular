@@ -12,7 +12,7 @@ import {Chat, DialogPost, SendCallbackBundle} from "../types/whatsapp.types";
 import {Message} from "../types/venom-bot/model/message";
 import {ApiCall, ApiParams, SitebillEntity, SitebillModelItem} from "../../../../_models";
 import {SnackService} from "../../../../_services/snack.service";
-import {promise} from "protractor";
+// import {promise} from "protractor";
 import {MessagesService} from "../../../../_services/messages.service";
 
 @Component({

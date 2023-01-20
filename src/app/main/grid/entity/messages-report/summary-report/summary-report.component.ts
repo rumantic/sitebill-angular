@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {fuseAnimations} from "../../../../../../@fuse/animations";
-import {ReportType} from "../../../../apps/whatsapp/types/whatsapp.types";
+import {fuseAnimations} from '../../../../../../@fuse/animations';
+import {ReportType} from '../../../../apps/whatsapp/types/whatsapp.types';
 
 @Component({
     selector: 'summary-report',

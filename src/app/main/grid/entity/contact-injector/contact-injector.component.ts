@@ -10,6 +10,7 @@ import {ChatService} from '../../../apps/chat/chat.service';
 import {SnackService} from '../../../../_services/snack.service';
 import {Bitrix24Service} from '../../../../integrations/bitrix24/bitrix24.service';
 import {takeUntil} from 'rxjs/operators';
+import {StorageService} from "../../../../_services/storage.service";
 
 @Component({
     selector: 'contact-injector',
@@ -32,7 +33,8 @@ export class ContactInjectorComponent extends ViewStaticComponent implements OnI
         public _matDialog: MatDialog,
         protected filterService: FilterService,
         protected bitrix24Service: Bitrix24Service,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
 
         super(
@@ -44,6 +46,7 @@ export class ContactInjectorComponent extends ViewStaticComponent implements OnI
             filterService,
             bitrix24Service,
             cdr,
+            storageService,
         );
         this._data = new SitebillEntity();
         this._data.set_app_name('contact');

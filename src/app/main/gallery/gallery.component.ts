@@ -3,22 +3,19 @@ import {
     OnInit,
     Input,
     ViewChild,
-    TemplateRef,
     ElementRef,
-    SimpleChange,
-    OnChanges,
     IterableDiffers,
     DefaultIterableDiffer,
     Output, EventEmitter
 } from '@angular/core';
-import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryModule, NgxGalleryComponent } from 'ngx-gallery-9';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation, NgxGalleryComponent } from 'ngx-gallery-9';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { fuseAnimations } from '@fuse/animations';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import { ModelService } from 'app/_services/model.service';
+import { ImageService } from 'app/_services/image.service';
 import { SitebillEntity } from 'app/_models';
-import {HouseSchemaBuilderModalComponent} from "../houseschema/builder/modal/house-schema-builder-modal.component";
-
+import {HouseSchemaBuilderModalComponent} from '../houseschema/builder/modal/house-schema-builder-modal.component';
 
 @Component({
     selector: 'gallery-component',
@@ -33,56 +30,58 @@ export class GalleryComponent implements OnInit {
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
     gallery_columns = 8;
 
-    //gallery_object: any;
     @ViewChild('gallery_object') gallery_object: ElementRef<NgxGalleryComponent>;
 
     galleryImages: NgxGalleryImage[];
 
-
-    @Input("galleryImages")
+    @Input('galleryImages')
     galleryImagesInput: NgxGalleryImage[];
 
-    @Input("entity")
+    @Input('entity')
     entity: SitebillEntity;
 
-    @Input("image_field")
+    @Input('image_field')
     image_field: string;
 
-    @Input("disable_gallery_controls")
+    @Input('disable_gallery_controls')
     disable_gallery_controls: boolean;
 
     @Output() onGalleryChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
-
 
     constructor(
         private differs: IterableDiffers,
         public _matDialog: MatDialog,
         private modelSerivce: ModelService,
-    ) {
-        //this.galleryImages = [];
-    }
+        private imageService: ImageService,
+    ) {}
 
     recalculate_options() {
         return;
     }
 
-    replaceFileTypeIcons (galleryImages) {
+    replaceFileTypeIcons(galleryImages) {
         return galleryImages;
     }
 
-
-    ngOnInit(): void {
-        this.galleryImages = [];
+    getImages(): void {
         if ( this.galleryImagesInput && this.galleryImagesInput[this.image_field] && this.galleryImagesInput[this.image_field].length > 0 ) {
             this.galleryImages = this.galleryImagesInput[this.image_field];
-        } else if(this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
-            let img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
+        } else {
+            this.galleryImages = [];
+          }
+    }
 
-            for (var prop in this.entity.model[this.image_field].value) {
+    ngOnInit(): void {
+        this.getImages();
+        if (this.galleryImages.length === 0 && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
+            const img_folder = this.getImgFolder(this.entity.model[this.image_field].type);
+
+            for (const prop in this.entity.model[this.image_field].value) {
 
                 let small_url = this.modelSerivce.get_api_url() +
                     img_folder +
-                    (this.entity.model[this.image_field].value[prop].preview?this.entity.model[this.image_field].value[prop].preview:this.entity.model[this.image_field].value[prop].normal) +
+                    (this.entity.model[this.image_field].value[prop].preview ? this.entity.model[this.image_field].value[prop].preview
+                        : this.entity.model[this.image_field].value[prop].normal) +
                     '?' + new Date().getTime();
                 if ( small_url.indexOf('\.pdf') >= 0 ) {
                     small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
@@ -91,7 +90,7 @@ export class GalleryComponent implements OnInit {
                 }
 
 
-                let gallery_image = {
+                const gallery_image = {
                     small: small_url,
                     medium: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
                     big: this.modelSerivce.get_api_url() + img_folder + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
@@ -101,7 +100,7 @@ export class GalleryComponent implements OnInit {
         }
         this.galleryImages = this.replaceFileTypeIcons(this.galleryImages);
         this.differ =
-            <DefaultIterableDiffer<any>>this.differs.find(this.galleryImages).create();
+            this.differs.find(this.galleryImages).create() as DefaultIterableDiffer<any>;
         let rows_number_calc = Math.ceil(this.galleryImages.length / this.gallery_columns);
         if (rows_number_calc < 1) {
             rows_number_calc = 1;
@@ -117,15 +116,14 @@ export class GalleryComponent implements OnInit {
                 width: '100%',
                 height: height_calc + 'px',
                 image: false,
-                "arrowPrevIcon": "fa fa-arrow-circle-o-left",
-                "arrowNextIcon": "fa fa-arrow-circle-o-right",
-                "closeIcon": "fa fa-window-close",
-                "fullscreenIcon": "fa fa-arrows",
-                "spinnerIcon": "fa fa-refresh fa-spin fa-3x fa-fw",
-                "previewFullscreen": true,
-                "thumbnailsOrder": 2,
+                arrowPrevIcon: 'fa fa-arrow-circle-o-left',
+                arrowNextIcon: 'fa fa-arrow-circle-o-right',
+                closeIcon: 'fa fa-window-close',
+                fullscreenIcon: 'fa fa-arrows',
+                spinnerIcon: 'fa fa-refresh fa-spin fa-3x fa-fw',
+                previewFullscreen: true,
+                thumbnailsOrder: 2,
                 thumbnailsColumns: 8,
-                //thumbnailsRows: rows_number_calc,
                 previewCloseOnClick: true,
                 imageBullets: true,
                 imageInfinityMove: true,
@@ -152,7 +150,7 @@ export class GalleryComponent implements OnInit {
             {
                 breakpoint: 800,
                 width: '100%',
-                //height: '600px',
+                // height: '600px',
                 thumbnailsColumns: 2,
                 previewCloseOnClick: true,
                 imageBullets: true,
@@ -194,7 +192,7 @@ export class GalleryComponent implements OnInit {
         }
     }
 
-    getImgFolder (type: string) {
+    getImgFolder(type: string) {
         if ( type === 'docuploads' ) {
             return '/img/mediadocs/';
         }
@@ -207,16 +205,15 @@ export class GalleryComponent implements OnInit {
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить файл?';
-        //this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, this.image_field)
+                this.imageService.deleteImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages.splice(index, 1);
                         this.recalculate_options();
-                        this.onGalleryChange.emit(this.galleryImages);
                     });
+                this.reorder();
             }
             this.confirmDialogRef = null;
         });
@@ -229,77 +226,63 @@ export class GalleryComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.width = '99vw';
         dialogConfig.maxWidth = '99vw';
-        //dialogConfig.data = { app_name: this.entity.get_table_name(), primary_key: this.entity.primary_key, key_value: item_id };
-        //this.entity.set_key_value(item_id);
         dialogConfig.data = {
-            entity:this.entity,
+            entity: this.entity,
             image_field: this.image_field,
             image_index: index,
             galleryImages: this.galleryImages,
         };
-        //console.log(dialogConfig.data);
         dialogConfig.panelClass = 'form-ngrx-compose-dialog';
 
         this._matDialog.open(HouseSchemaBuilderModalComponent, dialogConfig);
-
-
-    }
-
-
-    enable_move() {
     }
 
     moveRight(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'down', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, index + 1);
+                const tmp_images = this.array_move(this.galleryImages, index, index + 1);
                 this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 10);
+                this.reorder(tmp_images);
             });
-
     }
-    moveLeft(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
-            .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, index - 1);
-                this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
-            });
 
+    moveLeft(event, index) {
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'up', this.image_field)
+            .subscribe((result: any) => {
+                const tmp_images = this.array_move(this.galleryImages, index, index - 1);
+                this.galleryImages = [];
+                this.reorder(tmp_images);
+            });
     }
     moveToStart(event, index) {
-        this.modelSerivce.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
+        this.imageService.reorderImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'make_main', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.array_move(this.galleryImages, index, 0);
+                const tmp_images = this.array_move(this.galleryImages, index, 0);
                 this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                this.reorder(tmp_images);
             });
-
     }
 
     rotateLeft(event, index) {
-        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
+        this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'acw', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
-                this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
+                this.reorder(tmp_images);
             });
-
     }
 
     rotateRight(event, index) {
-        this.modelSerivce.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
+        this.imageService.rotateImage(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, index, 'ccw', this.image_field)
             .subscribe((result: any) => {
-                let tmp_images = this.add_timestamp_prefix(this.galleryImages);
-                this.galleryImages = [];
-                setTimeout(() => this.reorder(tmp_images), 1);
+                const tmp_images = this.add_timestamp_prefix(this.galleryImagesInput[this.image_field]);
+                this.reorder(tmp_images);
             });
-
     }
 
     add_timestamp_prefix(images) {
         if (images) {
-            return images.map(function (image: any) {
+            // console.log ('add_time', images);
+            return images.map(function(image: any) {
 
                 return {
                     small: image.small + '?' + new Date().getTime(),
@@ -311,9 +294,13 @@ export class GalleryComponent implements OnInit {
         return [];
     }
 
-    reorder(tmp_images) {
-        this.galleryImages = tmp_images;
-        this.onGalleryChange.emit(this.galleryImages);
+    reorder(tmp_images = []) {
+        setTimeout(() => {
+            if (tmp_images.length) {
+                this.galleryImages = tmp_images;
+            }
+            this.onGalleryChange.emit(this.galleryImages);
+        }, 10);
     }
 
     array_move(arr, old_index, new_index) {
@@ -330,7 +317,7 @@ export class GalleryComponent implements OnInit {
             new_index += arr.length;
         }
         if (new_index >= arr.length) {
-            var k = new_index - arr.length + 1;
+            let k = new_index - arr.length + 1;
             while (k--) {
                 arr.push(undefined);
             }
@@ -341,19 +328,15 @@ export class GalleryComponent implements OnInit {
     }
 
     ngDoCheck() {
-        //console.log(this.galleryImages);
         if (this.galleryImages ) {
-            let changes = this.differ.diff(this.galleryImages);
+            const changes = this.differ.diff(this.galleryImages);
             if (changes != null && this.previous_image_count < changes.length) {
                 this.recalculate_options();
                 setTimeout(() => this.moveToEnd(), 10);
                 this.previous_image_count = changes.length;
             }
-
         }
     }
-
-
 
     moveToEnd() {
         if (this.gallery_object instanceof NgxGalleryComponent) {

@@ -14,7 +14,7 @@ import {labelColors, LevelLocationModel} from "../models/level-location.model";
 import {LevelModel} from "../models/level.model";
 import {SectionModel} from "../models/section.model";
 import {StairModel} from "../models/stair.model";
-import {element} from "protractor";
+// import {element} from "protractor";
 import {SnackService} from "../../../_services/snack.service";
 import {FilterService} from "../../../_services/filter.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";

@@ -107,6 +107,7 @@ export class AttachModalComponent  implements OnInit {
     }
 
     onImageArrayChange(image_array: NgxGalleryImage[]) {
+        console.log('ATTACH');
         this.refreshModel();
     }
 }

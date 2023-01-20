@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, isDevMode, Inject, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Inject, Output} from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { SitebillEntity } from 'app/_models';
 import { ModelService } from 'app/_services/model.service';
+import { ImageService } from 'app/_services/image.service';
 import { AppConfig, APP_CONFIG } from 'app/app.config.module';
-import { currentUser } from 'app/_models/currentuser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from 'app/dialogs/confirm/confirm.component';
 import { SnackService } from 'app/_services/snack.service';
@@ -53,7 +53,6 @@ export class UploaderComponent {
     disable_gallery_controls: boolean;
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
-    @Output() onImageArrayChange: EventEmitter<NgxGalleryImage[]> = new EventEmitter();
 
 
     @Input('uploader_title')
@@ -62,11 +61,7 @@ export class UploaderComponent {
     filesTypeVariant = 'фото';
     public show_gallery = false;
 
-
-
-
-
-    constructor(
+        constructor(
         private modelSerivce: ModelService,
         public _matDialog: MatDialog,
         private _snackService: SnackService,
@@ -127,7 +122,6 @@ export class UploaderComponent {
 
     onUploadOutput(output: UploadOutput): void {
         // console.log('upload event');
-        // console.log(output.type);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -142,11 +136,11 @@ export class UploaderComponent {
         } else if (output.type === 'done' && typeof output.file !== 'undefined') {
             this.queue_size--;
             // console.log(this.entity);
-            if (this.queue_size == 0) {
+            if (this.queue_size === 0) {
                 if (this.entity.key_value == null) {
                     this.modelSerivce.new_empty_record(this.entity.get_table_name())
                         .subscribe((result: UploadResult) => {
-                            if (result.state == 'error') {
+                            if (result.state === 'error') {
                                 this._snackService.message('Невозможно загрузить фото к новой записи. Сначала сохраните запись без фото, а потом загрузите к ней фото.', 5000);
                                 return false;
                             }
@@ -180,17 +174,11 @@ export class UploaderComponent {
                                 }
                             }
                             this.upload_complete.emit(this.entity);
-
-
-                            // this.uppend_uploads();
                         });
-
                 } else {
                     this.uppend_uploads();
                 }
-
             }
-
 
         } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
             this.files.push(output.file);
@@ -258,16 +246,13 @@ export class UploaderComponent {
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = `Вы уверены, что хотите удалить все ${this.filesTypeVariant}?`;
-        // this.confirmDialogRef.componentInstance.;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.modelSerivce.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
+                this.imageService.deleteAllImages(this.entity.get_table_name(), this.entity.primary_key, this.entity.key_value, this.image_field)
                     .subscribe((result: any) => {
                         this.galleryImages[this.image_field] = [];
                         this.upload_complete.emit(this.entity);
-                        // console.log(this.galleryImages);
-                        // this.recalculate_options();
                     });
             }
             this.confirmDialogRef = null;
@@ -297,7 +282,7 @@ export class UploaderComponent {
         this.uploadInput.emit({ type: 'removeAll' });
     }
 
-    onGalleryChange(image_array: NgxGalleryImage[]) {
-        this.onImageArrayChange.emit(image_array);
+    onGalleryChange(imageArray: NgxGalleryImage[]): void {
+        this.galleryImages[this.image_field] = imageArray;
     }
 }

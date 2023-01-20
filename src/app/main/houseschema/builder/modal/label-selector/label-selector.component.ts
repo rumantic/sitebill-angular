@@ -11,6 +11,7 @@ import {FilterService} from "../../../../../_services/filter.service";
 import {Bitrix24Service} from "../../../../../integrations/bitrix24/bitrix24.service";
 import {APP_CONFIG, AppConfig} from "../../../../../app.config.module";
 import {FormConstructorComponent} from "../../../../grid/form/form-constructor.component";
+import {StorageService} from "../../../../../_services/storage.service";
 
 @Component({
     selector   : 'label-selector',
@@ -33,7 +34,8 @@ export class LabelSelectorComponent extends FormComponent
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
         @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
         super(
             dialogRef,
@@ -46,6 +48,7 @@ export class LabelSelectorComponent extends FormComponent
             config,
             _data,
             cdr,
+            storageService,
         );
     }
 

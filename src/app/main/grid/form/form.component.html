@@ -25,6 +25,11 @@
                 <ng-container *ngIf="!_data.get_key_value()">Создать запись</ng-container>
             </span>
                 <span class="title dialog-title" *ngIf="_data.get_title() !== null">Создание записи {{_data.get_title()}}</span>
+                <div class="columnsButtonWrapper">
+                    <button mat-button (click)="setNumberOfColumns(3)">авто</button>
+                    <button mat-button (click)="setNumberOfColumns(2)">&#9776; &#9776;</button>
+                    <button mat-button (click)="setNumberOfColumns(1)">&#9776;</button>
+                </div>
                 <button mat-icon-button (click)="close()" aria-label="Закрыть">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -328,6 +333,7 @@
                 </span>
 
                 <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'textarea_editor'">
+                    <span>{{records[x].title}}</span>
                     <quill-editor
                         [(ngModel)]="text_area_editor_storage[records[x].name]"
                         (ngModelChange)="onChangeTextarea($event, records[x].name)"

@@ -20,53 +20,58 @@ import {AppConfigModule} from './app.config.module';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
-import {AuthGuard} from "./_guards";
-import {ModelService} from "./_services/model.service";
-import {PublicGuard} from "./_guards/public.guard";
-import {MessageService} from "./message.service";
-import {AlertService, AuthenticationService} from "./_services";
-import {FilterIterator, FilterService} from "./_services/filter.service";
-import {SnackService} from "./_services/snack.service";
-import {Bitrix24Router} from "./integrations/bitrix24/bitrix24router";
-import {SnackBarComponent} from "./main/snackbar/snackbar.component";
-import {CalculatorMiniComponent} from "./main/calculator-mini/calculator-mini.component";
-import {MortgageCalculatorComponent} from "./main/mortgage-calculator/mortgage-calculator.component";
-import {SharedModule} from "./shared.module";
-import {LoginComponent} from "./login";
-import {ControlElementsComponent} from "./main/control-elements/control-elements.component";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatDividerModule} from "@angular/material/divider";
-import {MatGridListModule} from "@angular/material/grid-list";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatSelectModule} from "@angular/material/select";
-import {MatTableModule} from "@angular/material/table";
-import {MatTabsModule} from "@angular/material/tabs";
-import {MatDialogModule} from "@angular/material/dialog";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatRadioModule} from "@angular/material/radio";
-import {MatCardModule} from "@angular/material/card";
-import {MatInputModule} from "@angular/material/input";
-import {MatSliderModule} from "@angular/material/slider";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import {MatExpansionModule} from "@angular/material/expansion";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {AlertComponent} from "./_directives";
-import {Error404Component} from "./main/pages/errors/404/error-404.component";
-import {Error500Component} from "./main/pages/errors/500/error-500.component";
-import {SitebillAuthService} from "./_services/sitebill-auth.service";
-import {ConfigComponent} from "./main/config/config.component";
-import {detect_mode, SitebillModes} from "./_helpers/env";
-import {WhatsAppModule} from "./main/apps/whatsapp/whatsapp.module";
+import {AuthGuard} from './_guards';
+import {ModelService} from './_services/model.service';
+import {PublicGuard} from './_guards/public.guard';
+import {MessageService} from './message.service';
+import {AlertService, AuthenticationService} from './_services';
+import {FilterIterator, FilterService} from './_services/filter.service';
+import {SnackService} from './_services/snack.service';
+import {Bitrix24Router} from './integrations/bitrix24/bitrix24router';
+import {SnackBarComponent} from './main/snackbar/snackbar.component';
+import {CalculatorMiniComponent} from './main/calculator-mini/calculator-mini.component';
+import {MortgageCalculatorComponent} from './main/mortgage-calculator/mortgage-calculator.component';
+import {SharedModule} from './shared.module';
+import {LoginComponent} from './login';
+import {ControlElementsComponent} from './main/control-elements/control-elements.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {AlertComponent} from './_directives';
+import {Error404Component} from './main/pages/errors/404/error-404.component';
+import {Error500Component} from './main/pages/errors/500/error-500.component';
+import {SitebillAuthService} from './_services/sitebill-auth.service';
+import {ConfigComponent} from './main/config/config.component';
+import {detect_mode, SitebillModes} from './_helpers/env';
+import {WhatsAppModule} from './main/apps/whatsapp/whatsapp.module';
+import {ImageService} from './_services/image.service';
+import {ConfigService} from './_services/config.service';
+import {GetApiUrlService} from './_services/get-api-url.service';
+import {GetSessionKeyService} from './_services/get-session-key.service';
+import {UiService} from './_services/ui.service';
 
 
 let appRoutes: Routes = [
-    //Для обычного angular этот маршрут для корня
+    // Для обычного angular этот маршрут для корня
     {path: '', redirectTo: 'frontend', pathMatch: 'full'},
 
 
@@ -152,9 +157,9 @@ let appRoutes: Routes = [
     */
 ];
 
-if ( detect_mode() == SitebillModes.standalone ) {
+if ( detect_mode() === SitebillModes.standalone ) {
     appRoutes = [
-        //Для standalone
+        // Для standalone
         {
             path: '',
             loadChildren: () => import('app/main/standalone-runner/standalone-runner.module').then(m => m.StandaloneRunnerModule),
@@ -232,7 +237,12 @@ if ( detect_mode() == SitebillModes.standalone ) {
     providers: [
         MessageService,
         AuthGuard,
+        UiService,
         ModelService,
+        ImageService,
+        ConfigService,
+        GetApiUrlService,
+        GetSessionKeyService,
         SitebillAuthService,
         PublicGuard,
         AlertService,

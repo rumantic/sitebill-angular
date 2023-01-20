@@ -10,7 +10,9 @@ import {FilterService} from 'app/_services/filter.service';
 import {SnackService} from 'app/_services/snack.service';
 import {Bitrix24Service} from 'app/integrations/bitrix24/bitrix24.service';
 import {FormConstructorComponent, myCustomTooltipDefaults} from './form-constructor.component';
-import {MAT_TOOLTIP_DEFAULT_OPTIONS} from "@angular/material/tooltip";
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
+import {StorageService} from '../../../_services/storage.service';
+
 
 
 @Component({
@@ -33,7 +35,8 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
         protected bitrix24Service: Bitrix24Service,
         @Inject(APP_CONFIG) protected config: AppConfig,
         @Inject(MAT_DIALOG_DATA) public _data: SitebillEntity,
-        protected cdr: ChangeDetectorRef
+        protected cdr: ChangeDetectorRef,
+        protected storageService: StorageService
     ) {
         super(
             modelService,
@@ -43,6 +46,7 @@ export class FormComponent extends FormConstructorComponent implements OnInit {
             bitrix24Service,
             _matDialog,
             cdr,
+            storageService,
         );
     }
 
