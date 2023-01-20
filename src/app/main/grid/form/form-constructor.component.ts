@@ -406,6 +406,10 @@ export class FormConstructorComponent implements OnInit {
                 this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
             }
 
+            if (this.records[this.rows[i]].type == 'docuploads') {
+                this.init_docuploads_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
+            }
+
 
             if (this.records[this.rows[i]].type == 'uploads') {
                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
@@ -496,6 +500,20 @@ export class FormConstructorComponent implements OnInit {
         } catch {
         }
 
+    }
+
+    init_docuploads_image(field_name, images) {
+        if (images) {
+            this.galleryImages[field_name] = images.map(function (image: any) {
+                return {
+                    small: 'https://www.sitebill.ru/storage/icons/file.png?v=1',
+                    medium: image.normal + '?' + new Date().getTime(),
+                    big: image.normal + '?' + new Date().getTime()
+                };
+            });
+        } else {
+            this.galleryImages[field_name] = [];
+        }
     }
 
     init_photo_image(field_name, image) {
@@ -922,6 +940,7 @@ export class FormConstructorComponent implements OnInit {
         }
         const width_100: Array<string> = [
             'uploads',
+            'docuploads',
             'textarea',
             'textarea_editor',
             'injector',

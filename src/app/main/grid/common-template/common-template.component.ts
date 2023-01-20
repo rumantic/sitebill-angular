@@ -27,6 +27,7 @@ export class CommonTemplateComponent {
     @ViewChild('controlTmpl') controlTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('imageTmpl') imageTmpl: TemplateRef<any>;
+    @ViewChild('fileTmpl') fileTmpl: TemplateRef<any>;
     @ViewChild('photoTmpl') photoTmpl: TemplateRef<any>;
     @ViewChild('whatsAppTmpl') whatsAppTmpl: TemplateRef<any>;
     @ViewChild('priceTmpl') priceTmpl: TemplateRef<any>;

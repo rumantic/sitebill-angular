@@ -23,18 +23,22 @@ export class UploadResult {
 })
 export class UploaderComponent {
     url: string;
-    api_url: string;
+    api_url = '';
+    formData: FormData;
     files: UploadFile[];
     uploadInput: EventEmitter<UploadInput>;
     confirmDialogRef: MatDialogRef<ConfirmComponent>;
 
-    humanizeBytes: Function;
+    humanizeBytes: (bytes: number) => string;
     dragOver: boolean;
     options: UploaderOptions;
-    queue_size: number =  0;
+    queue_size =  0;
+
+    @Input()
+    binaryFile = false;
 
     @Input('galleryImages')
-    galleryImages: NgxGalleryImage[];
+    galleryImages: NgxGalleryImage[] | {};
 
     @Input('entity')
     entity: SitebillEntity;
@@ -50,17 +54,19 @@ export class UploaderComponent {
 
     @Output() upload_complete: EventEmitter<SitebillEntity> = new EventEmitter();
 
+
     @Input('uploader_title')
-    uploader_title: string = '';
+    uploader_title = '';
+    filesType = 'фото';
+    filesTypeVariant = 'фото';
     public show_gallery = false;
 
-    constructor(
+        constructor(
         private modelSerivce: ModelService,
         public _matDialog: MatDialog,
         private _snackService: SnackService,
         protected bitrix24Service: Bitrix24Service,
         protected modelService: ModelService,
-        protected imageService: ImageService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
@@ -68,16 +74,23 @@ export class UploaderComponent {
         this.files = [];
         this.uploadInput = new EventEmitter<UploadInput>();
         this.humanizeBytes = humanizeBytes;
-
     }
 
-    getImages(): void {
+    ngOnInit() {
+        if (this.max_uploads == null) {
+            this.max_uploads = 100;
+        }
+        this.options = { concurrency: 1, maxUploads: this.max_uploads };
+        if ( this.entity.model && this.entity.model[this.image_field]) {
+            this.uploader_title = this.entity.model[this.image_field].title;
+        }
+
         if (!this.galleryImages && this.entity && this.entity.model && this.entity.model[this.image_field] && this.entity.model[this.image_field].value.length > 0) {
             this.galleryImages = [];
             this.galleryImages[this.image_field] = [];
-            for (let prop in this.entity.model[this.image_field].value) {
+            for (const prop in this.entity.model[this.image_field].value) {
 
-                let gallery_image = {
+                const gallery_image = {
                     small: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].preview + '?' + new Date().getTime(),
                     medium: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
                     big: this.modelSerivce.get_api_url() + '/img/data/' + this.entity.model[this.image_field].value[prop].normal + '?' + new Date().getTime(),
@@ -85,13 +98,11 @@ export class UploaderComponent {
                 this.galleryImages[this.image_field].push(gallery_image);
             }
         } else if (!this.galleryImages) {
-                this.galleryImages = [];
-                this.galleryImages[this.image_field] = [];
-            }
-    }
+            this.galleryImages = [];
+            this.galleryImages[this.image_field] = [];
+        }
 
-    ngOnInit() {
-        this.getImages();
+        // console.log(this.image_field);
 
         this.url = this.api_url + '/apps/api/rest.php?uploader_type=dropzone&element='
             + this.image_field
@@ -102,12 +113,15 @@ export class UploaderComponent {
             + '&primary_key=' + this.entity.key_value
             + '&session_key=' + this.modelSerivce.get_session_key();
         this.show_gallery = true;
+
+        this.filesType = this.binaryFile ? 'файлов' : 'фото';
+        this.filesTypeVariant = this.binaryFile ? 'файлы' : 'фото';
     }
+
+
 
     onUploadOutput(output: UploadOutput): void {
         // console.log('upload event');
-        // console.log('start', output.type);
-        // console.log('start', this.galleryImages);
         if (output.type === 'allAddedToQueue') {
             const event: UploadInput = {
                 type: 'uploadAll',
@@ -134,25 +148,24 @@ export class UploaderComponent {
                                 this.entity.key_value = result.message[this.entity.primary_key]['value'];
                                 this.modelSerivce.entity.key_value = this.entity.key_value;
                                 // console.log(result.message);
-                                if (this.entity.get_hook() === 'add_to_collections') {
+                                if (this.entity.get_hook() == 'add_to_collections') {
                                     this.add_to_collections(this.entity.key_value);
                                 }
 
-                                let img_folder = this.getImgFolder(result.message[this.image_field]['type']);
+                                const img_folder = this.getImgFolder(result.message[this.image_field]['type']);
 
 
-                                for (let prop in result.message[this.image_field]['value']) {
+                                for (const prop in result.message[this.image_field]['value']) {
                                     let small_url = this.api_url +
                                         img_folder +
-                                        (result.message[this.image_field]['value'][prop].preview?result.message[this.image_field]['value'][prop].preview:result
-                                            .message[this.image_field]['value'][prop].normal) +
+                                        (result.message[this.image_field]['value'][prop].preview ? result.message[this.image_field]['value'][prop].preview : result.message[this.image_field]['value'][prop].normal) +
                                         '?' + new Date().getTime();
 
                                     if ( small_url.indexOf('\.pdf') >= 0 ) {
                                         small_url = 'https://www.sitebill.ru/storage/icons/pdf.png';
                                     }
 
-                                    let gallery_image = {
+                                    const gallery_image = {
                                         small: small_url,
                                         medium: this.api_url + img_folder + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
                                         big: this.api_url + img_folder + result.message[this.image_field]['value'][prop].normal + '?' + new Date().getTime(),
@@ -187,7 +200,7 @@ export class UploaderComponent {
         this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
     }
 
-    getImgFolder (type: string) {
+    getImgFolder(type: string) {
         if ( type === 'docuploads' ) {
             return '/img/mediadocs/';
         }
@@ -195,7 +208,7 @@ export class UploaderComponent {
     }
 
     add_to_collections(data_id) {
-        let title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
+        const title = 'bitrix deal ' + this.bitrix24Service.get_entity_id();
         this.modelService.toggle_collections(this.bitrix24Service.get_domain(), this.bitrix24Service.get_entity_id(), title, data_id)
             .subscribe((response: any) => {
             });
@@ -215,8 +228,8 @@ export class UploaderComponent {
                     prefix = 'user/';
                 }
 
-                for (let prop in result.data) {
-                    let gallery_image = {
+                for (const prop in result.data) {
+                    const gallery_image = {
                         small: this.api_url + '/img/data/' + prefix + result.data[prop].preview + '?' + new Date().getTime(),
                         medium: this.api_url + '/img/data/' + prefix + result.data[prop].normal + '?' + new Date().getTime(),
                         big: this.api_url + '/img/data/' + prefix + result.data[prop].normal + '?' + new Date().getTime(),
@@ -232,7 +245,7 @@ export class UploaderComponent {
             disableClose: false
         });
 
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все фото?';
+        this.confirmDialogRef.componentInstance.confirmMessage = `Вы уверены, что хотите удалить все ${this.filesTypeVariant}?`;
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
