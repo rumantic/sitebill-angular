@@ -582,7 +582,6 @@ export class GridComponent implements OnInit, OnDestroy
     }
 
     load_grid_data(app_name, grid_columns: string[], params: any) {
-        // console.log('load_grid_data');
         let filter_params_json = this.get_filter_params();
 
         if (params != null) {
@@ -600,8 +599,8 @@ export class GridComponent implements OnInit, OnDestroy
         this.modelService.load(table_name, grid_columns, filter_params_json, params.owner, page_number, this.page.size)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result_f1: any) => {
-                //this.loadingIndicator = true;
                 //console.log(result_f1);
+                //this.loadingIndicator = true;
                 if (result_f1.state == 'error') {
                     this.rise_error(result_f1.message);
                 } else {
@@ -774,6 +773,10 @@ export class GridComponent implements OnInit, OnDestroy
 
                 case 'uploads':
                     cellTemplate = this.commonTemplate.imageTmpl;
+                    break;
+
+                case 'docuploads':
+                    cellTemplate = this.commonTemplate.fileTmpl;
                     break;
 
                 case 'select_by_query_multi':

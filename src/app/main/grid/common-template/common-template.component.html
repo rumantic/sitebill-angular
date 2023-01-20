@@ -90,6 +90,16 @@
     </button>
 </ng-template>
 
+<ng-template #fileTmpl let-column="column" let-row="row" let-value="value">
+    <ng-container *ngIf="value">
+        <div fxLayout="column">
+            <ng-container *ngIf="value.length > 0">
+                <a *ngFor="let item of value" href="{{item.normal_url}}">{{item.normal}}</a>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-template>
+
 <ng-template #select_by_query_multi_Tmpl let-column="column" let-row="row" let-value="value">
     {{row[column['model_name']].value_string_implode}}
 </ng-template>
