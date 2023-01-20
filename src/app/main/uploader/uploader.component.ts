@@ -67,6 +67,7 @@ export class UploaderComponent {
         private _snackService: SnackService,
         protected bitrix24Service: Bitrix24Service,
         protected modelService: ModelService,
+        protected imageService: ImageService,
         @Inject(APP_CONFIG) private config: AppConfig,
     ) {
         this.api_url = this.modelSerivce.get_api_url();
