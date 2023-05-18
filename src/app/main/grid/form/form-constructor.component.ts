@@ -902,6 +902,7 @@ export class FormConstructorComponent implements OnInit {
                     [{'color': []}, {'background': []}],          // dropdown with defaults from theme
                     [{'font': []}],
                     [{'align': []}],
+                    ['link', 'image', 'video'],
 
                     ['clean']                                    // remove formatting button
 
