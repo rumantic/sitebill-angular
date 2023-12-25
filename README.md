@@ -1,4 +1,33 @@
-Настройка sitebill-Angular
+## Установка
+Версия angular и пакетов очень устарела, поэтому чтобы запустилось и скомпилировалось необходимо провести предварительную подготовку:
+
+
+Перед установкой необходимо включить опцию:
+
+On Unix-like (Linux, macOS, Git bash, etc.):
+
+```
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
+On Windows command prompt:
+
+```
+set NODE_OPTIONS=--openssl-legacy-provider
+```
+On PowerShell:
+
+```
+$env:NODE_OPTIONS = "--openssl-legacy-provider"
+```
+
+Пакеты устанавливать этой командой:
+
+```
+npm i --legacy-peer-deps
+```
+
+## Настройка sitebill-Angular
 
 # Fuse - Angular
 
