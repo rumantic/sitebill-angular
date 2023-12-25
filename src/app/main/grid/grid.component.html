@@ -239,8 +239,16 @@
                                                 <button mat-menu-item (click)="deleteSelected($event)"
                                                         [matTooltip]="'Удалить выбранные'" aria-label="Удалить выбранные">
                                                     <mat-icon class="secondary-text">delete</mat-icon>
-                                                    <span>Удалить выбранные</span>
+                                                    <span>Удалить выбранные: {{selectedCount}} шт.</span>
                                                 </button>
+
+                                                <button mat-menu-item (click)="deleteAll($event)"
+                                                        class="red-A100"
+                                                        [matTooltip]="'Удалить все'" aria-label="Удалить все">
+                                                    <mat-icon class="secondary-text">delete_sweep</mat-icon>
+                                                    <span class="secondary-text">Удалить все: {{page.totalElements}} шт.</span>
+                                                </button>
+
                                             </mat-menu>
                                         </ng-container>
 

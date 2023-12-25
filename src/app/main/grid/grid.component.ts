@@ -1467,6 +1467,42 @@ export class GridComponent implements OnInit, OnDestroy
         return false;
     }
 
+    deleteAll($event: MouseEvent) {
+        this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false
+        });
+        let delete_ids = [];
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Вы уверены, что хотите удалить все записи?';
+        this.confirmDialogRef.componentInstance.confirmMessage2 = this.page.totalElements + ' шт.';
+        this.selected.forEach((item) => {
+            delete_ids.push(item[this.entity.get_primary_key()].value)
+        });
+
+
+        this.confirmDialogRef.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(result => {
+                if (result) {
+                    this.modelService.delete(this.entity.get_table_name(), this.entity.primary_key, delete_ids)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((response: any) => {
+                            this.selected = [];
+
+                            if (response.state == 'error') {
+                                this._snackService.message(response.message);
+                                return null;
+                            } else {
+                                this._snackService.message('Записи удалены успешно');
+                                this.filterService.empty_share(this.entity);
+                            }
+                        });
+                }
+                this.confirmDialogRef = null;
+            });
+
+    }
+
     deleteSelected($event: MouseEvent) {
         this.confirmDialogRef = this.dialog.open(ConfirmComponent, {
             disableClose: false
