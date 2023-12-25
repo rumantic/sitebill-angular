@@ -134,6 +134,8 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
     }
 
     receiveChatSocketSubscriber(sendCallbackBundle: SendCallbackBundle) {
+/*
+
         this.whatsAppService.receiveChatSocket(this.modelService.sitebill_session)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
@@ -147,6 +149,8 @@ export class WhatsAppChatComponent  implements OnInit, AfterViewChecked {
                     console.log(error);
                 }
             );
+
+*/
         this.subscribed = true;
     }
 

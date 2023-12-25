@@ -5,7 +5,7 @@ import {SitebillSession} from "../../../_models/sitebillsession";
 import parsePhoneNumber from 'libphonenumber-js';
 import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
 import {APP_CONFIG, AppConfig} from "../../../app.config.module";
-import {Socket} from "ngx-socket-io";
+// import {Socket} from "ngx-socket-io";
 import {SitebillEntity, SitebillModelItem} from "../../../_models";
 
 @Injectable()
@@ -23,9 +23,11 @@ export class WhatsAppService {
         private http: HttpClient,
         private modelService: ModelService,
         @Inject(APP_CONFIG) private config: AppConfig,
-        private socket: Socket
+        // private socket: Socket
     )
     {
+
+/*
         this.isLoggedIn(this.modelService.sitebill_session)
             .subscribe(
                 (result ) => {
@@ -35,6 +37,8 @@ export class WhatsAppService {
                     }
                 }
             );
+*/
+
     }
 
     get readyState(): boolean {
@@ -156,14 +160,17 @@ export class WhatsAppService {
     getQrCode (session: SitebillSession) {
         return this.http.post(`${this.api_url}/getQrCode`, session);
     }
+/*
 
     sendChatSocket(message){
         this.socket.emit('msgToServer', {session: this.modelService.sitebill_session,message: message});
     }
+
     receiveChatSocket(session: SitebillSession){
         return this.socket.fromEvent('msgToClient/'+session.sessionId);
     }
 
+*/
     addToMailingList ( entities: SitebillModelItem[] ) {
         this.mailing_list = this.mailing_list.concat(entities);
     }
