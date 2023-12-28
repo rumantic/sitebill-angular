@@ -22,7 +22,7 @@ import {locale as russian} from './i18n/ru';
 import {Subject} from 'rxjs';
 import {FilterService} from 'app/_services/filter.service';
 import {fuseAnimations} from '@fuse/animations';
-import {debounceTime, distinctUntilChanged, takeUntil, throttleTime} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, expand, takeUntil, takeWhile, tap, throttleTime} from 'rxjs/operators';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {ModelService} from 'app/_services/model.service';
 import {ViewModalComponent} from './view-modal/view-modal.component';
@@ -1482,19 +1482,29 @@ export class GridComponent implements OnInit, OnDestroy
 
         this.confirmDialogRef.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(result => {
-                if (result) {
-                    this.modelService.delete(this.entity.get_table_name(), this.entity.primary_key, delete_ids)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((response: any) => {
-                            this.selected = [];
-
-                            if (response.state == 'error') {
-                                this._snackService.message(response.message);
-                                return null;
-                            } else {
-                                this._snackService.message('Записи удалены успешно');
-                                this.filterService.empty_share(this.entity);
+            .subscribe(result_close => {
+                if (result_close) {
+                    let filter_params_json = this.get_filter_params();
+                    const request = {
+                        action: 'model',
+                        do: 'delete_all',
+                        page: 1,
+                        per_page: this.page.size,
+                        model_name: this.entity.get_table_name(),
+                        primary_key: this.entity.get_primary_key(),
+                        params: filter_params_json,
+                        anonymous: false,
+                        session_key: this.modelService.get_session_key_safe()
+                    };
+                    this.modelService.api_request(request)
+                        .pipe(
+                            expand((result: any) => this.modelService.api_request(request)),
+                            takeWhile((result: any) => result.data.records_remains, true)
+                        )
+                        .subscribe((result: any) => {
+                            if ( result.data.records_remains == 0 ) {
+                                this._snackService.message('Удаление записей завершено');
+                                this.refresh();
                             }
                         });
                 }
